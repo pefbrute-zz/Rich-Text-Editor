@@ -2,17 +2,46 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=/, initial-scale=1.0" />
-    <link rel="stylesheet" href="fontawesome-free-5.13.0-web/css/all.min.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="icon/icon.png" />
+    <link rel="stylesheet" href="fontawesome-free-5.13.0-web/css/all.css" />
     <link rel="stylesheet" href="css/normalize.css" />
     <link rel="stylesheet" href="css/main.css" />
-    <title>Rich Text Editor</title>
+    <title>Sample Text Editor</title>
   </head>
-
   <body>
-    <div id="editor">
-      <div class="toolbar"></div>
-      <div class="work-area"></div>
+    <div class="editor">
+      <div class="sample-toolbar">
+        <!-- <span>
+          Normal
+        </span> -->
+        <a class="icon" href="javascript:void(0)" onclick="format('bold')">
+          <i class="fa fa-bold"></i>
+        </a>
+        <a class="icon" href="javascript:void(0)" onclick="format('italic')">
+          <i class="fa fa-italic fa-fw"></i>
+        </a>
+        <a
+          class="icon"
+          href="javascript:void(0)"
+          onclick="format('insertunorderedlist')"
+        >
+          <i class="fa fa-list fa-fw"> </i>
+        </a>
+        <a class="icon" href="javascript:void(0)" onclick="setUrl()">
+          <i class="fa fa-link fa-fw"></i>
+        </a>
+        <span class="url">
+          <input id="txtFormatUrl" placeholder="link" class="form-control" />
+        </span>
+      </div>
+
+      <div class="work-area" contenteditable="true" id="work-area">
+        
+
+      </div>
     </div>
+
+    <script src="js/main.js"></script>
   </body>
 </html>

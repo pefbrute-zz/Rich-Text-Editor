@@ -1,0 +1,58 @@
+body {
+  background-color: #f4f5f5;
+}
+
+.icon, .url{
+  margin-left: 0.5rem;
+}
+
+.icon:hover,
+.icon:focus,
+.icon:active,
+.icon:visited,
+.icon:link {
+  text-decoration: none;
+}
+
+.icon:visited,
+.icon:link {
+  color: black;
+}
+
+.icon:hover,
+.icon:active,
+.icon:focus {
+  color: rgba(25, 150, 200, 1);
+}
+
+.editor {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sample-toolbar,
+.work-area {
+  width: 60rem;
+  padding: 1rem 2rem;
+}
+
+.sample-toolbar {
+  background: rgba(255, 255, 255, 1);
+}
+
+.sample-toolbar > span {
+  cursor: pointer;
+}
+
+.sample-toolbar > span:hover {
+  text-decoration: underline;
+}
+
+.work-area {
+  overflow: auto;
+  height: 100%;
+  background-color: white;
+  overflow-wrap: break-word;
+}
