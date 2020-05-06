@@ -19,7 +19,16 @@ function setUrl() {
 
 function test() {
   // makeBold();
-  console.log(document.getSelection());
+  var selected = document.getSelection();
+  var selectedText = selected.toString();
+  var strong = document.createElement("strong");
+  strong.textContent = selectedText;
+
+  var range = selected.getRangeAt(0);
+  range.deleteContents();
+  range.insertNode(strong);
+
+
 }
 
 // function makeBold() {
