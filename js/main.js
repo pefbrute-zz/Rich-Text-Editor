@@ -17,67 +17,28 @@ function setUrl() {
   document.getElementById("txtFormatUrl").value = "";
 }
 
-function test() {
-  // makeBold();
+function insertTag(tag) {
   var selected = document.getSelection();
   var selectedText = selected.toString();
-  var strong = document.createElement("strong");
-  strong.textContent = selectedText;
+  var element = document.createElement(tag);
+  element.textContent = selectedText;
 
   var range = selected.getRangeAt(0);
   range.deleteContents();
-  range.insertNode(strong);
-
-
+  range.insertNode(element);
 }
 
-// function makeBold() {
-//   let txtInput,
-//     sel,
-//     startPos,
-//     endPos,
-//     txt,
-//     boldTxt,
-//     range,
-//     wholeTxt,
-//     txtWithBold;
-//   txtInput = document.getElementById("work-area");
-//   sel = window.getSelection();
-//   if (sel.anchorOffset != sel.focusOffset) {
-//     console.log(sel.anchorOffset, sel.focusOffset);
-//     txt = sel.toString();
-//     boldTxt = txt.bold();
-//     startPos = sel.anchorOffset;
-//     endPos = sel.focusOffset;
-//     if (startPos > endPos) {
-//       startPos = endPos;
-//     }
-//     console.log(sel.anchorOffset, sel.focusOffset);
-//     sel.deleteFromDocument();
-//     sel.removeAllRanges();
-//     range = document.createRange();
-//     range.setStart(txtInput, 0);
-//     range.setEnd(txtInput, 1);
-//     sel.addRange(range);
-//     wholeTxt = sel.toString();
-//     console.log(
-//       // sel, ' ',
-//       txt,
-//       " ",
-//       boldTxt,
-//       " ",
-//       startPos,
-//       " ",
-//       endPos
-//     );
-//     // wholeTxt.slice(0, startPos) + boldTxt + wholeTxt.slice(startPos + Math.abs(0));
-//     txtWithBold =
-//       wholeTxt.substr(0, startPos) + boldTxt + wholeTxt.substr(startPos);
-//     // window.getSelection().getRangeAt(0).deleteContents();
+function insertTag2(tag) {
+  var element = document.createElement(tag);
+  if (window.getSelection) {
+    var sel = window.getSelection();
+    if (sel.rangeCount) {
+      var range = sel.getRangeAt(0).cloneRange();
+      range.surroundContents(element);
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+  }
+}
 
-//     txtInput.innerHTML = "";
-//     txtInput.innerHTML = txtWithBold;
-//   } else {
-//     window.alert("You selected nothing — select something");
-//   }
-// }
+function test() {}
