@@ -41,4 +41,8 @@ function insertTag2(tag) {
   }
 }
 
-function test() {}
+function test() {
+  console.log(document.getSelection());
+  console.log(document.getSelection().getRangeAt(0))
+  // console.log(document.getSelection().getRangeAt(0).extractContents());
+}
