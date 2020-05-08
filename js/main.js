@@ -43,6 +43,10 @@ function insertTag2(tag) {
 
 function test() {
   console.log(document.getSelection());
-  console.log(document.getSelection().getRangeAt(0))
+  console.log(document.getSelection().getRangeAt(0));
+  console.log(document.getSelection().getRangeAt(0).cloneContents());
+  var u = document.createElement('u');
+  u.appendChild(document.getSelection().getRangeAt(0).cloneContents().children[0]);
+  document.getSelection().getRangeAt(0).insertNode(u);
   // console.log(document.getSelection().getRangeAt(0).extractContents());
 }
