@@ -45,7 +45,9 @@ function test()
 {
   var selection = document.getSelection();
   var constantRange = selection.getRangeAt(0);
-  var variableRange = selection.getRangeAt(0);
+
+  // var variableRange = selection.getRangeAt(0);
+  
   var clonedContents = constantRange.cloneContents();
   
   console.log(selection);
@@ -53,8 +55,8 @@ function test()
   console.log(clonedContents);
 
   //add function of focusing on the different part of range
-  variableRange.setStart(selection.anchorNode, 0);
-  variableRange.setEnd(selection.anchorNode, 2);
+  // variableRange.setStart(selection.anchorNode, 0);
+  // variableRange.setEnd(selection.anchorNode, 2);
 
   
 
