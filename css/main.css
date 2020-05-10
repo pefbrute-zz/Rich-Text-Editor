@@ -2,7 +2,8 @@ body {
   background-color: #f4f5f5;
 }
 
-.icon, .url{
+.icon,
+.url {
   margin-left: 0.5rem;
 }
 
@@ -55,4 +56,16 @@ body {
   height: 100%;
   background-color: white;
   overflow-wrap: break-word;
+}
+
+.strong {
+  font-weight: bold;
+}
+
+.u {
+  text-decoration: underline;
+}
+
+.em {
+  font-style: italic;
 }

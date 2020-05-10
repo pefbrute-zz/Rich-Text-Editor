@@ -15,11 +15,14 @@
         <!-- <span>
           Normal
         </span> -->
-        <a class="icon" href="javascript:void(0)" onclick="format('bold')">
-          <i class="fa fa-bold"></i>
+        <a class="icon" href="javascript:void(0)" onclick="makeTag('strong')">
+          <i class="fas fa-bold"></i>
         </a>
-        <a class="icon" href="javascript:void(0)" onclick="format('italic')">
-          <i class="fa fa-italic fa-fw"></i>
+        <a class="icon" href="javascript:void(0)" onclick="makeTag('u')">
+          <i class="fas fa-underline"></i>
+        </a>
+        <a class="icon" href="javascript:void(0)" onclick="makeTag('em')">
+          <i class="fas fa-italic fa-fw"></i>
         </a>
         <a
           class="icon"
@@ -34,54 +37,24 @@
         <span class="url">
           <input id="txtFormatUrl" placeholder="link" class="form-control" />
         </span>
-        <a class="icon" href="javascript:void(0)" onclick="test()">
-          <i class="fas fa-vial"></i>
-        </a>
-
-        <a class="icon" href="javascript:void(0)" onclick="insertTag('strong')">
-          /<i class="fas fa-vial"></i>
-        </a>
-        <a class="icon" href="javascript:void(0)" onclick="insertTag('em')">
-          <i class="fas fa-vial"></i>
-        </a>
-        <a class="icon" href="javascript:void(0)" onclick="insertTag('u')">
-          <i class="fas fa-vial"></i>/
-        </a>
-        
-        <a class="icon" href="javascript:void(0)" onclick="insertTag2('em')">
-          <i class="fas fa-vial"></i>
-        </a>
-
         <a class="icon" href="js/main.js">
           Source Code Link
         </a>
       </div>
 
       <div class="work-area" contenteditable="true" id="work-area">
-        <p> 
-          H<strong>i!</strong> 
-        </p>
+        <p>H<strong>i!</strong></p>
         <p>
           <strong>Ai!</strong>
         </p>
         <p>
           Bi!
         </p>
-
-        <!-- <p><a href="#">Hi</a> <strong>Bi</strong></p>
-        <p>
-          <a href="#"><span>Hello</span></a>
-        </p>
-        <p>
-          <a href="#"><span>Hello</span></a>
-        </p>
-        <p>
-          <a href="#"><span>Hello</span></a>
-        </p> -->
       </div>
     </div>
     <div></div>
-
+    <script src="js/lib/rangy-core.js"></script>
+    <script src="js/lib/rangy-classapplier.js"></script>
     <script src="js/main.js"></script>
   </body>
 </html>

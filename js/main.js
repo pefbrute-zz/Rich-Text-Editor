@@ -17,61 +17,32 @@ function setUrl() {
   document.getElementById("txtFormatUrl").value = "";
 }
 
-function insertTag(tag) {
-  var selected = document.getSelection();
-  var selectedText = selected.toString();
-  var element = document.createElement(tag);
-  element.textContent = selectedText;
-
-  var range = selected.getRangeAt(0);
-  range.deleteContents();
-  range.insertNode(element);
+function makeBold() {
+  var strongApplier, underlinedApplier, emphasizedApplier;
+  window.onload = function () {
+    rangy.init();
+    strongApplier = rangy.createClassApplier("strong");
+    underlinedApplier = rangy.createClassApplier("u");
+    emphasizedApplier = rangy.createClassApplier("em");
+  };
 }
 
-function insertTag2(tag) {
-  var element = document.createElement(tag);
-  if (window.getSelection) {
-    var sel = window.getSelection();
-    if (sel.rangeCount) {
-      var range = sel.getRangeAt(0).cloneRange();
-      range.surroundContents(element);
-      sel.removeAllRanges();
-      sel.addRange(range);
-    }
+rangy.init();
+var strongApplier;
+strongApplier = rangy.createClassApplier("strong");
+var underlinedApplier;
+underlinedApplier = rangy.createClassApplier("u");
+var emphasizedApplier;
+emphasizedApplier = rangy.createClassApplier("em");
+
+function makeTag(tag) {
+  if (tag == "strong") {
+    strongApplier.toggleSelection();
   }
-}
-
-function test() 
-{
-  var selection = document.getSelection();
-  var constantRange = selection.getRangeAt(0);
-
-  // var variableRange = selection.getRangeAt(0);
-  
-  var clonedContents = constantRange.cloneContents();
-  
-  console.log(selection);
-  console.log(constantRange);
-  console.log(clonedContents);
-
-  //add function of focusing on the different part of range
-  // variableRange.setStart(selection.anchorNode, 0);
-  // variableRange.setEnd(selection.anchorNode, 2);
-
-  
-
-
-  // constantRange.setStart(constantRange.startContainer, 0);
-  // constantRange.setEnd(constantRange.endContainer, 2)
-
-  // var u = document.createElement('u');
-  // for (var i = 0; i < clonedContents.children.length - 1; i++){
-  //   u.appendChild(document.getSelection().getRangeAt(0).cloneContents().children[0].childNodes[i]);
-  // }
-
-  // u.appendChild(document.getSelection().getRangeAt(0).cloneContents().children[0]);
-  
-  // document.getSelection().getRangeAt(0).insertNode(u);
-  
-  // console.log(document.getSelection().getRangeAt(0).extractContents());
+  if (tag == "u") {
+    underlinedApplier.toggleSelection();
+  }
+  if (tag == "em") {
+    emphasizedApplier.toggleSelection();
+  }
 }
