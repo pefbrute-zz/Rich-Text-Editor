@@ -43,66 +43,56 @@ function addDropdown() {
 }
 
 function addClass(className) {
-  if (className == "strong") {
-    strongApplier.toggleSelection();
-  }
-  if (className == "u") {
-    underlinedApplier.toggleSelection();
-  }
-  if (className == "em") {
-    emphasizedApplier.toggleSelection();
-  }
-  if (className == "align-left") {
-    alignleftApplier.toggleSelection();
-  }
-  if (className == "align-center") {
-    alignCenterApplier.toggleSelection();
-  }
-  if (className == "align-right") {
-    alignRightApplier.toggleSelection();
-  }
-  if (className == "align-justify") {
-    alignJustifyApplier.toggleSelection();
+  switch (className) {
+    case "strong":
+      strongApplier.toggleSelection();
+    case "u":
+      underlinedApplier.toggleSelection();
+    case "em":
+      emphasizedApplier.toggleSelection();
   }
 }
 
 function addContainerClass(className) {
-  var selection = document.getSelection();
-  var range = selection.getRangeAt(0);
-  var wrongContainer = document.getElementById("sample-toolbar");
+  var selection = document.getSelection(),
+    range = selection.getRangeAt(0),
+    wrongContainer = document.getElementById("sample-toolbar");
+
   if (
     selection.type != "Caret" &&
     range.commonAncestorContainer != wrongContainer
   ) {
-    var mainContainer = document.getElementById("work-area");
-    var selectionParent = selection.anchorNode;
-    var lastNode = selection.focusNode;
-    var startContainer = selection.getRangeAt(0).startContainer;
-    var endContainer = selection.getRangeAt(0).endContainer;
+    var mainContainer = document.getElementById("work-area"),
+      anchorNode = selection.anchorNode,
+      focusNode = selection.focusNode,
+      firstSelectedElement = anchorNode,
+      lastSelectedElement = focusNode,
+      startContainer = selection.getRangeAt(0).startContainer,
+      endContainer = selection.getRangeAt(0).endContainer;
+
     if (
-      selectionParent != startContainer &&
+      firstSelectedElement != startContainer &&
       selection.focusNode != endContainer
     ) {
-      selectionParent = selection.focusNode;
-      lastNode = selection.anchorNode;
+      firstSelectedElement = focusNode;
+      lastSelectedElement = anchorNode;
     }
-    while (lastNode.parentElement != mainContainer) {
-      lastNode = lastNode.parentElement;
+    while (lastSelectedElement.parentElement != mainContainer) {
+      lastSelectedElement = lastSelectedElement.parentElement;
     }
     do {
-      while (selectionParent.parentElement != mainContainer) {
-        selectionParent = selectionParent.parentElement;
+      while (firstSelectedElement.parentElement != mainContainer) {
+        firstSelectedElement = firstSelectedElement.parentElement;
       }
-      if (selectionParent.className == className) {
-        selectionParent.className = "";
+      if (firstSelectedElement.className == className) {
+        firstSelectedElement.className = "";
       } else {
-        selectionParent.className = className;
+        firstSelectedElement.className = className;
       }
-      selectionParent = selectionParent.nextSibling;
+      firstSelectedElement = firstSelectedElement.nextSibling;
     } while (
-      selectionParent.nextSibling != null &&
-      selectionParent.nextSibling != lastNode.nextElementSibling
+      firstSelectedElement.nextSibling != null &&
+      firstSelectedElement.nextSibling != lastSelectedElement.nextElementSibling
     );
-    // }
   }
 }
