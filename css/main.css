@@ -69,3 +69,35 @@ body {
 .em {
   font-style: italic;
 }
+
+.align-left{
+  text-align: left;
+}
+
+.align-center{
+  text-align: center;
+}
+
+.align-right{
+  text-align: right;
+}
+
+.align-justify{
+  text-align: justify;
+}
+
+.hidden{
+  display: none;
+}
+
+.dropdown{
+  display: block;
+  margin-top: -1px;
+  top: 10%;
+  left: 28.3%;
+  z-index: 1;
+  position: absolute;
+  white-space: nowrap;
+  min-width: 100%;
+  padding: 4px;
+}

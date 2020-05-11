@@ -11,19 +11,80 @@
   </head>
   <body>
     <div class="editor">
-      <div class="sample-toolbar">
+      <div class="sample-toolbar" id="sample-toolbar">
         <!-- <span>
           Normal
         </span> -->
-        <a class="icon" href="javascript:void(0)" onclick="makeTag('strong')">
+        <a class="icon" href="javascript:void(0)" onclick="addClass('strong')">
           <i class="fas fa-bold"></i>
         </a>
-        <a class="icon" href="javascript:void(0)" onclick="makeTag('u')">
+        <a class="icon" href="javascript:void(0)" onclick="addClass('u')">
           <i class="fas fa-underline"></i>
         </a>
-        <a class="icon" href="javascript:void(0)" onclick="makeTag('em')">
+        <a class="icon" href="javascript:void(0)" onclick="addClass('em')">
           <i class="fas fa-italic fa-fw"></i>
         </a>
+        <a
+          class="icon"
+          href="javascript:void(0)"
+          onclick="addContainerClass('align-left')"
+        >
+          <i class="fas fa-align-left"></i>
+        </a>
+        <a
+          class="icon"
+          href="javascript:void(0)"
+          onclick="addContainerClass('align-center')"
+        >
+          <i class="fas fa-align-center"></i>
+        </a>
+        <a
+          class="icon"
+          href="javascript:void(0)"
+          onclick="addContainerClass('align-right')"
+        >
+          <i class="fas fa-align-right"></i>
+        </a>
+        <a
+          class="icon"
+          href="javascript:void(0)"
+          onclick="addContainerClass('align-justify')"
+        >
+          <i class="fas fa-align-justify"></i>
+        </a>
+        <a class="icon" href="javascript:void(0)" onclick="addDropdown()">
+          <i class="fas fa-align-left"></i>
+        </a>
+          <span class="hidden" id="dropdown" tabindex="-1">
+            <a
+              class="icon"
+              href="javascript:void(0)"
+              onclick="addContainerClass('align-left')"
+            >
+              <i class="fas fa-align-left"></i>
+            </a>
+            <a
+              class="icon"
+              href="javascript:void(0)"
+              onclick="addContainerClass('align-center')"
+            >
+              <i class="fas fa-align-center"></i>
+            </a>
+            <a
+              class="icon"
+              href="javascript:void(0)"
+              onclick="addContainerClass('align-right')"
+            >
+              <i class="fas fa-align-right"></i>
+            </a>
+            <a
+              class="icon"
+              href="javascript:void(0)"
+              onclick="addContainerClass('align-justify')"
+            >
+              <i class="fas fa-align-justify"></i>
+            </a>
+          </span>
         <a
           class="icon"
           href="javascript:void(0)"
