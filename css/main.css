@@ -91,13 +91,20 @@ body {
 }
 
 .dropdown{
+  background-color: #f4f5f5;
+  min-width: 2rem;
   display: block;
   margin-top: -1px;
-  top: 10%;
-  left: 28.3%;
+  /* top: 100%; */
+  left: 28.2vw;
+  line-height: 1.3;
   z-index: 1;
   position: absolute;
   white-space: nowrap;
-  min-width: 100%;
+  /* min-width: 100%; */
   padding: 4px;
+}
+
+.dropdown a{
+  display: block;
 }
