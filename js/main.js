@@ -33,7 +33,6 @@ var strongApplier = rangy.createClassApplier("strong"),
   strikeApplier = rangy.createClassApplier("strike"),
   backgroundHighlightApplier = rangy.createClassApplier("background-highlight"),
   textHighlightApplier = rangy.createClassApplier("text-highlight"),
-  
   textHighlightBlack0Applier = rangy.createClassApplier(
     "text-highlight-black0"
   ),
@@ -51,7 +50,6 @@ var strongApplier = rangy.createClassApplier("strong"),
   textHighlightViolet0Applier = rangy.createClassApplier(
     "text-highlight-violet0"
   ),
-  
   textHighlightBlack1Applier = rangy.createClassApplier(
     "text-highlight-black1"
   ),
@@ -69,8 +67,9 @@ var strongApplier = rangy.createClassApplier("strong"),
   textHighlightViolet1Applier = rangy.createClassApplier(
     "text-highlight-violet1"
   ),
-  
-  textHighlightBlack2Applier = rangy.createClassApplier("text-highlight-black2"),
+  textHighlightBlack2Applier = rangy.createClassApplier(
+    "text-highlight-black2"
+  ),
   textHighlightRed2Applier = rangy.createClassApplier("text-highlight-red2"),
   textHighlightOrange2Applier = rangy.createClassApplier(
     "text-highlight-orange2"
@@ -78,13 +77,16 @@ var strongApplier = rangy.createClassApplier("strong"),
   textHighlightYellow2Applier = rangy.createClassApplier(
     "text-highlight-yellow2"
   ),
-  textHighlightGreen2Applier = rangy.createClassApplier("text-highlight-green2"),
+  textHighlightGreen2Applier = rangy.createClassApplier(
+    "text-highlight-green2"
+  ),
   textHighlightBlue2Applier = rangy.createClassApplier("text-highlight-blue2"),
   textHighlightViolet2Applier = rangy.createClassApplier(
     "text-highlight-violet2"
   ),
-  
-  textHighlightBlack3Applier = rangy.createClassApplier("text-highlight-black3"),
+  textHighlightBlack3Applier = rangy.createClassApplier(
+    "text-highlight-black3"
+  ),
   textHighlightRed3Applier = rangy.createClassApplier("text-highlight-red3"),
   textHighlightOrange3Applier = rangy.createClassApplier(
     "text-highlight-orange3"
@@ -92,13 +94,16 @@ var strongApplier = rangy.createClassApplier("strong"),
   textHighlightYellow3Applier = rangy.createClassApplier(
     "text-highlight-yellow3"
   ),
-  textHighlightGreen3Applier = rangy.createClassApplier("text-highlight-green3"),
+  textHighlightGreen3Applier = rangy.createClassApplier(
+    "text-highlight-green3"
+  ),
   textHighlightBlue3Applier = rangy.createClassApplier("text-highlight-blue3"),
   textHighlightViolet3Applier = rangy.createClassApplier(
     "text-highlight-violet3"
   ),
-
-  textHighlightBlack4Applier = rangy.createClassApplier("text-highlight-black4"),
+  textHighlightBlack4Applier = rangy.createClassApplier(
+    "text-highlight-black4"
+  ),
   textHighlightRed4Applier = rangy.createClassApplier("text-highlight-red4"),
   textHighlightOrange4Applier = rangy.createClassApplier(
     "text-highlight-orange4"
@@ -106,12 +111,14 @@ var strongApplier = rangy.createClassApplier("strong"),
   textHighlightYellow4Applier = rangy.createClassApplier(
     "text-highlight-yellow4"
   ),
-  textHighlightGreen4Applier = rangy.createClassApplier("text-highlight-green4"),
+  textHighlightGreen4Applier = rangy.createClassApplier(
+    "text-highlight-green4"
+  ),
   textHighlightBlue4Applier = rangy.createClassApplier("text-highlight-blue4"),
   textHighlightViolet4Applier = rangy.createClassApplier(
     "text-highlight-violet4"
   );
-  
+
 function addClass(className) {
   switch (className) {
     case "strong":
@@ -132,17 +139,26 @@ function addClass(className) {
     case "text-highlight":
       textHighlightApplier.toggleSelection();
       break;
-    case "text-highlight-yellow":
-      textHighlightYellowApplier.toggleSelection();
+    case "text-highlight-black0":
+      textHighlightBlack0Applier.toggleSelection();
       break;
-    case "text-highlight-green":
-      textHighlightGreenApplier.toggleSelection();
+    case "text-highlight-red0":
+      textHighlightRed0Applier.toggleSelection();
       break;
-    case "text-highlight-blue":
-      textHighlightBlueApplier.toggleSelection();
+    case "text-highlight-orange0":
+      textHighlightOrange0Applier.toggleSelection();
       break;
-    case "text-highlight-red":
-      textHighlightRedApplier.toggleSelection();
+    case "text-highlight-yellow0":
+      textHighlightYellow0Applier.toggleSelection();
+      break;
+    case "text-highlight-green0":
+      textHighlightGreen0Applier.toggleSelection();
+      break;
+    case "text-highlight-blue0":
+      textHighlightBlue0Applier.toggleSelection();
+      break;
+    case "text-highlight-violet0":
+      textHighlightViolet0Applier.toggleSelection();
       break;
   }
 }
