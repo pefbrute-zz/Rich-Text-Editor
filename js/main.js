@@ -17,73 +17,81 @@ function setUrl() {
   document.getElementById("txtFormatUrl").value = "";
 }
 
+// function addDropdown() {
+//   var dropdown = document.getElementById("dropdown");
+//   if (dropdown.className == "hidden") {
+//     dropdown.className = "dropdown";
+//   } else {
+//     dropdown.className = "hidden";
+//   }
+// }
+
 rangy.init();
-var strongApplier;
-strongApplier = rangy.createClassApplier("strong");
-var underlinedApplier;
-underlinedApplier = rangy.createClassApplier("u");
-var emphasizedApplier;
-emphasizedApplier = rangy.createClassApplier("em");
-var alignRightApplier;
-alignRightApplier = rangy.createClassApplier("align-right");
-var alignLeftApplier;
-alignLeftApplier = rangy.createClassApplier("align-left");
-var alignCenterApplier;
-alignCenterApplier = rangy.createClassApplier("align-center");
-var alignJustifyApplier;
-alignJustifyApplier = rangy.createClassApplier("align-justify");
-
-function addDropdown() {
-  var dropdown = document.getElementById("dropdown");
-  if (dropdown.className == "hidden") {
-    dropdown.className = "dropdown";
-  } else {
-    dropdown.className = "hidden";
-  }
-}
-
+var strongApplier = rangy.createClassApplier("strong"),
+  uApplier = rangy.createClassApplier("u"),
+  emApplier = rangy.createClassApplier("em"),
+  strikeApplier = rangy.createClassApplier("strike"),
+  backgroundHighlightApplier = rangy.createClassApplier("background-highlight"),
+  textHighlightApplier = rangy.createClassApplier("text-highlight");
 function addClass(className) {
   switch (className) {
     case "strong":
       strongApplier.toggleSelection();
+      break;
     case "u":
-      underlinedApplier.toggleSelection();
+      uApplier.toggleSelection();
+      break;
     case "em":
-      emphasizedApplier.toggleSelection();
+      emApplier.toggleSelection();
+      break;
+    case "strike":
+      strikeApplier.toggleSelection();
+      break;
+    case "background-highlight":
+      backgroundHighlightApplier.toggleSelection();
+      break;
+    case "text-highlight":
+      textHighlightApplier.toggleSelection();
+      break;
   }
+}
+
+function findChild(element, parent) {
+  while (element.parentElement != parent) {
+    element = element.parentElement;
+  }
+  child = element;
+  return child;
 }
 
 function addContainerClass(className) {
   var selection = document.getSelection(),
     range = selection.getRangeAt(0),
-    wrongContainer = document.getElementById("sample-toolbar");
-
+    wrongContainer = document.getElementById("sample-toolbar"),
+    firstNode = selection.anchorNode,
+    lastNode = selection.focusNode;
   if (
-    selection.type != "Caret" &&
+    firstNode.nodeName == "#text" &&
     range.commonAncestorContainer != wrongContainer
   ) {
     var mainContainer = document.getElementById("work-area"),
-      anchorNode = selection.anchorNode,
-      focusNode = selection.focusNode,
-      firstSelectedElement = anchorNode,
-      lastSelectedElement = focusNode,
-      startContainer = selection.getRangeAt(0).startContainer,
-      endContainer = selection.getRangeAt(0).endContainer;
+      firstSelectedElement = firstNode,
+      lastSelectedElement = lastNode,
+      startElement = range.startContainer,
+      endElement = range.endContainer;
 
     if (
-      firstSelectedElement != startContainer &&
-      selection.focusNode != endContainer
+      firstSelectedElement != startElement &&
+      lastSelectedElement != endElement
     ) {
-      firstSelectedElement = focusNode;
-      lastSelectedElement = anchorNode;
+      firstSelectedElement = lastNode;
+      lastSelectedElement = firstNode;
     }
-    while (lastSelectedElement.parentElement != mainContainer) {
-      lastSelectedElement = lastSelectedElement.parentElement;
-    }
+
+    lastSelectedElement = findChild(lastSelectedElement, mainContainer);
+    firstSelectedElement = findChild(firstSelectedElement, mainContainer);
+
     do {
-      while (firstSelectedElement.parentElement != mainContainer) {
-        firstSelectedElement = firstSelectedElement.parentElement;
-      }
       if (firstSelectedElement.className == className) {
         firstSelectedElement.className = "";
       } else {
@@ -91,7 +99,6 @@ function addContainerClass(className) {
       }
       firstSelectedElement = firstSelectedElement.nextSibling;
     } while (
-      firstSelectedElement.nextSibling != null &&
       firstSelectedElement.nextSibling != lastSelectedElement.nextElementSibling
     );
   }

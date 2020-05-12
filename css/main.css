@@ -70,6 +70,18 @@ body {
   font-style: italic;
 }
 
+.strike{
+  text-decoration: line-through;
+}
+
+.background-highlight{
+  background-color: #ffff00;
+}
+
+.text-highlight{
+  color: #ffff00;
+}
+
 .align-left{
   text-align: left;
 }
@@ -86,7 +98,7 @@ body {
   text-align: justify;
 }
 
-.hidden{
+/* .hidden{
   display: none;
 }
 
@@ -95,16 +107,14 @@ body {
   min-width: 2rem;
   display: block;
   margin-top: -1px;
-  /* top: 100%; */
   left: 28.2vw;
   line-height: 1.3;
   z-index: 1;
   position: absolute;
   white-space: nowrap;
-  /* min-width: 100%; */
   padding: 4px;
 }
 
 .dropdown a{
   display: block;
-}
+} */
