@@ -17,14 +17,14 @@ function setUrl() {
   document.getElementById("txtFormatUrl").value = "";
 }
 
-// function addDropdown() {
-//   var dropdown = document.getElementById("dropdown");
-//   if (dropdown.className == "hidden") {
-//     dropdown.className = "dropdown";
-//   } else {
-//     dropdown.className = "hidden";
-//   }
-// }
+function addDropdown(type) {
+  var dropdown = document.getElementById(type);
+  if (dropdown.className == "hidden") {
+    dropdown.className = type;
+  } else {
+    dropdown.className = "hidden";
+  }
+}
 
 rangy.init();
 var strongApplier = rangy.createClassApplier("strong"),
@@ -32,7 +32,86 @@ var strongApplier = rangy.createClassApplier("strong"),
   emApplier = rangy.createClassApplier("em"),
   strikeApplier = rangy.createClassApplier("strike"),
   backgroundHighlightApplier = rangy.createClassApplier("background-highlight"),
-  textHighlightApplier = rangy.createClassApplier("text-highlight");
+  textHighlightApplier = rangy.createClassApplier("text-highlight"),
+  
+  textHighlightBlack0Applier = rangy.createClassApplier(
+    "text-highlight-black0"
+  ),
+  textHighlightRed0Applier = rangy.createClassApplier("text-highlight-red0"),
+  textHighlightOrange0Applier = rangy.createClassApplier(
+    "text-highlight-orange0"
+  ),
+  textHighlightYellow0Applier = rangy.createClassApplier(
+    "text-highlight-yellow0"
+  ),
+  textHighlightGreen0Applier = rangy.createClassApplier(
+    "text-highlight-green0"
+  ),
+  textHighlightBlue0Applier = rangy.createClassApplier("text-highlight-blue0"),
+  textHighlightViolet0Applier = rangy.createClassApplier(
+    "text-highlight-violet0"
+  ),
+  
+  textHighlightBlack1Applier = rangy.createClassApplier(
+    "text-highlight-black1"
+  ),
+  textHighlightRed1Applier = rangy.createClassApplier("text-highlight-red1"),
+  textHighlightOrange1Applier = rangy.createClassApplier(
+    "text-highlight-orange1"
+  ),
+  textHighlightYellow1Applier = rangy.createClassApplier(
+    "text-highlight-yellow1"
+  ),
+  textHighlightGreen1Applier = rangy.createClassApplier(
+    "text-highlight-green1"
+  ),
+  textHighlightBlue1Applier = rangy.createClassApplier("text-highlight-blue1"),
+  textHighlightViolet1Applier = rangy.createClassApplier(
+    "text-highlight-violet1"
+  ),
+  
+  textHighlightBlack2Applier = rangy.createClassApplier("text-highlight-black2"),
+  textHighlightRed2Applier = rangy.createClassApplier("text-highlight-red2"),
+  textHighlightOrange2Applier = rangy.createClassApplier(
+    "text-highlight-orange2"
+  ),
+  textHighlightYellow2Applier = rangy.createClassApplier(
+    "text-highlight-yellow2"
+  ),
+  textHighlightGreen2Applier = rangy.createClassApplier("text-highlight-green2"),
+  textHighlightBlue2Applier = rangy.createClassApplier("text-highlight-blue2"),
+  textHighlightViolet2Applier = rangy.createClassApplier(
+    "text-highlight-violet2"
+  ),
+  
+  textHighlightBlack3Applier = rangy.createClassApplier("text-highlight-black3"),
+  textHighlightRed3Applier = rangy.createClassApplier("text-highlight-red3"),
+  textHighlightOrange3Applier = rangy.createClassApplier(
+    "text-highlight-orange3"
+  ),
+  textHighlightYellow3Applier = rangy.createClassApplier(
+    "text-highlight-yellow3"
+  ),
+  textHighlightGreen3Applier = rangy.createClassApplier("text-highlight-green3"),
+  textHighlightBlue3Applier = rangy.createClassApplier("text-highlight-blue3"),
+  textHighlightViolet3Applier = rangy.createClassApplier(
+    "text-highlight-violet3"
+  ),
+
+  textHighlightBlack4Applier = rangy.createClassApplier("text-highlight-black4"),
+  textHighlightRed4Applier = rangy.createClassApplier("text-highlight-red4"),
+  textHighlightOrange4Applier = rangy.createClassApplier(
+    "text-highlight-orange4"
+  ),
+  textHighlightYellow4Applier = rangy.createClassApplier(
+    "text-highlight-yellow4"
+  ),
+  textHighlightGreen4Applier = rangy.createClassApplier("text-highlight-green4"),
+  textHighlightBlue4Applier = rangy.createClassApplier("text-highlight-blue4"),
+  textHighlightViolet4Applier = rangy.createClassApplier(
+    "text-highlight-violet4"
+  );
+  
 function addClass(className) {
   switch (className) {
     case "strong":
@@ -52,6 +131,18 @@ function addClass(className) {
       break;
     case "text-highlight":
       textHighlightApplier.toggleSelection();
+      break;
+    case "text-highlight-yellow":
+      textHighlightYellowApplier.toggleSelection();
+      break;
+    case "text-highlight-green":
+      textHighlightGreenApplier.toggleSelection();
+      break;
+    case "text-highlight-blue":
+      textHighlightBlueApplier.toggleSelection();
+      break;
+    case "text-highlight-red":
+      textHighlightRedApplier.toggleSelection();
       break;
   }
 }

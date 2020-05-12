@@ -47,8 +47,12 @@ body {
   cursor: pointer;
 }
 
-.sample-toolbar > span:hover {
+/* .sample-toolbar > span:hover {
   text-decoration: underline;
+} */
+
+.sample-toolbar span:hover {
+  text-decoration: none;
 }
 
 .work-area {
@@ -70,39 +74,39 @@ body {
   font-style: italic;
 }
 
-.strike{
+.strike {
   text-decoration: line-through;
 }
 
-.background-highlight{
-  background-color: #ffff00;
+.background-highlight {
+  background-color: rgb(255, 238, 0);
 }
 
-.text-highlight{
-  color: #ffff00;
+.text-highlight {
+  color: rgb(255, 238, 0);
 }
 
-.align-left{
+.align-left {
   text-align: left;
 }
 
-.align-center{
+.align-center {
   text-align: center;
 }
 
-.align-right{
+.align-right {
   text-align: right;
 }
 
-.align-justify{
+.align-justify {
   text-align: justify;
 }
 
-/* .hidden{
+.hidden {
   display: none;
 }
 
-.dropdown{
+.dropdown {
   background-color: #f4f5f5;
   min-width: 2rem;
   display: block;
@@ -115,6 +119,96 @@ body {
   padding: 4px;
 }
 
-.dropdown a{
+.dropdown a {
   display: block;
-} */
+}
+
+.highlight-dropdown {
+  height: 7.5rem;
+  background-color: #f4f5f5;
+  width: 8.6rem;
+  /* min-width: 1rem; */
+  display: block;
+  margin-top: -1px;
+  left: 28.2vw;
+  /* line-height: 1.3; */
+  z-index: 1;
+  position: absolute;
+  white-space: nowrap;
+  padding: 4px;
+}
+
+.highlight-dropdown > span {
+  display: inline-block;
+}
+
+.highlight-dropdown button {
+  display: inline-block;
+}
+
+.highlight-dropdown button:hover{
+  text-decoration: none;
+}
+
+.highlight-square {
+  /* width: 1rem; */
+  height: 1rem;
+  border-style: none;
+  cursor: pointer;
+}
+
+.black-background {
+  background-color: rgb(0, 0, 0);
+}
+
+.red-background {
+  background-color: rgb(255, 0, 0, 1);
+}
+
+.orange-background {
+  background-color: rgb(255, 115, 0);
+}
+
+.yellow-background {
+  background-color: rgb(255, 238, 0);
+}
+
+.green-background {
+  background-color: rgb(0, 255, 0, 1);
+}
+
+.blue-background {
+  background-color: rgb(0, 0, 255, 1);
+}
+
+.violet-background {
+  background-color: rgb(154, 18, 179, 1);
+}
+
+.text-highlight-black {
+  color: rgb(0, 0, 0, 1);
+}
+
+.text-highlight-red {
+  color: rgb(255, 0, 0, 1);
+}
+
+.text-highlight-orange {
+  color: rgb(255, 115, 0);
+}
+
+.text-highlight-yellow {
+  color: rgb(255, 238, 0);
+}
+
+.text-highlight-green {
+  color: rgb(0, 255, 0, 1);
+}
+
+.text-highlight-blue {
+  color: rgb(0, 0, 255, 1);
+}
+
+.text-highlight-violet {
+  color: rgb(154, 18, 179, 1);
+}

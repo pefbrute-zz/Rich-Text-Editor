@@ -55,7 +55,7 @@
         >
           <i class="fas fa-align-justify"></i>
         </a>
-        <!-- <a class="icon" href="javascript:void(0)" onclick="addDropdown()">
+        <!-- <a class="icon" href="javascript:void(0)" onclick="addDropdown('dropdown')">
           <i class="fas fa-align-left"></i>
         </a>
           <span class="hidden" id="dropdown" tabindex="-1">
@@ -96,6 +96,233 @@
         >
           <i class="fas fa-highlighter"> </i>
         </a>
+        <a
+          class="icon"
+          href="javascript:void(0)"
+          onclick="addDropdown('highlight-dropdown')"
+        >
+          <i class="fas fa-highlighter"> </i>
+        </a>
+        <span class="hidden" id="highlight-dropdown" tabindex="-1">
+          <span>
+            <button
+              style="background-color: #000"
+              class="highlight-square"
+              onclick="addClass('text-highlight-black')"
+            ></button>
+            <button
+              style="background-color: rgb(230, 0, 0);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-red')"
+            ></button>
+            <button
+              style="background-color: rgb(255, 153, 0);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-red')"
+            ></button>
+            <button
+              style="background-color: rgb(255, 255, 0);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-yellow')"
+            ></button>
+            <button
+              style="background-color: rgb(0, 138, 0);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-green')"
+            ></button>
+            <button
+              style="background-color: rgb(0, 102, 204);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-blue')"
+            ></button>
+            <button
+              style="background-color: rgb(153, 51, 255);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-blue')"
+            ></button>
+          </span>
+          <br />
+          <span>
+            <button
+              style="background-color: rgb(255, 255, 255);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-black')"
+            ></button>
+            <button
+              style="background-color: rgb(250, 204, 204);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-red')"
+            ></button>
+            <button
+              style="background-color: rgb(255, 235, 204);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-red')"
+            ></button>
+            <button
+              style="background-color: rgb(255, 255, 204);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-yellow')"
+            ></button>
+            <button
+              style="background-color: rgb(204, 232, 204);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-green')"
+            ></button>
+            <button
+              style="background-color: rgb(204, 224, 245);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-blue')"
+            ></button>
+            <button
+              style="background-color: rgb(235, 214, 255);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-blue')"
+            ></button>
+          </span>
+          <br />
+          <span>
+            <button
+              style="background-color: rgb(187, 187, 187);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-black')"
+            ></button>
+            <button
+              style="background-color: rgb(240, 102, 102);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-red')"
+            ></button>
+            <button
+              style="background-color: rgb(255, 194, 102);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-red')"
+            ></button>
+            <button
+              style="background-color: rgb(255, 255, 102);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-yellow')"
+            ></button>
+            <button
+              style="background-color: rgb(102, 185, 102);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-green')"
+            ></button>
+            <button
+              style="background-color: rgb(102, 163, 224);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-blue')"
+            ></button>
+            <button
+              style="background-color: rgb(194, 133, 255);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-blue')"
+            ></button>
+          </span>
+          <br />
+          <span>
+            <button
+              style="background-color: rgb(136, 136, 136);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-black')"
+            ></button>
+            <button
+              style="background-color: rgb(240, 102, 102);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-red')"
+            ></button>
+            <button
+              style="background-color: rgb(255, 194, 102);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-red')"
+            ></button>
+            <button
+              style="background-color: rgb(255, 255, 102);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-yellow')"
+            ></button>
+            <button
+              style="background-color: rgb(102, 185, 102);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-green')"
+            ></button>
+            <button
+              style="background-color: rgb(0, 71, 178);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-blue')"
+            ></button>
+            <button
+              style="background-color: rgb(107, 36, 178);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-blue')"
+            ></button>
+          </span>
+          <br />
+          <span>
+            <button
+              style="background-color: rgb(68, 68, 68);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-black')"
+            ></button>
+            <button
+              style="background-color: rgb(92, 0, 0);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-red')"
+            ></button>
+            <button
+              style="background-color: rgb(102, 61, 0);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-red')"
+            ></button>
+            <button
+              style="background-color: rgb(102, 102, 0);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-yellow')"
+            ></button>
+            <button
+              style="background-color: rgb(0, 55, 0);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-green')"
+            ></button>
+            <button
+              style="background-color: rgb(0, 41, 102);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-blue')"
+            ></button>
+            <button
+              style="background-color: rgb(61, 20, 102);"
+              class="highlight-square"
+              onclick="addClass('text-highlight-blue')"
+            ></button>
+          </span>
+          <br />
+
+          <!-- <a
+            class="highlight-square yellow-background"
+            href="javascript:void(0)"
+            onclick="addClass('text-highlight-yellow')"
+          >
+          </a>
+          <a
+            class="highlight-square green-background"
+            href="javascript:void(0)"
+            onclick="addClass('text-highlight-green')"
+          >
+            <i class=""></i>
+          </a>
+          <a
+            class="highlight-square blue-background"
+            href="javascript:void(0)"
+            onclick="addClass('text-highlight-blue')"
+          >
+            <i class=""></i>
+          </a>
+          <a
+            class="highlight-square red-background"
+            href="javascript:void(0)"
+            onclick="addClass('text-highlight-red')"
+          >
+            <i class=""></i>
+          </a> -->
+        </span>
         <a
           class="icon"
           href="javascript:void(0)"
