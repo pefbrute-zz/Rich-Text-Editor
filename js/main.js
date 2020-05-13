@@ -27,10 +27,16 @@ function addDropdown(type) {
 }
 
 rangy.init();
-var strongApplier = rangy.createClassApplier("strong"),
-  uApplier = rangy.createClassApplier("u"),
-  emApplier = rangy.createClassApplier("em"),
-  strikeApplier = rangy.createClassApplier("strike"),
+// rangy.undoToSelection();
+var strongOptions = { elementTagName: "strong" },
+  uOptions = { elementTagName: "u" },
+  emOptions = { elementTagName: "em" },
+  strikeOptions = { elementTagName: "strike" };
+
+var strongApplier = rangy.createClassApplier("strong", strongOptions),
+  uApplier = rangy.createClassApplier("u", uOptions),
+  emApplier = rangy.createClassApplier("em", emOptions),
+  strikeApplier = rangy.createClassApplier("strike", strikeOptions),
   backgroundHighlightApplier = rangy.createClassApplier("background-highlight"),
   textHighlightApplier = rangy.createClassApplier("text-highlight"),
   textHighlightBlack0Applier = rangy.createClassApplier(
@@ -120,6 +126,11 @@ var strongApplier = rangy.createClassApplier("strong"),
   );
 
 function addClass(className) {
+  // var selection = document.getSelection();
+  // console.log(selection.anchorNode.parentElement.className.length != 0);
+  // if (selection.anchorNode.parentElement.className.length != 0){
+  //   selection.anchorNode.parentElement.className = "";
+  // }
   switch (className) {
     case "strong":
       strongApplier.toggleSelection();
@@ -133,12 +144,11 @@ function addClass(className) {
     case "strike":
       strikeApplier.toggleSelection();
       break;
+
     case "background-highlight":
       backgroundHighlightApplier.toggleSelection();
       break;
-    case "text-highlight":
-      textHighlightApplier.toggleSelection();
-      break;
+
     case "text-highlight-black0":
       textHighlightBlack0Applier.toggleSelection();
       break;
@@ -159,6 +169,94 @@ function addClass(className) {
       break;
     case "text-highlight-violet0":
       textHighlightViolet0Applier.toggleSelection();
+      break;
+
+    case "text-highlight-black1":
+      textHighlightBlack1Applier.toggleSelection();
+      break;
+    case "text-highlight-red1":
+      textHighlightRed1Applier.toggleSelection();
+      break;
+    case "text-highlight-orange1":
+      textHighlightOrange1Applier.toggleSelection();
+      break;
+    case "text-highlight-yellow1":
+      textHighlightYellow1Applier.toggleSelection();
+      break;
+    case "text-highlight-green1":
+      textHighlightGreen1Applier.toggleSelection();
+      break;
+    case "text-highlight-blue1":
+      textHighlightBlue1Applier.toggleSelection();
+      break;
+    case "text-highlight-violet1":
+      textHighlightViolet1Applier.toggleSelection();
+      break;
+
+    case "text-highlight-black2":
+      textHighlightBlack2Applier.toggleSelection();
+      break;
+    case "text-highlight-red2":
+      textHighlightRed2Applier.toggleSelection();
+      break;
+    case "text-highlight-orange2":
+      textHighlightOrange2Applier.toggleSelection();
+      break;
+    case "text-highlight-yellow2":
+      textHighlightYellow2Applier.toggleSelection();
+      break;
+    case "text-highlight-green2":
+      textHighlightGreen2Applier.toggleSelection();
+      break;
+    case "text-highlight-blue2":
+      textHighlightBlue2Applier.toggleSelection();
+      break;
+    case "text-highlight-violet2":
+      textHighlightViolet2Applier.toggleSelection();
+      break;
+
+    case "text-highlight-black3":
+      textHighlightBlack3Applier.toggleSelection();
+      break;
+    case "text-highlight-red3":
+      textHighlightRed3Applier.toggleSelection();
+      break;
+    case "text-highlight-orange3":
+      textHighlightOrange3Applier.toggleSelection();
+      break;
+    case "text-highlight-yellow3":
+      textHighlightYellow3Applier.toggleSelection();
+      break;
+    case "text-highlight-green3":
+      textHighlightGreen3Applier.toggleSelection();
+      break;
+    case "text-highlight-blue3":
+      textHighlightBlue3Applier.toggleSelection();
+      break;
+    case "text-highlight-violet3":
+      textHighlightViolet3Applier.toggleSelection();
+      break;
+
+    case "text-highlight-black4":
+      textHighlightBlack4Applier.toggleSelection();
+      break;
+    case "text-highlight-red4":
+      textHighlightRed4Applier.toggleSelection();
+      break;
+    case "text-highlight-orange4":
+      textHighlightOrange4Applier.toggleSelection();
+      break;
+    case "text-highlight-yellow4":
+      textHighlightYellow4Applier.toggleSelection();
+      break;
+    case "text-highlight-green4":
+      textHighlightGreen4Applier.toggleSelection();
+      break;
+    case "text-highlight-blue4":
+      textHighlightBlue4Applier.toggleSelection();
+      break;
+    case "text-highlight-violet4":
+      textHighlightViolet4Applier.toggleSelection();
       break;
   }
 }
