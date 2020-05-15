@@ -33,12 +33,120 @@ var strongOptions = { elementTagName: "strong" },
   emOptions = { elementTagName: "em" },
   strikeOptions = { elementTagName: "strike" };
 
+var textBackground = {
+  Text: {},
+  Background: {},
+};
+
+var ColorAppliers = {
+  Black: {
+    textBackground,
+  },
+
+  Red: {
+    textBackground,
+  },
+
+  Orange: {
+    textBackground,
+  },
+
+  Yellow: {
+    textBackground,
+  },
+
+  Green: {
+    textBackground,
+  },
+
+  Blue: {
+    textBackground,
+  },
+
+  Violet: {
+    textBackground,
+  },
+};
+
+var colors = ['black', 'red', 'orange', 'yellow', 'green', 'blue', 'violet']
+var number = 0;
+var classesNumber = 4;
+while (number <= classesNumber) {
+  className = "text-highlight-black" + number;
+  ColorAppliers.Black.textBackground.Text[number] = rangy.createClassApplier(
+    className
+  );
+  className = "bckground-highlight-black" + number;
+  ColorAppliers.Black.textBackground.Background[
+    number
+  ] = rangy.createClassApplier(className);
+
+  className = "text-highlight-red" + number;
+  ColorAppliers.Red.textBackground.Text[number] = rangy.createClassApplier(
+    className
+  );
+  className = "background-highlight-red" + number;
+  ColorAppliers.Red.textBackground.Background[
+    number
+  ] = rangy.createClassApplier(className);
+
+  className = "text-highlight-orange" + number;
+  ColorAppliers.Orange.textBackground.Text[number] = rangy.createClassApplier(
+    className
+  );
+  className = "background-highlight-orange" + number;
+  ColorAppliers.Orange.textBackground.Background[
+    number
+  ] = rangy.createClassApplier(className);
+
+  className = "text-highlight-yellow" + number;
+  ColorAppliers.Yellow.textBackground.Text[number] = rangy.createClassApplier(
+    className
+  );
+  className = "background-highlight-yellow" + number;
+  ColorAppliers.Yellow.textBackground.Background[
+    number
+  ] = rangy.createClassApplier(className);
+
+  className = "text-highlight-green" + number;
+  ColorAppliers.Green.textBackground.Text[number] = rangy.createClassApplier(
+    className
+  );
+  className = "background-highlight-green" + number;
+  ColorAppliers.Green.textBackground.Background[
+    number
+  ] = rangy.createClassApplier(className);
+
+  className = "text-highlight-blue" + number;
+  ColorAppliers.Blue.textBackground.Text[number] = rangy.createClassApplier(
+    className
+  );
+  className = "background-highlight-blue" + number;
+  ColorAppliers.Blue.textBackground.Background[
+    number
+  ] = rangy.createClassApplier(className);
+
+  className = "text-highlight-violet" + number;
+  ColorAppliers.Violet.textBackground.Text[number] = rangy.createClassApplier(
+    className
+  );
+  className = "background-highlight-violet" + number;
+  ColorAppliers.Violet.textBackground.Background[
+    number
+  ] = rangy.createClassApplier(className);
+
+  number++;
+}
+
+var randomTest = Math.floor(Math.random() * classesNumber + 1);
+console.log(ColorAppliers.Black.textBackground.Text[randomTest]);
+console.log(ColorAppliers.Red.textBackground.Background[randomTest]);
+
 var strongApplier = rangy.createClassApplier("strong", strongOptions),
   uApplier = rangy.createClassApplier("u", uOptions),
   emApplier = rangy.createClassApplier("em", emOptions),
   strikeApplier = rangy.createClassApplier("strike", strikeOptions),
   backgroundHighlightApplier = rangy.createClassApplier("background-highlight"),
-  textHighlightApplier = rangy.createClassApplier("text-highlight"),
   textHighlightBlack0Applier = rangy.createClassApplier(
     "text-highlight-black0"
   ),
