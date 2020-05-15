@@ -33,205 +33,168 @@ var strongOptions = { elementTagName: "strong" },
   emOptions = { elementTagName: "em" },
   strikeOptions = { elementTagName: "strike" };
 
-var textBackground = {
+var TextBackground = {
   Text: {},
   Background: {},
 };
 
 var ColorAppliers = {
   Black: {
-    textBackground,
+    Text: {},
+    Background: {},
   },
 
   Red: {
-    textBackground,
+    Text: {},
+    Background: {},
   },
 
   Orange: {
-    textBackground,
+    Text: {},
+    Background: {},
   },
 
   Yellow: {
-    textBackground,
+    Text: {},
+    Background: {},
   },
 
   Green: {
-    textBackground,
+    Text: {},
+    Background: {},
   },
 
   Blue: {
-    textBackground,
+    Text: {},
+    Background: {},
   },
 
   Violet: {
-    textBackground,
+    Text: {},
+    Background: {},
   },
+  // Tan,
+  // Ran,
+  // Pam: {
+  //   TextBackground,
+  // },
 };
+var colors = ["Black", "Red", "Orange", "Yellow", "Green", "Blue", "Violet"];
 
-var colors = ['black', 'red', 'orange', 'yellow', 'green', 'blue', 'violet']
-var number = 0;
-var classesNumber = 4;
-while (number <= classesNumber) {
-  className = "text-highlight-black" + number;
-  ColorAppliers.Black.textBackground.Text[number] = rangy.createClassApplier(
-    className
-  );
-  className = "bckground-highlight-black" + number;
-  ColorAppliers.Black.textBackground.Background[
-    number
-  ] = rangy.createClassApplier(className);
+function makeColorAppliers(ColorObject, classesNumber, colorName) {
+  var number = 0;
+  while (number <= classesNumber) {
+    className = "text-highlight-" + colorName.toLowerCase() + number;
+    ColorObject[colorName].Text[number] = rangy.createClassApplier(className);
 
-  className = "text-highlight-red" + number;
-  ColorAppliers.Red.textBackground.Text[number] = rangy.createClassApplier(
-    className
-  );
-  className = "background-highlight-red" + number;
-  ColorAppliers.Red.textBackground.Background[
-    number
-  ] = rangy.createClassApplier(className);
-
-  className = "text-highlight-orange" + number;
-  ColorAppliers.Orange.textBackground.Text[number] = rangy.createClassApplier(
-    className
-  );
-  className = "background-highlight-orange" + number;
-  ColorAppliers.Orange.textBackground.Background[
-    number
-  ] = rangy.createClassApplier(className);
-
-  className = "text-highlight-yellow" + number;
-  ColorAppliers.Yellow.textBackground.Text[number] = rangy.createClassApplier(
-    className
-  );
-  className = "background-highlight-yellow" + number;
-  ColorAppliers.Yellow.textBackground.Background[
-    number
-  ] = rangy.createClassApplier(className);
-
-  className = "text-highlight-green" + number;
-  ColorAppliers.Green.textBackground.Text[number] = rangy.createClassApplier(
-    className
-  );
-  className = "background-highlight-green" + number;
-  ColorAppliers.Green.textBackground.Background[
-    number
-  ] = rangy.createClassApplier(className);
-
-  className = "text-highlight-blue" + number;
-  ColorAppliers.Blue.textBackground.Text[number] = rangy.createClassApplier(
-    className
-  );
-  className = "background-highlight-blue" + number;
-  ColorAppliers.Blue.textBackground.Background[
-    number
-  ] = rangy.createClassApplier(className);
-
-  className = "text-highlight-violet" + number;
-  ColorAppliers.Violet.textBackground.Text[number] = rangy.createClassApplier(
-    className
-  );
-  className = "background-highlight-violet" + number;
-  ColorAppliers.Violet.textBackground.Background[
-    number
-  ] = rangy.createClassApplier(className);
-
-  number++;
+    className = "background-highlight-" + colorName.toLowerCase() + number;
+    ColorObject[colorName].Background[number] = rangy.createClassApplier(
+      className
+    );
+    number++;
+  }
 }
 
+var classesNumber = 4;
+for (var i = 0; i <= colors.length - 1; i++) {
+  makeColorAppliers(ColorAppliers, classesNumber, colors[i]);
+}
+console.log(ColorAppliers);
+
 var randomTest = Math.floor(Math.random() * classesNumber + 1);
-console.log(ColorAppliers.Black.textBackground.Text[randomTest]);
-console.log(ColorAppliers.Red.textBackground.Background[randomTest]);
+console.log(ColorAppliers.Black.Text[0]);
+console.log(ColorAppliers.Red.Background[0]);
 
 var strongApplier = rangy.createClassApplier("strong", strongOptions),
   uApplier = rangy.createClassApplier("u", uOptions),
   emApplier = rangy.createClassApplier("em", emOptions),
   strikeApplier = rangy.createClassApplier("strike", strikeOptions),
-  backgroundHighlightApplier = rangy.createClassApplier("background-highlight"),
-  textHighlightBlack0Applier = rangy.createClassApplier(
-    "text-highlight-black0"
-  ),
-  textHighlightRed0Applier = rangy.createClassApplier("text-highlight-red0"),
-  textHighlightOrange0Applier = rangy.createClassApplier(
-    "text-highlight-orange0"
-  ),
-  textHighlightYellow0Applier = rangy.createClassApplier(
-    "text-highlight-yellow0"
-  ),
-  textHighlightGreen0Applier = rangy.createClassApplier(
-    "text-highlight-green0"
-  ),
-  textHighlightBlue0Applier = rangy.createClassApplier("text-highlight-blue0"),
-  textHighlightViolet0Applier = rangy.createClassApplier(
-    "text-highlight-violet0"
-  ),
-  textHighlightBlack1Applier = rangy.createClassApplier(
-    "text-highlight-black1"
-  ),
-  textHighlightRed1Applier = rangy.createClassApplier("text-highlight-red1"),
-  textHighlightOrange1Applier = rangy.createClassApplier(
-    "text-highlight-orange1"
-  ),
-  textHighlightYellow1Applier = rangy.createClassApplier(
-    "text-highlight-yellow1"
-  ),
-  textHighlightGreen1Applier = rangy.createClassApplier(
-    "text-highlight-green1"
-  ),
-  textHighlightBlue1Applier = rangy.createClassApplier("text-highlight-blue1"),
-  textHighlightViolet1Applier = rangy.createClassApplier(
-    "text-highlight-violet1"
-  ),
-  textHighlightBlack2Applier = rangy.createClassApplier(
-    "text-highlight-black2"
-  ),
-  textHighlightRed2Applier = rangy.createClassApplier("text-highlight-red2"),
-  textHighlightOrange2Applier = rangy.createClassApplier(
-    "text-highlight-orange2"
-  ),
-  textHighlightYellow2Applier = rangy.createClassApplier(
-    "text-highlight-yellow2"
-  ),
-  textHighlightGreen2Applier = rangy.createClassApplier(
-    "text-highlight-green2"
-  ),
-  textHighlightBlue2Applier = rangy.createClassApplier("text-highlight-blue2"),
-  textHighlightViolet2Applier = rangy.createClassApplier(
-    "text-highlight-violet2"
-  ),
-  textHighlightBlack3Applier = rangy.createClassApplier(
-    "text-highlight-black3"
-  ),
-  textHighlightRed3Applier = rangy.createClassApplier("text-highlight-red3"),
-  textHighlightOrange3Applier = rangy.createClassApplier(
-    "text-highlight-orange3"
-  ),
-  textHighlightYellow3Applier = rangy.createClassApplier(
-    "text-highlight-yellow3"
-  ),
-  textHighlightGreen3Applier = rangy.createClassApplier(
-    "text-highlight-green3"
-  ),
-  textHighlightBlue3Applier = rangy.createClassApplier("text-highlight-blue3"),
-  textHighlightViolet3Applier = rangy.createClassApplier(
-    "text-highlight-violet3"
-  ),
-  textHighlightBlack4Applier = rangy.createClassApplier(
-    "text-highlight-black4"
-  ),
-  textHighlightRed4Applier = rangy.createClassApplier("text-highlight-red4"),
-  textHighlightOrange4Applier = rangy.createClassApplier(
-    "text-highlight-orange4"
-  ),
-  textHighlightYellow4Applier = rangy.createClassApplier(
-    "text-highlight-yellow4"
-  ),
-  textHighlightGreen4Applier = rangy.createClassApplier(
-    "text-highlight-green4"
-  ),
-  textHighlightBlue4Applier = rangy.createClassApplier("text-highlight-blue4"),
-  textHighlightViolet4Applier = rangy.createClassApplier(
-    "text-highlight-violet4"
-  );
+  backgroundHighlightApplier = rangy.createClassApplier("background-highlight");
+  // textHighlightBlack0Applier = rangy.createClassApplier(
+  //   "text-highlight-black0"
+  // ),
+  // textHighlightRed0Applier = rangy.createClassApplier("text-highlight-red0"),
+  // textHighlightOrange0Applier = rangy.createClassApplier(
+  //   "text-highlight-orange0"
+  // ),
+  // textHighlightYellow0Applier = rangy.createClassApplier(
+  //   "text-highlight-yellow0"
+  // ),
+  // textHighlightGreen0Applier = rangy.createClassApplier(
+  //   "text-highlight-green0"
+  // ),
+  // textHighlightBlue0Applier = rangy.createClassApplier("text-highlight-blue0"),
+  // textHighlightViolet0Applier = rangy.createClassApplier(
+  //   "text-highlight-violet0"
+  // ),
+  // textHighlightBlack1Applier = rangy.createClassApplier(
+  //   "text-highlight-black1"
+  // ),
+  // textHighlightRed1Applier = rangy.createClassApplier("text-highlight-red1"),
+  // textHighlightOrange1Applier = rangy.createClassApplier(
+  //   "text-highlight-orange1"
+  // ),
+  // textHighlightYellow1Applier = rangy.createClassApplier(
+  //   "text-highlight-yellow1"
+  // ),
+  // textHighlightGreen1Applier = rangy.createClassApplier(
+  //   "text-highlight-green1"
+  // ),
+  // textHighlightBlue1Applier = rangy.createClassApplier("text-highlight-blue1"),
+  // textHighlightViolet1Applier = rangy.createClassApplier(
+  //   "text-highlight-violet1"
+  // ),
+  // textHighlightBlack2Applier = rangy.createClassApplier(
+  //   "text-highlight-black2"
+  // ),
+  // textHighlightRed2Applier = rangy.createClassApplier("text-highlight-red2"),
+  // textHighlightOrange2Applier = rangy.createClassApplier(
+  //   "text-highlight-orange2"
+  // ),
+  // textHighlightYellow2Applier = rangy.createClassApplier(
+  //   "text-highlight-yellow2"
+  // ),
+  // textHighlightGreen2Applier = rangy.createClassApplier(
+  //   "text-highlight-green2"
+  // ),
+  // textHighlightBlue2Applier = rangy.createClassApplier("text-highlight-blue2"),
+  // textHighlightViolet2Applier = rangy.createClassApplier(
+  //   "text-highlight-violet2"
+  // ),
+  // textHighlightBlack3Applier = rangy.createClassApplier(
+  //   "text-highlight-black3"
+  // ),
+  // textHighlightRed3Applier = rangy.createClassApplier("text-highlight-red3"),
+  // textHighlightOrange3Applier = rangy.createClassApplier(
+  //   "text-highlight-orange3"
+  // ),
+  // textHighlightYellow3Applier = rangy.createClassApplier(
+  //   "text-highlight-yellow3"
+  // ),
+  // textHighlightGreen3Applier = rangy.createClassApplier(
+  //   "text-highlight-green3"
+  // ),
+  // textHighlightBlue3Applier = rangy.createClassApplier("text-highlight-blue3"),
+  // textHighlightViolet3Applier = rangy.createClassApplier(
+  //   "text-highlight-violet3"
+  // ),
+  // textHighlightBlack4Applier = rangy.createClassApplier(
+  //   "text-highlight-black4"
+  // ),
+  // textHighlightRed4Applier = rangy.createClassApplier("text-highlight-red4"),
+  // textHighlightOrange4Applier = rangy.createClassApplier(
+  //   "text-highlight-orange4"
+  // ),
+  // textHighlightYellow4Applier = rangy.createClassApplier(
+  //   "text-highlight-yellow4"
+  // ),
+  // textHighlightGreen4Applier = rangy.createClassApplier(
+  //   "text-highlight-green4"
+  // ),
+  // textHighlightBlue4Applier = rangy.createClassApplier("text-highlight-blue4"),
+  // textHighlightViolet4Applier = rangy.createClassApplier(
+  //   "text-highlight-violet4"
+  // );
 
 function addClass(className) {
   // var selection = document.getSelection();
@@ -258,113 +221,113 @@ function addClass(className) {
       break;
 
     case "text-highlight-black0":
-      textHighlightBlack0Applier.toggleSelection();
+      ColorAppliers.Black.Text[0].toggleSelection();
       break;
     case "text-highlight-red0":
-      textHighlightRed0Applier.toggleSelection();
+      ColorAppliers.Red.Text[0].toggleSelection();
       break;
     case "text-highlight-orange0":
-      textHighlightOrange0Applier.toggleSelection();
+      ColorAppliers.Orange.Text[0].toggleSelection();
       break;
     case "text-highlight-yellow0":
-      textHighlightYellow0Applier.toggleSelection();
+      ColorAppliers.Yellow.Text[0].toggleSelection();
       break;
     case "text-highlight-green0":
-      textHighlightGreen0Applier.toggleSelection();
+      ColorAppliers.Green.Text[0].toggleSelection();
       break;
     case "text-highlight-blue0":
-      textHighlightBlue0Applier.toggleSelection();
+      ColorAppliers.Blue.Text[0].toggleSelection();
       break;
     case "text-highlight-violet0":
-      textHighlightViolet0Applier.toggleSelection();
+      ColorAppliers.Violet.Text[0].toggleSelection();
       break;
 
     case "text-highlight-black1":
-      textHighlightBlack1Applier.toggleSelection();
+      ColorAppliers.Black.Text[1].toggleSelection();
       break;
     case "text-highlight-red1":
-      textHighlightRed1Applier.toggleSelection();
+      ColorAppliers.Red.Text[1].toggleSelection();
       break;
     case "text-highlight-orange1":
-      textHighlightOrange1Applier.toggleSelection();
+      ColorAppliers.Orange.Text[1].toggleSelection();
       break;
     case "text-highlight-yellow1":
-      textHighlightYellow1Applier.toggleSelection();
+      ColorAppliers.Yellow.Text[1].toggleSelection();
       break;
     case "text-highlight-green1":
-      textHighlightGreen1Applier.toggleSelection();
+      ColorAppliers.Green.Text[1].toggleSelection();
       break;
     case "text-highlight-blue1":
-      textHighlightBlue1Applier.toggleSelection();
+      ColorAppliers.Blue.Text[1].toggleSelection();
       break;
     case "text-highlight-violet1":
-      textHighlightViolet1Applier.toggleSelection();
+      ColorAppliers.Violet.Text[1].toggleSelection();
       break;
 
     case "text-highlight-black2":
-      textHighlightBlack2Applier.toggleSelection();
+      ColorAppliers.Black.Text[2].toggleSelection();
       break;
     case "text-highlight-red2":
-      textHighlightRed2Applier.toggleSelection();
+      ColorAppliers.Red.Text[2].toggleSelection();
       break;
     case "text-highlight-orange2":
-      textHighlightOrange2Applier.toggleSelection();
+      ColorAppliers.Orange.Text[2].toggleSelection();
       break;
     case "text-highlight-yellow2":
-      textHighlightYellow2Applier.toggleSelection();
+      ColorAppliers.Yellow.Text[2].toggleSelection();
       break;
     case "text-highlight-green2":
-      textHighlightGreen2Applier.toggleSelection();
+      ColorAppliers.Green.Text[2].toggleSelection();
       break;
     case "text-highlight-blue2":
-      textHighlightBlue2Applier.toggleSelection();
+      ColorAppliers.Blue.Text[2].toggleSelection();
       break;
     case "text-highlight-violet2":
-      textHighlightViolet2Applier.toggleSelection();
+      ColorAppliers.Violet.Text[2].toggleSelection();
       break;
 
     case "text-highlight-black3":
-      textHighlightBlack3Applier.toggleSelection();
+      ColorAppliers.Black.Text[3].toggleSelection();
       break;
     case "text-highlight-red3":
-      textHighlightRed3Applier.toggleSelection();
+      ColorAppliers.Red.Text[3].toggleSelection();
       break;
     case "text-highlight-orange3":
-      textHighlightOrange3Applier.toggleSelection();
+      ColorAppliers.Orange.Text[3].toggleSelection();
       break;
     case "text-highlight-yellow3":
-      textHighlightYellow3Applier.toggleSelection();
+      ColorAppliers.Yellow.Text[3].toggleSelection();
       break;
     case "text-highlight-green3":
-      textHighlightGreen3Applier.toggleSelection();
+      ColorAppliers.Green.Text[3].toggleSelection();
       break;
     case "text-highlight-blue3":
-      textHighlightBlue3Applier.toggleSelection();
+      ColorAppliers.Blue.Text[3].toggleSelection();
       break;
     case "text-highlight-violet3":
-      textHighlightViolet3Applier.toggleSelection();
+      ColorAppliers.Violet.Text[3].toggleSelection();
       break;
 
     case "text-highlight-black4":
-      textHighlightBlack4Applier.toggleSelection();
+      ColorAppliers.Black.Text[4].toggleSelection();
       break;
     case "text-highlight-red4":
-      textHighlightRed4Applier.toggleSelection();
+      ColorAppliers.Red.Text[4].toggleSelection();
       break;
     case "text-highlight-orange4":
-      textHighlightOrange4Applier.toggleSelection();
+      ColorAppliers.Orange.Text[4].toggleSelection();
       break;
     case "text-highlight-yellow4":
-      textHighlightYellow4Applier.toggleSelection();
+      ColorAppliers.Yellow.Text[4].toggleSelection();
       break;
     case "text-highlight-green4":
-      textHighlightGreen4Applier.toggleSelection();
+      ColorAppliers.Green.Text[4].toggleSelection();
       break;
     case "text-highlight-blue4":
-      textHighlightBlue4Applier.toggleSelection();
+      ColorAppliers.Blue.Text[4].toggleSelection();
       break;
     case "text-highlight-violet4":
-      textHighlightViolet4Applier.toggleSelection();
+      ColorAppliers.Violet.Text[4].toggleSelection();
       break;
   }
 }
