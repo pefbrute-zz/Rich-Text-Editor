@@ -81,7 +81,7 @@ var backgroundHighlightApplier = rangy.createClassApplier(
   "background-highlight"
 );
 
-function addClass(className) {
+function addTag(className) {
   className = capitalizeFirstLetter(className);
   TagAppliers[className].toggleSelection();
 }
