@@ -12,9 +12,6 @@
   <body>
     <div class="editor">
       <div class="sample-toolbar" id="sample-toolbar">
-        <!-- <span>
-          Normal
-        </span> -->
         <a class="icon" href="javascript:void(0)" onclick="addTag('Strong')">
           <i class="fas fa-bold"></i>
         </a>
@@ -298,7 +295,7 @@
         <a
           class="icon"
           href="javascript:void(0)"
-          onclick="addClass('background-highlight')"
+          onclick="addClass('background-yellow0')"
         >
           <i class="fas fa-highlighter"> </i>
         </a>
@@ -318,6 +315,9 @@
         <a class="icon" href="js/main.js">
           Source Code Link
         </a>
+        <a class="icon" href="javascript:void(0)" onclick="tests()">
+          <i class="fas fa-vial"></i>
+        </a>
       </div>
 
       <div class="work-area" contenteditable="true" id="work-area">
@@ -328,6 +328,20 @@
         <p>
           Bi!
         </p>
+        <br />
+        <p>
+          H<strong
+            ><em
+              ><span class=" text-yellow2      text-yellow3"
+                >i</span
+              ><span class="text-violet4 background-red1"
+                >!</span
+              ></em
+            ></strong
+          >
+        </p>
+        <p><span class="some-class text-black3">A</span>i!</p>
+        <p><span class="text-red3">Bi!</span></p>
       </div>
     </div>
     <div></div>

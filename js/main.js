@@ -27,29 +27,32 @@ function addDropdown(type) {
 }
 
 rangy.init();
+
+//Makes appliers with class name in ColorObject object
 function makeColorAppliers(ColorObject, classesNumber, colorName) {
   var number = 0;
   while (number <= classesNumber) {
-    className = "text-highlight-" + colorName.toLowerCase() + number;
+    className = "text-" + colorName.toLowerCase() + number;
     ColorObject[colorName].Text[number] = rangy.createClassApplier(className);
 
-    className = "background-highlight-" + colorName.toLowerCase() + number;
+    className = "background-" + colorName.toLowerCase() + number;
     ColorObject[colorName].Background[number] = rangy.createClassApplier(
       className
     );
     number++;
   }
 }
-
 var classesNumber = 4,
   ColorAppliers = {},
   colors = ["Black", "Red", "Orange", "Yellow", "Green", "Blue", "Violet"];
+//Add Text and Background objects to all colors
 for (var i = 0; i <= colors.length - 1; i++) {
   ColorAppliers[colors[i]] = {};
   ColorAppliers[colors[i]]["Text"] = {};
   ColorAppliers[colors[i]]["Background"] = {};
 }
 
+//Make color appliers for colors in array
 for (var i = 0; i <= colors.length - 1; i++) {
   makeColorAppliers(ColorAppliers, classesNumber, colors[i]);
 }
@@ -57,12 +60,20 @@ for (var i = 0; i <= colors.length - 1; i++) {
 var capitalizeFirstLetter = (string) =>
   string.charAt(0).toUpperCase() + string.slice(1);
 
+//Toggle class to selected text
 function addColor(color, type, number) {
   color = capitalizeFirstLetter(color);
   type = capitalizeFirstLetter(type);
+
+  // if (document.getSelection()) {
+  //   ColorAppliers[color][type][number].toggleSelection();
+
+  // }
+
   ColorAppliers[color][type][number].toggleSelection();
 }
 
+//Options to surround text with specific tag
 var Options = {
   Strong: { elementTagName: "strong" },
   U: { elementTagName: "u" },
@@ -77,13 +88,12 @@ var TagAppliers = {
   Strike: rangy.createClassApplier("strike", Options["Strike"]),
 };
 
-var backgroundHighlightApplier = rangy.createClassApplier(
-  "background-highlight"
-);
+var backgroundHighlightApplier = rangy.createClassApplier("background-yellow0");
 
-function addTag(className) {
-  className = capitalizeFirstLetter(className);
-  TagAppliers[className].toggleSelection();
+//Add tag to selected text
+function addTag(tagName) {
+  tagName = capitalizeFirstLetter(tagName);
+  TagAppliers[tagName].toggleSelection();
 }
 
 function findChild(element, parent) {
@@ -133,3 +143,31 @@ function addContainerClass(className) {
     );
   }
 }
+
+tests = () => {
+  // console.log(document.getSelection());
+  // console.log(document.getSelection().getRangeAt(0));
+  // console.log(document.getSelection().getRangeAt(0).cloneContents());
+  clearExtraSpaces = (string) => string.replace(/\s+/g, " ");
+  
+  var classes = document.querySelectorAll("[class*=text-]");
+  console.log(classes.length);
+  for (var i = 0; i < classes.length; i++) {
+    var classElement = classes[i],
+      className = () => classes[i].className,
+      namesInClass = () => className().split(" "),
+      lastNamesInClass = namesInClass();
+    classElement.className = className().trim();
+    classElement.className = clearExtraSpaces(className());
+  
+    // var match = "",
+    //   index = 0;
+    if (namesInClass().length >= 2) {
+      lastNamesInClass = lastNamesInClass.splice(1,1);
+      // console.log(namesInClass().splice(1,1));
+      classElement.className = lastNamesInClass;
+      console.log(classElement.className);
+    }
+  }
+};
+
