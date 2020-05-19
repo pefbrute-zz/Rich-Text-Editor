@@ -62,6 +62,7 @@ var capitalizeFirstLetter = (string) =>
 
 //Toggle class to selected text
 function addColor(color, type, number) {
+  clearExtraClasses();
   color = capitalizeFirstLetter(color);
   type = capitalizeFirstLetter(type);
 
@@ -145,60 +146,69 @@ function addContainerClass(className) {
 }
 
 tests = () => {
-  // console.log(document.getSelection());
-  // console.log(document.getSelection().getRangeAt(0));
-  // console.log(document.getSelection().getRangeAt(0).cloneContents());
+  console.log(document.querySelectorAll("[class*=text-]"));
 };
 
 clearExtraSpaces = (string) => string.replace(/\s+/g, " ");
 
-// turn it into function
-var classes = document.querySelectorAll("[class*=text-]");
-for (var i = 0; i < classes.length; i++) {
-  var classElement = classes[i],
-    className = () => classes[i].className,
-    namesInClass = () => className().split(" "),
-    lastNamesInClass = namesInClass();
-  classElement.className = className().trim();
-  classElement.className = clearExtraSpaces(className());
+function clearExtraClasses() {
+  var classes = document.querySelectorAll("[class*=text-]");
 
-  var textClassesAmount = 0,
-    backgroundClassesAmount = 0;
-  console.log("before ", lastNamesInClass);
-  for (var j = 0; j <= lastNamesInClass.length - 1; j++) {
-    if (lastNamesInClass[j].substring(0, 5) == "text-") {
-      textClassesAmount++;
-      // console.log('text ', lastNamesInClass[j]);
-    } else if (lastNamesInClass[j].substring(0, 11) == "background-") {
-      backgroundClassesAmount++;
-      console.log("background ", lastNamesInClass[j]);
-    }
-  }
-  console.log(textClassesAmount);
-  if (textClassesAmount > 1) {
-    for (var j = 0; j <= textClassesAmount - 2; j++) {
-      if (lastNamesInClass[j].substring(0, 5) == "text-") {
-        lastClass = lastNamesInClass[j];
-        lastNamesInClass.splice(j, 1);
-        textClassesAmount--;
-        j--;
+  for (var i = 0; i < classes.length; i++) {
+    var classElement = classes[i],
+      className = () => classes[i].className,
+      namesInClass = () => className().split(" "),
+      lastNamesInClass = namesInClass();
+
+    (function ClearText() {
+      classElement.className = className().trim();
+      classElement.className = clearExtraSpaces(className());
+    })();
+
+    var textClassesAmount = 0,
+      backgroundClassesAmount = 0,
+      textBeginning = "text-",
+      backgroundBeginning = "background-";
+    for (var j = 0; j <= lastNamesInClass.length - 1; j++) {
+      if (
+        lastNamesInClass[j].substring(0, textBeginning.length) == textBeginning
+      ) {
+        textClassesAmount++;
+      } else if (
+        lastNamesInClass[j].substring(0, backgroundBeginning.length) ==
+        backgroundBeginning
+      ) {
+        backgroundClassesAmount++;
       }
     }
-  }
-  console.log(backgroundClassesAmount);
-  if (backgroundClassesAmount > 1) {
-    for (var j = 0; j <= backgroundClassesAmount - 2; j++) {
-      if (lastNamesInClass[j].substring(0, 11) == "background-") {
-        lastClass = lastNamesInClass[j];
-        lastNamesInClass.splice(j, 1);
-        backgroundClassesAmount--;
-        j--;
-        console.log(lastNamesInClass);
+
+    if (textClassesAmount > 1) {
+      for (var j = 0; j <= textClassesAmount - 2; j++) {
+        if (
+          lastNamesInClass[j].substring(0, textBeginning.length) ==
+          textBeginning
+        ) {
+          lastClass = lastNamesInClass[j];
+          lastNamesInClass.splice(j, 1);
+          textClassesAmount--;
+          j--;
+        }
       }
     }
+    if (backgroundClassesAmount > 1) {
+      for (var j = 0; j <= backgroundClassesAmount - 2; j++) {
+        if (
+          lastNamesInClass[j].substring(0, backgroundBeginning.length) ==
+          backgroundBeginning
+        ) {
+          lastClass = lastNamesInClass[j];
+          lastNamesInClass.splice(j, 1);
+          backgroundClassesAmount--;
+          j--;
+        }
+      }
+    }
+
+    classElement.className = lastNamesInClass.join(" ");
   }
-  console.log("after: ", lastNamesInClass);
-  classElement.className = lastNamesInClass.join(" ");
-  console.log(classElement);
 }
-//
