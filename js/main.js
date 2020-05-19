@@ -148,26 +148,57 @@ tests = () => {
   // console.log(document.getSelection());
   // console.log(document.getSelection().getRangeAt(0));
   // console.log(document.getSelection().getRangeAt(0).cloneContents());
-  clearExtraSpaces = (string) => string.replace(/\s+/g, " ");
-  
-  var classes = document.querySelectorAll("[class*=text-]");
-  console.log(classes.length);
-  for (var i = 0; i < classes.length; i++) {
-    var classElement = classes[i],
-      className = () => classes[i].className,
-      namesInClass = () => className().split(" "),
-      lastNamesInClass = namesInClass();
-    classElement.className = className().trim();
-    classElement.className = clearExtraSpaces(className());
-  
-    // var match = "",
-    //   index = 0;
-    if (namesInClass().length >= 2) {
-      lastNamesInClass = lastNamesInClass.splice(1,1);
-      // console.log(namesInClass().splice(1,1));
-      classElement.className = lastNamesInClass;
-      console.log(classElement.className);
-    }
-  }
 };
 
+clearExtraSpaces = (string) => string.replace(/\s+/g, " ");
+
+// turn it into function
+var classes = document.querySelectorAll("[class*=text-]");
+for (var i = 0; i < classes.length; i++) {
+  var classElement = classes[i],
+    className = () => classes[i].className,
+    namesInClass = () => className().split(" "),
+    lastNamesInClass = namesInClass();
+  classElement.className = className().trim();
+  classElement.className = clearExtraSpaces(className());
+
+  var textClassesAmount = 0,
+    backgroundClassesAmount = 0;
+  console.log("before ", lastNamesInClass);
+  for (var j = 0; j <= lastNamesInClass.length - 1; j++) {
+    if (lastNamesInClass[j].substring(0, 5) == "text-") {
+      textClassesAmount++;
+      // console.log('text ', lastNamesInClass[j]);
+    } else if (lastNamesInClass[j].substring(0, 11) == "background-") {
+      backgroundClassesAmount++;
+      console.log("background ", lastNamesInClass[j]);
+    }
+  }
+  console.log(textClassesAmount);
+  if (textClassesAmount > 1) {
+    for (var j = 0; j <= textClassesAmount - 2; j++) {
+      if (lastNamesInClass[j].substring(0, 5) == "text-") {
+        lastClass = lastNamesInClass[j];
+        lastNamesInClass.splice(j, 1);
+        textClassesAmount--;
+        j--;
+      }
+    }
+  }
+  console.log(backgroundClassesAmount);
+  if (backgroundClassesAmount > 1) {
+    for (var j = 0; j <= backgroundClassesAmount - 2; j++) {
+      if (lastNamesInClass[j].substring(0, 11) == "background-") {
+        lastClass = lastNamesInClass[j];
+        lastNamesInClass.splice(j, 1);
+        backgroundClassesAmount--;
+        j--;
+        console.log(lastNamesInClass);
+      }
+    }
+  }
+  console.log("after: ", lastNamesInClass);
+  classElement.className = lastNamesInClass.join(" ");
+  console.log(classElement);
+}
+//
