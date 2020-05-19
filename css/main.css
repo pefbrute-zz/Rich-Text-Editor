@@ -123,7 +123,8 @@ body {
   display: block;
 }
 
-.highlight-dropdown {
+.text-dropdown,
+.background-dropdown {
   height: 7.5rem;
   background-color: #f4f5f5;
   width: 8.6rem;
@@ -138,15 +139,26 @@ body {
   padding: 4px;
 }
 
-.highlight-dropdown > span {
+.text-dropdown{
+  left: 28.8vw;
+}
+
+.background-dropdown{
+  left: 30vw
+}
+
+.text-dropdown > span,
+.background-dropdown > span {
   display: inline-block;
 }
 
-.highlight-dropdown button {
+.text-dropdown button,
+.background-dropdown button {
   display: inline-block;
 }
 
-.highlight-dropdown button:hover {
+.text-dropdown button:hover,
+.background-dropdown button:hover {
   text-decoration: none;
 }
 
@@ -411,4 +423,3 @@ body {
 .background-violet4 {
   background-color: rgb(61, 20, 102);
 }
-

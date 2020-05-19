@@ -18,6 +18,24 @@ function setUrl() {
 }
 
 function addDropdown(type) {
+  var dropdown = document.getElementById(type),
+    textDropdown = document.getElementById("text-dropdown"),
+    backgroundDropdown = document.getElementById("background-dropdown");
+
+  if (textDropdown.className == "text-dropdown") {
+    textDropdown.className = "hidden";
+  } else if (backgroundDropdown.className == "background-dropdown") {
+    backgroundDropdown.className = "hidden";
+  }
+
+  if (dropdown.className == "hidden") {
+    dropdown.className = type;
+  } else {
+    dropdown.className = "hidden";
+  }
+}
+
+function addDropdown(type) {
   var dropdown = document.getElementById(type);
   if (dropdown.className == "hidden") {
     dropdown.className = type;
@@ -42,6 +60,7 @@ function makeColorAppliers(ColorObject, classesNumber, colorName) {
     number++;
   }
 }
+
 var classesNumber = 4,
   ColorAppliers = {},
   colors = ["Black", "Red", "Orange", "Yellow", "Green", "Blue", "Violet"];
@@ -62,16 +81,10 @@ var capitalizeFirstLetter = (string) =>
 
 //Toggle class to selected text
 function addColor(color, type, number) {
-  clearExtraClasses();
   color = capitalizeFirstLetter(color);
   type = capitalizeFirstLetter(type);
-
-  // if (document.getSelection()) {
-  //   ColorAppliers[color][type][number].toggleSelection();
-
-  // }
-
   ColorAppliers[color][type][number].toggleSelection();
+  clearExtraClasses();
 }
 
 //Options to surround text with specific tag
@@ -182,32 +195,21 @@ function clearExtraClasses() {
       }
     }
 
-    if (textClassesAmount > 1) {
-      for (var j = 0; j <= textClassesAmount - 2; j++) {
+    function deleteExtraClasses(classesAmount, classBeginning) {
+      for (var j = 0; j <= classesAmount - 2; j++) {
         if (
-          lastNamesInClass[j].substring(0, textBeginning.length) ==
-          textBeginning
+          lastNamesInClass[j].substring(0, classBeginning.length) ==
+          classBeginning
         ) {
-          lastClass = lastNamesInClass[j];
           lastNamesInClass.splice(j, 1);
-          textClassesAmount--;
+          classesAmount--;
           j--;
         }
       }
     }
-    if (backgroundClassesAmount > 1) {
-      for (var j = 0; j <= backgroundClassesAmount - 2; j++) {
-        if (
-          lastNamesInClass[j].substring(0, backgroundBeginning.length) ==
-          backgroundBeginning
-        ) {
-          lastClass = lastNamesInClass[j];
-          lastNamesInClass.splice(j, 1);
-          backgroundClassesAmount--;
-          j--;
-        }
-      }
-    }
+
+    deleteExtraClasses(textClassesAmount, "text-");
+    deleteExtraClasses(backgroundClassesAmount, "background-");
 
     classElement.className = lastNamesInClass.join(" ");
   }
