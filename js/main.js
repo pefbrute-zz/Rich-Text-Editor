@@ -18,7 +18,6 @@ function setUrl() {
 }
 
 function addDropdown(dropdownId) {
-  // debugger;
   var dropdown = document.getElementById(dropdownId);
   var dropdowns = document.querySelectorAll("[class*=dropdown]");
 
@@ -87,6 +86,8 @@ var Options = {
   Em: { elementTagName: "em" },
   Strike: { elementTagName: "strike" },
   A: { elementTagName: "a" },
+  Sup: { elementTagName: "sup" },
+  Sub: { elementTagName: "sub" },
 };
 
 var TagAppliers = {
@@ -95,6 +96,8 @@ var TagAppliers = {
   Em: rangy.createClassApplier("emphasized", Options["Em"]),
   Strike: rangy.createClassApplier("strike", Options["Strike"]),
   A: rangy.createClassApplier("anchor", Options["A"]),
+  Sup: rangy.createClassApplier("superscript", Options["Sup"]),
+  Sub: rangy.createClassApplier("subscript", Options["Sub"]),
 };
 
 var backgroundHighlightApplier = rangy.createClassApplier("background-yellow0");
@@ -113,7 +116,6 @@ function addTag(tagName, url) {
     }
     time++;
     url.value = '';
-    console.log(anchors);
   }
 }
 
@@ -221,7 +223,3 @@ function clearExtraClasses() {
     classElement.className = lastNamesInClass.join(" ");
   }
 }
-
-// function addLink() {
-
-// }
