@@ -26,7 +26,6 @@ function addDropdown(dropdownId) {
     for (var i = 0; i <= dropdowns.length - 1; i++) {
       if (dropdowns[i] != dropdown) {
         dropdowns[i].className = "hidden";
-        console.log(dropdowns[i]);
       }
     }
   }
