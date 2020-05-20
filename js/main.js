@@ -21,10 +21,8 @@ function addDropdown(dropdownId) {
   // debugger;
   var dropdown = document.getElementById(dropdownId);
   var dropdowns = document.querySelectorAll("[class*=dropdown]");
-  console.log(dropdowns);
 
-  if (dropdowns.length == 0) {
-  } else {
+  if (dropdowns.length > 0) {
     for (var i = 0; i <= dropdowns.length - 1; i++) {
       if (dropdowns[i] != dropdown) {
         dropdowns[i].className = "hidden";
@@ -37,28 +35,6 @@ function addDropdown(dropdownId) {
     dropdown.className = "hidden";
   } else {
     dropdown.className = dropdownId;
-    console.log(dropdownId);
-    console.log("The class is added!");
-  }
-}
-
-function addTextBackgroundDropdown(type) {
-  var dropdown = document.getElementById(type),
-    dropdowns = document.querySelectorAll("[class*=dropdown]");
-
-  if (dropdowns.length > 0) {
-    for (var i = 0; i <= dropdowns.length - 1; i++) {
-      if (dropdowns[i] != dropdown) {
-        dropdowns[i].className = "hidden";
-        console.log(dropdowns[i]);
-      }
-    }
-  }
-
-  if (dropdown.className == "hidden") {
-    dropdown.className = type;
-  } else {
-    dropdown.className = "hidden";
   }
 }
 
