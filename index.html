@@ -52,51 +52,48 @@
         >
           <i class="fas fa-align-justify"></i>
         </a>
-        <!-- <a class="icon" href="javascript:void(0)" onclick="addDropdown('dropdown')">
-          <i class="fas fa-align-left"></i>
-        </a>
-          <span class="hidden" id="dropdown" tabindex="-1">
-            <a
-              class="icon"
-              href="javascript:void(0)"
-              onclick="addContainerClass('align-left')"
-            >
-              <i class="fas fa-align-left"></i>
-            </a>
-            <a
-              class="icon"
-              href="javascript:void(0)"
-              onclick="addContainerClass('align-center')"
-            >
-              <i class="fas fa-align-center"></i>
-            </a>
-            <a
-              class="icon"
-              href="javascript:void(0)"
-              onclick="addContainerClass('align-right')"
-            >
-              <i class="fas fa-align-right"></i>
-            </a>
-            <a
-              class="icon"
-              href="javascript:void(0)"
-              onclick="addContainerClass('align-justify')"
-            >
-              <i class="fas fa-align-justify"></i>
-            </a>
-          </span> -->
-
-        <!-- <a
-          class="icon"
-          href="javascript:void(0)"
-          onclick="addClass('text-highlight')"
-        >
-          <i class="fas fa-highlighter"> </i>
-        </a> -->
         <a
           class="icon"
           href="javascript:void(0)"
-          onclick="addDropdown('text-dropdown')"
+          onclick="addDropdown('align-dropdown')"
+        >
+          <i class="fas fa-align-left"></i>
+        </a>
+        <span class="hidden" id="align-dropdown" tabindex="-1">
+          <a
+            class="icon"
+            href="javascript:void(0)"
+            onclick="addContainerClass('align-left')"
+          >
+            <i class="fas fa-align-left"></i>
+          </a>
+          <a
+            class="icon"
+            href="javascript:void(0)"
+            onclick="addContainerClass('align-center')"
+          >
+            <i class="fas fa-align-center"></i>
+          </a>
+          <a
+            class="icon"
+            href="javascript:void(0)"
+            onclick="addContainerClass('align-right')"
+          >
+            <i class="fas fa-align-right"></i>
+          </a>
+          <a
+            class="icon"
+            href="javascript:void(0)"
+            onclick="addContainerClass('align-justify')"
+          >
+            <i class="fas fa-align-justify"></i>
+          </a>
+        </span>
+
+        <a
+          class="icon"
+          href="javascript:void(0)"
+          onclick="addTextBackgroundDropdown('text-dropdown')"
         >
           <i class="fas fa-highlighter"> </i>
         </a>
@@ -295,7 +292,7 @@
         <a
           class="icon"
           href="javascript:void(0)"
-          onclick="addDropdown('background-dropdown')"
+          onclick="addTextBackgroundDropdown('background-dropdown')"
         >
           <i class="fas fa-highlighter"> </i>
         </a>

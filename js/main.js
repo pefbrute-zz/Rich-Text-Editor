@@ -17,26 +17,44 @@ function setUrl() {
   document.getElementById("txtFormatUrl").value = "";
 }
 
-function addDropdown(type) {
-  var dropdown = document.getElementById(type),
-    textDropdown = document.getElementById("text-dropdown"),
-    backgroundDropdown = document.getElementById("background-dropdown");
+function addDropdown(dropdownId) {
+  // debugger;
+  var dropdown = document.getElementById(dropdownId);
+  var dropdowns = document.querySelectorAll("[class*=dropdown]");
+  console.log(dropdowns);
 
-  if (textDropdown.className == "text-dropdown") {
-    textDropdown.className = "hidden";
-  } else if (backgroundDropdown.className == "background-dropdown") {
-    backgroundDropdown.className = "hidden";
+  if (dropdowns.length == 0) {
+  } else {
+    for (var i = 0; i <= dropdowns.length - 1; i++) {
+      if (dropdowns[i] != dropdown) {
+        dropdowns[i].className = "hidden";
+        console.log(dropdowns[i]);
+      }
+    }
   }
 
-  if (dropdown.className == "hidden") {
-    dropdown.className = type;
-  } else {
+  if (dropdown.className == dropdownId) {
     dropdown.className = "hidden";
+  } else {
+    dropdown.className = dropdownId;
+    console.log(dropdownId);
+    console.log("The class is added!");
   }
 }
 
-function addDropdown(type) {
-  var dropdown = document.getElementById(type);
+function addTextBackgroundDropdown(type) {
+  var dropdown = document.getElementById(type),
+    dropdowns = document.querySelectorAll("[class*=dropdown]");
+
+  if (dropdowns.length > 0) {
+    for (var i = 0; i <= dropdowns.length - 1; i++) {
+      if (dropdowns[i] != dropdown) {
+        dropdowns[i].className = "hidden";
+        console.log(dropdowns[i]);
+      }
+    }
+  }
+
   if (dropdown.className == "hidden") {
     dropdown.className = type;
   } else {
