@@ -109,13 +109,13 @@ function addTag(tagName, url) {
   TagAppliers[tagName].toggleSelection();
   if (url) {
     var anchors = document.querySelectorAll("[class=anchor]"),
-    url = document.getElementById('url');
-    for (var i = 0; i < anchors.length; i++){
+      url = document.getElementById("url");
+    for (var i = 0; i < anchors.length; i++) {
       anchors[i].href = url.value;
       anchors[i].className = anchors[i].className + time;
     }
     time++;
-    url.value = '';
+    url.value = "";
   }
 }
 
@@ -166,10 +166,6 @@ function addContainerClass(className) {
     );
   }
 }
-
-tests = () => {
-  console.log(document.querySelectorAll("[class*=text-]"));
-};
 
 clearExtraSpaces = (string) => string.replace(/\s+/g, " ");
 
@@ -223,3 +219,27 @@ function clearExtraClasses() {
     classElement.className = lastNamesInClass.join(" ");
   }
 }
+
+tests = () => {
+  console.log(document.querySelectorAll("[class*=text-]"));
+  console.log(document.getSelection());
+  console.log(document.getSelection().getRangeAt(0));
+
+  function replaceElement(source, newType) {
+    // Create the document fragment
+    const frag = document.createDocumentFragment();
+    // Fill it with what's in the source element
+    while (source.firstChild) {
+      frag.appendChild(source.firstChild);
+    }
+    // Create the new element
+    const newElem = document.createElement(newType);
+    // Empty the document fragment into it
+    newElem.appendChild(frag);
+    // Replace the source element with the new element on the page
+    source.parentNode.replaceChild(newElem, source);
+  }
+  // Replace the <b> with a <div>
+  // replaceElement(document.querySelector('p'), 'div');
+  replaceElement(document.getSelection().anchorNode.parentElement, 'h1');
+};
