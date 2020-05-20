@@ -86,21 +86,35 @@ var Options = {
   U: { elementTagName: "u" },
   Em: { elementTagName: "em" },
   Strike: { elementTagName: "strike" },
+  A: { elementTagName: "a" },
 };
 
 var TagAppliers = {
   Strong: rangy.createClassApplier("strong", Options["Strong"]),
-  U: rangy.createClassApplier("u", Options["U"]),
-  Em: rangy.createClassApplier("em", Options["Em"]),
+  U: rangy.createClassApplier("underlined", Options["U"]),
+  Em: rangy.createClassApplier("emphasized", Options["Em"]),
   Strike: rangy.createClassApplier("strike", Options["Strike"]),
+  A: rangy.createClassApplier("anchor", Options["A"]),
 };
 
 var backgroundHighlightApplier = rangy.createClassApplier("background-yellow0");
 
 //Add tag to selected text
-function addTag(tagName) {
+var time = 0;
+function addTag(tagName, url) {
   tagName = capitalizeFirstLetter(tagName);
   TagAppliers[tagName].toggleSelection();
+  if (url) {
+    var anchors = document.querySelectorAll("[class=anchor]"),
+    url = document.getElementById('url');
+    for (var i = 0; i < anchors.length; i++){
+      anchors[i].href = url.value;
+      anchors[i].className = anchors[i].className + time;
+    }
+    time++;
+    url.value = '';
+    console.log(anchors);
+  }
 }
 
 function findChild(element, parent) {
@@ -207,3 +221,7 @@ function clearExtraClasses() {
     classElement.className = lastNamesInClass.join(" ");
   }
 }
+
+// function addLink() {
+
+// }
