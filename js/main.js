@@ -127,6 +127,72 @@ function findChild(element, parent) {
   return child;
 }
 
+function replaceContainerTag(tag) {
+  var selection = document.getSelection(),
+    range = selection.getRangeAt(0),
+    mainContainer = document.getElementById("work-area"),
+    wrongContainer = document.getElementById("sample-toolbar"),
+    firstNode = selection.anchorNode,
+    lastNode = selection.focusNode;
+  if (
+    firstNode.nodeName == "#text" &&
+    range.commonAncestorContainer != wrongContainer
+    // && lastNode != mainContainer
+  ) {
+    var firstSelectedElement = firstNode,
+      lastSelectedElement = lastNode,
+      startElement = range.startContainer,
+      endElement = range.endContainer;
+
+    if (
+      firstSelectedElement != startElement &&
+      lastSelectedElement != endElement
+    ) {
+      firstSelectedElement = lastNode;
+      lastSelectedElement = firstNode;
+    }
+
+    lastSelectedElement = findChild(lastSelectedElement, mainContainer);
+    firstSelectedElement = findChild(firstSelectedElement, mainContainer);
+    console.log(firstSelectedElement);
+
+    var p = [],
+      iP = 0;
+    var tagData = {
+      tagName: "tag",
+      tagCounter: 0,
+      selectedTags: [],
+    };
+    tagData.tagName = tag;
+    do {
+      if (firstSelectedElement.tagName == capitalizeFirstLetter(tagData.tagName)) {
+        p[iP] = firstSelectedElement;
+        iP++;
+      } else {
+        tagData.selectedTags[tagData.tagCounter] = firstSelectedElement;
+        tagData.tagCounter++;
+      }
+      firstSelectedElement = firstSelectedElement.nextSibling;
+    } while (
+      firstSelectedElement.nextSibling != lastSelectedElement.nextElementSibling
+    );
+
+    if (iP != 0) {
+      for (var i = 0; i <= iP - 1; i++) {
+        replaceElement(p[i], "p");
+        console.log("p", i, " = ", p[i]);
+      }
+    }
+    if (tagData.tagCounter != 0) {
+      for (var i = 0; i <= tagData.tagCounter - 1; i++) {
+        replaceElement(tagData.selectedTags[i], tagData.tagName);
+        console.log(tag, i, " = ", tagData.selectedTags[i]);
+      }
+    }
+
+    selection.empty();
+  }
+}
 
 function addContainerClass(className) {
   var selection = document.getSelection(),
@@ -221,85 +287,23 @@ function clearExtraClasses() {
   }
 }
 
+function replaceElement(source, newType) {
+  // Create the document fragment
+  const frag = document.createDocumentFragment();
+  // Fill it with what's in the source element
+  while (source.firstChild) {
+    frag.appendChild(source.firstChild);
+  }
+  // Create the new element
+  const newElem = document.createElement(newType);
+  // Empty the document fragment into it
+  newElem.appendChild(frag);
+  // Replace the source element with the new element on the page
+  source.parentNode.replaceChild(newElem, source);
+}
+
 tests = () => {
   console.log(document.querySelectorAll("[class*=text-]"));
   console.log(document.getSelection());
   console.log(document.getSelection().getRangeAt(0));
-
-  function replaceElement(source, newType) {
-    // Create the document fragment
-    const frag = document.createDocumentFragment();
-    // Fill it with what's in the source element
-    while (source.firstChild) {
-      frag.appendChild(source.firstChild);
-    }
-    // Create the new element
-    const newElem = document.createElement(newType);
-    // Empty the document fragment into it
-    newElem.appendChild(frag);
-    // Replace the source element with the new element on the page
-    source.parentNode.replaceChild(newElem, source);
-  }
-
-  debugger;
-  var selection = document.getSelection(),
-    range = selection.getRangeAt(0),
-    mainContainer = document.getElementById("work-area"),
-    wrongContainer = document.getElementById("sample-toolbar"),
-    firstNode = selection.anchorNode,
-    lastNode = selection.focusNode;
-  if (
-    firstNode.nodeName == "#text" &&
-    range.commonAncestorContainer != wrongContainer
-    // && lastNode != mainContainer
-  ) {
-    var firstSelectedElement = firstNode,
-      lastSelectedElement = lastNode,
-      startElement = range.startContainer,
-      endElement = range.endContainer;
-
-    if (
-      firstSelectedElement != startElement &&
-      lastSelectedElement != endElement
-    ) {
-      firstSelectedElement = lastNode;
-      lastSelectedElement = firstNode;
-    }
-
-    lastSelectedElement = findChild(lastSelectedElement, mainContainer);
-    firstSelectedElement = findChild(firstSelectedElement, mainContainer);
-    console.log(firstSelectedElement);
-
-    var p = [],
-      h1 = [],
-      iP = 0,
-      iH1 = 0;
-    do {
-      if (firstSelectedElement.tagName == "H1") {
-        p[iP] = firstSelectedElement;
-        iP++;
-      } else {
-        h1[iH1] = firstSelectedElement;
-        iH1++;
-      }
-      firstSelectedElement = firstSelectedElement.nextSibling;
-    } while (
-      firstSelectedElement.nextSibling != lastSelectedElement.nextElementSibling
-    );
-
-    if (iP != 0) {
-      iP--;
-      for (var i = 0; i <= iP; i++) {
-        replaceElement(p[i], "p");
-        console.log("p", i, " = ", p[i]);
-      }
-    }
-    if (iH1 != 0) {
-      iH1--;
-      for (var i = 0; i <= iH1; i++) {
-        replaceElement(h1[i], "h1");
-        console.log("h1", i, " = ", h1[i]);
-      }
-    }
-  }
 };

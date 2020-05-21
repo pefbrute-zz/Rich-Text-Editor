@@ -62,30 +62,6 @@ body {
   overflow-wrap: break-word;
 }
 
-/* .strong {
-  font-weight: bold;
-}
-
-.u {
-  text-decoration: underline;
-}
-
-.em {
-  font-style: italic;
-}
-
-.strike {
-  text-decoration: line-through;
-} */
-
-.background-highlight {
-  background-color: rgb(255, 238, 0);
-}
-
-.text-highlight {
-  color: rgb(255, 238, 0);
-}
-
 .align-left {
   text-align: left;
 }
@@ -140,11 +116,11 @@ body {
   padding: 4px;
 }
 
-.text-dropdown{
+.text-dropdown {
   left: 17.3vw;
 }
 
-.background-dropdown{
+.background-dropdown {
   left: 19.6vw;
 }
 
@@ -423,4 +399,11 @@ body {
 }
 .background-violet4 {
   background-color: rgb(61, 20, 102);
+}
+
+blockquote {
+  border-left: 4px solid #ccc;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  padding-left: 16px;
 }
