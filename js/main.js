@@ -127,6 +127,7 @@ function findChild(element, parent) {
   return child;
 }
 
+
 function addContainerClass(className) {
   var selection = document.getSelection(),
     range = selection.getRangeAt(0),
@@ -239,7 +240,66 @@ tests = () => {
     // Replace the source element with the new element on the page
     source.parentNode.replaceChild(newElem, source);
   }
-  // Replace the <b> with a <div>
-  // replaceElement(document.querySelector('p'), 'div');
-  replaceElement(document.getSelection().anchorNode.parentElement, 'h1');
+
+  debugger;
+  var selection = document.getSelection(),
+    range = selection.getRangeAt(0),
+    mainContainer = document.getElementById("work-area"),
+    wrongContainer = document.getElementById("sample-toolbar"),
+    firstNode = selection.anchorNode,
+    lastNode = selection.focusNode;
+  if (
+    firstNode.nodeName == "#text" &&
+    range.commonAncestorContainer != wrongContainer
+    // && lastNode != mainContainer
+  ) {
+    var firstSelectedElement = firstNode,
+      lastSelectedElement = lastNode,
+      startElement = range.startContainer,
+      endElement = range.endContainer;
+
+    if (
+      firstSelectedElement != startElement &&
+      lastSelectedElement != endElement
+    ) {
+      firstSelectedElement = lastNode;
+      lastSelectedElement = firstNode;
+    }
+
+    lastSelectedElement = findChild(lastSelectedElement, mainContainer);
+    firstSelectedElement = findChild(firstSelectedElement, mainContainer);
+    console.log(firstSelectedElement);
+
+    var p = [],
+      h1 = [],
+      iP = 0,
+      iH1 = 0;
+    do {
+      if (firstSelectedElement.tagName == "H1") {
+        p[iP] = firstSelectedElement;
+        iP++;
+      } else {
+        h1[iH1] = firstSelectedElement;
+        iH1++;
+      }
+      firstSelectedElement = firstSelectedElement.nextSibling;
+    } while (
+      firstSelectedElement.nextSibling != lastSelectedElement.nextElementSibling
+    );
+
+    if (iP != 0) {
+      iP--;
+      for (var i = 0; i <= iP; i++) {
+        replaceElement(p[i], "p");
+        console.log("p", i, " = ", p[i]);
+      }
+    }
+    if (iH1 != 0) {
+      iH1--;
+      for (var i = 0; i <= iH1; i++) {
+        replaceElement(h1[i], "h1");
+        console.log("h1", i, " = ", h1[i]);
+      }
+    }
+  }
 };
