@@ -154,7 +154,6 @@ function replaceContainerTag(tag) {
 
     lastSelectedElement = findChild(lastSelectedElement, mainContainer);
     firstSelectedElement = findChild(firstSelectedElement, mainContainer);
-    console.log(firstSelectedElement);
 
     var p = [],
       iP = 0;
@@ -180,13 +179,11 @@ function replaceContainerTag(tag) {
     if (iP != 0) {
       for (var i = 0; i <= iP - 1; i++) {
         replaceElement(p[i], "p");
-        console.log("p", i, " = ", p[i]);
       }
     }
     if (tagData.tagCounter != 0) {
       for (var i = 0; i <= tagData.tagCounter - 1; i++) {
         replaceElement(tagData.selectedTags[i], tagData.tagName);
-        console.log(tag, i, " = ", tagData.selectedTags[i]);
       }
     }
 
@@ -303,7 +300,6 @@ function replaceElement(source, newType) {
 }
 
 tests = () => {
-  console.log(document.querySelectorAll("[class*=text-]"));
   console.log(document.getSelection());
   console.log(document.getSelection().getRangeAt(0));
 };
