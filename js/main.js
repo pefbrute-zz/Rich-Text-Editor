@@ -165,7 +165,7 @@ function replaceContainerTag(tag) {
     };
     tagData.tagName = tag;
     do {
-      if (firstSelectedElement.tagName == capitalizeFirstLetter(tagData.tagName)) {
+      if (firstSelectedElement.tagName == tagData.tagName.toUpperCase()) {
         p[iP] = firstSelectedElement;
         iP++;
       } else {
