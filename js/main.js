@@ -303,3 +303,9 @@ tests = () => {
   console.log(document.getSelection());
   console.log(document.getSelection().getRangeAt(0));
 };
+
+preList = document.getElementsByTagName("PRE");
+for (var i = 0; i <= preList.length - 1; i++) {
+  preListTextContent = preList[i].textContent;
+  preList[i].innerHTML = preListTextContent;
+}
