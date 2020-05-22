@@ -422,3 +422,7 @@ pre {
   overflow: visible;
   border-radius: 3px;
 }
+
+.pre-keyword{
+  color: rgb(255, 22, 72);
+}

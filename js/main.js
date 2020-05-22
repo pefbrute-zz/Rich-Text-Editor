@@ -191,9 +191,9 @@ function replaceContainerTag(tag) {
     selection.empty();
 
     if (tag == "PRE") {
-      clearPreTagsAtContainer();
+      clearTagsAtPreContainer();
+      highlightKeywords();
     }
-    
   }
 }
 
@@ -305,15 +305,51 @@ function replaceElement(source, newType) {
   source.parentNode.replaceChild(newElem, source);
 }
 
-tests = () => {
-  console.log(document.getSelection());
-  console.log(document.getSelection().getRangeAt(0));
-};
+function highlightKeywords() {
+  let preList = document.getElementsByTagName("PRE"),
+    words = ["for", "while", "var", "and", "is"];
+  for (var i = 0; i <= preList.length - 1; i++) {
+    let pre = preList[i];
+    for (var j = 0; j <= words.length - 1; j++) {
+      let word = words[j],
+        regExp = new RegExp(word, "gi");
+      pre.innerHTML = pre.innerHTML.replace(
+        regExp,
+        "<span class=pre-keyword>" + word + "</span>"
+      );
+    }
+  }
+}
 
-function clearPreTagsAtContainer() {
+function clearTagsAtPreContainer() {
   var preList = document.getElementsByTagName("PRE");
   for (var i = 0; i <= preList.length - 1; i++) {
     var preListTextContent = preList[i].textContent;
     preList[i].innerHTML = preListTextContent;
   }
 }
+
+tests = () => {
+  // console.log(document.getSelection());
+  // console.log(document.getSelection().getRangeAt(0));
+
+  let pres = document.querySelectorAll("pre"),
+    numberRegExp = new RegExp("(\\d+)", "g");
+  console.log(numberRegExp);
+  for (var i = 0; i <= pres.length - 1; i++) {
+    let pre = pres[i],
+      preInnerHTML = pre.innerHTML;
+
+    console.log(numberRegExp.exec(preInnerHTML));
+
+    // pre.innerHTML = pre.innerHTML.replace(
+    //   numberRegExp,
+    //   "<span class=pre-keyword>" + numberRegExp.exec(pre.innerHTML) + "</span>"
+    // );
+  }
+  // var pres = document.querySelectorAll('pre');
+  // for (var i = 0; i < pre.length - 1; i++){
+  //   var pre = pres[i];
+  //   pre.setAttribute('spellcheck','false')
+  // }
+};
