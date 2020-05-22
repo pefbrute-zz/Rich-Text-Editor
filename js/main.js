@@ -128,7 +128,8 @@ function findChild(element, parent) {
 }
 
 function replaceContainerTag(tag) {
-  var selection = document.getSelection(),
+  var tag = tag.toUpperCase(),
+    selection = document.getSelection(),
     range = selection.getRangeAt(0),
     mainContainer = document.getElementById("work-area"),
     wrongContainer = document.getElementById("sample-toolbar"),
@@ -158,13 +159,13 @@ function replaceContainerTag(tag) {
     var p = [],
       iP = 0;
     var tagData = {
-      tagName: "tag",
+      tagName: tag,
       tagCounter: 0,
       selectedTags: [],
     };
-    tagData.tagName = tag;
+
     do {
-      if (firstSelectedElement.tagName == tagData.tagName.toUpperCase()) {
+      if (firstSelectedElement.tagName == tagData.tagName) {
         p[iP] = firstSelectedElement;
         iP++;
       } else {
@@ -188,6 +189,11 @@ function replaceContainerTag(tag) {
     }
 
     selection.empty();
+
+    if (tag == "PRE") {
+      clearPreTagsAtContainer();
+    }
+    
   }
 }
 
@@ -304,8 +310,10 @@ tests = () => {
   console.log(document.getSelection().getRangeAt(0));
 };
 
-preList = document.getElementsByTagName("PRE");
-for (var i = 0; i <= preList.length - 1; i++) {
-  preListTextContent = preList[i].textContent;
-  preList[i].innerHTML = preListTextContent;
+function clearPreTagsAtContainer() {
+  var preList = document.getElementsByTagName("PRE");
+  for (var i = 0; i <= preList.length - 1; i++) {
+    var preListTextContent = preList[i].textContent;
+    preList[i].innerHTML = preListTextContent;
+  }
 }
