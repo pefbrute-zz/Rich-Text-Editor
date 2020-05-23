@@ -6,20 +6,20 @@ function format(command, value) {
   document.execCommand(command, false, value);
 }
 
-function setUrl() {
-  var url = document.getElementById("txtFormatUrl").value;
-  var sText = document.getSelection();
-  document.execCommand(
-    "insertHTML",
-    false,
-    '<a href="' + url + '" target="_blank">' + sText + "</a>"
-  );
-  document.getElementById("txtFormatUrl").value = "";
-}
+// function setUrl() {
+//   var url = document.getElementById("txtFormatUrl").value;
+//   var sText = document.getSelection();
+//   document.execCommand(
+//     "insertHTML",
+//     false,
+//     '<a href="' + url + '" target="_blank">' + sText + "</a>"
+//   );
+//   document.getElementById("txtFormatUrl").value = "";
+// }
 
 function addDropdown(dropdownId) {
-  var dropdown = document.getElementById(dropdownId);
-  var dropdowns = document.querySelectorAll("[class*=dropdown]");
+  let dropdown = document.getElementById(dropdownId),
+  dropdowns = document.querySelectorAll("[class*=dropdown]");
 
   if (dropdowns.length > 0) {
     for (var i = 0; i <= dropdowns.length - 1; i++) {
@@ -309,23 +309,24 @@ function replaceElement(source, newType) {
 function highlightKeywords() {
   let preList = document.getElementsByTagName("PRE"),
     words = ["for", "while", "var", "and", "is"];
-  for (var i = 0; i <= preList.length - 1; i++) {
+
+  for (let i = 0; i <= preList.length - 1; i++) {
     let pre = preList[i];
-    for (var j = 0; j <= words.length - 1; j++) {
+    // preInner = pre.innerHTML;
+    for (let j = 0; j <= words.length - 1; j++) {
       let word = words[j],
-        regExp = new RegExp(word, "gi");
-      pre.innerHTML = pre.innerHTML.replace(
-        regExp,
-        "<span class=pre-keyword>" + word + "</span>"
-      );
+        regExp = new RegExp(word, "gi"),
+        replacing = "<span class=pre-keyword>" + word + "</span>";
+      replacedInner = pre.innerHTML.replace(regExp, replacing);
+      pre.innerHTML = replacedInner;
     }
   }
 }
 
 function clearTagsAtPreContainer() {
-  var preList = document.getElementsByTagName("PRE");
-  for (var i = 0; i <= preList.length - 1; i++) {
-    var preListTextContent = preList[i].textContent;
+  let preList = document.getElementsByTagName("PRE");
+  for (let i = 0; i <= preList.length - 1; i++) {
+    let preListTextContent = preList[i].textContent;
     preList[i].innerHTML = preListTextContent;
   }
 }
@@ -333,15 +334,14 @@ function clearTagsAtPreContainer() {
 function highlightNumbers() {
   let pres = document.getElementsByTagName("PRE");
 
-  for (var i = 0; i <= pres.length - 1; i++) {
+  for (let i = 0; i <= pres.length - 1; i++) {
     let pre = pres[i],
       preInnerHTML = pre.innerHTML,
       matches = preInnerHTML.match(/(\d+)/g),
-      // innerParts = [],
       whole = "";
 
     if (matches != null) {
-      for (var j = 0; j <= matches.length - 1; j++) {
+      for (let j = 0; j <= matches.length - 1; j++) {
         let match = matches[j],
           startIndexOfMatch = preInnerHTML.indexOf(match),
           endIndexOfMatch = startIndexOfMatch + match.length,
@@ -349,21 +349,15 @@ function highlightNumbers() {
           restOfInner = preInnerHTML.slice(
             endIndexOfMatch,
             preInnerHTML.length
-          );
+          ),
+          replacing = "<span class=pre-number>" + match + "</span>",
+          replacedPartOfInner = "";
 
-        // innerParts.push(partOfInner);
         preInnerHTML = restOfInner;
-
-        let replacedPartOfInner = partOfInner.replace(
-          match,
-          "<span class=pre-number>" + match + "</span>"
-        );
-
-        // partOfInner = replacedPartOfInner;
-
+        replacedPartOfInner = partOfInner.replace(match, replacing);
         whole = whole.concat(replacedPartOfInner);
       }
-      pre.innerHTML = whole;
+      pre.innerHTML = whole.concat(preInnerHTML);
     }
   }
 }
