@@ -19,10 +19,10 @@ function format(command, value) {
 
 function addDropdown(dropdownId) {
   let dropdown = document.getElementById(dropdownId),
-  dropdowns = document.querySelectorAll("[class*=dropdown]");
+    dropdowns = document.querySelectorAll("[class*=dropdown]");
 
   if (dropdowns.length > 0) {
-    for (var i = 0; i <= dropdowns.length - 1; i++) {
+    for (let i = 0; i <= dropdowns.length - 1; i++) {
       if (dropdowns[i] != dropdown) {
         dropdowns[i].className = "hidden";
       }
@@ -40,9 +40,9 @@ rangy.init();
 
 //Makes appliers with class name in ColorObject object
 function makeColorAppliers(ColorObject, classesNumber, colorName) {
-  var number = 0;
+  let number = 0;
   while (number <= classesNumber) {
-    className = "text-" + colorName.toLowerCase() + number;
+    let className = "text-" + colorName.toLowerCase() + number;
     ColorObject[colorName].Text[number] = rangy.createClassApplier(className);
 
     className = "background-" + colorName.toLowerCase() + number;
@@ -53,22 +53,22 @@ function makeColorAppliers(ColorObject, classesNumber, colorName) {
   }
 }
 
-var classesNumber = 4,
+let classesNumber = 4,
   ColorAppliers = {},
   colors = ["Black", "Red", "Orange", "Yellow", "Green", "Blue", "Violet"];
 //Add Text and Background objects to all colors
-for (var i = 0; i <= colors.length - 1; i++) {
+for (let i = 0; i <= colors.length - 1; i++) {
   ColorAppliers[colors[i]] = {};
   ColorAppliers[colors[i]]["Text"] = {};
   ColorAppliers[colors[i]]["Background"] = {};
 }
 
 //Make color appliers for colors in array
-for (var i = 0; i <= colors.length - 1; i++) {
+for (let i = 0; i <= colors.length - 1; i++) {
   makeColorAppliers(ColorAppliers, classesNumber, colors[i]);
 }
 
-var capitalizeFirstLetter = (string) =>
+let capitalizeFirstLetter = (string) =>
   string.charAt(0).toUpperCase() + string.slice(1);
 
 //Toggle class to selected text
@@ -80,7 +80,7 @@ function addColor(color, type, number) {
 }
 
 //Options to surround text with specific tag
-var Options = {
+let Options = {
   Strong: { elementTagName: "strong" },
   U: { elementTagName: "u" },
   Em: { elementTagName: "em" },
@@ -90,7 +90,7 @@ var Options = {
   Sub: { elementTagName: "sub" },
 };
 
-var TagAppliers = {
+let TagAppliers = {
   Strong: rangy.createClassApplier("strong", Options["Strong"]),
   U: rangy.createClassApplier("underlined", Options["U"]),
   Em: rangy.createClassApplier("emphasized", Options["Em"]),
@@ -100,17 +100,17 @@ var TagAppliers = {
   Sub: rangy.createClassApplier("subscript", Options["Sub"]),
 };
 
-var backgroundHighlightApplier = rangy.createClassApplier("background-yellow0");
+let backgroundHighlightApplier = rangy.createClassApplier("background-yellow0");
 
 //Add tag to selected text
-var time = 0;
+let time = 0;
 function addTag(tagName, url) {
   tagName = capitalizeFirstLetter(tagName);
   TagAppliers[tagName].toggleSelection();
   if (url) {
-    var anchors = document.querySelectorAll("[class=anchor]"),
+    let anchors = document.querySelectorAll("[class=anchor]"),
       url = document.getElementById("url");
-    for (var i = 0; i < anchors.length; i++) {
+    for (let i = 0; i < anchors.length; i++) {
       anchors[i].href = url.value;
       anchors[i].className = anchors[i].className + time;
     }
@@ -128,8 +128,8 @@ function findChild(element, parent) {
 }
 
 function replaceContainerTag(tag) {
-  var tag = tag.toUpperCase(),
-    selection = document.getSelection(),
+  var tag = tag.toUpperCase();
+  let selection = document.getSelection(),
     range = selection.getRangeAt(0),
     mainContainer = document.getElementById("work-area"),
     wrongContainer = document.getElementById("sample-toolbar"),
@@ -140,7 +140,7 @@ function replaceContainerTag(tag) {
     range.commonAncestorContainer != wrongContainer
     // && lastNode != mainContainer
   ) {
-    var firstSelectedElement = firstNode,
+    let firstSelectedElement = firstNode,
       lastSelectedElement = lastNode,
       startElement = range.startContainer,
       endElement = range.endContainer;
@@ -156,13 +156,13 @@ function replaceContainerTag(tag) {
     lastSelectedElement = findChild(lastSelectedElement, mainContainer);
     firstSelectedElement = findChild(firstSelectedElement, mainContainer);
 
-    var p = [],
-      iP = 0;
-    var tagData = {
-      tagName: tag,
-      tagCounter: 0,
-      selectedTags: [],
-    };
+    let p = [],
+      iP = 0,
+      tagData = {
+        tagName: tag,
+        tagCounter: 0,
+        selectedTags: [],
+      };
 
     do {
       if (firstSelectedElement.tagName == tagData.tagName) {
@@ -178,12 +178,12 @@ function replaceContainerTag(tag) {
     );
 
     if (iP != 0) {
-      for (var i = 0; i <= iP - 1; i++) {
+      for (let i = 0; i <= iP - 1; i++) {
         replaceElement(p[i], "p");
       }
     }
     if (tagData.tagCounter != 0) {
-      for (var i = 0; i <= tagData.tagCounter - 1; i++) {
+      for (let i = 0; i <= tagData.tagCounter - 1; i++) {
         replaceElement(tagData.selectedTags[i], tagData.tagName);
       }
     }
@@ -199,7 +199,7 @@ function replaceContainerTag(tag) {
 }
 
 function addContainerClass(className) {
-  var selection = document.getSelection(),
+  let selection = document.getSelection(),
     range = selection.getRangeAt(0),
     wrongContainer = document.getElementById("sample-toolbar"),
     firstNode = selection.anchorNode,
@@ -208,7 +208,7 @@ function addContainerClass(className) {
     firstNode.nodeName == "#text" &&
     range.commonAncestorContainer != wrongContainer
   ) {
-    var mainContainer = document.getElementById("work-area"),
+    let mainContainer = document.getElementById("work-area"),
       firstSelectedElement = firstNode,
       lastSelectedElement = lastNode,
       startElement = range.startContainer,
@@ -241,10 +241,10 @@ function addContainerClass(className) {
 clearExtraSpaces = (string) => string.replace(/\s+/g, " ");
 
 function clearExtraClasses() {
-  var classes = document.querySelectorAll("[class*=text-]");
+  let classes = document.querySelectorAll("[class*=text-]");
 
-  for (var i = 0; i < classes.length; i++) {
-    var classElement = classes[i],
+  for (let i = 0; i < classes.length; i++) {
+    let classElement = classes[i],
       className = () => classes[i].className,
       namesInClass = () => className().split(" "),
       lastNamesInClass = namesInClass();
@@ -254,11 +254,11 @@ function clearExtraClasses() {
       classElement.className = clearExtraSpaces(className());
     })();
 
-    var textClassesAmount = 0,
+    let textClassesAmount = 0,
       backgroundClassesAmount = 0,
       textBeginning = "text-",
       backgroundBeginning = "background-";
-    for (var j = 0; j <= lastNamesInClass.length - 1; j++) {
+    for (let j = 0; j <= lastNamesInClass.length - 1; j++) {
       if (
         lastNamesInClass[j].substring(0, textBeginning.length) == textBeginning
       ) {
@@ -272,7 +272,7 @@ function clearExtraClasses() {
     }
 
     function deleteExtraClasses(classesAmount, classBeginning) {
-      for (var j = 0; j <= classesAmount - 2; j++) {
+      for (let j = 0; j <= classesAmount - 2; j++) {
         if (
           lastNamesInClass[j].substring(0, classBeginning.length) ==
           classBeginning
