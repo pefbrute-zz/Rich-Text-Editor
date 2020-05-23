@@ -56,6 +56,7 @@ function makeColorAppliers(ColorObject, classesNumber, colorName) {
 let classesNumber = 4,
   ColorAppliers = {},
   colors = ["Black", "Red", "Orange", "Yellow", "Green", "Blue", "Violet"];
+
 //Add Text and Background objects to all colors
 for (let i = 0; i <= colors.length - 1; i++) {
   ColorAppliers[colors[i]] = {};
@@ -123,6 +124,7 @@ function findChild(element, parent) {
   while (element.parentElement != parent) {
     element = element.parentElement;
   }
+
   child = element;
   return child;
 }
@@ -157,7 +159,7 @@ function replaceContainerTag(tag) {
     firstSelectedElement = findChild(firstSelectedElement, mainContainer);
 
     let p = [],
-      iP = 0,
+      pCounter = 0,
       tagData = {
         tagName: tag,
         tagCounter: 0,
@@ -166,8 +168,8 @@ function replaceContainerTag(tag) {
 
     do {
       if (firstSelectedElement.tagName == tagData.tagName) {
-        p[iP] = firstSelectedElement;
-        iP++;
+        p[pCounter] = firstSelectedElement;
+        pCounter++;
       } else {
         tagData.selectedTags[tagData.tagCounter] = firstSelectedElement;
         tagData.tagCounter++;
@@ -177,8 +179,8 @@ function replaceContainerTag(tag) {
       firstSelectedElement.nextSibling != lastSelectedElement.nextElementSibling
     );
 
-    if (iP != 0) {
-      for (let i = 0; i <= iP - 1; i++) {
+    if (pCounter != 0) {
+      for (let i = 0; i <= pCounter - 1; i++) {
         replaceElement(p[i], "p");
       }
     }
@@ -271,23 +273,22 @@ function clearExtraClasses() {
       }
     }
 
-    function deleteExtraClasses(classesAmount, classBeginning) {
-      for (let j = 0; j <= classesAmount - 2; j++) {
-        if (
-          lastNamesInClass[j].substring(0, classBeginning.length) ==
-          classBeginning
-        ) {
-          lastNamesInClass.splice(j, 1);
-          classesAmount--;
-          j--;
-        }
-      }
-    }
-
     deleteExtraClasses(textClassesAmount, "text-");
     deleteExtraClasses(backgroundClassesAmount, "background-");
 
     classElement.className = lastNamesInClass.join(" ");
+  }
+}
+
+function deleteExtraClasses(classesAmount, classBeginning) {
+  for (let j = 0; j <= classesAmount - 2; j++) {
+    if (
+      lastNamesInClass[j].substring(0, classBeginning.length) == classBeginning
+    ) {
+      lastNamesInClass.splice(j, 1);
+      classesAmount--;
+      j--;
+    }
   }
 }
 
@@ -303,7 +304,9 @@ function replaceElement(source, newType) {
   // Empty the document fragment into it
   newElem.appendChild(frag);
   // Replace the source element with the new element on the page
-  source.parentNode.replaceChild(newElem, source);
+  let parentNode = source.parentNode;
+  
+  parentNode.replaceChild(newElem, source);
 }
 
 function highlightKeywords() {
