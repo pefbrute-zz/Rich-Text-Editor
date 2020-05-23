@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inconsolata&display=swap");
 
 body {
   background-color: #f4f5f5;
@@ -411,7 +411,7 @@ blockquote {
 }
 
 pre {
-  font-family: 'Inconsolata', monospace;
+  font-family: "Inconsolata", monospace;
   font-size: 0.8em;
   white-space: pre-wrap;
   margin-bottom: 5px;
@@ -423,6 +423,9 @@ pre {
   border-radius: 3px;
 }
 
-.pre-keyword{
+.pre-keyword {
   color: rgb(255, 22, 72);
+}
+.pre-number {
+  color: #ae81ff;
 }
