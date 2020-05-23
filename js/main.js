@@ -333,20 +333,61 @@ tests = () => {
   // console.log(document.getSelection());
   // console.log(document.getSelection().getRangeAt(0));
 
-  let pres = document.querySelectorAll("pre"),
-    numberRegExp = new RegExp("(\\d+)", "g");
-  console.log(numberRegExp);
+  let pres = document.getElementsByTagName("PRE");
   for (var i = 0; i <= pres.length - 1; i++) {
     let pre = pres[i],
       preInnerHTML = pre.innerHTML;
+    // clearInner = "";
+    // for (var j = 0; j <= pre.childNodes.length - 1; j++) {
+    //   if (pre.childNodes[j].nodeName == "#text") {
+    //     clearInner = clearInner.concat(pre.childNodes[j].textContent);
+    //     // clearInner = clearInner + pre.childNodes[i].textContent;
+    //   }
+    // }
+    // debugger;
+    // console.log(clearInner);
+    // var matches = clearInner.match(/(\d+)/g);
+    console.log(matches);
+    var matches = preInnerHTML.match(/(\d+)/g),
+      parts = [],
+      bigPart = '';
+    console.log(pre);
+    // console.log(clearInner.indexOf(matches[0]))
+    if (matches != null) {
+      for (var j = 0; j <= matches.length - 1; j++) {
+        // console.log(matches[j].length);
+        // console.log(
+        //   preInnerHTML.slice(
+        //     0,
+        //     preInnerHTML.indexOf(matches[j]) + matches[j].length
+        //   )
+        // );
 
-    console.log(numberRegExp.exec(preInnerHTML));
+        parts.push(
+          preInnerHTML.slice(
+            0,
+            preInnerHTML.indexOf(matches[j]) + matches[j].length
+          )
+        );
 
-    // pre.innerHTML = pre.innerHTML.replace(
-    //   numberRegExp,
-    //   "<span class=pre-keyword>" + numberRegExp.exec(pre.innerHTML) + "</span>"
-    // );
+        preInnerHTML = preInnerHTML.slice(preInnerHTML.indexOf(matches[j]) + matches[j].length, preInnerHTML.length)
+
+        parts[j] = parts[j].replace(
+          matches[j],
+          "<span class=pre-keyword>" + matches[j] + "</span>"
+        );
+
+        bigPart = bigPart.concat(parts[j])
+        // pre.innerHTML = pre.innerHTML.replace(
+        //   matches[j],
+        //   "<span class=pre-keyword>" + matches[j] + "</span>"
+        // );
+      }
+      console.log(bigPart);
+      pre.innerHTML = bigPart;
+    }
   }
+
   // var pres = document.querySelectorAll('pre');
   // for (var i = 0; i < pre.length - 1; i++){
   //   var pre = pres[i];
