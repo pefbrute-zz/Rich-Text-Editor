@@ -194,11 +194,16 @@ function replaceContainerTag(tag) {
 
     if (tag == "PRE") {
       clearTagsAtPreContainer();
+      removeSpellcheck();
       highlightNumbers();
       highlightKeywords();
     }
   }
 }
+
+// function highlightPre () {
+
+// }
 
 function addContainerClass(className) {
   let selection = document.getSelection(),
@@ -305,7 +310,7 @@ function replaceElement(source, newType) {
   newElem.appendChild(frag);
   // Replace the source element with the new element on the page
   let parentNode = source.parentNode;
-  
+
   parentNode.replaceChild(newElem, source);
 }
 
@@ -365,12 +370,15 @@ function highlightNumbers() {
   }
 }
 
+function removeSpellcheck () {
+  let pres = document.querySelectorAll("pre:not([spellcheck])");
+  for (let i = 0; i <= pres.length - 1; i++) {
+    let pre = pres[i];
+    pre.setAttribute("spellcheck", "false");
+  }
+}
+
 tests = () => {
   // console.log(document.getSelection());
   // console.log(document.getSelection().getRangeAt(0));
-  // var pres = document.querySelectorAll('pre');
-  // for (var i = 0; i < pre.length - 1; i++){
-  //   var pre = pres[i];
-  //   pre.setAttribute('spellcheck','false')
-  // }
 };
