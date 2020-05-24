@@ -6,17 +6,6 @@ function format(command, value) {
   document.execCommand(command, false, value);
 }
 
-// function setUrl() {
-//   var url = document.getElementById("txtFormatUrl").value;
-//   var sText = document.getSelection();
-//   document.execCommand(
-//     "insertHTML",
-//     false,
-//     '<a href="' + url + '" target="_blank">' + sText + "</a>"
-//   );
-//   document.getElementById("txtFormatUrl").value = "";
-// }
-
 function addDropdown(dropdownId) {
   let dropdown = document.getElementById(dropdownId),
     dropdowns = document.querySelectorAll("[class*=dropdown]");
@@ -194,6 +183,7 @@ function replaceContainerTag(tag) {
 
     if (tag == "PRE") {
       clearTagsAtPreContainer();
+      init();
       removeSpellcheck();
       highlightNumbers();
       highlightKeywords();
@@ -201,9 +191,56 @@ function replaceContainerTag(tag) {
   }
 }
 
-// function highlightPre () {
+function highlightPre() {
+  highlightNumbers();
+  highlightKeywords();
+  console.log("Hi!");
+}
 
+function init() {
+  var elements = document.querySelectorAll("pre:not([spellcheck])");
+  for (var i = 0; i <= elements.length - 1; i++) {
+    var element = elements[i];
+    element.addEventListener("onmouseover", highlightPre, false);
+    console.log(element);
+  }
+}
+
+// window.addEventListener("load", () => alert("Hi!"));
+
+// window.onload = () => {
+//   var elements = document.getElementsByTagName("PRE");
+//   for (var i = 0; i <= elements.length - 1; i++) {
+//     var element = elements[i];
+//     element.addEventListener("onmouseover", highlightPre);
+//     console.log(element);
+//   }
+// };
+
+// function init() {
+//   window.addEventListener(
+//     "load",
+//     () => {
+//       var elements = document.getElementsByTagName("PRE");
+//       for (var i = 0; i <= elements.length - 1; i++) {
+//         var element = elements[i];
+//         element.addEventListener("onmouseover", highlightPre);
+//         console.log(element);
+//       }
+//     },
+//     true
+//   );
 // }
+
+// window.addEventListener("DOMContentLoaded", () => {
+//   var elements = document.getElementsByTagName("PRE");
+//   for (var i = 0; i <= elements.length - 1; i++) {
+//     var element = elements[i];
+//     alert('Hi!');
+//     element.addEventListener("onmouseover", highlightPre);
+//     console.log(element);
+//   }
+// });
 
 function addContainerClass(className) {
   let selection = document.getSelection(),
@@ -370,7 +407,7 @@ function highlightNumbers() {
   }
 }
 
-function removeSpellcheck () {
+function removeSpellcheck() {
   let pres = document.querySelectorAll("pre:not([spellcheck])");
   for (let i = 0; i <= pres.length - 1; i++) {
     let pre = pres[i];
@@ -382,3 +419,10 @@ tests = () => {
   // console.log(document.getSelection());
   // console.log(document.getSelection().getRangeAt(0));
 };
+
+// function eventTest() {
+//   console.log("hiii!");
+// }
+
+// element = document.getElementById("butt");
+// element.addEventListener("click", eventTest, false);

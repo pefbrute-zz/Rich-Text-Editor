@@ -525,19 +525,51 @@
         <p><span class="text-black3">A</span>i!</p>
         <p><span class="text-red3">Bi!</span></p>
         <p>
-          <pre>Some cool <strong>code</strong>
+          <pre id="pRe">Some cool <strong>code</strong>
             while (smart) {do<span class="text-blue2">Smart</span>Things()}
             for (var i = 0; i fasf 1350; i++){}
           </pre>
           <pre>
             Hi <em>Ai</em>
           </pre>
+          <button id="butt">Click me!</button>
         </p>
       </div>
     </div>
-    <div></div>
     <script src="js/lib/rangy-core.js"></script>
     <script src="js/lib/rangy-classapplier.js"></script>
     <script src="js/main.js"></script>
+    <!-- <script type="text/javascript">
+      document.addEventListener(
+        "DOMContentLoaded",
+        () => {
+          var elements = document.getElementsByTagName("PRE");
+          for (var i = 0; i <= elements.length - 1; i++) {
+            var element = elements[i];
+            element.addEventListener("onmouseover", highlightPre);
+            console.log(element);
+          }
+        },
+        true
+      );
+    </script> -->
+    <script type="text/javascript">
+      function eventTest () {
+        console.log('hiii!');
+      }
+
+      // function highlightPre() {
+      //   highlightNumbers();
+      //   highlightKeywords();
+      //   console.log("Hi!");
+      // }
+
+      var elements = document.getElementsByTagName("PRE"),
+          element = elements[0];
+          element.addEventListener("mouseover", highlightPre, false);
+          
+      element = document.getElementById('butt');
+      element.addEventListener("click", eventTest, false);
+    </script>
   </body>
 </html>
