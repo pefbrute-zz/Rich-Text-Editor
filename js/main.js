@@ -183,7 +183,7 @@ function replaceContainerTag(tag) {
 
     if (tag == "PRE") {
       clearTagsAtPreContainer();
-      init();
+      // init();
       removeSpellcheck();
       highlightNumbers();
       highlightKeywords();
@@ -192,24 +192,32 @@ function replaceContainerTag(tag) {
 }
 
 function highlightPre() {
-  setTimeout(function() {
+  setTimeout(function () {
+    debugger;
+    let savedSelection = rangy.saveSelection();
     highlightNumbers();
     highlightKeywords();
+    rangy.restoreSelection(savedSelection);
+    savedSelection = 0;
     console.log("Hi!");
     // this.selectionStart = this.selectionEnd = this.value.length;
-  }, 1000);
+  }, 3000);
 }
 
-function init() {
-  var elements = document.querySelectorAll("pre:not([spellcheck])");
-  document.addEventListener("keydown", highlightPre, true);
-  for (var i = 0; i <= elements.length - 1; i++) {
-    var element = elements[i];
-    element.addEventListener("keydown", highlightPre, true);
-    console.log(element);
+document.body.onkeyup = function (e) {
+  if (e.keyCode == 32) {
+    highlightPre();
   }
-}
-
+};
+// function init() {
+//   var elements = document.querySelectorAll("pre:not([spellcheck])");
+//   document.addEventListener("keydown", highlightPre, true);
+//   for (var i = 0; i <= elements.length - 1; i++) {
+//     var element = elements[i];
+//     element.addEventListener("keydown", highlightPre, true);
+//     console.log(element);
+//   }
+// }
 
 function addContainerClass(className) {
   let selection = document.getSelection(),
@@ -329,13 +337,12 @@ function highlightKeywords() {
     // preInner = pre.innerHTML;
     for (let j = 0; j <= words.length - 1; j++) {
       let word = words[j],
-        regExp = new RegExp('\\b' + word + '\\b', "gi"),
+        regExp = new RegExp("\\b" + word + "\\b", "gi"),
         replacing = "<span class=pre-keyword>" + word + "</span>";
       replacedInner = pre.innerHTML.replace(regExp, replacing);
       pre.innerHTML = replacedInner;
     }
   }
-  
 }
 
 function clearTagsAtPreContainer() {
