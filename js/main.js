@@ -352,7 +352,7 @@ function highlightNumbers() {
   for (let i = 0; i <= pres.length - 1; i++) {
     let pre = pres[i],
       preInnerHTML = pre.innerHTML,
-      matches = preInnerHTML.match(/(\d+)/g),
+      matches = preInnerHTML.match(/(\b\d+\b)/g),
       whole = "";
 
     if (matches != null) {
