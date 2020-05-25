@@ -329,12 +329,13 @@ function highlightKeywords() {
     // preInner = pre.innerHTML;
     for (let j = 0; j <= words.length - 1; j++) {
       let word = words[j],
-        regExp = new RegExp(word, "gi"),
+        regExp = new RegExp('\\b' + word + '\\b', "gi"),
         replacing = "<span class=pre-keyword>" + word + "</span>";
       replacedInner = pre.innerHTML.replace(regExp, replacing);
       pre.innerHTML = replacedInner;
     }
   }
+  
 }
 
 function clearTagsAtPreContainer() {
