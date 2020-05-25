@@ -192,55 +192,24 @@ function replaceContainerTag(tag) {
 }
 
 function highlightPre() {
-  highlightNumbers();
-  highlightKeywords();
-  console.log("Hi!");
+  setTimeout(function() {
+    highlightNumbers();
+    highlightKeywords();
+    console.log("Hi!");
+    // this.selectionStart = this.selectionEnd = this.value.length;
+  }, 1000);
 }
 
 function init() {
   var elements = document.querySelectorAll("pre:not([spellcheck])");
+  document.addEventListener("keydown", highlightPre, true);
   for (var i = 0; i <= elements.length - 1; i++) {
     var element = elements[i];
-    element.addEventListener("onmouseover", highlightPre, false);
+    element.addEventListener("keydown", highlightPre, true);
     console.log(element);
   }
 }
 
-// window.addEventListener("load", () => alert("Hi!"));
-
-// window.onload = () => {
-//   var elements = document.getElementsByTagName("PRE");
-//   for (var i = 0; i <= elements.length - 1; i++) {
-//     var element = elements[i];
-//     element.addEventListener("onmouseover", highlightPre);
-//     console.log(element);
-//   }
-// };
-
-// function init() {
-//   window.addEventListener(
-//     "load",
-//     () => {
-//       var elements = document.getElementsByTagName("PRE");
-//       for (var i = 0; i <= elements.length - 1; i++) {
-//         var element = elements[i];
-//         element.addEventListener("onmouseover", highlightPre);
-//         console.log(element);
-//       }
-//     },
-//     true
-//   );
-// }
-
-// window.addEventListener("DOMContentLoaded", () => {
-//   var elements = document.getElementsByTagName("PRE");
-//   for (var i = 0; i <= elements.length - 1; i++) {
-//     var element = elements[i];
-//     alert('Hi!');
-//     element.addEventListener("onmouseover", highlightPre);
-//     console.log(element);
-//   }
-// });
 
 function addContainerClass(className) {
   let selection = document.getSelection(),
