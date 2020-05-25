@@ -192,21 +192,17 @@ function replaceContainerTag(tag) {
 }
 
 function highlightPre() {
-  setTimeout(function () {
-    debugger;
-    let savedSelection = rangy.saveSelection();
-    highlightNumbers();
-    highlightKeywords();
-    rangy.restoreSelection(savedSelection);
-    savedSelection = 0;
-    console.log("Hi!");
-    // this.selectionStart = this.selectionEnd = this.value.length;
-  }, 3000);
+  let savedSelection = rangy.saveSelection();
+  console.time();
+  highlightKeywords();
+  highlightNumbers();
+  rangy.restoreSelection(savedSelection);
+  console.timeEnd();
 }
 
 document.body.onkeyup = function (e) {
   if (e.keyCode == 32) {
-    highlightPre();
+    setTimeout(highlightPre(), 6500);
   }
 };
 // function init() {
@@ -345,42 +341,30 @@ function highlightKeywords() {
   }
 }
 
+function highlightNumbers() {
+  var preList = document.getElementsByTagName("PRE");
+
+  for (var i = 0; i <= preList.length - 1; i++) {
+    var regExp = new RegExp("\\b" + "\\d+" + "\\b", "gi"),
+      element = preList[i];
+    var matches = element.innerHTML.match(regExp);
+    if (matches != null) {
+      for (var j = 0; j <= matches.length - 1; j++) {
+        var match = matches[j],
+          replacing = "<span class=pre-number>" + match + "</span>",
+          regExp = new RegExp("\\b" + match + "\\b", "gi");
+        replacedInner = element.innerHTML.replace(regExp, replacing);
+        element.innerHTML = replacedInner;
+      }
+    }
+  }
+}
+
 function clearTagsAtPreContainer() {
   let preList = document.getElementsByTagName("PRE");
   for (let i = 0; i <= preList.length - 1; i++) {
     let preListTextContent = preList[i].textContent;
     preList[i].innerHTML = preListTextContent;
-  }
-}
-
-function highlightNumbers() {
-  let pres = document.getElementsByTagName("PRE");
-
-  for (let i = 0; i <= pres.length - 1; i++) {
-    let pre = pres[i],
-      preInnerHTML = pre.innerHTML,
-      matches = preInnerHTML.match(/(\b\d+\b)/g),
-      whole = "";
-
-    if (matches != null) {
-      for (let j = 0; j <= matches.length - 1; j++) {
-        let match = matches[j],
-          startIndexOfMatch = preInnerHTML.indexOf(match),
-          endIndexOfMatch = startIndexOfMatch + match.length,
-          partOfInner = preInnerHTML.slice(0, endIndexOfMatch),
-          restOfInner = preInnerHTML.slice(
-            endIndexOfMatch,
-            preInnerHTML.length
-          ),
-          replacing = "<span class=pre-number>" + match + "</span>",
-          replacedPartOfInner = "";
-
-        preInnerHTML = restOfInner;
-        replacedPartOfInner = partOfInner.replace(match, replacing);
-        whole = whole.concat(replacedPartOfInner);
-      }
-      pre.innerHTML = whole.concat(preInnerHTML);
-    }
   }
 }
 
@@ -392,10 +376,7 @@ function removeSpellcheck() {
   }
 }
 
-tests = () => {
-  // console.log(document.getSelection());
-  // console.log(document.getSelection().getRangeAt(0));
-};
+tests = () => {};
 
 // function eventTest() {
 //   console.log("hiii!");
