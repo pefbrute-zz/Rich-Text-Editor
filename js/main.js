@@ -2,6 +2,8 @@ window.addEventListener("load", function () {
   document.getElementById("work-area").setAttribute("contenteditable", "true");
 });
 
+// var docu
+
 function format(command, value) {
   document.execCommand(command, false, value);
 }
@@ -281,8 +283,7 @@ function clearExtraClasses() {
     let classElement = classes[i],
       className = () => classes[i].className,
       namesInClass = () => className().split(" "),
-      lastNamesInClass = namesInClass(),
-      lastNamesInClassLastElementIndex = lastNamesInClass.length - 1;
+      lastNamesInClass = namesInClass();
 
     (function ClearText() {
       classElement.className = className().trim();
@@ -295,7 +296,8 @@ function clearExtraClasses() {
       textBeginningLength = textBeginning.length,
       backgroundBeginning = "background-",
       backgroundBeginningLength = backgroundBeginning.length;
-    for (let j = 0; j <= lastNamesInClassLastElementIndex; j++) {
+
+    for (let j = 0; j <= lastNamesInClass.length - 1; j++) {
       if (
         lastNamesInClass[j].substring(0, textBeginningLength) == textBeginning
       ) {
@@ -308,22 +310,25 @@ function clearExtraClasses() {
       }
     }
 
+    function deleteExtraClasses(classesAmount, classBeginning) {
+      let classesAmountMinus2 = classesAmount - 2;
+      for (let j = 0; j <= classesAmountMinus2; j++) {
+        let textBeginning = lastNamesInClass[j].substring(
+          0,
+          classBeginning.length
+        );
+        if (textBeginning == classBeginning) {
+          lastNamesInClass.splice(j, 1);
+          classesAmountMinus2--;
+          j--;
+        }
+      }
+    }
+
     deleteExtraClasses(textClassesAmount, "text-");
     deleteExtraClasses(backgroundClassesAmount, "background-");
 
     classElement.className = lastNamesInClass.join(" ");
-  }
-}
-
-function deleteExtraClasses(classesAmount, classBeginning) {
-  for (let j = 0; j <= classesAmount - 2; j++) {
-    if (
-      lastNamesInClass[j].substring(0, classBeginning.length) == classBeginning
-    ) {
-      lastNamesInClass.splice(j, 1);
-      classesAmount--;
-      j--;
-    }
   }
 }
 
@@ -409,8 +414,6 @@ function highlightNumbers() {
         preElement.innerHTML = replacedInner;
       }
     }
-
-    console.log(preElement);
   } else {
     for (let i = 0; i <= preList.length - 1; i++) {
       let regExp = new RegExp("\\b" + "\\d+" + "\\b", "gi"),
