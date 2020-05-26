@@ -118,6 +118,7 @@ function findChild(element, parent) {
   }
 
   child = element;
+
   return child;
 }
 
@@ -170,9 +171,9 @@ function replaceContainerTag(tag) {
     } while (
       firstSelectedElement.nextSibling != lastSelectedElement.nextElementSibling
     );
-
+    pCounterMinus1 = pCounter - 1;
     if (pCounter != 0) {
-      for (let i = 0; i <= pCounter - 1; i++) {
+      for (let i = 0; i <= pCounterMinus1; i++) {
         replaceElement(p[i], "p");
       }
     }
@@ -210,9 +211,6 @@ function highlightPre() {
 //   }
 // };
 
-
-
-
 //turn on later
 
 // var timer = null;
@@ -222,9 +220,6 @@ function highlightPre() {
 // };
 
 //
-
-
-
 
 // function init() {
 //   var elements = document.querySelectorAll("pre:not([spellcheck])");
@@ -279,13 +274,15 @@ function addContainerClass(className) {
 clearExtraSpaces = (string) => string.replace(/\s+/g, " ");
 
 function clearExtraClasses() {
-  let classes = document.querySelectorAll("[class*=text-]");
+  let classes = document.querySelectorAll("[class*=text-]"),
+    classesLength = classes.length;
 
-  for (let i = 0; i < classes.length; i++) {
+  for (let i = 0; i < classesLength; i++) {
     let classElement = classes[i],
       className = () => classes[i].className,
       namesInClass = () => className().split(" "),
-      lastNamesInClass = namesInClass();
+      lastNamesInClass = namesInClass(),
+      lastNamesInClassLastElementIndex = lastNamesInClass.length - 1;
 
     (function ClearText() {
       classElement.className = className().trim();
@@ -295,14 +292,16 @@ function clearExtraClasses() {
     let textClassesAmount = 0,
       backgroundClassesAmount = 0,
       textBeginning = "text-",
-      backgroundBeginning = "background-";
-    for (let j = 0; j <= lastNamesInClass.length - 1; j++) {
+      textBeginningLength = textBeginning.length,
+      backgroundBeginning = "background-",
+      backgroundBeginningLength = backgroundBeginning.length;
+    for (let j = 0; j <= lastNamesInClassLastElementIndex; j++) {
       if (
-        lastNamesInClass[j].substring(0, textBeginning.length) == textBeginning
+        lastNamesInClass[j].substring(0, textBeginningLength) == textBeginning
       ) {
         textClassesAmount++;
       } else if (
-        lastNamesInClass[j].substring(0, backgroundBeginning.length) ==
+        lastNamesInClass[j].substring(0, backgroundBeginningLength) ==
         backgroundBeginning
       ) {
         backgroundClassesAmount++;
