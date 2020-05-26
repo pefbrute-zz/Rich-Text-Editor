@@ -8,10 +8,12 @@ function format(command, value) {
 
 function addDropdown(dropdownId) {
   let dropdown = document.getElementById(dropdownId),
-    dropdowns = document.querySelectorAll("[class*=dropdown]");
+    dropdowns = document.querySelectorAll("[class*=dropdown]"),
+    dropdownsLength = dropdowns.length,
+    dropdownsLastElementIndex = dropdownsLength - 1;
 
-  if (dropdowns.length > 0) {
-    for (let i = 0; i <= dropdowns.length - 1; i++) {
+  if (dropdownsLength > 0) {
+    for (let i = 0; i <= dropdownsLastElementIndex; i++) {
       if (dropdowns[i] != dropdown) {
         dropdowns[i].className = "hidden";
       }
@@ -30,6 +32,7 @@ rangy.init();
 //Makes appliers with class name in ColorObject object
 function makeColorAppliers(ColorObject, classesNumber, colorName) {
   let number = 0;
+
   while (number <= classesNumber) {
     let className = "text-" + colorName.toLowerCase() + number;
     ColorObject[colorName].Text[number] = rangy.createClassApplier(className);
@@ -44,17 +47,18 @@ function makeColorAppliers(ColorObject, classesNumber, colorName) {
 
 let classesNumber = 4,
   ColorAppliers = {},
-  colors = ["Black", "Red", "Orange", "Yellow", "Green", "Blue", "Violet"];
+  colors = ["Black", "Red", "Orange", "Yellow", "Green", "Blue", "Violet"],
+  colorsLastElementIndex = colors.length - 1;
 
 //Add Text and Background objects to all colors
-for (let i = 0; i <= colors.length - 1; i++) {
+for (let i = 0; i <= colorsLastElementIndex; i++) {
   ColorAppliers[colors[i]] = {};
   ColorAppliers[colors[i]]["Text"] = {};
   ColorAppliers[colors[i]]["Background"] = {};
 }
 
 //Make color appliers for colors in array
-for (let i = 0; i <= colors.length - 1; i++) {
+for (let i = 0; i <= colorsLastElementIndex; i++) {
   makeColorAppliers(ColorAppliers, classesNumber, colors[i]);
 }
 
@@ -90,8 +94,6 @@ let TagAppliers = {
   Sub: rangy.createClassApplier("subscript", Options["Sub"]),
 };
 
-let backgroundHighlightApplier = rangy.createClassApplier("background-yellow0");
-
 //Add tag to selected text
 let time = 0;
 function addTag(tagName, url) {
@@ -99,8 +101,9 @@ function addTag(tagName, url) {
   TagAppliers[tagName].toggleSelection();
   if (url) {
     let anchors = document.querySelectorAll("[class=anchor]"),
+      anchorsLength = anchors.length,
       url = document.getElementById("url");
-    for (let i = 0; i < anchors.length; i++) {
+    for (let i = 0; i < anchorsLength; i++) {
       anchors[i].href = url.value;
       anchors[i].className = anchors[i].className + time;
     }
@@ -197,14 +200,32 @@ function highlightPre() {
   highlightKeywords();
   highlightNumbers();
   rangy.restoreSelection(savedSelection);
+  localStorage.clear();
   console.timeEnd();
 }
 
-document.body.onkeyup = function (e) {
-  if (e.keyCode == 32) {
-    setTimeout(highlightPre(), 6500);
-  }
-};
+// document.body.onkeyup = function (e) {
+//   if (e.keyCode == 32) {
+//     setTimeout(highlightPre(), 6500);
+//   }
+// };
+
+
+
+
+//turn on later
+
+// var timer = null;
+// document.body.onkeyup = function () {
+//   clearTimeout(timer);
+//   timer = setTimeout(highlightPre, 900);
+// };
+
+//
+
+
+
+
 // function init() {
 //   var elements = document.querySelectorAll("pre:not([spellcheck])");
 //   document.addEventListener("keydown", highlightPre, true);
@@ -325,13 +346,36 @@ function replaceElement(source, newType) {
 }
 
 function highlightKeywords() {
-  let preList = document.getElementsByTagName("PRE"),
-    words = ["for", "while", "var", "and", "is"];
+  let words = ["for", "while", "var", "and", "is"],
+    // selection = document.getSelection(),
+    // preElement = selection.anchorNode,
+    wordsLastElementIndex = words.length - 1;
 
-  for (let i = 0; i <= preList.length - 1; i++) {
+  // if (selection.type == "Caret") {
+  //   while (preElement.tagName != "PRE") {
+  //     preElement = preElement.parentElement;
+  //   }
+  //   let regExp = new RegExp("\\b" + "\\d+" + "\\b", "gi"),
+  //     matches = preElement.innerHTML.match(regExp),
+  //     matchesLastElementIndex = matches.length - 1;
+  //   if (matches != null) {
+  //     for (let j = 0; j <= matchesLastElementIndex; j++) {
+  //       let match = matches[j],
+  //         replacing = "<span class=pre-number>" + match + "</span>",
+  //         regExp = new RegExp("\\b" + match + "\\b", "gi");
+  //       replacedInner = preElement.innerHTML.replace(regExp, replacing);
+  //       preElement.innerHTML = replacedInner;
+  //     }
+  //   }
+  // } else {
+  let preList = document.getElementsByTagName("PRE"),
+    preListLastIndexElement = preList.length - 1;
+
+  for (let i = 0; i <= preListLastIndexElement; i++) {
     let pre = preList[i];
     // preInner = pre.innerHTML;
-    for (let j = 0; j <= words.length - 1; j++) {
+
+    for (let j = 0; j <= wordsLastElementIndex; j++) {
       let word = words[j],
         regExp = new RegExp("\\b" + word + "\\b", "gi"),
         replacing = "<span class=pre-keyword>" + word + "</span>";
@@ -339,22 +383,49 @@ function highlightKeywords() {
       pre.innerHTML = replacedInner;
     }
   }
+  // }
 }
 
 function highlightNumbers() {
-  var preList = document.getElementsByTagName("PRE");
+  let preList = document.getElementsByTagName("PRE"),
+    selection = document.getSelection(),
+    preElement = selection.anchorNode;
 
-  for (var i = 0; i <= preList.length - 1; i++) {
-    var regExp = new RegExp("\\b" + "\\d+" + "\\b", "gi"),
-      element = preList[i];
-    var matches = element.innerHTML.match(regExp);
+  if (selection.type == "Caret") {
+    while (preElement.tagName != "PRE") {
+      preElement = preElement.parentElement;
+    }
+
+    let regExp = new RegExp("\\b" + "\\d+" + "\\b", "gi"),
+      matches = preElement.innerHTML.match(regExp),
+      matchesLastElementIndex = matches.length - 1;
+
     if (matches != null) {
-      for (var j = 0; j <= matches.length - 1; j++) {
-        var match = matches[j],
+      for (let j = 0; j <= matchesLastElementIndex; j++) {
+        let match = matches[j],
           replacing = "<span class=pre-number>" + match + "</span>",
           regExp = new RegExp("\\b" + match + "\\b", "gi");
-        replacedInner = element.innerHTML.replace(regExp, replacing);
-        element.innerHTML = replacedInner;
+
+        replacedInner = preElement.innerHTML.replace(regExp, replacing);
+        preElement.innerHTML = replacedInner;
+      }
+    }
+
+    console.log(preElement);
+  } else {
+    for (let i = 0; i <= preList.length - 1; i++) {
+      let regExp = new RegExp("\\b" + "\\d+" + "\\b", "gi"),
+        element = preList[i],
+        matches = element.innerHTML.match(regExp);
+
+      if (matches != null) {
+        for (let j = 0; j <= matches.length - 1; j++) {
+          let match = matches[j],
+            replacing = "<span class=pre-number>" + match + "</span>",
+            regExp = new RegExp("\\b" + match + "\\b", "gi");
+          replacedInner = element.innerHTML.replace(regExp, replacing);
+          element.innerHTML = replacedInner;
+        }
       }
     }
   }
@@ -376,7 +447,17 @@ function removeSpellcheck() {
   }
 }
 
-tests = () => {};
+// function addTabIndex() {
+// }
+
+tests = () => {
+  let pres = document.querySelectorAll("pre:not([tabindex])");
+  console.log(pres);
+  for (let i = 0; i <= pres.length - 1; i++) {
+    let pre = pres[i];
+    pre.setAttribute("tabindex", "0");
+  }
+};
 
 // function eventTest() {
 //   console.log("hiii!");
