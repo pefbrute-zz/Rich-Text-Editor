@@ -205,32 +205,6 @@ function highlightPre() {
   console.timeEnd();
 }
 
-// document.body.onkeyup = function (e) {
-//   if (e.keyCode == 32) {
-//     setTimeout(highlightPre(), 6500);
-//   }
-// };
-
-//turn on later
-
-// var timer = null;
-// document.body.onkeyup = function () {
-//   clearTimeout(timer);
-//   timer = setTimeout(highlightPre, 900);
-// };
-
-//
-
-// function init() {
-//   var elements = document.querySelectorAll("pre:not([spellcheck])");
-//   document.addEventListener("keydown", highlightPre, true);
-//   for (var i = 0; i <= elements.length - 1; i++) {
-//     var element = elements[i];
-//     element.addEventListener("keydown", highlightPre, true);
-//     console.log(element);
-//   }
-// }
-
 function addContainerClass(className) {
   let selection = document.getSelection(),
     range = selection.getRangeAt(0),
