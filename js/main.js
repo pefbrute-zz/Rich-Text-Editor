@@ -238,7 +238,11 @@ function addContainerClass(className) {
       do {
         let firstSelectedElementClassName = firstSelectedElement.className;
         if (firstSelectedElementClassName != undefined) {
-          if (firstSelectedElementClassName.substring(0, 6) == classBeginning) {
+          let firstSelectedElementClassNameBeginning = firstSelectedElementClassName.substring(
+            0,
+            6
+          );
+          if (firstSelectedElementClassNameBeginning == classBeginning) {
             if (firstSelectedElement.attributes["data-value"] != undefined) {
               let value = parseInt(
                 firstSelectedElement.attributes["data-value"].nodeValue
@@ -246,15 +250,18 @@ function addContainerClass(className) {
               if (sign == "+") {
                 if (value <= 7) {
                   value++;
+
                   firstSelectedElement.attributes[
                     "data-value"
                   ].nodeValue = value;
+
                   firstSelectedElement.className = classBeginning + "-" + value;
                 }
               } else if (value >= 1) {
                 if (value == 1) {
                   firstSelectedElement.removeAttribute("data-value");
-                  firstSelectedElement.className = "";
+
+                  firstSelectedElement.removeAttribute("class");
                 } else {
                   value--;
                   firstSelectedElement.attributes[
@@ -268,6 +275,7 @@ function addContainerClass(className) {
             firstSelectedElement.setAttribute("data-value", 1);
 
             let value = firstSelectedElement.attributes["data-value"].value;
+
             firstSelectedElement.className = classBeginning + "-" + value;
           }
         }
