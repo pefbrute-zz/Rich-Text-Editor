@@ -2,11 +2,36 @@ window.addEventListener("load", function () {
   document.getElementById("work-area").setAttribute("contenteditable", "true");
 });
 
-// var docu
-
 function format(command, value) {
   document.execCommand(command, false, value);
 }
+
+var workArea = document.getElementById("work-area"),
+  workAreaCopy = workArea.cloneNode(true);
+
+tests = () => {
+  console.log(workAreaCopy.querySelectorAll("pre"));
+
+  let dropdown = workAreaCopy.querySelector("#text-dropdown"),
+    dropdowns = workAreaCopy.querySelectorAll("[class*=dropdown]"),
+    dropdownsLength = dropdowns.length,
+    dropdownsLastElementIndex = dropdownsLength - 1;
+
+  if (dropdownsLength > 0) {
+    for (let i = 0; i <= dropdownsLastElementIndex; i++) {
+      if (dropdowns[i] != dropdown) {
+        dropdowns[i].className = "hidden";
+      }
+    }
+  }
+  if (dropdown != null) {
+    if (dropdown.className == "text-dropdown") {
+      dropdown.className = "hidden";
+    } else {
+      dropdown.className = "text-dropdown";
+    }
+  }
+};
 
 function addDropdown(dropdownId) {
   let dropdown = document.getElementById(dropdownId),
@@ -450,16 +475,13 @@ function removeSpellcheck() {
 }
 
 // function addTabIndex() {
+// let pres = document.querySelectorAll("pre:not([tabindex])");
+// console.log(pres);
+// for (let i = 0; i <= pres.length - 1; i++) {
+//   let pre = pres[i];
+//   pre.setAttribute("tabindex", "0");
 // }
-
-tests = () => {
-  let pres = document.querySelectorAll("pre:not([tabindex])");
-  console.log(pres);
-  for (let i = 0; i <= pres.length - 1; i++) {
-    let pre = pres[i];
-    pre.setAttribute("tabindex", "0");
-  }
-};
+// }
 
 // function eventTest() {
 //   console.log("hiii!");
