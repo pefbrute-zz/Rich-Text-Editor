@@ -260,27 +260,15 @@ function addContainerClass(className) {
 
     if (className.substring(0, 6) == "indent") {
       do {
-        // debugger
         if (firstSelectedElement.className != undefined) {
-          // console.log(firstSelectedElement.attributes["data-value"] != undefined);
-          console.log(
-            firstSelectedElement.className.substring(0, 6),
-            firstSelectedElement,
-            className
-          );
           if (
             firstSelectedElement.className.substring(0, 6) ==
             className.substring(0, 6)
           ) {
-            // firstSelectedElement.className = "";
-            console.log(
-              firstSelectedElement.attributes["data-value"] != undefined
-            );
             if (firstSelectedElement.attributes["data-value"] != undefined) {
               let value = parseInt(
                 firstSelectedElement.attributes["data-value"].nodeValue
               );
-              console.log(className.substring(6, 7));
               if (className.substring(6, 7) == "+") {
                 if (value <= 7) {
                   value++;
@@ -310,7 +298,6 @@ function addContainerClass(className) {
             let value = firstSelectedElement.attributes["data-value"].value;
             firstSelectedElement.className =
               className.substring(0, 6) + "-" + value;
-            console.log(firstSelectedElement.className);
           }
         }
         firstSelectedElement = firstSelectedElement.nextSibling;
