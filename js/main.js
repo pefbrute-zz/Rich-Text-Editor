@@ -284,7 +284,9 @@ function addContainerClass(className) {
               if (className.substring(6, 7) == "+") {
                 if (value <= 7) {
                   value++;
-                  firstSelectedElement.attributes["data-value"].nodeValue = value;
+                  firstSelectedElement.attributes[
+                    "data-value"
+                  ].nodeValue = value;
                   firstSelectedElement.className =
                     className.substring(0, 6) + "-" + value;
                 }
@@ -294,7 +296,9 @@ function addContainerClass(className) {
                   firstSelectedElement.className = "";
                 } else {
                   value--;
-                  firstSelectedElement.attributes["data-value"].nodeValue = value;
+                  firstSelectedElement.attributes[
+                    "data-value"
+                  ].nodeValue = value;
                   firstSelectedElement.className =
                     className.substring(0, 6) + "-" + value;
                 }
@@ -302,7 +306,7 @@ function addContainerClass(className) {
             }
           } else if (className == "indent+") {
             firstSelectedElement.setAttribute("data-value", 1);
-  
+
             let value = firstSelectedElement.attributes["data-value"].value;
             firstSelectedElement.className =
               className.substring(0, 6) + "-" + value;
@@ -311,7 +315,8 @@ function addContainerClass(className) {
         }
         firstSelectedElement = firstSelectedElement.nextSibling;
       } while (
-        firstSelectedElement.nextSibling != lastSelectedElement.nextElementSibling
+        firstSelectedElement.nextSibling !=
+        lastSelectedElement.nextElementSibling
       );
     } else {
       do {
@@ -322,7 +327,8 @@ function addContainerClass(className) {
         }
         firstSelectedElement = firstSelectedElement.nextSibling;
       } while (
-        firstSelectedElement.nextSibling != lastSelectedElement.nextElementSibling
+        firstSelectedElement.nextSibling !=
+        lastSelectedElement.nextElementSibling
       );
     }
   }
