@@ -429,3 +429,35 @@ pre {
 .pre-number {
   color: #ae81ff;
 }
+
+.indent-1{
+  padding-left: 3em;
+}
+
+.indent-2{
+  padding-left: 6em;
+}
+
+.indent-3{
+  padding-left: 9em;
+}
+
+.indent-4{
+  padding-left: 12em;
+}
+
+.indent-5{
+  padding-left: 15em;
+}
+
+.indent-6{
+  padding-left: 18em;
+}
+
+.indent-7{
+  padding-left: 21em;
+}
+
+.indent-8{
+  padding-left: 24em;
+}

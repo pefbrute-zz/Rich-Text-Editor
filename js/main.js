@@ -6,33 +6,6 @@ function format(command, value) {
   document.execCommand(command, false, value);
 }
 
-var workArea = document.getElementById("work-area"),
-  workAreaCopy = workArea.cloneNode(true);
-
-tests = () => {
-  console.log(workAreaCopy.querySelectorAll("pre"));
-
-  let dropdown = workAreaCopy.querySelector("#text-dropdown"),
-    dropdowns = workAreaCopy.querySelectorAll("[class*=dropdown]"),
-    dropdownsLength = dropdowns.length,
-    dropdownsLastElementIndex = dropdownsLength - 1;
-
-  if (dropdownsLength > 0) {
-    for (let i = 0; i <= dropdownsLastElementIndex; i++) {
-      if (dropdowns[i] != dropdown) {
-        dropdowns[i].className = "hidden";
-      }
-    }
-  }
-  if (dropdown != null) {
-    if (dropdown.className == "text-dropdown") {
-      dropdown.className = "hidden";
-    } else {
-      dropdown.className = "text-dropdown";
-    }
-  }
-};
-
 function addDropdown(dropdownId) {
   let dropdown = document.getElementById(dropdownId),
     dropdowns = document.querySelectorAll("[class*=dropdown]"),
@@ -376,27 +349,7 @@ function replaceElement(source, newType) {
 
 function highlightKeywords() {
   let words = ["for", "while", "var", "and", "is"],
-    // selection = document.getSelection(),
-    // preElement = selection.anchorNode,
     wordsLastElementIndex = words.length - 1;
-
-  // if (selection.type == "Caret") {
-  //   while (preElement.tagName != "PRE") {
-  //     preElement = preElement.parentElement;
-  //   }
-  //   let regExp = new RegExp("\\b" + "\\d+" + "\\b", "gi"),
-  //     matches = preElement.innerHTML.match(regExp),
-  //     matchesLastElementIndex = matches.length - 1;
-  //   if (matches != null) {
-  //     for (let j = 0; j <= matchesLastElementIndex; j++) {
-  //       let match = matches[j],
-  //         replacing = "<span class=pre-number>" + match + "</span>",
-  //         regExp = new RegExp("\\b" + match + "\\b", "gi");
-  //       replacedInner = preElement.innerHTML.replace(regExp, replacing);
-  //       preElement.innerHTML = replacedInner;
-  //     }
-  //   }
-  // } else {
   let preList = document.getElementsByTagName("PRE"),
     preListLastIndexElement = preList.length - 1;
 
@@ -474,18 +427,90 @@ function removeSpellcheck() {
   }
 }
 
-// function addTabIndex() {
-// let pres = document.querySelectorAll("pre:not([tabindex])");
-// console.log(pres);
-// for (let i = 0; i <= pres.length - 1; i++) {
-//   let pre = pres[i];
-//   pre.setAttribute("tabindex", "0");
-// }
-// }
+//upgrade this function
+function addIndent(className) {
+  let selection = document.getSelection(),
+    range = selection.getRangeAt(0),
+    wrongContainer = document.getElementById("sample-toolbar"),
+    firstNode = selection.anchorNode,
+    lastNode = selection.focusNode;
+  if (
+    firstNode.nodeName == "#text" &&
+    range.commonAncestorContainer != wrongContainer
+  ) {
+    let mainContainer = document.getElementById("work-area"),
+      firstSelectedElement = firstNode,
+      lastSelectedElement = lastNode,
+      startElement = range.startContainer,
+      endElement = range.endContainer;
 
-// function eventTest() {
-//   console.log("hiii!");
-// }
+    if (
+      firstSelectedElement != startElement &&
+      lastSelectedElement != endElement
+    ) {
+      firstSelectedElement = lastNode;
+      lastSelectedElement = firstNode;
+    }
 
-// element = document.getElementById("butt");
-// element.addEventListener("click", eventTest, false);
+    lastSelectedElement = findChild(lastSelectedElement, mainContainer);
+    firstSelectedElement = findChild(firstSelectedElement, mainContainer);
+
+    do {
+      // debugger
+      if (firstSelectedElement.className != undefined) {
+        // console.log(firstSelectedElement.attributes["data-value"] != undefined);
+        console.log(
+          firstSelectedElement.className.substring(0, 6),
+          firstSelectedElement,
+          className
+        );
+        if (
+          firstSelectedElement.className.substring(0, 6) ==
+          className.substring(0, 6)
+        ) {
+          // firstSelectedElement.className = "";
+          console.log(
+            firstSelectedElement.attributes["data-value"] != undefined
+          );
+          if (firstSelectedElement.attributes["data-value"] != undefined) {
+            let value = parseInt(
+              firstSelectedElement.attributes["data-value"].nodeValue
+            );
+            console.log(className.substring(6, 7));
+            // if (value <= 7) {
+            if (className.substring(6, 7) == "+") {
+              if (value <= 7) {
+                value++;
+                firstSelectedElement.attributes["data-value"].nodeValue = value;
+                firstSelectedElement.className =
+                  className.substring(0, 6) + "-" + value;
+              }
+            } else if (value >= 2) {
+              value--;
+              firstSelectedElement.attributes["data-value"].nodeValue = value;
+              firstSelectedElement.className =
+                className.substring(0, 6) + "-" + value;
+            }
+            // }
+          }
+        } else {
+          firstSelectedElement.setAttribute("data-value", 1);
+          // firstSelectedElement.attributes["data-value"].value = 1;
+
+          let value = firstSelectedElement.attributes["data-value"].value;
+          firstSelectedElement.className = className + value;
+        }
+      }
+      firstSelectedElement = firstSelectedElement.nextSibling;
+    } while (
+      firstSelectedElement.nextSibling != lastSelectedElement.nextElementSibling
+    );
+  }
+}
+
+tests = () => {
+  let selection = document.getSelection(),
+    anchorNode = selection.anchorNode;
+  console.log(anchorNode.parentElement.attributes["data-value"].nodeValue);
+  // if (anchorNode)
+};

@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="fontawesome-free-5.13.0-web/css/all.css" />
     <link rel="stylesheet" href="css/normalize.css" />
     <link rel="stylesheet" href="css/main.css" />
-    <title>Sample Text Editor</title>
+    <title>Text Editor</title>
   </head>
   <body>
     <div class="editor">
@@ -486,6 +486,12 @@
         <a class="icon" href="javascript:void(0)" onclick="replaceContainerTag('pre')">
           <i class="fas fa-code"></i>
         </a>
+        <a class="icon" href="javascript:void(0)" onclick="addIndent('indent-')">
+          <i class="fas fa-outdent"></i>
+        </a>
+        <a class="icon" href="javascript:void(0)" onclick="addIndent('indent+')">
+          <i class="fas fa-indent"></i>
+        </a>
         <a class="icon" href="javascript:void(0)" onclick="addTag('a', 'true')">
           <i class="fa fa-link fa-fw"></i>
         </a>
@@ -502,11 +508,12 @@
       </div>
 
       <div class="work-area" contenteditable="true" id="work-area">
-        <p>H<strong>i!</strong></p>
-        <p>
+        <p data-value=1>Hi!</p>
+        <p>Bye!</p>
+        <!-- <p>
           <strong>Ai!</strong>
-        </p>
-        <p>
+        </p> -->
+        <!-- <p>
           Bi! 23 123123 123 4242 424 leeeel
         </p>
         <br />
@@ -531,8 +538,7 @@
           </pre>
           <pre>
             Hi <em>Ai</em>
-          </pre>
-          <!-- <button id="butt">Click me!</button> -->
+          </pre> -->
         </p>
       </div>
     </div>
