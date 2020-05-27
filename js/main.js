@@ -477,7 +477,6 @@ function addIndent(className) {
               firstSelectedElement.attributes["data-value"].nodeValue
             );
             console.log(className.substring(6, 7));
-            // if (value <= 7) {
             if (className.substring(6, 7) == "+") {
               if (value <= 7) {
                 value++;
@@ -485,20 +484,25 @@ function addIndent(className) {
                 firstSelectedElement.className =
                   className.substring(0, 6) + "-" + value;
               }
-            } else if (value >= 2) {
-              value--;
-              firstSelectedElement.attributes["data-value"].nodeValue = value;
-              firstSelectedElement.className =
-                className.substring(0, 6) + "-" + value;
+            } else if (value >= 1) {
+              if (value == 1) {
+                firstSelectedElement.removeAttribute("data-value");
+                firstSelectedElement.className = "";
+              } else {
+                value--;
+                firstSelectedElement.attributes["data-value"].nodeValue = value;
+                firstSelectedElement.className =
+                  className.substring(0, 6) + "-" + value;
+              }
             }
-            // }
           }
-        } else {
+        } else if (className == "indent+") {
           firstSelectedElement.setAttribute("data-value", 1);
-          // firstSelectedElement.attributes["data-value"].value = 1;
 
           let value = firstSelectedElement.attributes["data-value"].value;
-          firstSelectedElement.className = className + value;
+          firstSelectedElement.className =
+            className.substring(0, 6) + "-" + value;
+          console.log(firstSelectedElement.className);
         }
       }
       firstSelectedElement = firstSelectedElement.nextSibling;
