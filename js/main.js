@@ -259,24 +259,23 @@ function addContainerClass(className) {
     firstSelectedElement = findChild(firstSelectedElement, mainContainer);
 
     if (className.substring(0, 6) == "indent") {
+      let sign = className.substring(6, 7),
+        classBeginning = className.substring(0, 6);
       do {
-        if (firstSelectedElement.className != undefined) {
-          if (
-            firstSelectedElement.className.substring(0, 6) ==
-            className.substring(0, 6)
-          ) {
+        let firstSelectedElementClassName = firstSelectedElement.className;
+        if (firstSelectedElementClassName != undefined) {
+          if (firstSelectedElementClassName.substring(0, 6) == classBeginning) {
             if (firstSelectedElement.attributes["data-value"] != undefined) {
               let value = parseInt(
                 firstSelectedElement.attributes["data-value"].nodeValue
               );
-              if (className.substring(6, 7) == "+") {
+              if (sign == "+") {
                 if (value <= 7) {
                   value++;
                   firstSelectedElement.attributes[
                     "data-value"
                   ].nodeValue = value;
-                  firstSelectedElement.className =
-                    className.substring(0, 6) + "-" + value;
+                  firstSelectedElement.className = classBeginning + "-" + value;
                 }
               } else if (value >= 1) {
                 if (value == 1) {
@@ -287,8 +286,7 @@ function addContainerClass(className) {
                   firstSelectedElement.attributes[
                     "data-value"
                   ].nodeValue = value;
-                  firstSelectedElement.className =
-                    className.substring(0, 6) + "-" + value;
+                  firstSelectedElement.className = classBeginning + "-" + value;
                 }
               }
             }
@@ -296,8 +294,7 @@ function addContainerClass(className) {
             firstSelectedElement.setAttribute("data-value", 1);
 
             let value = firstSelectedElement.attributes["data-value"].value;
-            firstSelectedElement.className =
-              className.substring(0, 6) + "-" + value;
+            firstSelectedElement.className = classBeginning + "-" + value;
           }
         }
         firstSelectedElement = firstSelectedElement.nextSibling;
