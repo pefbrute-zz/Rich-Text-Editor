@@ -122,6 +122,35 @@ function findChild(element, parent) {
   return child;
 }
 
+function replaceElement(source, newType) {
+  let attributes = [];
+
+  // Create the document fragment
+  const frag = document.createDocumentFragment();
+
+  // Fill it with what's in the source element
+  while (source.firstChild) {
+    for (let i = 0; i < source.attributes.length; i++) {
+      attributes.push(source.attributes[i]);
+    }
+    frag.appendChild(source.firstChild);
+  }
+  // Create the new element
+  const newElem = document.createElement(newType);
+
+  // Empty the document fragment into it
+  newElem.appendChild(frag);
+  let length = attributes.length;
+  for (let i = 0; i <= length - 1; i++) {
+    newElem.setAttribute(attributes[i].name, attributes[i].value);
+  }
+
+  // Replace the source element with the new element on the page
+  let parentNode = source.parentNode;
+
+  parentNode.replaceChild(newElem, source);
+}
+
 function replaceContainerTag(tag) {
   var tag = tag.toUpperCase();
   let selection = document.getSelection(),
@@ -232,12 +261,17 @@ function addContainerClass(className) {
     lastSelectedElement = findChild(lastSelectedElement, mainContainer);
     firstSelectedElement = findChild(firstSelectedElement, mainContainer);
 
+    debugger;
     if (className.substring(0, 6) == "indent") {
       let sign = className.substring(6, 7),
         classBeginning = className.substring(0, 6);
       do {
         let firstSelectedElementClassName = firstSelectedElement.className;
+        console.log(firstSelectedElementClassName);
         if (firstSelectedElementClassName != undefined) {
+          firstSelectedElementClassName = clearExtraSpaces(
+            firstSelectedElementClassName
+          );
           let firstSelectedElementClassNameBeginning = firstSelectedElementClassName.substring(
             0,
             6
@@ -357,23 +391,6 @@ function clearExtraClasses() {
 
     classElement.className = lastNamesInClass.join(" ");
   }
-}
-
-function replaceElement(source, newType) {
-  // Create the document fragment
-  const frag = document.createDocumentFragment();
-  // Fill it with what's in the source element
-  while (source.firstChild) {
-    frag.appendChild(source.firstChild);
-  }
-  // Create the new element
-  const newElem = document.createElement(newType);
-  // Empty the document fragment into it
-  newElem.appendChild(frag);
-  // Replace the source element with the new element on the page
-  let parentNode = source.parentNode;
-
-  parentNode.replaceChild(newElem, source);
 }
 
 function highlightKeywords() {
