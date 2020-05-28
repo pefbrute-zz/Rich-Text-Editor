@@ -65,6 +65,63 @@ for (let i = 0; i <= colorsLastElementIndex; i++) {
 let capitalizeFirstLetter = (string) =>
   string.charAt(0).toUpperCase() + string.slice(1);
 
+function clearExtraClasses() {
+  let classes = document.querySelectorAll("[class*=text-]"),
+    classesLength = classes.length;
+
+  for (let i = 0; i < classesLength; i++) {
+    let classElement = classes[i],
+      className = () => classes[i].className,
+      namesInClass = () => className().split(" "),
+      lastNamesInClass = namesInClass();
+
+    (function ClearText() {
+      classElement.className = className().trim();
+      classElement.className = clearExtraSpaces(className());
+    })();
+
+    let textClassesAmount = 0,
+      backgroundClassesAmount = 0,
+      textBeginning = "text-",
+      textBeginningLength = textBeginning.length,
+      backgroundBeginning = "background-",
+      backgroundBeginningLength = backgroundBeginning.length;
+
+    for (let j = 0; j <= lastNamesInClass.length - 1; j++) {
+      if (
+        lastNamesInClass[j].substring(0, textBeginningLength) == textBeginning
+      ) {
+        textClassesAmount++;
+      } else if (
+        lastNamesInClass[j].substring(0, backgroundBeginningLength) ==
+        backgroundBeginning
+      ) {
+        backgroundClassesAmount++;
+      }
+    }
+
+    function deleteExtraClasses(classesAmount, classBeginning) {
+      let classesAmountMinus2 = classesAmount - 2;
+      for (let j = 0; j <= classesAmountMinus2; j++) {
+        let textBeginning = lastNamesInClass[j].substring(
+          0,
+          classBeginning.length
+        );
+        if (textBeginning == classBeginning) {
+          lastNamesInClass.splice(j, 1);
+          classesAmountMinus2--;
+          j--;
+        }
+      }
+    }
+
+    deleteExtraClasses(textClassesAmount, "text-");
+    deleteExtraClasses(backgroundClassesAmount, "background-");
+
+    classElement.className = lastNamesInClass.join(" ");
+  }
+}
+
 //Toggle class to selected text
 function addColor(color, type, number) {
   color = capitalizeFirstLetter(color);
@@ -261,7 +318,7 @@ function addContainerClass(className) {
     lastSelectedElement = findChild(lastSelectedElement, mainContainer);
     firstSelectedElement = findChild(firstSelectedElement, mainContainer);
 
-    debugger;
+    // debugger;
     if (className.substring(0, 6) == "indent") {
       let sign = className.substring(6, 7),
         classBeginning = className.substring(0, 6);
@@ -335,63 +392,6 @@ function addContainerClass(className) {
 }
 
 clearExtraSpaces = (string) => string.replace(/\s+/g, " ");
-
-function clearExtraClasses() {
-  let classes = document.querySelectorAll("[class*=text-]"),
-    classesLength = classes.length;
-
-  for (let i = 0; i < classesLength; i++) {
-    let classElement = classes[i],
-      className = () => classes[i].className,
-      namesInClass = () => className().split(" "),
-      lastNamesInClass = namesInClass();
-
-    (function ClearText() {
-      classElement.className = className().trim();
-      classElement.className = clearExtraSpaces(className());
-    })();
-
-    let textClassesAmount = 0,
-      backgroundClassesAmount = 0,
-      textBeginning = "text-",
-      textBeginningLength = textBeginning.length,
-      backgroundBeginning = "background-",
-      backgroundBeginningLength = backgroundBeginning.length;
-
-    for (let j = 0; j <= lastNamesInClass.length - 1; j++) {
-      if (
-        lastNamesInClass[j].substring(0, textBeginningLength) == textBeginning
-      ) {
-        textClassesAmount++;
-      } else if (
-        lastNamesInClass[j].substring(0, backgroundBeginningLength) ==
-        backgroundBeginning
-      ) {
-        backgroundClassesAmount++;
-      }
-    }
-
-    function deleteExtraClasses(classesAmount, classBeginning) {
-      let classesAmountMinus2 = classesAmount - 2;
-      for (let j = 0; j <= classesAmountMinus2; j++) {
-        let textBeginning = lastNamesInClass[j].substring(
-          0,
-          classBeginning.length
-        );
-        if (textBeginning == classBeginning) {
-          lastNamesInClass.splice(j, 1);
-          classesAmountMinus2--;
-          j--;
-        }
-      }
-    }
-
-    deleteExtraClasses(textClassesAmount, "text-");
-    deleteExtraClasses(backgroundClassesAmount, "background-");
-
-    classElement.className = lastNamesInClass.join(" ");
-  }
-}
 
 function highlightKeywords() {
   let words = ["for", "while", "var", "and", "is"],
@@ -473,9 +473,93 @@ function removeSpellcheck() {
   }
 }
 
-tests = () => {
+tests = (className) => {
   let selection = document.getSelection(),
-    anchorNode = selection.anchorNode;
-  console.log(anchorNode.parentElement.attributes["data-value"].nodeValue);
-  // if (anchorNode)
+    range = selection.getRangeAt(0),
+    wrongContainer = document.getElementById("sample-toolbar"),
+    firstNode = selection.anchorNode,
+    lastNode = selection.focusNode;
+  if (
+    firstNode.nodeName == "#text" &&
+    range.commonAncestorContainer != wrongContainer
+  ) {
+    let mainContainer = document.getElementById("work-area"),
+      firstSelectedElement = firstNode,
+      lastSelectedElement = lastNode,
+      startElement = range.startContainer,
+      endElement = range.endContainer;
+
+    if (
+      firstSelectedElement != startElement &&
+      lastSelectedElement != endElement
+    ) {
+      firstSelectedElement = lastNode;
+      lastSelectedElement = firstNode;
+    }
+
+    lastSelectedElement = findChild(lastSelectedElement, mainContainer);
+    firstSelectedElement = findChild(firstSelectedElement, mainContainer);
+
+    if (className.substring(0, 6) == "indent") {
+      // debugger;
+      let sign = className.substring(6, 7),
+        classBeginning = "indent";
+      do {
+        if (firstSelectedElement.nodeName != "#text") {
+          console.log(firstSelectedElement);
+          let firstSelectedElementClassName = firstSelectedElement.className,
+            dataValue = firstSelectedElement.attributes["data-value"];
+          console.log(firstSelectedElementClassName);
+
+          if (dataValue != undefined) {
+            let value = parseInt(
+              firstSelectedElement.attributes["data-value"].nodeValue
+            );
+            if (sign == "+") {
+              if (value <= 7) {
+                let classes = firstSelectedElement.className.split(),
+                  length = classes.length,
+                  count = 0;
+                console.log(matches);
+
+                for (let j = 0; j < length - 1; j++) {
+                  let firstMatch = classes.indexOf("indent"),
+                    lastMatch = classes.lastIndexOf("indent");
+                  if (firstMatch != lastMatch) {
+                    classes.splice(j, 1);
+                  }
+                }
+
+                value++;
+
+                firstSelectedElement.attributes["data-value"].nodeValue = value;
+
+                firstSelectedElement.className =
+                  firstSelectedElementClassName +
+                  " " +
+                  classBeginning +
+                  "-" +
+                  value;
+              }
+            }
+          } else if (className == "indent+") {
+            firstSelectedElement.setAttribute("data-value", 1);
+
+            let value = firstSelectedElement.attributes["data-value"].value;
+
+            firstSelectedElement.className =
+              firstSelectedElementClassName +
+              " " +
+              classBeginning +
+              "-" +
+              value;
+          }
+        }
+        firstSelectedElement = firstSelectedElement.nextSibling;
+      } while (
+        firstSelectedElement.nextSibling !=
+        lastSelectedElement.nextElementSibling
+      );
+    }
+  }
 };
