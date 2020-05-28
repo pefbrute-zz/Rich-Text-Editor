@@ -517,18 +517,22 @@ tests = (className) => {
             );
             if (sign == "+") {
               if (value <= 7) {
-                let classes = firstSelectedElement.className.split(),
+                let classes = firstSelectedElement.className.split(" "),
                   length = classes.length,
                   count = 0;
-                console.log(matches);
-
+                  
                 for (let j = 0; j < length - 1; j++) {
                   let firstMatch = classes.indexOf("indent"),
                     lastMatch = classes.lastIndexOf("indent");
+                  console.log(firstMatch, lastMatch);
                   if (firstMatch != lastMatch) {
                     classes.splice(j, 1);
+                    console.log("we spliced :hmm:");
+                    j--;
+                    length--;
                   }
                 }
+                console.log(classes);
 
                 value++;
 
