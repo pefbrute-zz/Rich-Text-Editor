@@ -520,18 +520,17 @@ tests = (className) => {
                 let classes = firstSelectedElement.className.split(" "),
                   length = classes.length,
                   count = 0;
-                  
-                for (let j = 0; j < length - 1; j++) {
-                  let firstMatch = classes.indexOf("indent"),
-                    lastMatch = classes.lastIndexOf("indent");
-                  console.log(firstMatch, lastMatch);
-                  if (firstMatch != lastMatch) {
+
+                for (let j = 0; j < length; j++) {
+                  let classBeginning = classes[j].substring(0, 6);
+                  if (classBeginning == "indent") {
                     classes.splice(j, 1);
                     console.log("we spliced :hmm:");
                     j--;
                     length--;
                   }
                 }
+                classes = classes.join(" ")
                 console.log(classes);
 
                 value++;
@@ -539,7 +538,7 @@ tests = (className) => {
                 firstSelectedElement.attributes["data-value"].nodeValue = value;
 
                 firstSelectedElement.className =
-                  firstSelectedElementClassName +
+                  classes +
                   " " +
                   classBeginning +
                   "-" +
