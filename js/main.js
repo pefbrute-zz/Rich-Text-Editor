@@ -73,6 +73,7 @@ var clearExtraSpaces = (string) => {
   return cleanedString;
 };
 
+//It deletes repeated classes (what starts with similar text)
 function clearExtraClasses() {
   let classes = document.querySelectorAll("[class*=text-]"),
     classesLength = classes.length;
@@ -149,6 +150,7 @@ let Options = {
   Sub: { elementTagName: "sub" },
 };
 
+//Tags
 let TagAppliers = {
   Strong: rangy.createClassApplier("strong", Options["Strong"]),
   U: rangy.createClassApplier("underlined", Options["U"]),
@@ -161,6 +163,9 @@ let TagAppliers = {
 
 //Add tag to selected text
 let time = 0;
+
+//It adds tag with (tagName) to selected text.
+//If it passes url then it makes anchor tag with (url)
 function addTag(tagName, url) {
   tagName = capitalizeFirstLetter(tagName);
   TagAppliers[tagName].toggleSelection();
@@ -177,6 +182,7 @@ function addTag(tagName, url) {
   }
 }
 
+//It finds child of (parent) element from some (element)
 function findChild(element, parent) {
   while (element.parentElement != parent) {
     element = element.parentElement;
@@ -187,6 +193,7 @@ function findChild(element, parent) {
   return child;
 }
 
+//It replaces any tag with new tag
 function replaceElement(source, newType) {
   let attributes = [];
 
@@ -216,6 +223,7 @@ function replaceElement(source, newType) {
   parentNode.replaceChild(newElem, source);
 }
 
+//It replaces child tag of <div class="work-area"> with (tag)
 function replaceContainerTag(tag) {
   var tag = tag.toUpperCase();
   let selection = document.getSelection(),
@@ -289,6 +297,7 @@ function replaceContainerTag(tag) {
   }
 }
 
+//It highlights specific words + all numbers in <pre>
 function highlightPre() {
   let savedSelection = rangy.saveSelection();
   console.time();
@@ -299,12 +308,14 @@ function highlightPre() {
   console.timeEnd();
 }
 
+//It toggles class with (className) to selected first childs of <div class="work-area">
 function addContainerClass(className) {
   let selection = document.getSelection(),
     range = selection.getRangeAt(0),
     wrongContainer = document.getElementById("sample-toolbar"),
     firstNode = selection.anchorNode,
     lastNode = selection.focusNode;
+
   if (
     firstNode.nodeName == "#text" &&
     range.commonAncestorContainer != wrongContainer
@@ -327,9 +338,9 @@ function addContainerClass(className) {
     firstSelectedElement = findChild(firstSelectedElement, mainContainer);
 
     if (className.substring(0, 6) == "indent") {
-      // debugger;
       let sign = className.substring(6, 7),
         classBeginning = "indent";
+
       do {
         if (firstSelectedElement.nodeName != "#text") {
           let firstSelectedElementClassName = firstSelectedElement.className,
@@ -346,7 +357,6 @@ function addContainerClass(className) {
                   ),
                   classes = cleanElement.split(" "),
                   length = classes.length;
-                console.log(cleanElement);
                 for (let j = 0; j < length; j++) {
                   let classBeginning = classes[j].substring(0, 6);
                   if (classBeginning == "indent") {
@@ -375,7 +385,6 @@ function addContainerClass(className) {
                     length = classes.length;
 
                   firstSelectedElement.removeAttribute("data-value");
-                  console.log(classes);
 
                   if (length == 1) {
                     firstSelectedElement.removeAttribute("class");
@@ -397,6 +406,8 @@ function addContainerClass(className) {
                     firstSelectedElement.className = clearExtraSpaces(classes);
                   }
                 } else {
+                  // repeated code too
+                  //
                   let classes = firstSelectedElement.className.split(" "),
                     length = classes.length;
 
@@ -421,6 +432,8 @@ function addContainerClass(className) {
                   firstSelectedElement.className = clearExtraSpaces(
                     classes + " " + classBeginning + "-" + value
                   );
+                  //
+                  //
                 }
               }
             }
@@ -442,7 +455,6 @@ function addContainerClass(className) {
       );
     } else {
       do {
-        console.log(firstSelectedElement, firstSelectedElement.className);
         if (firstSelectedElement.className == className) {
           firstSelectedElement.removeAttribute("class");
         } else if (firstSelectedElement.className != undefined) {
@@ -456,13 +468,14 @@ function addContainerClass(className) {
               firstSelectedElement.className =
                 firstSelectedElement.className + " " + className;
             } else {
+              // repeated code
+              //
               let classNameIndex = className.indexOf("-"),
                 classNameBeginning = className.substring(0, classNameIndex);
 
               for (let j = 0; j < length; j++) {
                 let classIndex = classes[j].indexOf("-"),
                   classBeginning = classes[j].substring(0, classIndex);
-                console.log(classBeginning, classNameBeginning);
 
                 if (classBeginning == classNameBeginning) {
                   classes.splice(j, 1);
@@ -474,6 +487,8 @@ function addContainerClass(className) {
               firstSelectedElement.className = clearExtraSpaces(
                 classes + " " + className
               );
+              //
+              //
             }
           }
         }
@@ -486,6 +501,7 @@ function addContainerClass(className) {
   }
 }
 
+//It highlights specific words in <pre> tag
 function highlightKeywords() {
   let words = ["for", "while", "var", "and", "is"],
     wordsLastElementIndex = words.length - 1;
@@ -507,6 +523,7 @@ function highlightKeywords() {
   // }
 }
 
+//It highlights all numbers in <pre> tag
 function highlightNumbers() {
   let preList = document.getElementsByTagName("PRE"),
     selection = document.getSelection(),
@@ -550,6 +567,7 @@ function highlightNumbers() {
   }
 }
 
+//It deletes all tags in <pre> tag
 function clearTagsAtPreContainer() {
   let preList = document.getElementsByTagName("PRE");
   for (let i = 0; i <= preList.length - 1; i++) {
@@ -558,6 +576,7 @@ function clearTagsAtPreContainer() {
   }
 }
 
+//It sets spellcheck attribute to false (spellcheck=false) to selected <pre> tags
 function removeSpellcheck() {
   let pres = document.querySelectorAll("pre:not([spellcheck])");
   for (let i = 0; i <= pres.length - 1; i++) {
