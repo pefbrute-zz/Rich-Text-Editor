@@ -80,6 +80,10 @@ body {
   text-align: justify;
 }
 
+.rtl{
+  direction: rtl;
+}
+
 .hidden {
   display: none;
 }

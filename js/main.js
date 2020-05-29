@@ -465,13 +465,31 @@ function addContainerClass(className) {
               length = classes.length;
 
             if (length == 1) {
-              firstSelectedElement.className =
-                firstSelectedElement.className + " " + className;
+              let classNameIndex = className.indexOf("-"),
+                classNameBeginning = className.substring(0, classNameIndex),
+                classIndex = firstSelectedElement.className.indexOf("-"),
+                classBeginning = firstSelectedElement.className.substring(
+                  0,
+                  classIndex
+                );
+
+              if (classNameBeginning == classBeginning) {
+                firstSelectedElement.className = className;
+              } else {
+                firstSelectedElement.className =
+                  firstSelectedElement.className + " " + className;
+              }
             } else {
               // repeated code
               //
               let classNameIndex = className.indexOf("-"),
                 classNameBeginning = className.substring(0, classNameIndex);
+
+              // classes.push(className);
+              // classes = classes.join(" ");
+              // firstSelectedElement.className = clearExtraSpaces(
+              //   classes + " " + className
+              // );
 
               for (let j = 0; j < length; j++) {
                 let classIndex = classes[j].indexOf("-"),
@@ -484,6 +502,7 @@ function addContainerClass(className) {
                 }
               }
               classes = classes.join(" ");
+              console.log(classes);
               firstSelectedElement.className = clearExtraSpaces(
                 classes + " " + className
               );
