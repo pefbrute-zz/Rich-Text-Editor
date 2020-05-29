@@ -62,8 +62,16 @@ for (let i = 0; i <= colorsLastElementIndex; i++) {
   makeColorAppliers(ColorAppliers, classesNumber, colors[i]);
 }
 
-let capitalizeFirstLetter = (string) =>
+var capitalizeFirstLetter = (string) =>
   string.charAt(0).toUpperCase() + string.slice(1);
+
+var clearExtraSpaces = (string) => {
+  let cleanedBetweenWords = string.replace(/\s+/g, " "),
+    cleanedAtAll = cleanedBetweenWords.trim(),
+    cleanedString = cleanedAtAll;
+
+  return cleanedString;
+};
 
 function clearExtraClasses() {
   let classes = document.querySelectorAll("[class*=text-]"),
@@ -478,12 +486,6 @@ function addContainerClass(className) {
   }
 }
 
-var clearExtraSpaces = (string) => {
-  let cleanBetweenWords = string.replace(/\s+/g, " "),
-    cleanAtAll = cleanBetweenWords.trim();
-  return cleanAtAll;
-};
-
 function highlightKeywords() {
   let words = ["for", "while", "var", "and", "is"],
     wordsLastElementIndex = words.length - 1;
@@ -564,6 +566,4 @@ function removeSpellcheck() {
   }
 }
 
-tests = () => {
-  
-}
+tests = () => {};
