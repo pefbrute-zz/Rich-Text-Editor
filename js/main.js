@@ -545,13 +545,14 @@ tests = (className) => {
             } else {
               if (value >= 1) {
                 if (value == 1) {
-                  clearElement = clearExtraSpaces(
-                    firstSelectedElement.className
-                  );
-                  let classes = clearElement.split(" "),
+                  let clearElement = clearExtraSpaces(
+                      firstSelectedElement.className
+                    ),
+                    classes = clearElement.split(" "),
                     length = classes.length;
 
                   firstSelectedElement.removeAttribute("data-value");
+                  console.log(classes);
 
                   if (length == 1) {
                     firstSelectedElement.removeAttribute("class");
@@ -569,6 +570,10 @@ tests = (className) => {
                     if (length == 0) {
                       firstSelectedElement.removeAttribute("class");
                     }
+                    classes = classes.join(" ");
+                    firstSelectedElement.className = clearExtraSpaces(
+                      classes
+                    );
                   }
                 } else {
                   let classes = firstSelectedElement.className.split(" "),
@@ -592,7 +597,9 @@ tests = (className) => {
                     "data-value"
                   ].nodeValue = value;
 
-                  firstSelectedElement.className = clearExtraSpaces(classes + " " + classBeginning + "-" + value);
+                  firstSelectedElement.className = clearExtraSpaces(
+                    classes + " " + classBeginning + "-" + value
+                  );
                 }
               }
             }
@@ -601,13 +608,8 @@ tests = (className) => {
 
             let value = firstSelectedElement.attributes["data-value"].value;
 
-            firstSelectedElement.className =
-            clearExtraSpaces(
-              firstSelectedElementClassName +
-              " " +
-              classBeginning +
-              "-" +
-              value
+            firstSelectedElement.className = clearExtraSpaces(
+              firstSelectedElementClassName + " " + classBeginning + "-" + value
             );
           }
         }
