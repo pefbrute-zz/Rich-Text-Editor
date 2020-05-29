@@ -324,7 +324,6 @@ function addContainerClass(className) {
         classBeginning = className.substring(0, 6);
       do {
         let firstSelectedElementClassName = firstSelectedElement.className;
-        console.log(firstSelectedElementClassName);
         if (firstSelectedElementClassName != undefined) {
           firstSelectedElementClassName = clearExtraSpaces(
             firstSelectedElementClassName
@@ -391,7 +390,11 @@ function addContainerClass(className) {
   }
 }
 
-clearExtraSpaces = (string) => string.replace(/\s+/g, " ");
+var clearExtraSpaces = (string) => {
+  let cleanBetweenWords = string.replace(/\s+/g, " "),
+    cleanAtAll = cleanBetweenWords.trim();
+  return cleanAtAll;
+};
 
 function highlightKeywords() {
   let words = ["for", "while", "var", "and", "is"],
@@ -506,10 +509,8 @@ tests = (className) => {
         classBeginning = "indent";
       do {
         if (firstSelectedElement.nodeName != "#text") {
-          console.log(firstSelectedElement);
           let firstSelectedElementClassName = firstSelectedElement.className,
             dataValue = firstSelectedElement.attributes["data-value"];
-          console.log(firstSelectedElementClassName);
 
           if (dataValue != undefined) {
             let value = parseInt(
@@ -517,32 +518,82 @@ tests = (className) => {
             );
             if (sign == "+") {
               if (value <= 7) {
-                let classes = firstSelectedElement.className.split(" "),
-                  length = classes.length,
-                  count = 0;
-
+                let cleanElement = clearExtraSpaces(
+                    firstSelectedElement.className
+                  ),
+                  classes = cleanElement.split(" "),
+                  length = classes.length;
+                console.log(cleanElement);
                 for (let j = 0; j < length; j++) {
                   let classBeginning = classes[j].substring(0, 6);
                   if (classBeginning == "indent") {
                     classes.splice(j, 1);
-                    console.log("we spliced :hmm:");
                     j--;
                     length--;
                   }
                 }
-                classes = classes.join(" ")
-                console.log(classes);
+                classes = classes.join(" ");
 
                 value++;
 
                 firstSelectedElement.attributes["data-value"].nodeValue = value;
 
-                firstSelectedElement.className =
-                  classes +
-                  " " +
-                  classBeginning +
-                  "-" +
-                  value;
+                firstSelectedElement.className = clearExtraSpaces(
+                  classes + " " + classBeginning + "-" + value
+                );
+              }
+            } else {
+              if (value >= 1) {
+                if (value == 1) {
+                  clearElement = clearExtraSpaces(
+                    firstSelectedElement.className
+                  );
+                  let classes = clearElement.split(" "),
+                    length = classes.length;
+
+                  firstSelectedElement.removeAttribute("data-value");
+
+                  if (length == 1) {
+                    firstSelectedElement.removeAttribute("class");
+                  } else {
+                    for (let j = 0; j < length; j++) {
+                      let classBeginning = classes[j].substring(0, 6);
+
+                      if (classBeginning == "indent") {
+                        classes.splice(j, 1);
+
+                        j--;
+                        length--;
+                      }
+                    }
+                    if (length == 0) {
+                      firstSelectedElement.removeAttribute("class");
+                    }
+                  }
+                } else {
+                  let classes = firstSelectedElement.className.split(" "),
+                    length = classes.length;
+
+                  for (let j = 0; j < length; j++) {
+                    let classBeginning = classes[j].substring(0, 6);
+
+                    if (classBeginning == "indent") {
+                      classes.splice(j, 1);
+
+                      j--;
+                      length--;
+                    }
+                  }
+
+                  classes = classes.join(" ");
+                  value--;
+
+                  firstSelectedElement.attributes[
+                    "data-value"
+                  ].nodeValue = value;
+
+                  firstSelectedElement.className = clearExtraSpaces(classes + " " + classBeginning + "-" + value);
+                }
               }
             }
           } else if (className == "indent+") {
@@ -551,13 +602,16 @@ tests = (className) => {
             let value = firstSelectedElement.attributes["data-value"].value;
 
             firstSelectedElement.className =
+            clearExtraSpaces(
               firstSelectedElementClassName +
               " " +
               classBeginning +
               "-" +
-              value;
+              value
+            );
           }
         }
+
         firstSelectedElement = firstSelectedElement.nextSibling;
       } while (
         firstSelectedElement.nextSibling !=
