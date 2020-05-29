@@ -318,46 +318,101 @@ function addContainerClass(className) {
     lastSelectedElement = findChild(lastSelectedElement, mainContainer);
     firstSelectedElement = findChild(firstSelectedElement, mainContainer);
 
-    // debugger;
     if (className.substring(0, 6) == "indent") {
+      // debugger;
       let sign = className.substring(6, 7),
-        classBeginning = className.substring(0, 6);
+        classBeginning = "indent";
       do {
-        let firstSelectedElementClassName = firstSelectedElement.className;
-        if (firstSelectedElementClassName != undefined) {
-          firstSelectedElementClassName = clearExtraSpaces(
-            firstSelectedElementClassName
-          );
-          let firstSelectedElementClassNameBeginning = firstSelectedElementClassName.substring(
-            0,
-            6
-          );
-          if (firstSelectedElementClassNameBeginning == classBeginning) {
-            if (firstSelectedElement.attributes["data-value"] != undefined) {
-              let value = parseInt(
-                firstSelectedElement.attributes["data-value"].nodeValue
-              );
-              if (sign == "+") {
-                if (value <= 7) {
-                  value++;
+        if (firstSelectedElement.nodeName != "#text") {
+          let firstSelectedElementClassName = firstSelectedElement.className,
+            dataValue = firstSelectedElement.attributes["data-value"];
 
-                  firstSelectedElement.attributes[
-                    "data-value"
-                  ].nodeValue = value;
-
-                  firstSelectedElement.className = classBeginning + "-" + value;
+          if (dataValue != undefined) {
+            let value = parseInt(
+              firstSelectedElement.attributes["data-value"].nodeValue
+            );
+            if (sign == "+") {
+              if (value <= 7) {
+                let cleanElement = clearExtraSpaces(
+                    firstSelectedElement.className
+                  ),
+                  classes = cleanElement.split(" "),
+                  length = classes.length;
+                console.log(cleanElement);
+                for (let j = 0; j < length; j++) {
+                  let classBeginning = classes[j].substring(0, 6);
+                  if (classBeginning == "indent") {
+                    classes.splice(j, 1);
+                    j--;
+                    length--;
+                  }
                 }
-              } else if (value >= 1) {
-                if (value == 1) {
-                  firstSelectedElement.removeAttribute("data-value");
+                classes = classes.join(" ");
 
-                  firstSelectedElement.removeAttribute("class");
+                value++;
+
+                firstSelectedElement.attributes["data-value"].nodeValue = value;
+
+                firstSelectedElement.className = clearExtraSpaces(
+                  classes + " " + classBeginning + "-" + value
+                );
+              }
+            } else {
+              if (value >= 1) {
+                if (value == 1) {
+                  let clearElement = clearExtraSpaces(
+                      firstSelectedElement.className
+                    ),
+                    classes = clearElement.split(" "),
+                    length = classes.length;
+
+                  firstSelectedElement.removeAttribute("data-value");
+                  console.log(classes);
+
+                  if (length == 1) {
+                    firstSelectedElement.removeAttribute("class");
+                  } else {
+                    for (let j = 0; j < length; j++) {
+                      let classBeginning = classes[j].substring(0, 6);
+
+                      if (classBeginning == "indent") {
+                        classes.splice(j, 1);
+
+                        j--;
+                        length--;
+                      }
+                    }
+                    if (length == 0) {
+                      firstSelectedElement.removeAttribute("class");
+                    }
+                    classes = classes.join(" ");
+                    firstSelectedElement.className = clearExtraSpaces(classes);
+                  }
                 } else {
+                  let classes = firstSelectedElement.className.split(" "),
+                    length = classes.length;
+
+                  for (let j = 0; j < length; j++) {
+                    let classBeginning = classes[j].substring(0, 6);
+
+                    if (classBeginning == "indent") {
+                      classes.splice(j, 1);
+
+                      j--;
+                      length--;
+                    }
+                  }
+
+                  classes = classes.join(" ");
                   value--;
+
                   firstSelectedElement.attributes[
                     "data-value"
                   ].nodeValue = value;
-                  firstSelectedElement.className = classBeginning + "-" + value;
+
+                  firstSelectedElement.className = clearExtraSpaces(
+                    classes + " " + classBeginning + "-" + value
+                  );
                 }
               }
             }
@@ -366,9 +421,12 @@ function addContainerClass(className) {
 
             let value = firstSelectedElement.attributes["data-value"].value;
 
-            firstSelectedElement.className = classBeginning + "-" + value;
+            firstSelectedElement.className = clearExtraSpaces(
+              firstSelectedElementClassName + " " + classBeginning + "-" + value
+            );
           }
         }
+
         firstSelectedElement = firstSelectedElement.nextSibling;
       } while (
         firstSelectedElement.nextSibling !=
@@ -376,10 +434,40 @@ function addContainerClass(className) {
       );
     } else {
       do {
+        console.log(firstSelectedElement, firstSelectedElement.className);
         if (firstSelectedElement.className == className) {
-          firstSelectedElement.className = "";
-        } else {
-          firstSelectedElement.className = className;
+          firstSelectedElement.removeAttribute("class");
+        } else if (firstSelectedElement.className != undefined) {
+          if (firstSelectedElement.className == "") {
+            firstSelectedElement.className = className;
+          } else {
+            let classes = firstSelectedElement.className.split(" "),
+              length = classes.length;
+
+            if (length == 1) {
+              firstSelectedElement.className =
+                firstSelectedElement.className + " " + className;
+            } else {
+              let classNameIndex = className.indexOf("-"),
+                classNameBeginning = className.substring(0, classNameIndex);
+
+              for (let j = 0; j < length; j++) {
+                let classIndex = classes[j].indexOf("-"),
+                  classBeginning = classes[j].substring(0, classIndex);
+                console.log(classBeginning, classNameBeginning);
+
+                if (classBeginning == classNameBeginning) {
+                  classes.splice(j, 1);
+                  j--;
+                  length--;
+                }
+              }
+              classes = classes.join(" ");
+              firstSelectedElement.className = clearExtraSpaces(
+                classes + " " + className
+              );
+            }
+          }
         }
         firstSelectedElement = firstSelectedElement.nextSibling;
       } while (
@@ -476,149 +564,147 @@ function removeSpellcheck() {
   }
 }
 
-tests = (className) => {
-  let selection = document.getSelection(),
-    range = selection.getRangeAt(0),
-    wrongContainer = document.getElementById("sample-toolbar"),
-    firstNode = selection.anchorNode,
-    lastNode = selection.focusNode;
-  if (
-    firstNode.nodeName == "#text" &&
-    range.commonAncestorContainer != wrongContainer
-  ) {
-    let mainContainer = document.getElementById("work-area"),
-      firstSelectedElement = firstNode,
-      lastSelectedElement = lastNode,
-      startElement = range.startContainer,
-      endElement = range.endContainer;
+// tests = (className) => {
+//   let selection = document.getSelection(),
+//     range = selection.getRangeAt(0),
+//     wrongContainer = document.getElementById("sample-toolbar"),
+//     firstNode = selection.anchorNode,
+//     lastNode = selection.focusNode;
+//   if (
+//     firstNode.nodeName == "#text" &&
+//     range.commonAncestorContainer != wrongContainer
+//   ) {
+//     let mainContainer = document.getElementById("work-area"),
+//       firstSelectedElement = firstNode,
+//       lastSelectedElement = lastNode,
+//       startElement = range.startContainer,
+//       endElement = range.endContainer;
 
-    if (
-      firstSelectedElement != startElement &&
-      lastSelectedElement != endElement
-    ) {
-      firstSelectedElement = lastNode;
-      lastSelectedElement = firstNode;
-    }
+//     if (
+//       firstSelectedElement != startElement &&
+//       lastSelectedElement != endElement
+//     ) {
+//       firstSelectedElement = lastNode;
+//       lastSelectedElement = firstNode;
+//     }
 
-    lastSelectedElement = findChild(lastSelectedElement, mainContainer);
-    firstSelectedElement = findChild(firstSelectedElement, mainContainer);
+//     lastSelectedElement = findChild(lastSelectedElement, mainContainer);
+//     firstSelectedElement = findChild(firstSelectedElement, mainContainer);
 
-    if (className.substring(0, 6) == "indent") {
-      // debugger;
-      let sign = className.substring(6, 7),
-        classBeginning = "indent";
-      do {
-        if (firstSelectedElement.nodeName != "#text") {
-          let firstSelectedElementClassName = firstSelectedElement.className,
-            dataValue = firstSelectedElement.attributes["data-value"];
+//     if (className.substring(0, 6) == "indent") {
+//       // debugger;
+//       let sign = className.substring(6, 7),
+//         classBeginning = "indent";
+//       do {
+//         if (firstSelectedElement.nodeName != "#text") {
+//           let firstSelectedElementClassName = firstSelectedElement.className,
+//             dataValue = firstSelectedElement.attributes["data-value"];
 
-          if (dataValue != undefined) {
-            let value = parseInt(
-              firstSelectedElement.attributes["data-value"].nodeValue
-            );
-            if (sign == "+") {
-              if (value <= 7) {
-                let cleanElement = clearExtraSpaces(
-                    firstSelectedElement.className
-                  ),
-                  classes = cleanElement.split(" "),
-                  length = classes.length;
-                console.log(cleanElement);
-                for (let j = 0; j < length; j++) {
-                  let classBeginning = classes[j].substring(0, 6);
-                  if (classBeginning == "indent") {
-                    classes.splice(j, 1);
-                    j--;
-                    length--;
-                  }
-                }
-                classes = classes.join(" ");
+//           if (dataValue != undefined) {
+//             let value = parseInt(
+//               firstSelectedElement.attributes["data-value"].nodeValue
+//             );
+//             if (sign == "+") {
+//               if (value <= 7) {
+//                 let cleanElement = clearExtraSpaces(
+//                     firstSelectedElement.className
+//                   ),
+//                   classes = cleanElement.split(" "),
+//                   length = classes.length;
+//                 console.log(cleanElement);
+//                 for (let j = 0; j < length; j++) {
+//                   let classBeginning = classes[j].substring(0, 6);
+//                   if (classBeginning == "indent") {
+//                     classes.splice(j, 1);
+//                     j--;
+//                     length--;
+//                   }
+//                 }
+//                 classes = classes.join(" ");
 
-                value++;
+//                 value++;
 
-                firstSelectedElement.attributes["data-value"].nodeValue = value;
+//                 firstSelectedElement.attributes["data-value"].nodeValue = value;
 
-                firstSelectedElement.className = clearExtraSpaces(
-                  classes + " " + classBeginning + "-" + value
-                );
-              }
-            } else {
-              if (value >= 1) {
-                if (value == 1) {
-                  let clearElement = clearExtraSpaces(
-                      firstSelectedElement.className
-                    ),
-                    classes = clearElement.split(" "),
-                    length = classes.length;
+//                 firstSelectedElement.className = clearExtraSpaces(
+//                   classes + " " + classBeginning + "-" + value
+//                 );
+//               }
+//             } else {
+//               if (value >= 1) {
+//                 if (value == 1) {
+//                   let clearElement = clearExtraSpaces(
+//                       firstSelectedElement.className
+//                     ),
+//                     classes = clearElement.split(" "),
+//                     length = classes.length;
 
-                  firstSelectedElement.removeAttribute("data-value");
-                  console.log(classes);
+//                   firstSelectedElement.removeAttribute("data-value");
+//                   console.log(classes);
 
-                  if (length == 1) {
-                    firstSelectedElement.removeAttribute("class");
-                  } else {
-                    for (let j = 0; j < length; j++) {
-                      let classBeginning = classes[j].substring(0, 6);
+//                   if (length == 1) {
+//                     firstSelectedElement.removeAttribute("class");
+//                   } else {
+//                     for (let j = 0; j < length; j++) {
+//                       let classBeginning = classes[j].substring(0, 6);
 
-                      if (classBeginning == "indent") {
-                        classes.splice(j, 1);
+//                       if (classBeginning == "indent") {
+//                         classes.splice(j, 1);
 
-                        j--;
-                        length--;
-                      }
-                    }
-                    if (length == 0) {
-                      firstSelectedElement.removeAttribute("class");
-                    }
-                    classes = classes.join(" ");
-                    firstSelectedElement.className = clearExtraSpaces(
-                      classes
-                    );
-                  }
-                } else {
-                  let classes = firstSelectedElement.className.split(" "),
-                    length = classes.length;
+//                         j--;
+//                         length--;
+//                       }
+//                     }
+//                     if (length == 0) {
+//                       firstSelectedElement.removeAttribute("class");
+//                     }
+//                     classes = classes.join(" ");
+//                     firstSelectedElement.className = clearExtraSpaces(classes);
+//                   }
+//                 } else {
+//                   let classes = firstSelectedElement.className.split(" "),
+//                     length = classes.length;
 
-                  for (let j = 0; j < length; j++) {
-                    let classBeginning = classes[j].substring(0, 6);
+//                   for (let j = 0; j < length; j++) {
+//                     let classBeginning = classes[j].substring(0, 6);
 
-                    if (classBeginning == "indent") {
-                      classes.splice(j, 1);
+//                     if (classBeginning == "indent") {
+//                       classes.splice(j, 1);
 
-                      j--;
-                      length--;
-                    }
-                  }
+//                       j--;
+//                       length--;
+//                     }
+//                   }
 
-                  classes = classes.join(" ");
-                  value--;
+//                   classes = classes.join(" ");
+//                   value--;
 
-                  firstSelectedElement.attributes[
-                    "data-value"
-                  ].nodeValue = value;
+//                   firstSelectedElement.attributes[
+//                     "data-value"
+//                   ].nodeValue = value;
 
-                  firstSelectedElement.className = clearExtraSpaces(
-                    classes + " " + classBeginning + "-" + value
-                  );
-                }
-              }
-            }
-          } else if (className == "indent+") {
-            firstSelectedElement.setAttribute("data-value", 1);
+//                   firstSelectedElement.className = clearExtraSpaces(
+//                     classes + " " + classBeginning + "-" + value
+//                   );
+//                 }
+//               }
+//             }
+//           } else if (className == "indent+") {
+//             firstSelectedElement.setAttribute("data-value", 1);
 
-            let value = firstSelectedElement.attributes["data-value"].value;
+//             let value = firstSelectedElement.attributes["data-value"].value;
 
-            firstSelectedElement.className = clearExtraSpaces(
-              firstSelectedElementClassName + " " + classBeginning + "-" + value
-            );
-          }
-        }
+//             firstSelectedElement.className = clearExtraSpaces(
+//               firstSelectedElementClassName + " " + classBeginning + "-" + value
+//             );
+//           }
+//         }
 
-        firstSelectedElement = firstSelectedElement.nextSibling;
-      } while (
-        firstSelectedElement.nextSibling !=
-        lastSelectedElement.nextElementSibling
-      );
-    }
-  }
-};
+//         firstSelectedElement = firstSelectedElement.nextSibling;
+//       } while (
+//         firstSelectedElement.nextSibling !=
+//         lastSelectedElement.nextElementSibling
+//       );
+//     }
+//   }
+// };
