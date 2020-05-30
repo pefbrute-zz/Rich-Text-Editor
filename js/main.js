@@ -182,6 +182,38 @@ function addTag(tagName, url) {
   }
 }
 
+let FontAppliers = {
+  Sofia: rangy.createClassApplier("sofia"),
+  Slabo13px: rangy.createClassApplier("slabo-13px"),
+  RobotoSlab: rangy.createClassApplier("roboto-slab"),
+  Inconsolata: rangy.createClassApplier("inconsolata"),
+  UbuntuMono: rangy.createClassApplier("ubuntu-mono"),
+};
+
+function addFont(fontName) {
+  let signIndex = fontName.indexOf("-");
+  fontName = capitalizeFirstLetter(fontName);
+  if (signIndex > 0) {
+    fontName =
+      fontName.substring(0, signIndex) +
+      capitalizeFirstLetter(fontName.substring(signIndex + 1, fontName.length));
+  }
+  console.log(fontName);
+  FontAppliers[fontName].toggleSelection();
+}
+
+let SizeAppliers = {
+  small: rangy.createClassApplier("small"),
+  normal: rangy.createClassApplier("normal"),
+  large: rangy.createClassApplier("large"),
+  huge: rangy.createClassApplier("huge"),
+};
+
+function addSuze(sizeName) {
+  fontName = capitalizeFirstLetter(fontName);
+  SizeAppliers[fontName].toggleSelection();
+}
+
 //It finds child of (parent) element from some (element)
 function findChild(element, parent) {
   while (element.parentElement != parent) {

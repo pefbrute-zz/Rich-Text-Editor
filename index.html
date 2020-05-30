@@ -12,6 +12,91 @@
   <body>
     <div class="editor">
       <div class="sample-toolbar" id="sample-toolbar">
+        <a
+          class="font-picker icon"
+          role="button"
+          href="javascript:void(0)"
+          onclick="addDropdown('fonts-dropdown')"
+        >
+          <span class="sofia">Sofia <i class="fas fa-sort"></i></span>
+        </a>
+        <span class="options hidden" id="fonts-dropdown">
+          <a
+            class="picker-item icon sofia"
+            href="javascript:void(0)"
+            role="button"
+            onclick="addFont('sofia')"
+            >Sofia</a
+          >
+          <a
+            class="picker-item icon slabo-13px"
+            href="javascript:void(0)"
+            role="button"
+            onclick="addFont('slabo-13px')"
+            >Slabo 13px</a
+          >
+          <a
+            class="picker-item icon roboto-slab"
+            href="javascript:void(0)"
+            role="button"
+            onclick="addFont('roboto-slab')"
+            >Roboto Slab</a
+          >
+          <a
+            class="picker-item icon inconsolata"
+            href="javascript:void(0)"
+            role="button"
+            onclick="addFont('inconsolata')"
+            >Inconsolata</a
+          >
+          <a
+            class="picker-item icon ubuntu-mono"
+            href="javascript:void(0)"
+            role="button"
+            onclick="addFont('ubuntu-mono')"
+            >Ubuntu Mono</a
+          >
+        </span>
+        <a
+          class="font-picker icon"
+          role="button"
+          href="javascript:void(0)"
+          onclick="addDropdown('size-dropdown')"
+        >
+          <span>Sofia <i class="fas fa-sort"></i></span>
+        </a>
+        
+        <span class="options hidden" id="fonts-dropdown">
+          <a
+            class="picker-item icon small"
+            href="javascript:void(0)"
+            role="button"
+            onclick="addSize('small')"
+            >Small</a
+          >
+          <a
+            class="picker-item icon normal"
+            href="javascript:void(0)"
+            role="button"
+            onclick="addSize('normal')"
+            >Normal</a
+          >
+          <a
+            class="picker-item icon large"
+            href="javascript:void(0)"
+            role="button"
+            onclick="addSize('large')"
+            >Large</a
+          >
+          <a
+            class="picker-item icon huge"
+            href="javascript:void(0)"
+            role="button"
+            onclick="addSize('huge')"
+            >Huge</a
+          >
+        </span>
+        
         <a class="icon" href="javascript:void(0)" onclick="addTag('Strong')">
           <i class="fas fa-bold"></i>
         </a>
@@ -543,8 +628,10 @@
       </div>
 
       <div class="work-area" contenteditable="true" id="work-area">
-        <p>Hi!</p>
-        <p>Bye!</p>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore ab
+          aut officiis dolor quas quam assumenda eius aspernatur, nemo commodi.
+        </p>
       </div>
     </div>
     <script src="js/lib/rangy-core.js"></script>

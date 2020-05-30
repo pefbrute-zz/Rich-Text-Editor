@@ -1,7 +1,8 @@
-@import url("https://fonts.googleapis.com/css2?family=Inconsolata&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Flamenco&family=Inconsolata&family=Roboto+Slab&family=Slabo+13px&family=Sofia&family=Ubuntu+Mono&display=swap");
 
 body {
   background-color: #f4f5f5;
+  font-family: "Flamenco", cursive;
 }
 
 .icon,
@@ -80,20 +81,51 @@ body {
   text-align: justify;
 }
 
-.rtl{
+.rtl {
   direction: rtl;
+}
+
+.rtl.indent-1 {
+  padding-right: 3em;
+}
+
+.rtl.indent-2 {
+  padding-right: 6em;
+}
+
+.rtl.indent-3 {
+  padding-right: 9em;
+}
+
+.rtl.indent-4 {
+  padding-right: 12em;
+}
+
+.rtl.indent-5 {
+  padding-right: 15em;
+}
+
+.rtl.indent-6 {
+  padding-right: 18em;
+}
+
+.rtl.indent-7 {
+  padding-right: 21em;
+}
+
+.rtl.indent-8 {
+  padding-right: 24em;
 }
 
 .hidden {
   display: none;
 }
 
-.align-dropdown {
-  background-color: #f4f5f5;
+.align-dropdown,
+.fonts-dropdown {
   min-width: 2rem;
   display: block;
   margin-top: -1px;
-  left: 20.1vw;
   line-height: 1.3;
   z-index: 1;
   position: absolute;
@@ -101,7 +133,51 @@ body {
   padding: 4px;
 }
 
-.align-dropdown a {
+.align-dropdown {
+  background-color: #f4f5f5;
+  left: 40.5vw;
+}
+
+.fonts-dropdown {
+  width: 6.5rem;
+  background-color: #ffffff;
+  left: 12.2vw;
+}
+
+.font-picker {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  width: 6.3em;
+  display: inline-block;
+  /* border: #ae81ff 1px solid; */
+}
+
+.fa-sort {
+  float: right;
+}
+
+.sofia {
+  font-family: "Sofia", cursive;
+}
+.slabo-13px {
+  font-family: "Slabo 13px", serif;
+}
+.roboto-slab {
+  font-family: "Roboto Slab", serif;
+}
+.inconsolata {
+  font-family: "Inconsolata", monospace;
+}
+.ubuntu-mono {
+  font-family: "Ubuntu Mono", monospace;
+}
+
+.picker-item:hover {
+  color: rgba(25, 150, 200, 1);
+}
+
+.align-dropdown a,
+.fonts-dropdown a {
   display: block;
 }
 
@@ -122,12 +198,16 @@ body {
   padding: 4px;
 }
 
+:root {
+  --some-left: 38.4vw;
+}
+
 .text-dropdown {
-  left: 17.3vw;
+  left: var(--some-left);
 }
 
 .background-dropdown {
-  left: 19.6vw;
+  left: calc(var(--some-left) + 2.3vw);
 }
 
 .text-dropdown > span,
@@ -434,34 +514,53 @@ pre {
   color: #ae81ff;
 }
 
-.indent-1{
+.indent-1 {
   padding-left: 3em;
 }
 
-.indent-2{
+.indent-2 {
   padding-left: 6em;
 }
 
-.indent-3{
+.indent-3 {
   padding-left: 9em;
 }
 
-.indent-4{
+.indent-4 {
   padding-left: 12em;
 }
 
-.indent-5{
+.indent-5 {
   padding-left: 15em;
 }
 
-.indent-6{
+.indent-6 {
   padding-left: 18em;
 }
 
-.indent-7{
+.indent-7 {
   padding-left: 21em;
 }
 
-.indent-8{
+.indent-8 {
   padding-left: 24em;
 }
+
+/**/
+/**/
+
+.small {
+  font-size: 0.75em;
+}
+/* normal{
+
+} */
+.large {
+  font-size: 24px;
+}
+.huge {
+  font-size: 2.5em;
+}
+
+/**/
+/**/
