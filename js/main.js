@@ -636,84 +636,124 @@ function removeSpellcheck() {
   }
 }
 
-tests = () => {
-  function clearExtraClasses() {
-    let textClasses = document.querySelectorAll("[class*=text-]"),
-      textClassesLength = textClasses.length,
-      backgroundClasses = document.querySelectorAll("[class*=backround-]"),
-      backgroundClassesLength = backgroundClasses.length;
-  
-    for (let i = 0; i < textClassesLength + backgroundClassesLength; i++) {
-      let textClassElement = textClasses[i],
-        textClassName = () => textClasses[i].className,
-        namesInTextClass = () => textClassName().split(" "),
-        lastNamesInTextClass = namesInTextClass();
-  
-      // (function ClearText() {
-      // classElement.className = className().trim();
-      classElement.className = clearExtraSpaces(textClassName());
-      // })();
-  
-      let textClassesAmount = 0,
-        backgroundClassesAmount = 0,
-        textBeginning = "text-",
-        textBeginningLength = textBeginning.length,
-        backgroundBeginning = "background-",
-        backgroundBeginningLength = backgroundBeginning.length;
-  
-      for (let j = 0; j <= lastNamesInTextClass.length - 1; j++) {
-        if (
-          lastNamesInTextClass[j].substring(0, textBeginningLength) ==
-          textBeginning
-        ) {
-          textClassesAmount++;
-        }
-        // else if (
-        //   lastNamesInTextClass[j].substring(0, backgroundBeginningLength) ==
-        //   backgroundBeginning
-        // ) {
-        //   backgroundClassesAmount++;
-        // }
+// tests = () => {
+//   function clearExtraClasses() {
+//     let textClasses = document.querySelectorAll("[class*=text-]"),
+//       textClassesLength = textClasses.length,
+//       // backgroundClasses = document.querySelectorAll("[class*=backround-]"),
+//       // backgroundClassesLength = backgroundClasses.length;
+
+//     for (let i = 0; i < textClassesLength + backgroundClassesLength; i++) {
+//       let textClassElement = textClasses[i],
+//         textClassName = () => textClasses[i].className,
+//         namesInTextClass = () => textClassName().split(" "),
+//         lastNamesInTextClass = namesInTextClass();
+
+//       // (function ClearText() {
+//       // classElement.className = className().trim();
+//       classElement.className = clearExtraSpaces(textClassName());
+//       // })();
+
+//       let textClassesAmount = 0,
+//         backgroundClassesAmount = 0,
+//         textBeginning = "text-",
+//         textBeginningLength = textBeginning.length,
+//         backgroundBeginning = "background-",
+//         backgroundBeginningLength = backgroundBeginning.length;
+
+//       for (let j = 0; j <= lastNamesInTextClass.length - 1; j++) {
+//         if (
+//           lastNamesInTextClass[j].substring(0, textBeginningLength) ==
+//           textBeginning
+//         ) {
+//           textClassesAmount++;
+//         }
+//         // else if (
+//         //   lastNamesInTextClass[j].substring(0, backgroundBeginningLength) ==
+//         //   backgroundBeginning
+//         // ) {
+//         //   backgroundClassesAmount++;
+//         // }
+//       }
+
+//       for (let j = 0; j <= lastNamesInBackgroundClass.length - 1; j++) {
+//         if (
+//           lastNamesInBackgroundClass[j].substring(0, backgroundBeginningLength) ==
+//           backgroundBeginning
+//         ) {
+//           backgroundClassesAmount++;
+//         }
+//       }
+//       console.log(backgroundClassesAmount);
+
+//       function deleteExtraClasses(classesAmount, classBeginning) {
+//         let classesAmountMinus2 = classesAmount - 2;
+//         for (let j = 0; j <= classesAmountMinus2; j++) {
+//           let textBeginning = lastNamesInClass[j].substring(
+//             0,
+//             classBeginning.length
+//           );
+//           if (textBeginning == classBeginning) {
+//             lastNamesInClass.splice(j, 1);
+//             classesAmountMinus2--;
+//             j--;
+//           }
+//         }
+//       }
+
+//       deleteExtraClasses(textClassesAmount, "text-");
+//       deleteExtraClasses(backgroundClassesAmount, "background-");
+
+//       classElement.className = lastNamesInClass.join(" ");
+//     }
+//   }
+// };
+
+tests2 = () => {};
+function clearClasses(classNameBeginning) {
+  let classes = document.querySelectorAll(
+      "[class*=" + classNameBeginning + "]"
+    ),
+    classesLength = classes.length;
+
+  for (let i = 0; i < classesLength; i++) {
+    let classElement = classes[i],
+      className = () => classes[i].className,
+      namesInClass = () => className().split(" "),
+      lastNamesInClass = namesInClass();
+
+    classElement.className = clearExtraSpaces(className());
+
+    let length = classNameBeginning.length;
+    let classesAmount = 0;
+    // textBeginning = "text-",
+    // backgroundClassesAmount = 0,
+    // backgroundBeginning = "background-",
+    // backgroundBeginningLength = backgroundBeginning.length;
+    // textBeginningLength = textBeginning.length;
+
+    for (let j = 0; j <= lastNamesInClass.length - 1; j++) {
+      if (lastNamesInClass[j].substring(0, length) == classNameBeginning) {
+        classesAmount++;
       }
-  
-      for (let j = 0; j <= lastNamesInBackgroundClass.length - 1; j++) {
-        if (
-          lastNamesInBackgroundClass[j].substring(0, backgroundBeginningLength) ==
-          backgroundBeginning
-        ) {
-          backgroundClassesAmount++;
-        }
-      }
-      console.log(backgroundClassesAmount);
-  
-      function deleteExtraClasses(classesAmount, classBeginning) {
-        let classesAmountMinus2 = classesAmount - 2;
-        for (let j = 0; j <= classesAmountMinus2; j++) {
-          let textBeginning = lastNamesInClass[j].substring(
-            0,
-            classBeginning.length
-          );
-          if (textBeginning == classBeginning) {
-            lastNamesInClass.splice(j, 1);
-            classesAmountMinus2--;
-            j--;
-          }
-        }
-      }
-  
-      deleteExtraClasses(textClassesAmount, "text-");
-      deleteExtraClasses(backgroundClassesAmount, "background-");
-  
-      classElement.className = lastNamesInClass.join(" ");
     }
+
+    let classesAmountMinus2 = classesAmount - 2;
+    for (let j = 0; j <= classesAmountMinus2; j++) {
+      let textBeginning = lastNamesInClass[j].substring(
+        0,
+        classNameBeginning.length
+      );
+      if (textBeginning == classBeginning) {
+        lastNamesInClass.splice(j, 1);
+        classesAmountMinus2--;
+        j--;
+      }
+    }
+
+    // deleteExtraClasses(textClassesAmount, "text-");
+    // deleteExtraClasses(backgroundClassesAmount, "background-");
+
+    classElement.className = lastNamesInClass.join(" ");
   }
-  
-  //Toggle class to selected text
-  function addColor(color, type, number) {
-    color = capitalizeFirstLetter(color);
-    type = capitalizeFirstLetter(type);
-    ColorAppliers[color][type][number].toggleSelection();
-    // debugger;
-    clearExtraClasses();
-  }
-};
+}
