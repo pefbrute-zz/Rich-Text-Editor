@@ -122,7 +122,8 @@ body {
 }
 
 .align-dropdown,
-.fonts-dropdown {
+.fonts-dropdown,
+.size-dropdown {
   min-width: 2rem;
   display: block;
   margin-top: -1px;
@@ -133,15 +134,15 @@ body {
   padding: 4px;
 }
 
+.align-dropdown a,
+.fonts-dropdown a,
+.size-dropdown a {
+  display: block;
+}
+
 .align-dropdown {
   background-color: #f4f5f5;
   left: 40.5vw;
-}
-
-.fonts-dropdown {
-  width: 6.5rem;
-  background-color: #ffffff;
-  left: 12.2vw;
 }
 
 .font-picker {
@@ -150,6 +151,32 @@ body {
   width: 6.3em;
   display: inline-block;
   /* border: #ae81ff 1px solid; */
+}
+
+.fonts-dropdown {
+  width: 6.85rem;
+  background-color: #ffffff;
+  left: 12.3vw;
+  /* border: #ae81ff 1px solid; */
+}
+
+.size-picker {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  width: 6.3em;
+  display: inline-block;
+  /* border: #ae81ff 1px solid; */
+}
+
+.size-dropdown {
+  width: 6.8rem;
+  background-color: #ffffff;
+  /* border: #ae81ff 1px solid; */
+  left: 22.55vw;
+}
+
+.picker-item:hover {
+  color: rgba(25, 150, 200, 1);
 }
 
 .fa-sort {
@@ -170,15 +197,6 @@ body {
 }
 .ubuntu-mono {
   font-family: "Ubuntu Mono", monospace;
-}
-
-.picker-item:hover {
-  color: rgba(25, 150, 200, 1);
-}
-
-.align-dropdown a,
-.fonts-dropdown a {
-  display: block;
 }
 
 .text-dropdown,
