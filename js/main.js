@@ -201,7 +201,9 @@ function addFont(fontName) {
 
   let classes = document.querySelectorAll("[class*=" + fontName + "]"),
     length = classes.length;
+
   console.log(length, classes);
+  
   for (let i = 1; i < length; i++) {
     if (classes[i].className.split(" ").length > 1) {
       console.log(fontName, classes);
