@@ -65,6 +65,9 @@ for (let i = 0; i <= colorsLastElementIndex; i++) {
 var capitalizeFirstLetter = (string) =>
   string.charAt(0).toUpperCase() + string.slice(1);
 
+var lowerFirstLetter = (string) =>
+  string.charAt(0).toLowerCase() + string.slice(1);
+
 var clearExtraSpaces = (string) => {
   let cleanedBetweenWords = string.replace(/\s+/g, " "),
     cleanedAtAll = cleanedBetweenWords.trim(),
@@ -74,72 +77,55 @@ var clearExtraSpaces = (string) => {
 };
 
 //It deletes repeated classes (what starts with similar text)
-// function clearExtraClasses() {
-//   let classes = document.querySelectorAll("[class*=text-]"),
-//     classesLength = classes.length;
+function clearClasses(classNameBeginning) {
+  let classes = document.querySelectorAll(
+      "[class*=" + classNameBeginning + "]"
+    ),
+    classesLength = classes.length;
 
-//   for (let i = 0; i < classesLength; i++) {
-//     let classElement = classes[i],
-//       className = () => classes[i].className,
-//       namesInClass = () => className().split(" "),
-//       lastNamesInClass = namesInClass();
+  for (let i = 0; i < classesLength; i++) {
+    let classElement = classes[i],
+      className = () => classes[i].className,
+      namesInClass = () => className().split(" "),
+      lastNamesInClass = namesInClass();
 
-//     (function ClearText() {
-//       classElement.className = className().trim();
-//       classElement.className = clearExtraSpaces(className());
-//     })();
+    classElement.className = clearExtraSpaces(className());
 
-//     let textClassesAmount = 0,
-//       backgroundClassesAmount = 0,
-//       textBeginning = "text-",
-//       textBeginningLength = textBeginning.length,
-//       backgroundBeginning = "background-",
-//       backgroundBeginningLength = backgroundBeginning.length;
+    let length = classNameBeginning.length;
+    let classesAmount = 0,
+      classesIndexes = [],
+      k = 0;
 
-//     for (let j = 0; j <= lastNamesInClass.length - 1; j++) {
-//       if (
-//         lastNamesInClass[j].substring(0, textBeginningLength) == textBeginning
-//       ) {
-//         textClassesAmount++;
-//       } else if (
-//         lastNamesInClass[j].substring(0, backgroundBeginningLength) ==
-//         backgroundBeginning
-//       ) {
-//         backgroundClassesAmount++;
-//       }
-//     }
-//     console.log(backgroundClassesAmount);
+    for (let j = 0; j <= lastNamesInClass.length - 1; j++) {
+      if (lastNamesInClass[j].substring(0, length) == classNameBeginning) {
+        classesIndexes[k] = j;
+        classesAmount++;
+        k++;
+      }
+    }
+    console.log(classesAmount);
+    if (classesAmount == 1) {
+    } else {
+      for (let j = 0; j < classesAmount; j++) {
+        lastNamesInClass.splice(classesIndexes[j], 1);
+        classesAmount--;
+      }
+    }
 
-//     function deleteExtraClasses(classesAmount, classBeginning) {
-//       let classesAmountMinus2 = classesAmount - 2;
-//       for (let j = 0; j <= classesAmountMinus2; j++) {
-//         let textBeginning = lastNamesInClass[j].substring(
-//           0,
-//           classBeginning.length
-//         );
-//         if (textBeginning == classBeginning) {
-//           lastNamesInClass.splice(j, 1);
-//           classesAmountMinus2--;
-//           j--;
-//         }
-//       }
-//     }
-
-//     deleteExtraClasses(textClassesAmount, "text-");
-//     deleteExtraClasses(backgroundClassesAmount, "background-");
-
-//     classElement.className = lastNamesInClass.join(" ");
-//   }
-// }
+    classElement.className = lastNamesInClass.join(" ");
+  }
+}
 
 //Toggle class to selected text
 function addColor(color, type, number) {
   color = capitalizeFirstLetter(color);
   type = capitalizeFirstLetter(type);
   ColorAppliers[color][type][number].toggleSelection();
-  // clearExtraClasses();
-  clearClasses('text-');
-  clearClasses('background-')
+
+  let sign = "-",
+    classNameBeginning = lowerFirstLetter(type) + sign;
+
+  clearClasses(classNameBeginning);
 }
 
 //Options to surround text with specific tag
@@ -196,13 +182,33 @@ let FontAppliers = {
 function addFont(fontName) {
   let signIndex = fontName.indexOf("-");
   fontName = capitalizeFirstLetter(fontName);
+
   if (signIndex > 0) {
     fontName =
       fontName.substring(0, signIndex) +
       capitalizeFirstLetter(fontName.substring(signIndex + 1, fontName.length));
   }
-  console.log(fontName);
   FontAppliers[fontName].toggleSelection();
+
+  console.log("before: ", fontName);
+  if (signIndex > 0) {
+    fontName =
+      lowerFirstLetter(fontName.substring(0, signIndex)) +
+      "-" +
+      lowerFirstLetter(fontName.substring(signIndex, fontName.length));
+  }
+  console.log("after: ", fontName);
+
+  let classes = document.querySelectorAll("[class*=" + fontName + "]"),
+    length = classes.length;
+  console.log(length, classes);
+  for (let i = 1; i < length; i++) {
+    if (classes[i].className.split(" ").length > 1) {
+      console.log(fontName, classes);
+    }
+
+    console.log(classes[i]);
+  }
 }
 
 let SizeAppliers = {
@@ -639,45 +645,3 @@ function removeSpellcheck() {
 }
 
 tests2 = () => {};
-
-function clearClasses(classNameBeginning) {
-  debugger;
-  let classes = document.querySelectorAll(
-      "[class*=" + classNameBeginning + "]"
-    ),
-    classesLength = classes.length;
-
-  for (let i = 0; i < classesLength; i++) {
-    let classElement = classes[i],
-      className = () => classes[i].className,
-      namesInClass = () => className().split(" "),
-      lastNamesInClass = namesInClass();
-
-    classElement.className = clearExtraSpaces(className());
-
-    let length = classNameBeginning.length;
-    let classesAmount = 0;
-
-    for (let j = 0; j <= lastNamesInClass.length - 1; j++) {
-      if (lastNamesInClass[j].substring(0, length) == classNameBeginning) {
-        classesAmount++;
-      }
-    }
-
-    let classesAmountMinus2 = classesAmount - 2;
-    
-    for (let j = 0; j <= classesAmountMinus2; j++) {
-      let textBeginning = lastNamesInClass[j].substring(
-        0,
-        classNameBeginning.length
-      );
-      if (textBeginning == classNameBeginning) {
-        lastNamesInClass.splice(j, 1);
-        classesAmountMinus2--;
-        j--;
-      }
-    }
-
-    classElement.className = lastNamesInClass.join(" ");
-  }
-}
