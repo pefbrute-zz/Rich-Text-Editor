@@ -121,9 +121,9 @@ body {
   display: none;
 }
 
-.align-dropdown,
-.fonts-dropdown,
-.size-dropdown {
+.dropdown-align,
+.dropdown-fonts,
+.dropdown-size {
   min-width: 2rem;
   display: block;
   margin-top: -1px;
@@ -134,13 +134,13 @@ body {
   padding: 4px;
 }
 
-.align-dropdown a,
-.fonts-dropdown a,
-.size-dropdown a {
+.dropdown-align a,
+.dropdown-fonts a,
+.dropdown-size a {
   display: block;
 }
 
-.align-dropdown {
+.dropdown-align {
   background-color: #f4f5f5;
   left: 40.5vw;
 }
@@ -153,7 +153,7 @@ body {
   /* border: #ae81ff 1px solid; */
 }
 
-.fonts-dropdown {
+.dropdown-fonts {
   width: 6.85rem;
   background-color: #ffffff;
   left: 12.3vw;
@@ -168,7 +168,7 @@ body {
   /* border: #ae81ff 1px solid; */
 }
 
-.size-dropdown {
+.dropdown-size {
   width: 6.8rem;
   background-color: #ffffff;
   /* border: #ae81ff 1px solid; */
@@ -199,8 +199,8 @@ body {
   font-family: "Ubuntu Mono", monospace;
 }
 
-.text-dropdown,
-.background-dropdown {
+.dropdown-text,
+.dropdown-background {
   height: 7.5rem;
   background-color: #f4f5f5;
   width: 8.6rem;
@@ -220,26 +220,26 @@ body {
   --some-left: 38.4vw;
 }
 
-.text-dropdown {
+.dropdown-text {
   left: var(--some-left);
 }
 
-.background-dropdown {
+.dropdown-background {
   left: calc(var(--some-left) + 2.3vw);
 }
 
-.text-dropdown > span,
-.background-dropdown > span {
+.dropdown-text > span,
+.dropdown-background > span {
   display: inline-block;
 }
 
-.text-dropdown button,
-.background-dropdown button {
+.dropdown-text button,
+.dropdown-background button {
   display: inline-block;
 }
 
-.text-dropdown button:hover,
-.background-dropdown button:hover {
+.dropdown-text button:hover,
+.dropdown-background button:hover {
   text-decoration: none;
 }
 

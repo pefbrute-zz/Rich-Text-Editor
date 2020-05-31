@@ -641,6 +641,7 @@ function removeSpellcheck() {
 tests2 = () => {};
 
 function clearClasses(classNameBeginning) {
+  debugger;
   let classes = document.querySelectorAll(
       "[class*=" + classNameBeginning + "]"
     ),
@@ -664,6 +665,7 @@ function clearClasses(classNameBeginning) {
     }
 
     let classesAmountMinus2 = classesAmount - 2;
+    
     for (let j = 0; j <= classesAmountMinus2; j++) {
       let textBeginning = lastNamesInClass[j].substring(
         0,
