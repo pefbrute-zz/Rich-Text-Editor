@@ -180,6 +180,8 @@ let FontAppliers = {
 };
 
 function addFont(fontName) {
+  // console.time();
+
   let signIndex = fontName.indexOf("-");
   fontName = capitalizeFirstLetter(fontName);
 
@@ -190,27 +192,56 @@ function addFont(fontName) {
   }
   FontAppliers[fontName].toggleSelection();
 
-  console.log("before: ", fontName);
   if (signIndex > 0) {
     fontName =
       lowerFirstLetter(fontName.substring(0, signIndex)) +
       "-" +
       lowerFirstLetter(fontName.substring(signIndex, fontName.length));
+  } else {
+    fontName = lowerFirstLetter(fontName);
   }
-  console.log("after: ", fontName);
 
-  let classes = document.querySelectorAll("[class*=" + fontName + "]"),
-    length = classes.length;
+  let elements = document.querySelectorAll("[class*=" + fontName + "]"),
+    length = elements.length;
 
-  console.log(length, classes);
-  
-  for (let i = 1; i < length; i++) {
-    if (classes[i].className.split(" ").length > 1) {
-      console.log(fontName, classes);
+  if (fontName == "sofia") {
+    var i = 2;
+  } else {
+    var i = 1;
+  }
+
+  if (length > 1) {
+    var names = [
+        "sofia",
+        "slabo-13px",
+        "roboto-slab",
+        "inconsolata",
+        "ubuntu-mono",
+      ],
+      namesLength = names.length;
+
+    for (i; i < length; i++) {
+      if (elements[i].className.split(" ").length > 1) {
+        var classNamesList = elements[i].className.split(" "),
+          classNamesListLength = classNamesList.length;
+
+        for (let k = 0; k < classNamesListLength; k++) {
+          for (let j = 0; j < namesLength; j++) {
+            if (
+              classNamesList[k] == names[j] &&
+              classNamesList[k] != fontName
+            ) {
+              classNamesList.splice(k, 1);
+              classNamesListLength--;
+            }
+          }
+        }
+        elements[i].className = classNamesList.join(" ");
+      }
     }
-
-    console.log(classes[i]);
   }
+
+  // console.timeEnd();
 }
 
 let SizeAppliers = {
@@ -222,6 +253,42 @@ let SizeAppliers = {
 
 function addSize(sizeName) {
   SizeAppliers[sizeName].toggleSelection();
+
+  let elements = document.querySelectorAll("[class*=" + sizeName + "]"),
+    length = elements.length;
+
+  if (sizeName == "normal") {
+    var i = 2;
+  } else {
+    var i = 1;
+  }
+
+  if (length > 1) {
+    var names = ["small", "normal", "large", "huge"],
+      namesLength = names.length;
+
+    for (i; i < length; i++) {
+      if (elements[i].className.split(" ").length > 1) {
+        var classNamesList = elements[i].className.split(" "),
+          classNamesListLength = classNamesList.length;
+
+        console.log(classNamesList);
+
+        for (let k = 0; k < classNamesListLength; k++) {
+          for (let j = 0; j < namesLength; j++) {
+            if (
+              classNamesList[k] == names[j] &&
+              classNamesList[k] != sizeName
+            ) {
+              classNamesList.splice(k, 1);
+              classNamesListLength--;
+            }
+          }
+        }
+        elements[i].className = classNamesList.join(" ");
+      }
+    }
+  }
 }
 
 //It finds child of (parent) element from some (element)
