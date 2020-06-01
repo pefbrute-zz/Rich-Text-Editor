@@ -179,6 +179,7 @@ let FontAppliers = {
   UbuntuMono: rangy.createClassApplier("ubuntu-mono"),
 };
 
+//It adds font class (sofia, ubuntu-mono, etc.) to selected text
 function addFont(fontName) {
   // console.time();
 
@@ -251,6 +252,7 @@ let SizeAppliers = {
   huge: rangy.createClassApplier("huge"),
 };
 
+//It adds size class (normal, small, etc.) to selected text
 function addSize(sizeName) {
   SizeAppliers[sizeName].toggleSelection();
 
@@ -268,12 +270,10 @@ function addSize(sizeName) {
       namesLength = names.length;
 
     for (i; i < length; i++) {
-      if (elements[i].className.split(" ").length > 1) {
-        var classNamesList = elements[i].className.split(" "),
-          classNamesListLength = classNamesList.length;
+      var classNamesList = elements[i].className.split(" "),
+        classNamesListLength = classNamesList.length;
 
-        console.log(classNamesList);
-
+      if (classNamesListLength > 1) {
         for (let k = 0; k < classNamesListLength; k++) {
           for (let j = 0; j < namesLength; j++) {
             if (
@@ -713,4 +713,34 @@ function removeSpellcheck() {
   }
 }
 
-tests2 = () => {};
+tests = () => {
+  // let selection = document.getSelection(),
+  // range = selection.getRangeAt(0),
+  // fragment = range.cloneContents(),
+
+};
+
+
+function replaceDivs() {
+  console.time();
+  let element = document.getElementById("work-area"),
+    children = element.children,
+    childrenLength = children.length;
+
+  for (let i = 0; i < childrenLength; i++) {
+    if (children[i].nodeName == "DIV") {
+      replaceElement(children[i], "p");
+    }
+  }
+  console.timeEnd();
+}
+
+let element = document.getElementById("work-area");
+element.addEventListener("keypress", function (e) {
+  if (e.key == "Enter") {
+    let savedSelection = rangy.saveSelection();
+    
+    setTimeout(replaceDivs, 1);
+    rangy.restoreSelection(savedSelection);
+  }
+});
