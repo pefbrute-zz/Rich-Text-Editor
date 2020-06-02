@@ -359,8 +359,6 @@ function replaceContainerTag(tag) {
       lastSelectedElement = firstNode;
     }
 
-    debugger;
-
     lastSelectedElement = findChild(lastSelectedElement, mainContainer);
     firstSelectedElement = findChild(firstSelectedElement, mainContainer);
 
@@ -382,13 +380,17 @@ function replaceContainerTag(tag) {
         tagData.selectedTags[tagData.tagCounter] = firstSelectedElement;
         tagData.tagCounter++;
       }
-      if (firstSelectedElement.nextElementSibling == lastSelectedElement.nextElementSibling){
+
+      if (
+        firstSelectedElement.nextElementSibling ==
+        lastSelectedElement.nextElementSibling
+      ) {
         break;
       }
+
       firstSelectedElement = firstSelectedElement.nextElementSibling;
     } while (
-      firstSelectedElement.nextElementSibling !=
-      lastSelectedElement.nextElementSibling
+      firstSelectedElement.nextElement != lastSelectedElement.nextElementSibling
     );
     pCounterMinus1 = pCounter - 1;
     if (pCounter != 0) {
@@ -725,12 +727,11 @@ function replaceDivs() {
   console.time();
 
   let element = document.getElementById("work-area"),
-    children = element.children,
-    childrenLength = children.length;
-
-  for (let i = 0; i < childrenLength; i++) {
-    if (children[i].nodeName == "DIV") {
-      replaceElement(children[i], "p");
+    childNodes = element.childNodes,
+    childNodesLength = childNodes.length;
+  for (let i = 0; i < childNodesLength; i++) {
+    if (childNodes[i].nodeName == "DIV" || childNodes[i].nodeName == "#text") {
+      replaceElement(childNodes[i], "p");
     }
   }
 
@@ -744,14 +745,63 @@ element.addEventListener("keypress", function (e) {
 
     setTimeout(replaceDivs, 1);
     rangy.restoreSelection(savedSelection);
+
+    // let selection = document.getSelection();
+    // console.log(selection);
+    // selection.anchorNode.parentElement.focus();
   }
 });
 
 tests = () => {
   let selection = document.getSelection(),
     range = selection.getRangeAt(0),
-    fragment = range.cloneContents();
+    fragment = document.createDocumentFragment(),
+    element = document.getElementById("work-area"),
+    elementChilds = element.children,
+    childsLength = elementChilds.length,
+    count = 0;
+  // console.log(selection);
 
-  console.log(selection);
   replaceContainerTag("ul");
+  console.log(element);
+  elementsForLi = [];
+
+  // debugger;
+  for (let i = 0; i < childsLength; i++) {
+    if (elementChilds[i].nodeName == "UL") {
+      elementsForLi[count] = elementChilds[i];
+      count++;
+    } else if (count > 1) {
+      elementsForLi.forEach(function (element) {
+        let li = document.createElement("li");
+        // if (child.data == undefined) {
+        //   li.innerHTML = child.outerHTML;
+        // } else {
+        //   li.innerHTML = child.data;
+        // }
+        li.innerHTML = element.innerHTML;
+        fragment.appendChild(li);
+      });
+      console.log(fragment);
+      // for (count; count > 0; count--) {
+      // console.log(elementChilds[i - count]);
+      // elementChilds[i - count].childNodes.forEach(function (child) {
+      // let li = document.createElement("li");
+      // if (child.data == undefined) {
+      //   li.innerHTML = child.outerHTML;
+      // } else {
+      //   li.innerHTML = child.data;
+      // }
+      // li.innerHTML = fragment.appendChild(li);
+      // });
+      // element.appendChild(fragment);
+      // console.log(elementChilds[i - count].childNodes);
+      // li.appendChild(elementChilds)
+    }
+
+    count = 0;
+  }
 };
+// if (count > 0) {
+// }
+// };
