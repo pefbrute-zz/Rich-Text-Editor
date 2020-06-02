@@ -346,7 +346,7 @@ function replaceContainerTag(tag) {
     range.commonAncestorContainer != wrongContainer
     // && lastNode != mainContainer
   ) {
-    let firstSelectedElement = firstNode,
+    var firstSelectedElement = firstNode,
       lastSelectedElement = lastNode,
       startElement = range.startContainer,
       endElement = range.endContainer;
@@ -359,8 +359,12 @@ function replaceContainerTag(tag) {
       lastSelectedElement = firstNode;
     }
 
+    debugger;
+
     lastSelectedElement = findChild(lastSelectedElement, mainContainer);
     firstSelectedElement = findChild(firstSelectedElement, mainContainer);
+
+    console.log(firstSelectedElement, lastSelectedElement);
 
     let p = [],
       pCounter = 0,
@@ -378,9 +382,13 @@ function replaceContainerTag(tag) {
         tagData.selectedTags[tagData.tagCounter] = firstSelectedElement;
         tagData.tagCounter++;
       }
-      firstSelectedElement = firstSelectedElement.nextSibling;
+      if (firstSelectedElement.nextElementSibling == lastSelectedElement.nextElementSibling){
+        break;
+      }
+      firstSelectedElement = firstSelectedElement.nextElementSibling;
     } while (
-      firstSelectedElement.nextSibling != lastSelectedElement.nextElementSibling
+      firstSelectedElement.nextElementSibling !=
+      lastSelectedElement.nextElementSibling
     );
     pCounterMinus1 = pCounter - 1;
     if (pCounter != 0) {
@@ -713,16 +721,9 @@ function removeSpellcheck() {
   }
 }
 
-tests = () => {
-  // let selection = document.getSelection(),
-  // range = selection.getRangeAt(0),
-  // fragment = range.cloneContents(),
-
-};
-
-
 function replaceDivs() {
   console.time();
+
   let element = document.getElementById("work-area"),
     children = element.children,
     childrenLength = children.length;
@@ -732,6 +733,7 @@ function replaceDivs() {
       replaceElement(children[i], "p");
     }
   }
+
   console.timeEnd();
 }
 
@@ -739,8 +741,17 @@ let element = document.getElementById("work-area");
 element.addEventListener("keypress", function (e) {
   if (e.key == "Enter") {
     let savedSelection = rangy.saveSelection();
-    
+
     setTimeout(replaceDivs, 1);
     rangy.restoreSelection(savedSelection);
   }
 });
+
+tests = () => {
+  let selection = document.getSelection(),
+    range = selection.getRangeAt(0),
+    fragment = range.cloneContents();
+
+  console.log(selection);
+  replaceContainerTag("ul");
+};
