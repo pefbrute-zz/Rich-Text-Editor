@@ -759,14 +759,15 @@ tests = () => {
     element = document.getElementById("work-area"),
     elementChilds = element.children,
     childsLength = elementChilds.length,
-    count = 0;
-  // console.log(selection);
+    count = 0,
+    ul = document.createElement("UL");
 
   replaceContainerTag("ul");
   console.log(element);
   elementsForLi = [];
 
-  // debugger;
+
+  debugger;
   for (let i = 0; i < childsLength; i++) {
     if (elementChilds[i].nodeName == "UL") {
       elementsForLi[count] = elementChilds[i];
@@ -774,34 +775,14 @@ tests = () => {
     } else if (count > 1) {
       elementsForLi.forEach(function (element) {
         let li = document.createElement("li");
-        // if (child.data == undefined) {
-        //   li.innerHTML = child.outerHTML;
-        // } else {
-        //   li.innerHTML = child.data;
-        // }
         li.innerHTML = element.innerHTML;
         fragment.appendChild(li);
       });
       console.log(fragment);
-      // for (count; count > 0; count--) {
-      // console.log(elementChilds[i - count]);
-      // elementChilds[i - count].childNodes.forEach(function (child) {
-      // let li = document.createElement("li");
-      // if (child.data == undefined) {
-      //   li.innerHTML = child.outerHTML;
-      // } else {
-      //   li.innerHTML = child.data;
-      // }
-      // li.innerHTML = fragment.appendChild(li);
-      // });
-      // element.appendChild(fragment);
-      // console.log(elementChilds[i - count].childNodes);
-      // li.appendChild(elementChilds)
+      // ul.appendChild(fragment);
+      elementsForLi[0].appendChild(fragment);
+      count = 0;
     }
 
-    count = 0;
   }
 };
-// if (count > 0) {
-// }
-// };
