@@ -753,11 +753,13 @@ element.addEventListener("keypress", function (e) {
 });
 
 tests = () => {
+  console.time();
+
   let selection = document.getSelection(),
     range = selection.getRangeAt(0),
     fragment = document.createDocumentFragment(),
     element = document.getElementById("work-area"),
-    elementChilds = element.children,
+    elementChilds =  element.children,
     childsLength = elementChilds.length,
     count = 0,
     ul = document.createElement("UL");
@@ -766,23 +768,37 @@ tests = () => {
   console.log(element);
   elementsForLi = [];
 
-
-  debugger;
   for (let i = 0; i < childsLength; i++) {
     if (elementChilds[i].nodeName == "UL") {
       elementsForLi[count] = elementChilds[i];
       count++;
-    } else if (count > 1) {
+    } else if (count > 0) {
       elementsForLi.forEach(function (element) {
         let li = document.createElement("li");
         li.innerHTML = element.innerHTML;
         fragment.appendChild(li);
       });
       console.log(fragment);
-      // ul.appendChild(fragment);
+
+      while (elementsForLi[0].firstChild) {
+        elementsForLi[0].removeChild(elementsForLi[0].firstChild);
+      }
+
       elementsForLi[0].appendChild(fragment);
+
+      // for (let k = 1; k < count; k++) {
+      //   while (elementsForLi[k].firstChild) {
+      //     elementsForLi[k].removeChild(elementsForLi[k].firstChild);
+      //   }
+      // }
+
+      for (let k = 1; k < count; k++) {
+        elementsForLi[k].remove();
+      }
+
       count = 0;
     }
-
   }
+
+  console.timeEnd();
 };
