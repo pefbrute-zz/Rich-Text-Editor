@@ -761,42 +761,50 @@ tests = () => {
     element = document.getElementById("work-area"),
     elementChilds =  element.children,
     childsLength = elementChilds.length,
-    count = 0,
-    ul = document.createElement("UL");
+    count = 0;
+    // ul = document.createElement("UL");
 
   replaceContainerTag("ul");
   console.log(element);
   elementsForLi = [];
+  
+  // debugger;
 
   for (let i = 0; i < childsLength; i++) {
     if (elementChilds[i].nodeName == "UL") {
       elementsForLi[count] = elementChilds[i];
       count++;
     } else if (count > 0) {
-      elementsForLi.forEach(function (element) {
-        let li = document.createElement("li");
-        li.innerHTML = element.innerHTML;
-        fragment.appendChild(li);
+      
+      console.log(elementsForLi[0]);
+      debugger;
+      
+      elementsForLi.forEach(function (element, index) {
+        elementsForLi[index].children.forEach(function (child){
+          let li = document.createElement("li");
+          li.innerHTML = element.innerHTML;
+          fragment.appendChild(li);
+        })
       });
+
       console.log(fragment);
+      debugger;
 
       while (elementsForLi[0].firstChild) {
         elementsForLi[0].removeChild(elementsForLi[0].firstChild);
       }
 
-      elementsForLi[0].appendChild(fragment);
+      console.log(elementsForLi[0].innerHTML);
 
-      // for (let k = 1; k < count; k++) {
-      //   while (elementsForLi[k].firstChild) {
-      //     elementsForLi[k].removeChild(elementsForLi[k].firstChild);
-      //   }
-      // }
+      elementsForLi[0].appendChild(fragment);
 
       for (let k = 1; k < count; k++) {
         elementsForLi[k].remove();
       }
-
+      
+      childsLength-=count;
       count = 0;
+      fragment = null;
     }
   }
 
