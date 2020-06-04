@@ -390,7 +390,7 @@ function replaceContainerTag(tag) {
 
       firstSelectedElement = firstSelectedElement.nextElementSibling;
     } while (
-      firstSelectedElement.nextElement != lastSelectedElement.nextElementSibling
+      firstSelectedElement.nextSibling != lastSelectedElement.nextElementSibling
     );
     pCounterMinus1 = pCounter - 1;
     if (pCounter != 0) {
@@ -759,36 +759,45 @@ tests = () => {
     range = selection.getRangeAt(0),
     fragment = document.createDocumentFragment(),
     element = document.getElementById("work-area"),
-    elementChilds =  element.children,
+    elementChilds = element.children,
     childsLength = elementChilds.length,
     count = 0;
-    // ul = document.createElement("UL");
-
-  replaceContainerTag("ul");
-  console.log(element);
-  elementsForLi = [];
   
-  // debugger;
+  replaceContainerTag("ul");
 
+  console.log(element);
+
+  elementsForLi = [];
+
+  debugger;
   for (let i = 0; i < childsLength; i++) {
     if (elementChilds[i].nodeName == "UL") {
       elementsForLi[count] = elementChilds[i];
       count++;
     } else if (count > 0) {
-      
       console.log(elementsForLi[0]);
-      debugger;
-      
-      elementsForLi.forEach(function (element, index) {
-        elementsForLi[index].children.forEach(function (child){
+
+      elementsForLi.forEach(function (element) {
+        let children = element.childNodes;
+        let length = children.length;
+
+        for (let j = 0; j < length; j++){
+          let child = children[j];
+          console.log(clearExtraSpaces(child.textContent));
+          if (clearExtraSpaces(child.textContent) === ""){
+            continue;
+          }
           let li = document.createElement("li");
-          li.innerHTML = element.innerHTML;
+          if (child.innerHTML != undefined){
+            li.innerHTML = child.innerHTML;
+          } else{
+            li.innerHTML = child.textContent;
+          }
           fragment.appendChild(li);
-        })
+        }
       });
 
       console.log(fragment);
-      debugger;
 
       while (elementsForLi[0].firstChild) {
         elementsForLi[0].removeChild(elementsForLi[0].firstChild);
@@ -801,10 +810,10 @@ tests = () => {
       for (let k = 1; k < count; k++) {
         elementsForLi[k].remove();
       }
-      
-      childsLength-=count;
+
+      childsLength -= count;
       count = 0;
-      fragment = null;
+      // fragment = null;
     }
   }
 
