@@ -390,7 +390,7 @@ function replaceContainerTag(tag) {
 
       firstSelectedElement = firstSelectedElement.nextElementSibling;
     } while (
-      firstSelectedElement.nextSibling != lastSelectedElement.nextElementSibling
+      firstSelectedElement != lastSelectedElement.nextElementSibling
     );
     pCounterMinus1 = pCounter - 1;
     if (pCounter != 0) {
@@ -815,6 +815,47 @@ tests = () => {
       count = 0;
       // fragment = null;
     }
+  }
+  if (count != 0){
+    console.log(elementsForLi[0]);
+
+      elementsForLi.forEach(function (element) {
+        let children = element.childNodes;
+        let length = children.length;
+
+        for (let j = 0; j < length; j++){
+          let child = children[j];
+          console.log(clearExtraSpaces(child.textContent));
+          if (clearExtraSpaces(child.textContent) === ""){
+            continue;
+          }
+          let li = document.createElement("li");
+          if (child.innerHTML != undefined){
+            li.innerHTML = child.innerHTML;
+          } else{
+            li.innerHTML = child.textContent;
+          }
+          fragment.appendChild(li);
+        }
+      });
+
+      console.log(fragment);
+
+      while (elementsForLi[0].firstChild) {
+        elementsForLi[0].removeChild(elementsForLi[0].firstChild);
+      }
+
+      console.log(elementsForLi[0].innerHTML);
+
+      elementsForLi[0].appendChild(fragment);
+
+      for (let k = 1; k < count; k++) {
+        elementsForLi[k].remove();
+      }
+
+      childsLength -= count;
+      count = 0;
+      // fragment = null;
   }
 
   console.timeEnd();
