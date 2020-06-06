@@ -766,14 +766,6 @@ function makeUL() {
     parentOfFirstElement = findChild(firstSelectedElement, mainContainer),
     parentOfLastElement = findChild(lastSelectedElement, mainContainer);
 
-  // console.log(selection);
-  // console.log(
-  //   firstSelectedElement.parentElement.parentElement,
-  //   firstSelectedElement.parentElement.parentElement.nodeName,
-  //   findChild(firstSelectedElement, mainContainer)
-  // );
-
-  // let mainContainer = document.getElementById("work-area"),
   let mainChilds = mainContainer.children,
     childsCount = mainChilds.length,
     firstParentIndex = -1,
@@ -781,17 +773,23 @@ function makeUL() {
 
   console.log(
     parentOfFirstElement,
+    firstSelectedElement,
     // mainContainer.children.findIndex(parentOfFirstElement),
-    parentOfLastElement
+    parentOfLastElement,
+    lastSelectedElement
   );
 
   for (let i = 0; i < childsCount; i++) {
     if (mainChilds[i] == parentOfFirstElement) {
       firstParentIndex = i;
       console.log("First Parent's index = ", firstParentIndex);
-    } else if (mainChilds[i] == parentOfLastElement) {
+      // } else if (mainChilds[i] == parentOfLastElement) {
+      //   lastParentIndex = i;
+      //   console.log("Last Parent's index = ", lastParentIndex);
+      // }
+    }
+    if (mainChilds[i] == parentOfLastElement) {
       lastParentIndex = i;
-      console.log("Last Parent's index = ", lastParentIndex);
     }
   }
 
@@ -802,24 +800,26 @@ function makeUL() {
 
   console.log(mainChilds[firstParentIndex], mainChilds[lastParentIndex]);
 
-  let isULBetween = false;
-  for (let i = firstParentIndex; i < lastParentIndex; i++) {
-    if (mainChilds[i].nodeName == "UL") {
-      isULBetween = true;
-    }
-  }
+  // let isULBetween = false;
+  // for (let i = firstParentIndex; i < lastParentIndex; i++) {
+  //   console.log(i);
+  //   if (mainChilds[i].nodeName == "UL") {
+  //     isULBetween = true;
+  //   }
+  // }
 
-  if (
-    parentOfFirstElement.nodeName == "UL" ||
-    parentOfLastElement.nodeName == "UL" ||
-    isULBetween
-  ) {
-    for (let i = firstParentIndex; i < lastParentIndex + 1; i++) {
-      if (mainChilds[i].nodeName != "UL") {
-        replaceElement(mainChilds[i], "ul");
-      }
+  // if (
+  // true
+  // parentOfFirstElement.nodeName == "UL" ||
+  // parentOfLastElement.nodeName == "UL" ||
+  // isULBetween
+  // ) {
+  for (let i = firstParentIndex; i < lastParentIndex + 1; i++) {
+    if (mainChilds[i].nodeName != "UL") {
+      replaceElement(mainChilds[i], "ul");
     }
   }
+  // }
 
   // if (
   //   parentOfFirstElement.nodeName != "UL" &&
@@ -844,7 +844,7 @@ function makeUL() {
     childsLength = elementChilds.length,
     count = 0;
 
-  replaceContainerTag("ul");
+  // replaceContainerTag("ul");
 
   // console.log(element);
 
