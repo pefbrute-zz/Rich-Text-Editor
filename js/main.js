@@ -6,6 +6,7 @@ function format(command, value) {
   document.execCommand(command, false, value);
 }
 
+//Add dropdown class to element with dropdownId
 function addDropdown(dropdownId) {
   let dropdown = document.getElementById(dropdownId),
     dropdowns = document.querySelectorAll("[class*=dropdown]"),
@@ -62,12 +63,15 @@ for (let i = 0; i <= colorsLastElementIndex; i++) {
   makeColorAppliers(ColorAppliers, classesNumber, colors[i]);
 }
 
+//Makes first letter upper case
 var capitalizeFirstLetter = (string) =>
   string.charAt(0).toUpperCase() + string.slice(1);
 
+//Makes first letter lower case
 var lowerFirstLetter = (string) =>
   string.charAt(0).toLowerCase() + string.slice(1);
 
+//Clears spaces in the start and end of the text and also between words
 var clearExtraSpaces = (string) => {
   let cleanedBetweenWords = string.replace(/\s+/g, " "),
     cleanedAtAll = cleanedBetweenWords.trim(),
@@ -293,13 +297,21 @@ function addSize(sizeName) {
 
 //It finds child of (parent) element from some (element)
 function findChild(element, parent) {
-  while (element.parentElement != parent) {
-    element = element.parentElement;
+  if (element == undefined) {
+    // console.log("Error: You didn't add child element");
+    throw new Error("You didn't add child element");
+  } else if (parent == undefined) {
+    // console.log("Error: You didn't add parent element");
+    throw new Error("You didn't add parent element");
+  } else {
+    while (element.parentElement != parent) {
+      element = element.parentElement;
+    }
+
+    child = element;
+
+    return child;
   }
-
-  child = element;
-
-  return child;
 }
 
 //It replaces any tag with new tag
@@ -310,6 +322,7 @@ function replaceElement(source, newType) {
   const frag = document.createDocumentFragment();
 
   // Fill it with what's in the source element
+  // Including attributes
   while (source.firstChild) {
     for (let i = 0; i < source.attributes.length; i++) {
       attributes.push(source.attributes[i]);
@@ -321,6 +334,8 @@ function replaceElement(source, newType) {
 
   // Empty the document fragment into it
   newElem.appendChild(frag);
+
+  // Add attributes of old element to new element
   let length = attributes.length;
   for (let i = 0; i <= length - 1; i++) {
     newElem.setAttribute(attributes[i].name, attributes[i].value);
@@ -423,6 +438,43 @@ function highlightPre() {
   rangy.restoreSelection(savedSelection);
   localStorage.clear();
   console.timeEnd();
+}
+
+function findFirstChilds(firstElement, secondElement, bigParent) {
+  firstElement = findChild(firstElement, bigParent);
+  secondElement = findChild(secondElement, bigParent);
+  return [firstElement, secondElement];
+}
+
+function Verification() {
+  let selection = document.getSelection(),
+    range = selection.getRangeAt(0),
+    wrongContainer = document.getElementById("sample-toolbar"),
+    firstNode = selection.anchorNode,
+    lastNode = selection.focusNode;
+
+  if (
+    firstNode.nodeName == "#text" &&
+    range.commonAncestorContainer != wrongContainer
+  ) {
+    // let mainContainer = document.getElementById("work-area"),
+    let  firstSelectedElement = firstNode,
+      lastSelectedElement = lastNode,
+      startElement = range.startContainer,
+      endElement = range.endContainer;
+
+    if (
+      firstSelectedElement != startElement &&
+      lastSelectedElement != endElement
+    ) {
+      firstSelectedElement = lastNode;
+      lastSelectedElement = firstNode;
+    }
+
+    return true;
+  } else {
+    return false;
+  }
 }
 
 //It toggles class with (className) to selected first childs of <div class="work-area">
@@ -634,6 +686,8 @@ function addContainerClass(className) {
         lastSelectedElement.nextElementSibling
       );
     }
+  } else {
+    throw new Error("You selected something wrong!");
   }
 }
 
@@ -821,12 +875,11 @@ function makeUL() {
       countULs++;
     }
   }
-  
+
   //Finish this part!
   //
-  if (countULs == ( (lastParentIndex + 1) - firstParentIndex )){
+  if (countULs == lastParentIndex + 1 - firstParentIndex) {
     console.log("Selection is full of ULs!");
-
   }
 
   for (let i = firstParentIndex; i < lastParentIndex + 1; i++) {
