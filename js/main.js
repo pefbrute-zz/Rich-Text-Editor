@@ -458,7 +458,7 @@ function Verification() {
     range.commonAncestorContainer != wrongContainer
   ) {
     // let mainContainer = document.getElementById("work-area"),
-    let  firstSelectedElement = firstNode,
+    let firstSelectedElement = firstNode,
       lastSelectedElement = lastNode,
       startElement = range.startContainer,
       endElement = range.endContainer;
@@ -503,8 +503,25 @@ function addContainerClass(className) {
       lastSelectedElement = firstNode;
     }
 
-    lastSelectedElement = findChild(lastSelectedElement, mainContainer);
-    firstSelectedElement = findChild(firstSelectedElement, mainContainer);
+    console.log(
+      findFirstChilds(firstSelectedElement, lastSelectedElement, mainContainer)
+    );
+    [firstSelectedElement, lastSelectedElement] = [
+      findFirstChilds(
+        firstSelectedElement,
+        lastSelectedElement,
+        mainContainer
+      )[0],
+      findFirstChilds(
+        firstSelectedElement,
+        lastSelectedElement,
+        mainContainer
+      )[1],
+    ];
+    console.log(firstSelectedElement);
+    console.log(lastSelectedElement);
+    // lastSelectedElement = findChild(lastSelectedElement, mainContainer);
+    // firstSelectedElement = findChild(firstSelectedElement, mainContainer);
 
     if (className.substring(0, 6) == "indent") {
       let sign = className.substring(6, 7),
