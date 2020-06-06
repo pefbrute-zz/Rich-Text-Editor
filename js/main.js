@@ -417,12 +417,6 @@ function highlightPre() {
   console.timeEnd();
 }
 
-// function findFirstChilds(firstElement, secondElement, bigParent) {
-//   firstElement = findChild(firstElement, bigParent);
-//   secondElement = findChild(secondElement, bigParent);
-//   return [firstElement, secondElement];
-// }
-
 function findFirstSelectedChilds(bigParent) {
   let selection = document.getSelection(),
     range = selection.getRangeAt(0),
