@@ -455,76 +455,80 @@ function findFirstSelectedChilds(bigParent) {
     verific =
       firstNode.nodeName == "#text" &&
       range.commonAncestorContainer != wrongContainer;
-  if (verific) {
-    // let mainContainer = document.getElementById("work-area"),
-    let firstSelectedElement = firstNode,
-      lastSelectedElement = lastNode,
-      startElement = range.startContainer,
-      endElement = range.endContainer;
-
-    if (
-      firstSelectedElement != startElement &&
-      lastSelectedElement != endElement
-    ) {
-      firstSelectedElement = lastNode;
-      lastSelectedElement = firstNode;
+  if (bigParent != undefined){
+    if (verific) {
+      // let mainContainer = document.getElementById("work-area"),
+      let firstSelectedElement = firstNode,
+        lastSelectedElement = lastNode,
+        startElement = range.startContainer,
+        endElement = range.endContainer;
+  
+      if (
+        firstSelectedElement != startElement &&
+        lastSelectedElement != endElement
+      ) {
+        firstSelectedElement = lastNode;
+        lastSelectedElement = firstNode;
+      }
+  
+      firstElement = findChild(firstSelectedElement, bigParent);
+      secondElement = findChild(lastSelectedElement, bigParent);
+  
+      return [firstElement, secondElement];
+    } else {
+      return [undefined, undefined];
     }
-
-    firstElement = findChild(firstSelectedElement, bigParent);
-    secondElement = findChild(lastSelectedElement, bigParent);
-
-    return [firstElement, secondElement];
   } else {
-    return false;
+    throw new Error ("You didn't add parent element");
   }
 }
 
 //It toggles class with (className) to selected first childs of <div class="work-area">
 function addContainerClass(className) {
-  let firstSelectedElement = findFirstSelectedChilds()[0],
-  lastSelectedElement = findFirstSelectedChilds()[1];
-  // let selection = document.getSelection(),
-  //   range = selection.getRangeAt(0),
-  //   wrongContainer = document.getElementById("sample-toolbar"),
-  //   firstNode = selection.anchorNode,
-  //   lastNode = selection.focusNode;
+  let mainContainer = document.getElementById("work-area"),
+    firstSelectedElement = findFirstSelectedChilds(mainContainer)[0],
+    lastSelectedElement = findFirstSelectedChilds(mainContainer)[1];
+  if (firstSelectedElement != undefined && lastSelectedElement != undefined) {
+    // let selection = document.getSelection(),
+    //   range = selection.getRangeAt(0),
+    //   wrongContainer = document.getElementById("sample-toolbar"),
+    //   firstNode = selection.anchorNode,
+    //   lastNode = selection.focusNode;
 
-  // if (
-  //   firstNode.nodeName == "#text" &&
-  //   range.commonAncestorContainer != wrongContainer
-  // ) {
-  //   let mainContainer = document.getElementById("work-area"),
-  //     firstSelectedElement = firstNode,
-  //     lastSelectedElement = lastNode,
-  //     startElement = range.startContainer,
-  //     endElement = range.endContainer;
+    // if (
+    //   firstNode.nodeName == "#text" &&
+    //   range.commonAncestorContainer != wrongContainer
+    // ) {
+    //   let mainContainer = document.getElementById("work-area"),
+    //     firstSelectedElement = firstNode,
+    //     lastSelectedElement = lastNode,
+    //     startElement = range.startContainer,
+    //     endElement = range.endContainer;
 
-  //   if (
-  //     firstSelectedElement != startElement &&
-  //     lastSelectedElement != endElement
-  //   ) {
-  //     firstSelectedElement = lastNode;
-  //     lastSelectedElement = firstNode;
-  //   }
+    //   if (
+    //     firstSelectedElement != startElement &&
+    //     lastSelectedElement != endElement
+    //   ) {
+    //     firstSelectedElement = lastNode;
+    //     lastSelectedElement = firstNode;
+    //   }
 
-  //   console.log(
-  //     findFirstChilds(firstSelectedElement, lastSelectedElement, mainContainer)
-  //   );
+    //   console.log(
+    //     findFirstChilds(firstSelectedElement, lastSelectedElement, mainContainer)
+    //   );
 
-  //   [firstSelectedElement, lastSelectedElement] = [
-  //     findFirstChilds(
-  //       firstSelectedElement,
-  //       lastSelectedElement,
-  //       mainContainer
-  //     )[0],
-  //     findFirstChilds(
-  //       firstSelectedElement,
-  //       lastSelectedElement,
-  //       mainContainer
-  //     )[1],
-  //   ];
-
-    
+    //   [firstSelectedElement, lastSelectedElement] = [
+    //     findFirstChilds(
+    //       firstSelectedElement,
+    //       lastSelectedElement,
+    //       mainContainer
+    //     )[0],
+    //     findFirstChilds(
+    //       firstSelectedElement,
+    //       lastSelectedElement,
+    //       mainContainer
+    //     )[1],
+    //   ];
 
     console.log(firstSelectedElement);
     console.log(lastSelectedElement);
