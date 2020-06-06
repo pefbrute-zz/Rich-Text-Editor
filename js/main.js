@@ -350,35 +350,12 @@ function replaceElement(source, newType) {
 //It replaces selected childs tag of <div class="work-area"> with (tag)
 function replaceContainerTag(tag) {
   var tag = tag.toUpperCase();
-  let selection = document.getSelection(),
-    range = selection.getRangeAt(0),
-    mainContainer = document.getElementById("work-area"),
-    wrongContainer = document.getElementById("sample-toolbar"),
-    firstNode = selection.anchorNode,
-    lastNode = selection.focusNode;
-  if (
-    firstNode.nodeName == "#text" &&
-    range.commonAncestorContainer != wrongContainer
-    // && lastNode != mainContainer
-  ) {
-    var firstSelectedElement = firstNode,
-      lastSelectedElement = lastNode,
-      startElement = range.startContainer,
-      endElement = range.endContainer;
 
-    if (
-      firstSelectedElement != startElement &&
-      lastSelectedElement != endElement
-    ) {
-      firstSelectedElement = lastNode;
-      lastSelectedElement = firstNode;
-    }
+  let mainContainer = document.getElementById("work-area"),
+    firstSelectedElement = findFirstSelectedChilds(mainContainer)[0],
+    lastSelectedElement = findFirstSelectedChilds(mainContainer)[1];
 
-    lastSelectedElement = findChild(lastSelectedElement, mainContainer);
-    firstSelectedElement = findChild(firstSelectedElement, mainContainer);
-
-    // console.log(firstSelectedElement, lastSelectedElement);
-
+  if (firstSelectedElement != undefined && lastSelectedElement != undefined) {
     let p = [],
       pCounter = 0,
       tagData = {
@@ -455,14 +432,14 @@ function findFirstSelectedChilds(bigParent) {
     verific =
       firstNode.nodeName == "#text" &&
       range.commonAncestorContainer != wrongContainer;
-  if (bigParent != undefined){
+  if (bigParent != undefined) {
     if (verific) {
       // let mainContainer = document.getElementById("work-area"),
       let firstSelectedElement = firstNode,
         lastSelectedElement = lastNode,
         startElement = range.startContainer,
         endElement = range.endContainer;
-  
+
       if (
         firstSelectedElement != startElement &&
         lastSelectedElement != endElement
@@ -470,16 +447,16 @@ function findFirstSelectedChilds(bigParent) {
         firstSelectedElement = lastNode;
         lastSelectedElement = firstNode;
       }
-  
+
       firstElement = findChild(firstSelectedElement, bigParent);
       secondElement = findChild(lastSelectedElement, bigParent);
-  
+
       return [firstElement, secondElement];
     } else {
       return [undefined, undefined];
     }
   } else {
-    throw new Error ("You didn't add parent element");
+    throw new Error("You didn't add parent element");
   }
 }
 
@@ -488,52 +465,10 @@ function addContainerClass(className) {
   let mainContainer = document.getElementById("work-area"),
     firstSelectedElement = findFirstSelectedChilds(mainContainer)[0],
     lastSelectedElement = findFirstSelectedChilds(mainContainer)[1];
+
   if (firstSelectedElement != undefined && lastSelectedElement != undefined) {
-    // let selection = document.getSelection(),
-    //   range = selection.getRangeAt(0),
-    //   wrongContainer = document.getElementById("sample-toolbar"),
-    //   firstNode = selection.anchorNode,
-    //   lastNode = selection.focusNode;
-
-    // if (
-    //   firstNode.nodeName == "#text" &&
-    //   range.commonAncestorContainer != wrongContainer
-    // ) {
-    //   let mainContainer = document.getElementById("work-area"),
-    //     firstSelectedElement = firstNode,
-    //     lastSelectedElement = lastNode,
-    //     startElement = range.startContainer,
-    //     endElement = range.endContainer;
-
-    //   if (
-    //     firstSelectedElement != startElement &&
-    //     lastSelectedElement != endElement
-    //   ) {
-    //     firstSelectedElement = lastNode;
-    //     lastSelectedElement = firstNode;
-    //   }
-
-    //   console.log(
-    //     findFirstChilds(firstSelectedElement, lastSelectedElement, mainContainer)
-    //   );
-
-    //   [firstSelectedElement, lastSelectedElement] = [
-    //     findFirstChilds(
-    //       firstSelectedElement,
-    //       lastSelectedElement,
-    //       mainContainer
-    //     )[0],
-    //     findFirstChilds(
-    //       firstSelectedElement,
-    //       lastSelectedElement,
-    //       mainContainer
-    //     )[1],
-    //   ];
-
     console.log(firstSelectedElement);
     console.log(lastSelectedElement);
-    // lastSelectedElement = findChild(lastSelectedElement, mainContainer);
-    // firstSelectedElement = findChild(firstSelectedElement, mainContainer);
 
     if (className.substring(0, 6) == "indent") {
       let sign = className.substring(6, 7),
