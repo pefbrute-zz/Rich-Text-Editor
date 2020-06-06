@@ -814,11 +814,29 @@ function makeUL() {
   // parentOfLastElement.nodeName == "UL" ||
   // isULBetween
   // ) {
+
+  let countULs = 0;
+  for (let i = firstParentIndex; i < lastParentIndex + 1; i++) {
+    if (mainChilds[i].nodeName == "UL") {
+      countULs++;
+    }
+  }
+  
+  //Finish this part!
+  //
+  if (countULs == ( (lastParentIndex + 1) - firstParentIndex )){
+    console.log("Selection is full of ULs!");
+
+  }
+
   for (let i = firstParentIndex; i < lastParentIndex + 1; i++) {
     if (mainChilds[i].nodeName != "UL") {
       replaceElement(mainChilds[i], "ul");
     }
   }
+  //
+  //
+
   // }
 
   // if (
