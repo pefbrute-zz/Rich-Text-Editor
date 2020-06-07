@@ -828,21 +828,6 @@ function makeUL() {
 
   console.log(mainChilds[firstParentIndex], mainChilds[lastParentIndex]);
 
-  // let isULBetween = false;
-  // for (let i = firstParentIndex; i < lastParentIndex; i++) {
-  //   console.log(i);
-  //   if (mainChilds[i].nodeName == "UL") {
-  //     isULBetween = true;
-  //   }
-  // }
-
-  // if (
-  // true
-  // parentOfFirstElement.nodeName == "UL" ||
-  // parentOfLastElement.nodeName == "UL" ||
-  // isULBetween
-  // ) {
-
   let countULs = 0;
   for (let i = firstParentIndex; i < lastParentIndex + 1; i++) {
     if (mainChilds[i].nodeName == "UL") {
@@ -857,14 +842,38 @@ function makeUL() {
     console.log("Selection is full of ULs!");
     let firstLi = findSecondChlid(firstSelectedElement, mainContainer),
       lastLi = findSecondChlid(lastSelectedElement, mainContainer),
-      UL = findChild(firstSelectedElement, mainContainer);
+      UL = findChild(firstSelectedElement, mainContainer),
+      children = UL.children,
+      childrenCount = children.length,
+      firstLiIndex = -1,
+      lastLiIndex = -1;
     console.log(firstLi, lastLi, UL);
-    for (let i = firstParentIndex; i < lastParentIndex + 1; i++) {}
+    for (let i = 0; i < childrenCount; i++) {
+      if (children[i] == firstLi) {
+        firstLiIndex = i;
+      } else if (children[i] == lastLi) {
+        lastLiIndex = i;
+      }
+    }
+    let fragment = document.createDocumentFragment(),
+      liContent = "";
+    for (let i = firstLiIndex; firstLiIndex < lastLiIndex; i++) {
+      let p = document.createElement("p");
+
+      liContent = children[i].innerHTML;
+
+      UL.children[i].remove();
+      i--;
+
+      p.innerHTML = liContent;
+
+      fragment.appendChild(p);
+      console.log(fragment);
+    }
   } else {
     for (let i = firstParentIndex; i < lastParentIndex + 1; i++) {
       if (mainChilds[i].nodeName != "UL") {
         replaceElement(mainChilds[i], "ul");
-
       }
     }
 
@@ -876,9 +885,9 @@ function makeUL() {
         }
       }
     }
-  
+
     clearEmptyContainers();
-  
+
     let // selection = document.getSelection(),
       range = selection.getRangeAt(0),
       fragment = document.createDocumentFragment(),
@@ -886,13 +895,13 @@ function makeUL() {
       elementChilds = element.children,
       childsLength = elementChilds.length,
       count = 0;
-  
+
     // replaceContainerTag("ul");
-  
+
     // console.log(element);
-  
+
     elementsForLi = [];
-  
+
     // debugger;
     for (let i = 0; i < childsLength; i++) {
       if (elementChilds[i].nodeName == "UL") {
@@ -900,11 +909,11 @@ function makeUL() {
         count++;
       } else if (count > 0) {
         // console.log(elementsForLi[0]);
-  
+
         elementsForLi.forEach(function (element) {
           let children = element.childNodes;
           let length = children.length;
-  
+
           for (let j = 0; j < length; j++) {
             let child = children[j];
             // console.log(clearExtraSpaces(child.textContent));
@@ -920,21 +929,21 @@ function makeUL() {
             fragment.appendChild(li);
           }
         });
-  
+
         // console.log(fragment);
-  
+
         while (elementsForLi[0].firstChild) {
           elementsForLi[0].removeChild(elementsForLi[0].firstChild);
         }
-  
+
         // console.log(elementsForLi[0].innerHTML);
-  
+
         elementsForLi[0].appendChild(fragment);
-  
+
         for (let k = 1; k < count; k++) {
           elementsForLi[k].remove();
         }
-  
+
         if (count != 1) {
           childsLength -= count;
         }
@@ -944,11 +953,11 @@ function makeUL() {
     }
     if (count != 0) {
       // console.log(elementsForLi[0]);
-  
+
       elementsForLi.forEach(function (element) {
         let children = element.childNodes;
         let length = children.length;
-  
+
         for (let j = 0; j < length; j++) {
           let child = children[j];
           // console.log(clearExtraSpaces(child.textContent));
@@ -964,21 +973,21 @@ function makeUL() {
           fragment.appendChild(li);
         }
       });
-  
+
       // console.log(fragment);
-  
+
       while (elementsForLi[0].firstChild) {
         elementsForLi[0].removeChild(elementsForLi[0].firstChild);
       }
-  
+
       // console.log(elementsForLi[0].innerHTML);
-  
+
       elementsForLi[0].appendChild(fragment);
-  
+
       for (let k = 1; k < count; k++) {
         elementsForLi[k].remove();
       }
-  
+
       childsLength -= count;
       count = 0;
     }
