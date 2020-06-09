@@ -785,8 +785,6 @@ tests = () => {
 function makeUL() {
   console.time();
 
-  // debugger;
-
   let selection = document.getSelection(),
     firstSelectedElement = selection.anchorNode,
     lastSelectedElement = selection.focusNode,
@@ -857,18 +855,29 @@ function makeUL() {
     let fragment = document.createDocumentFragment(),
       liContent = "";
 
-    while (firstLiIndex != lastLiIndex + 1) {
+    if (lastLiIndex == -1) {
       let p = document.createElement("p");
 
       liContent = children[firstLiIndex].innerHTML;
-
       UL.children[firstLiIndex].remove();
-      lastLiIndex--;
-
       p.innerHTML = liContent;
 
       fragment.appendChild(p);
       console.log(fragment);
+    } else {
+      while (firstLiIndex != lastLiIndex + 1) {
+        let p = document.createElement("p");
+
+        liContent = children[firstLiIndex].innerHTML;
+
+        UL.children[firstLiIndex].remove();
+        lastLiIndex--;
+
+        p.innerHTML = liContent;
+
+        fragment.appendChild(p);
+        console.log(fragment);
+      }
     }
     mainContainer.insertBefore(fragment, mainContainer.children[ULIndex + 1]);
 
