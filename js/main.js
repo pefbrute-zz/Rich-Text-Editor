@@ -923,6 +923,7 @@ function makeUL() {
 
           while (length != 0) {
             innerFragment.appendChild(children[0]);
+            length--;
           }
           let li = document.createElement("li");
           li.appendChild(innerFragment);
@@ -948,21 +949,16 @@ function makeUL() {
     if (count != 0) {
       elementsForLi.forEach(function (element) {
         let children = element.childNodes;
-        let length = children.length;
+        let length = children.length,
+          innerFragment = document.createDocumentFragment();
 
-        for (let j = 0; j < length; j++) {
-          let child = children[j];
-          if (clearExtraSpaces(child.textContent) === "") {
-            continue;
-          }
-          let li = document.createElement("li");
-          if (child.innerHTML != undefined) {
-            li.innerHTML = child.innerHTML;
-          } else {
-            li.innerHTML = child.textContent;
-          }
-          fragment.appendChild(li);
+        while (length != 0) {
+          innerFragment.appendChild(children[0]);
+          length--;
         }
+        let li = document.createElement("li");
+        li.appendChild(innerFragment);
+        fragment.appendChild(li);
       });
 
       while (elementsForLi[0].firstChild) {
@@ -975,7 +971,9 @@ function makeUL() {
         elementsForLi[k].remove();
       }
 
-      childsLength -= count;
+      if (count != 1) {
+        childsLength -= count;
+      }
       count = 0;
     }
   }
