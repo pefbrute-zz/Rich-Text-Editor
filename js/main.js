@@ -107,7 +107,6 @@ function clearClasses(classNameBeginning) {
         k++;
       }
     }
-    // console.log(classesAmount);
     if (classesAmount == 1) {
     } else {
       for (let j = 0; j < classesAmount; j++) {
@@ -185,8 +184,6 @@ let FontAppliers = {
 
 //It adds font class (sofia, ubuntu-mono, etc.) to selected text
 function addFont(fontName) {
-  // console.time();
-
   let signIndex = fontName.indexOf("-");
   fontName = capitalizeFirstLetter(fontName);
 
@@ -245,8 +242,6 @@ function addFont(fontName) {
       }
     }
   }
-
-  // console.timeEnd();
 }
 
 let SizeAppliers = {
@@ -298,10 +293,8 @@ function addSize(sizeName) {
 //It finds child of (parent) element from some (element)
 function findChild(element, parent) {
   if (element == undefined) {
-    // console.log("Error: You didn't add child element");
     throw new Error("You didn't add child element");
   } else if (parent == undefined) {
-    // console.log("Error: You didn't add parent element");
     throw new Error("You didn't add parent element");
   } else {
     while (element.parentElement != parent) {
@@ -477,9 +470,6 @@ function addContainerClass(className) {
     lastSelectedElement = findFirstSelectedChilds(mainContainer)[1];
 
   if (firstSelectedElement != undefined && lastSelectedElement != undefined) {
-    console.log(firstSelectedElement);
-    console.log(lastSelectedElement);
-
     if (className.substring(0, 6) == "indent") {
       let sign = className.substring(6, 7),
         classBeginning = "indent";
@@ -628,12 +618,6 @@ function addContainerClass(className) {
               let classNameIndex = className.indexOf("-"),
                 classNameBeginning = className.substring(0, classNameIndex);
 
-              // classes.push(className);
-              // classes = classes.join(" ");
-              // firstSelectedElement.className = clearExtraSpaces(
-              //   classes + " " + className
-              // );
-
               for (let j = 0; j < length; j++) {
                 let classIndex = classes[j].indexOf("-"),
                   classBeginning = classes[j].substring(0, classIndex);
@@ -645,7 +629,6 @@ function addContainerClass(className) {
                 }
               }
               classes = classes.join(" ");
-              console.log(classes);
               firstSelectedElement.className = clearExtraSpaces(
                 classes + " " + className
               );
@@ -771,10 +754,6 @@ element.addEventListener("keypress", function (e) {
 
     setTimeout(replaceDivs, 1);
     rangy.restoreSelection(savedSelection);
-
-    // let selection = document.getSelection();
-    // console.log(selection);
-    // selection.anchorNode.parentElement.focus();
   }
 });
 
@@ -783,8 +762,6 @@ tests = () => {
 };
 
 function makeUL() {
-  console.time();
-
   let selection = document.getSelection(),
     firstSelectedElement = selection.anchorNode,
     lastSelectedElement = selection.focusNode,
@@ -797,17 +774,9 @@ function makeUL() {
     firstParentIndex = -1,
     lastParentIndex = -1;
 
-  console.log(
-    parentOfFirstElement,
-    firstSelectedElement,
-    parentOfLastElement,
-    lastSelectedElement
-  );
-
   for (let i = 0; i < childsCount; i++) {
     if (mainChilds[i] == parentOfFirstElement) {
       firstParentIndex = i;
-      console.log("First Parent's index = ", firstParentIndex);
     }
     if (mainChilds[i] == parentOfLastElement) {
       lastParentIndex = i;
@@ -816,10 +785,7 @@ function makeUL() {
 
   if (firstParentIndex > lastParentIndex) {
     [firstParentIndex, lastParentIndex] = [lastParentIndex, firstParentIndex];
-    console.log("Changed index: ", firstParentIndex);
   }
-
-  console.log(mainChilds[firstParentIndex], mainChilds[lastParentIndex]);
 
   let countULs = 0;
   for (let i = firstParentIndex; i < lastParentIndex + 1; i++) {
@@ -832,7 +798,6 @@ function makeUL() {
   //
 
   if (countULs == lastParentIndex + 1 - firstParentIndex) {
-    console.log("Selection is full of ULs!");
     let firstLi = findSecondChlid(firstSelectedElement, mainContainer),
       lastLi = findSecondChlid(lastSelectedElement, mainContainer),
       UL = findChild(firstSelectedElement, mainContainer),
@@ -841,8 +806,6 @@ function makeUL() {
       childrenCount = children.length,
       firstLiIndex = -1,
       lastLiIndex = -1;
-
-    console.log(firstLi, lastLi, UL);
 
     for (let i = 0; i < childrenCount; i++) {
       if (children[i] == firstLi) {
@@ -863,7 +826,6 @@ function makeUL() {
       p.innerHTML = liContent;
 
       fragment.appendChild(p);
-      console.log(fragment);
     } else {
       while (firstLiIndex != lastLiIndex + 1) {
         let p = document.createElement("p");
@@ -876,7 +838,6 @@ function makeUL() {
         p.innerHTML = liContent;
 
         fragment.appendChild(p);
-        console.log(fragment);
       }
     }
     mainContainer.insertBefore(fragment, mainContainer.children[ULIndex + 1]);
@@ -977,6 +938,4 @@ function makeUL() {
       count = 0;
     }
   }
-
-  console.timeEnd();
 }
