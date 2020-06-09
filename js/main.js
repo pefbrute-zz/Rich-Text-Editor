@@ -802,7 +802,6 @@ function makeUL() {
   console.log(
     parentOfFirstElement,
     firstSelectedElement,
-    // mainContainer.children.findIndex(parentOfFirstElement),
     parentOfLastElement,
     lastSelectedElement
   );
@@ -811,10 +810,6 @@ function makeUL() {
     if (mainChilds[i] == parentOfFirstElement) {
       firstParentIndex = i;
       console.log("First Parent's index = ", firstParentIndex);
-      // } else if (mainChilds[i] == parentOfLastElement) {
-      //   lastParentIndex = i;
-      //   console.log("Last Parent's index = ", lastParentIndex);
-      // }
     }
     if (mainChilds[i] == parentOfLastElement) {
       lastParentIndex = i;
@@ -898,65 +893,36 @@ function makeUL() {
 
     clearEmptyContainers();
 
-    let // selection = document.getSelection(),
-      range = selection.getRangeAt(0),
-      fragment = document.createDocumentFragment(),
+    let fragment = document.createDocumentFragment(),
       element = document.getElementById("work-area"),
       elementChilds = element.children,
       childsLength = elementChilds.length,
       count = 0;
 
-    // replaceContainerTag("ul");
-
-    // console.log(element);
-
     elementsForLi = [];
 
-    // debugger;
     for (let i = 0; i < childsLength; i++) {
       if (elementChilds[i].nodeName == "UL") {
         elementsForLi[count] = elementChilds[i];
         count++;
       } else if (count > 0) {
-        // console.log(elementsForLi[0]);
-
         debugger;
         elementsForLi.forEach(function (element) {
           let children = element.childNodes;
           let length = children.length,
-          innerFragment = document.createDocumentFragment();
+            innerFragment = document.createDocumentFragment();
 
-          for (let j = 0; j < length; j++) {
-            
-            let child = children[j];
-            // console.log(clearExtraSpaces(child.textContent));
-            // if (clearExtraSpaces(child.textContent) === "") {
-            //   continue;
-            // }
-
-            // let li = document.createElement("li");
-
-            // if (child.innerHTML != undefined) {
-            //   li.innerHTML = child.innerHTML;
-            // } else {
-            //   li.innerHTML = child.textContent;
-            // }
-
-            innerFragment.appendChild(child);
+          while (length != 0) {
+            innerFragment.appendChild(children[0]);
           }
-            let li = document.createElement("li");
-
-            li.appendChild(innerFragment);
-            fragment.appendChild(li);
+          let li = document.createElement("li");
+          li.appendChild(innerFragment);
+          fragment.appendChild(li);
         });
-
-        // console.log(fragment);
 
         while (elementsForLi[0].firstChild) {
           elementsForLi[0].removeChild(elementsForLi[0].firstChild);
         }
-
-        // console.log(elementsForLi[0].innerHTML);
 
         elementsForLi[0].appendChild(fragment);
 
@@ -968,19 +934,15 @@ function makeUL() {
           childsLength -= count;
         }
         count = 0;
-        // fragment = null;
       }
     }
     if (count != 0) {
-      // console.log(elementsForLi[0]);
-
       elementsForLi.forEach(function (element) {
         let children = element.childNodes;
         let length = children.length;
 
         for (let j = 0; j < length; j++) {
           let child = children[j];
-          // console.log(clearExtraSpaces(child.textContent));
           if (clearExtraSpaces(child.textContent) === "") {
             continue;
           }
@@ -994,13 +956,9 @@ function makeUL() {
         }
       });
 
-      // console.log(fragment);
-
       while (elementsForLi[0].firstChild) {
         elementsForLi[0].removeChild(elementsForLi[0].firstChild);
       }
-
-      // console.log(elementsForLi[0].innerHTML);
 
       elementsForLi[0].appendChild(fragment);
 
