@@ -403,8 +403,6 @@ function replaceContainerTag(tag) {
       }
     }
 
-    selection.empty();
-
     if (tag == "PRE") {
       clearTagsAtPreContainer();
       // init();
@@ -413,6 +411,9 @@ function replaceContainerTag(tag) {
       highlightKeywords();
     }
   }
+
+  let selection = document.getSelection();
+  selection.empty();
 }
 
 //It highlights specific words + all numbers in <pre>
@@ -1089,10 +1090,9 @@ function makeUL() {
           fragment.appendChild(li);
         });
 
-        let firstChild = elementsForLi[0].firstChild;
-        console.log(firstChild)
-        
-        debugger;
+        // let firstChild = elementsForLi[0].firstChild;
+        // console.log(firstChild)
+
         // while (elementsForLi[0].firstChild) {
         //   console.log(firstChild);
         //   elementsForLi[0].removeChild(elementsForLi[0].firstChild);
@@ -1101,7 +1101,9 @@ function makeUL() {
         elementsForLi[0].appendChild(fragment);
 
         for (let k = 1; k < count; k++) {
-          elementsForLi[k].remove();
+          let element = elementsForLi[k];
+
+          element.remove();
         }
 
         if (count != 1) {
@@ -1112,35 +1114,40 @@ function makeUL() {
     }
     if (count != 0) {
       elementsForLi.forEach(function (element) {
-        let children = element.childNodes;
-        let length = children.length,
+        let children = element.childNodes,
+          length = children.length,
           innerFragment = document.createDocumentFragment();
 
         while (length != 0) {
           innerFragment.appendChild(children[0]);
           length--;
         }
+
         let li = document.createElement("li");
+
         li.appendChild(innerFragment);
         fragment.appendChild(li);
       });
 
-      while (elementsForLi[0].firstChild) {
-        elementsForLi[0].removeChild(elementsForLi[0].firstChild);
-      }
+      // while (elementsForLi[0].firstChild) {
+      //   elementsForLi[0].removeChild(elementsForLi[0].firstChild);
+      // }
 
       elementsForLi[0].appendChild(fragment);
 
       for (let k = 1; k < count; k++) {
-        elementsForLi[k].remove();
+        let element = elementsForLi[k];
+        element.remove();
       }
 
       if (count != 1) {
         childsLength -= count;
       }
+
       count = 0;
     }
   }
+  selection.empty();
 }
 
 function makeOL() {
