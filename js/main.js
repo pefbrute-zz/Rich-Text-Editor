@@ -977,7 +977,7 @@ function makeUL() {
   }
 
   // if we selected only <ul> tags
-  if (countULs == ( (lastParentIndex + 1) - firstParentIndex) ) {
+  if (countULs == lastParentIndex + 1 - firstParentIndex) {
     let firstLi = findSecondChlid(firstSelectedElement, mainContainer),
       lastLi = findSecondChlid(lastSelectedElement, mainContainer),
       UL = findChild(firstSelectedElement, mainContainer),
@@ -1031,19 +1031,22 @@ function makeUL() {
     mainContainer.insertBefore(fragment, mainContainer.children[ULIndex + 1]);
 
     //If <ul> tag doesn't have children then delete the tag
-    childrenOfUL = UL.children,
-    amountOfChildren = children.length;
+    let childrenOfUL = UL.children,
+      amountOfChildren = childrenOfUL.length;
     if (amountOfChildren == 0) {
       UL.remove();
     }
-
   } else {
+    //Replace all selected elements with <ul> tag if they're not <ul> tags
     for (let i = firstParentIndex; i < lastParentIndex + 1; i++) {
-      if (mainChilds[i].nodeName != "UL") {
-        replaceElement(mainChilds[i], "ul");
+      let child = mainChilds[i],
+        nodeName = child.nodeName;
+      if (nodeName != "UL") {
+        replaceElement(child, "ul");
       }
     }
 
+    //Remove all tags what don't have any content
     function clearEmptyContainers() {
       for (let i = 0; i < childsCount; i++) {
         if (mainChilds[i].textContent == "") {
@@ -1052,7 +1055,6 @@ function makeUL() {
         }
       }
     }
-
     clearEmptyContainers();
 
     let fragment = document.createDocumentFragment(),
@@ -1064,27 +1066,37 @@ function makeUL() {
     elementsForLi = [];
 
     for (let i = 0; i < childsLength; i++) {
-      if (elementChilds[i].nodeName == "UL") {
-        elementsForLi[count] = elementChilds[i];
+      let child = elementChilds[i],
+        nodeName = child.nodeName;
+
+      if (nodeName == "UL") {
+        elementsForLi[count] = child;
         count++;
       } else if (count > 0) {
         elementsForLi.forEach(function (element) {
-          let children = element.childNodes;
-          let length = children.length,
+          let children = element.childNodes,
+            length = children.length,
             innerFragment = document.createDocumentFragment();
 
           while (length != 0) {
             innerFragment.appendChild(children[0]);
             length--;
           }
+
           let li = document.createElement("li");
+
           li.appendChild(innerFragment);
           fragment.appendChild(li);
         });
 
-        while (elementsForLi[0].firstChild) {
-          elementsForLi[0].removeChild(elementsForLi[0].firstChild);
-        }
+        let firstChild = elementsForLi[0].firstChild;
+        console.log(firstChild)
+        
+        debugger;
+        // while (elementsForLi[0].firstChild) {
+        //   console.log(firstChild);
+        //   elementsForLi[0].removeChild(elementsForLi[0].firstChild);
+        // }
 
         elementsForLi[0].appendChild(fragment);
 
