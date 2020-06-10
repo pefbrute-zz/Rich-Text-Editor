@@ -949,17 +949,17 @@ function makeUL() {
     parentOfFirstElement = findChild(firstSelectedElement, mainContainer),
     parentOfLastElement = findChild(lastSelectedElement, mainContainer);
 
-  let mainChilds = mainContainer.children,
-    childsCount = mainChilds.length,
+  let mainChildren = mainContainer.children,
+    childsCount = mainChildren.length,
     firstParentIndex = -1,
     lastParentIndex = -1;
 
   //Find indexes of parent of first selected element and last selected element
   for (let i = 0; i < childsCount; i++) {
-    if (mainChilds[i] == parentOfFirstElement) {
+    if (mainChildren[i] == parentOfFirstElement) {
       firstParentIndex = i;
     }
-    if (mainChilds[i] == parentOfLastElement) {
+    if (mainChildren[i] == parentOfLastElement) {
       lastParentIndex = i;
     }
   }
@@ -972,7 +972,7 @@ function makeUL() {
   //Count how much <ul> tags was selected
   let countULs = 0;
   for (let i = firstParentIndex; i < lastParentIndex + 1; i++) {
-    if (mainChilds[i].nodeName == "UL") {
+    if (mainChildren[i].nodeName == "UL") {
       countULs++;
     }
   }
@@ -1040,7 +1040,7 @@ function makeUL() {
   } else {
     //Replace all selected elements with <ul> tag if they're not <ul> tags
     for (let i = firstParentIndex; i < lastParentIndex + 1; i++) {
-      let child = mainChilds[i],
+      let child = mainChildren[i],
         nodeName = child.nodeName;
       if (nodeName != "UL") {
         replaceElement(child, "ul");
@@ -1050,7 +1050,8 @@ function makeUL() {
     //Remove all tags what don't have any content
     function clearEmptyContainers() {
       for (let i = 0; i < childsCount; i++) {
-        if (mainChilds[i].textContent == "") {
+        let child = mainChildren[i];
+        if (child.textContent == "") {
           mainContainer.removeChild(mainContainer.children[i]);
           childsCount--;
         }
@@ -1158,7 +1159,7 @@ function makeOL() {
     parentOfFirstElement = findChild(firstSelectedElement, mainContainer),
     parentOfLastElement = findChild(lastSelectedElement, mainContainer);
 
-  let mainChilds = mainContainer.children,
+  let mainChildren = mainContainer.children,
     childsCount = mainChilds.length,
     firstParentIndex = -1,
     lastParentIndex = -1;
