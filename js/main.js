@@ -976,8 +976,6 @@ function makeUL() {
     }
   }
 
-  //
-  // if (countULs == lastParentIndex + 1 - firstParentIndex) {
   if (countULs == 1){
     let firstLi = findSecondChlid(firstSelectedElement, mainContainer),
       lastLi = findSecondChlid(lastSelectedElement, mainContainer),
