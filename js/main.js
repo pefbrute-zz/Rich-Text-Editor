@@ -761,7 +761,9 @@ tests = () => {
   makeUL();
 };
 
-function makeUL() {
+//Not Done Yet
+//
+function makeList(type) {
   let selection = document.getSelection(),
     firstSelectedElement = selection.anchorNode,
     lastSelectedElement = selection.focusNode,
@@ -787,6 +789,186 @@ function makeUL() {
     [firstParentIndex, lastParentIndex] = [lastParentIndex, firstParentIndex];
   }
 
+  let countTypes = 0;
+  for (let i = firstParentIndex; i < lastParentIndex + 1; i++) {
+    if (mainChilds[i].nodeName == type) {
+      countTypes++;
+    }
+  }
+
+  if (countTypes == lastParentIndex + 1 - firstParentIndex) {
+    let firstLi = findSecondChlid(firstSelectedElement, mainContainer),
+      lastLi = findSecondChlid(lastSelectedElement, mainContainer),
+      listContainer = findChild(firstSelectedElement, mainContainer),
+      typeIndex = firstParentIndex,
+      children = listContainer.children,
+      childrenCount = children.length,
+      firstLiIndex = -1,
+      lastLiIndex = -1;
+
+    for (let i = 0; i < childrenCount; i++) {
+      if (children[i] == firstLi) {
+        firstLiIndex = i;
+      } else if (children[i] == lastLi) {
+        lastLiIndex = i;
+      }
+    }
+
+    let fragment = document.createDocumentFragment(),
+      liContent = "";
+
+    if (lastLiIndex == -1) {
+      let p = document.createElement("p");
+
+      liContent = children[firstLiIndex].innerHTML;
+      listContainer.children[firstLiIndex].remove();
+      p.innerHTML = liContent;
+
+      fragment.appendChild(p);
+    } else {
+      while (firstLiIndex != lastLiIndex + 1) {
+        let p = document.createElement("p");
+
+        liContent = children[firstLiIndex].innerHTML;
+
+        listContainer.children[firstLiIndex].remove();
+        lastLiIndex--;
+
+        p.innerHTML = liContent;
+
+        fragment.appendChild(p);
+      }
+    }
+    mainContainer.insertBefore(fragment, mainContainer.children[typeIndex + 1]);
+
+    if (listContainer.children.length == 0) {
+      listContainer.remove();
+    }
+  } else {
+    for (let i = firstParentIndex; i < lastParentIndex + 1; i++) {
+      if (mainChilds[i].nodeName != type) {
+        replaceElement(mainChilds[i], type);
+      }
+    }
+
+    function clearEmptyContainers() {
+      for (let i = 0; i < childsCount; i++) {
+        if (mainChilds[i].textContent == "") {
+          mainContainer.removeChild(mainContainer.children[i]);
+          childsCount--;
+        }
+      }
+    }
+
+    clearEmptyContainers();
+
+    let fragment = document.createDocumentFragment(),
+      element = document.getElementById("work-area"),
+      elementChilds = element.children,
+      childsLength = elementChilds.length,
+      count = 0;
+
+    elementsForLi = [];
+
+    for (let i = 0; i < childsLength; i++) {
+      if (elementChilds[i].nodeName == type) {
+        elementsForLi[count] = elementChilds[i];
+        count++;
+      } else if (count > 0) {
+        elementsForLi.forEach(function (element) {
+          let children = element.childNodes;
+          let length = children.length,
+            innerFragment = document.createDocumentFragment();
+
+          while (length != 0) {
+            innerFragment.appendChild(children[0]);
+            length--;
+          }
+          let li = document.createElement("li");
+          li.appendChild(innerFragment);
+          fragment.appendChild(li);
+        });
+
+        while (elementsForLi[0].firstChild) {
+          elementsForLi[0].removeChild(elementsForLi[0].firstChild);
+        }
+
+        elementsForLi[0].appendChild(fragment);
+
+        for (let k = 1; k < count; k++) {
+          elementsForLi[k].remove();
+        }
+
+        if (count != 1) {
+          childsLength -= count;
+        }
+        count = 0;
+      }
+    }
+    if (count != 0) {
+      elementsForLi.forEach(function (element) {
+        let children = element.childNodes;
+        let length = children.length,
+          innerFragment = document.createDocumentFragment();
+
+        while (length != 0) {
+          innerFragment.appendChild(children[0]);
+          length--;
+        }
+        let li = document.createElement("li");
+        li.appendChild(innerFragment);
+        fragment.appendChild(li);
+      });
+
+      while (elementsForLi[0].firstChild) {
+        elementsForLi[0].removeChild(elementsForLi[0].firstChild);
+      }
+
+      elementsForLi[0].appendChild(fragment);
+
+      for (let k = 1; k < count; k++) {
+        elementsForLi[k].remove();
+      }
+
+      if (count != 1) {
+        childsLength -= count;
+      }
+      count = 0;
+    }
+  }
+}
+//
+//
+
+function makeUL() {
+  let selection = document.getSelection(),
+    firstSelectedElement = selection.anchorNode,
+    lastSelectedElement = selection.focusNode,
+    mainContainer = document.getElementById("work-area"),
+    parentOfFirstElement = findChild(firstSelectedElement, mainContainer),
+    parentOfLastElement = findChild(lastSelectedElement, mainContainer);
+
+  let mainChilds = mainContainer.children,
+    childsCount = mainChilds.length,
+    firstParentIndex = -1,
+    lastParentIndex = -1;
+
+  //Find indexes of parent of first selected element and last selected element 
+  for (let i = 0; i < childsCount; i++) {
+    if (mainChilds[i] == parentOfFirstElement) {
+      firstParentIndex = i;
+    }
+    if (mainChilds[i] == parentOfLastElement) {
+      lastParentIndex = i;
+    }
+  }
+
+  //Change indexes if selection was from the end
+  if (firstParentIndex > lastParentIndex) {
+    [firstParentIndex, lastParentIndex] = [lastParentIndex, firstParentIndex];
+  }
+
+  //Count how much <ul> tags was selected
   let countULs = 0;
   for (let i = firstParentIndex; i < lastParentIndex + 1; i++) {
     if (mainChilds[i].nodeName == "UL") {
@@ -794,10 +976,9 @@ function makeUL() {
     }
   }
 
-  //Finish this part!
   //
-
-  if (countULs == lastParentIndex + 1 - firstParentIndex) {
+  // if (countULs == lastParentIndex + 1 - firstParentIndex) {
+  if (countULs == 1){
     let firstLi = findSecondChlid(firstSelectedElement, mainContainer),
       lastLi = findSecondChlid(lastSelectedElement, mainContainer),
       UL = findChild(firstSelectedElement, mainContainer),
@@ -876,7 +1057,181 @@ function makeUL() {
         elementsForLi[count] = elementChilds[i];
         count++;
       } else if (count > 0) {
-        debugger;
+        elementsForLi.forEach(function (element) {
+          let children = element.childNodes;
+          let length = children.length,
+            innerFragment = document.createDocumentFragment();
+
+          while (length != 0) {
+            innerFragment.appendChild(children[0]);
+            length--;
+          }
+          let li = document.createElement("li");
+          li.appendChild(innerFragment);
+          fragment.appendChild(li);
+        });
+
+        while (elementsForLi[0].firstChild) {
+          elementsForLi[0].removeChild(elementsForLi[0].firstChild);
+        }
+
+        elementsForLi[0].appendChild(fragment);
+
+        for (let k = 1; k < count; k++) {
+          elementsForLi[k].remove();
+        }
+
+        if (count != 1) {
+          childsLength -= count;
+        }
+        count = 0;
+      }
+    }
+    if (count != 0) {
+      elementsForLi.forEach(function (element) {
+        let children = element.childNodes;
+        let length = children.length,
+          innerFragment = document.createDocumentFragment();
+
+        while (length != 0) {
+          innerFragment.appendChild(children[0]);
+          length--;
+        }
+        let li = document.createElement("li");
+        li.appendChild(innerFragment);
+        fragment.appendChild(li);
+      });
+
+      while (elementsForLi[0].firstChild) {
+        elementsForLi[0].removeChild(elementsForLi[0].firstChild);
+      }
+
+      elementsForLi[0].appendChild(fragment);
+
+      for (let k = 1; k < count; k++) {
+        elementsForLi[k].remove();
+      }
+
+      if (count != 1) {
+        childsLength -= count;
+      }
+      count = 0;
+    }
+  }
+}
+
+function makeOL() {
+  let selection = document.getSelection(),
+    firstSelectedElement = selection.anchorNode,
+    lastSelectedElement = selection.focusNode,
+    mainContainer = document.getElementById("work-area"),
+    parentOfFirstElement = findChild(firstSelectedElement, mainContainer),
+    parentOfLastElement = findChild(lastSelectedElement, mainContainer);
+
+  let mainChilds = mainContainer.children,
+    childsCount = mainChilds.length,
+    firstParentIndex = -1,
+    lastParentIndex = -1;
+
+  for (let i = 0; i < childsCount; i++) {
+    if (mainChilds[i] == parentOfFirstElement) {
+      firstParentIndex = i;
+    }
+    if (mainChilds[i] == parentOfLastElement) {
+      lastParentIndex = i;
+    }
+  }
+
+  if (firstParentIndex > lastParentIndex) {
+    [firstParentIndex, lastParentIndex] = [lastParentIndex, firstParentIndex];
+  }
+
+  let countOLs = 0;
+  for (let i = firstParentIndex; i < lastParentIndex + 1; i++) {
+    if (mainChilds[i].nodeName == "OL") {
+      countOLs++;
+    }
+  }
+
+  if (countOLs == lastParentIndex + 1 - firstParentIndex) {
+    let firstLi = findSecondChlid(firstSelectedElement, mainContainer),
+      lastLi = findSecondChlid(lastSelectedElement, mainContainer),
+      OL = findChild(firstSelectedElement, mainContainer),
+      OLIndex = firstParentIndex,
+      children = OL.children,
+      childrenCount = children.length,
+      firstLiIndex = -1,
+      lastLiIndex = -1;
+
+    for (let i = 0; i < childrenCount; i++) {
+      if (children[i] == firstLi) {
+        firstLiIndex = i;
+      } else if (children[i] == lastLi) {
+        lastLiIndex = i;
+      }
+    }
+
+    let fragment = document.createDocumentFragment(),
+      liContent = "";
+
+    if (lastLiIndex == -1) {
+      let p = document.createElement("p");
+
+      liContent = children[firstLiIndex].innerHTML;
+      OL.children[firstLiIndex].remove();
+      p.innerHTML = liContent;
+
+      fragment.appendChild(p);
+    } else {
+      while (firstLiIndex != lastLiIndex + 1) {
+        let p = document.createElement("p");
+
+        liContent = children[firstLiIndex].innerHTML;
+
+        OL.children[firstLiIndex].remove();
+        lastLiIndex--;
+
+        p.innerHTML = liContent;
+
+        fragment.appendChild(p);
+      }
+    }
+    mainContainer.insertBefore(fragment, mainContainer.children[OLIndex + 1]);
+
+    if (OL.children.length == 0) {
+      OL.remove();
+    }
+  } else {
+    for (let i = firstParentIndex; i < lastParentIndex + 1; i++) {
+      if (mainChilds[i].nodeName != "OL") {
+        replaceElement(mainChilds[i], "OL");
+      }
+    }
+
+    function clearEmptyContainers() {
+      for (let i = 0; i < childsCount; i++) {
+        if (mainChilds[i].textContent == "") {
+          mainContainer.removeChild(mainContainer.children[i]);
+          childsCount--;
+        }
+      }
+    }
+
+    clearEmptyContainers();
+
+    let fragment = document.createDocumentFragment(),
+      element = document.getElementById("work-area"),
+      elementChilds = element.children,
+      childsLength = elementChilds.length,
+      count = 0;
+
+    elementsForLi = [];
+
+    for (let i = 0; i < childsLength; i++) {
+      if (elementChilds[i].nodeName == "OL") {
+        elementsForLi[count] = elementChilds[i];
+        count++;
+      } else if (count > 0) {
         elementsForLi.forEach(function (element) {
           let children = element.childNodes;
           let length = children.length,
