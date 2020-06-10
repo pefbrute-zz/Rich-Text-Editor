@@ -953,7 +953,7 @@ function makeUL() {
     firstParentIndex = -1,
     lastParentIndex = -1;
 
-  //Find indexes of parent of first selected element and last selected element 
+  //Find indexes of parent of first selected element and last selected element
   for (let i = 0; i < childsCount; i++) {
     if (mainChilds[i] == parentOfFirstElement) {
       firstParentIndex = i;
@@ -976,7 +976,8 @@ function makeUL() {
     }
   }
 
-  if (countULs == 1){
+  // if we selected only <ul> tags
+  if (countULs == ( (lastParentIndex + 1) - firstParentIndex) ) {
     let firstLi = findSecondChlid(firstSelectedElement, mainContainer),
       lastLi = findSecondChlid(lastSelectedElement, mainContainer),
       UL = findChild(firstSelectedElement, mainContainer),
@@ -986,6 +987,7 @@ function makeUL() {
       firstLiIndex = -1,
       lastLiIndex = -1;
 
+    //Find indexes of first and last selected <li> elements in <ul> tag
     for (let i = 0; i < childrenCount; i++) {
       if (children[i] == firstLi) {
         firstLiIndex = i;
@@ -997,6 +999,9 @@ function makeUL() {
     let fragment = document.createDocumentFragment(),
       liContent = "";
 
+    //If last selected index not found (The same like index of first selected element)
+    //then remove only the first selected <li> element
+    //and add <p> tag with content after selected <ul> tag
     if (lastLiIndex == -1) {
       let p = document.createElement("p");
 
@@ -1005,6 +1010,8 @@ function makeUL() {
       p.innerHTML = liContent;
 
       fragment.appendChild(p);
+
+      //Else remove all selected <li> elements and add <p> tags after <ul> element
     } else {
       while (firstLiIndex != lastLiIndex + 1) {
         let p = document.createElement("p");
@@ -1019,11 +1026,17 @@ function makeUL() {
         fragment.appendChild(p);
       }
     }
+
+    //Add fragment after <ul> tag
     mainContainer.insertBefore(fragment, mainContainer.children[ULIndex + 1]);
 
-    if (UL.children.length == 0) {
+    //If <ul> tag doesn't have children then delete the tag
+    childrenOfUL = UL.children,
+    amountOfChildren = children.length;
+    if (amountOfChildren == 0) {
       UL.remove();
     }
+
   } else {
     for (let i = firstParentIndex; i < lastParentIndex + 1; i++) {
       if (mainChilds[i].nodeName != "UL") {
