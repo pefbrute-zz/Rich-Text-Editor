@@ -1189,91 +1189,120 @@ function makeUL1() {
   }
 
   let mainChildren = mainContainer.children,
-     firstParentIndex = getParentsIndexes()[0],
-     lastParentIndex = getParentsIndexes()[1];
+    firstParentIndex = getParentsIndexes()[0],
+    lastParentIndex = getParentsIndexes()[1];
 
   //Change indexes if selection was from the end
-  if (firstParentIndex > lastParentIndex) {
-    [firstParentIndex, lastParentIndex] = [lastParentIndex, firstParentIndex];
+  function swapIndexes(firstParentIndex, lastParentIndex) {
+    if (firstParentIndex > lastParentIndex) {
+      [firstParentIndex, lastParentIndex] = [lastParentIndex, firstParentIndex];
+    }
+    return [firstParentIndex, lastParentIndex];
   }
+
+  let parentsIndexes = swapIndexes(firstParentIndex, lastParentIndex);
+  firstParentIndex = parentsIndexes[0];
+  lastParentIndex = parentsIndexes[1];
 
   //Count how much <ul> tags was selected
-  let countULs = 0;
-  for (let i = firstParentIndex; i < lastParentIndex + 1; i++) {
-    if (mainChildren[i].nodeName == "UL") {
-      countULs++;
-    }
-  }
+  function getULamount(firstParentIndex, lastParentIndex) {
+    let count = 0;
 
-  // if we selected only <ul> tags
-  if (countULs == lastParentIndex + 1 - firstParentIndex) {
-    let firstLi = findSecondChlid(firstSelectedElement, mainContainer),
-      lastLi = findSecondChlid(lastSelectedElement, mainContainer),
-      UL = findChild(firstSelectedElement, mainContainer),
-      ULIndex = firstParentIndex,
-      children = UL.children,
-      childrenAmount = children.length,
-      firstLiIndex = -1,
-      lastLiIndex = -1;
-
-    //Find indexes of first and last selected <li> elements in <ul> tag
-    for (let i = 0; i < childrenAmount; i++) {
-      if (children[i] == firstLi) {
-        firstLiIndex = i;
-      } else if (children[i] == lastLi) {
-        lastLiIndex = i;
+    for (let i = firstParentIndex; i < lastParentIndex + 1; i++) {
+      if (mainChildren[i].nodeName == "UL") {
+        count++;
       }
     }
+    return count;
+  }
 
-    let fragment = document.createDocumentFragment(),
-      liContent = "";
+  let countULs = getULamount(firstParentIndex, lastParentIndex);
 
-    //If last selected index not found (The same like index of first selected element)
-    //then remove only the first selected <li> element
-    //and add <p> tag with content after selected <ul> tag
-    if (lastLiIndex == -1) {
-      let p = document.createElement("p");
+  // if we selected only <ul> tags turn them into <p> tags
+  if (countULs == lastParentIndex + 1 - firstParentIndex) {
+    function makeOnlyULs(
+      firstSelectedElement,
+      firstParentIndex,
+      lastSelectedElement,
+      mainContainer
+    ) {
+      let firstLi = findSecondChlid(firstSelectedElement, mainContainer),
+        lastLi = findSecondChlid(lastSelectedElement, mainContainer),
+        UL = findChild(firstSelectedElement, mainContainer),
+        ULIndex = firstParentIndex,
+        children = UL.children,
+        childrenAmount = children.length,
+        firstLiIndex = -1,
+        lastLiIndex = -1;
 
-      liContent = children[firstLiIndex].innerHTML;
-      UL.children[firstLiIndex].remove();
-      p.innerHTML = liContent;
+      //Find indexes of first and last selected <li> elements in <ul> tag
+      for (let i = 0; i < childrenAmount; i++) {
+        if (children[i] == firstLi) {
+          firstLiIndex = i;
+        } else if (children[i] == lastLi) {
+          lastLiIndex = i;
+        }
+      }
 
-      fragment.appendChild(p);
+      let fragment = document.createDocumentFragment(),
+        liContent = "";
 
-      //Else remove all selected <li> elements and add <p> tags after <ul> element
-    } else {
-      while (firstLiIndex != lastLiIndex + 1) {
+      //If last selected index not found (The same like index of first selected element)
+      //then remove only the first selected <li> element
+      //and add <p> tag with content after selected <ul> tag
+      if (lastLiIndex == -1) {
         let p = document.createElement("p");
 
         liContent = children[firstLiIndex].innerHTML;
-
         UL.children[firstLiIndex].remove();
-        lastLiIndex--;
-
         p.innerHTML = liContent;
 
         fragment.appendChild(p);
+
+        //Else remove all selected <li> elements and add <p> tags after <ul> element
+      } else {
+        while (firstLiIndex != lastLiIndex + 1) {
+          let p = document.createElement("p");
+
+          liContent = children[firstLiIndex].innerHTML;
+
+          UL.children[firstLiIndex].remove();
+          lastLiIndex--;
+
+          p.innerHTML = liContent;
+
+          fragment.appendChild(p);
+        }
+      }
+
+      //Add fragment after <ul> tag
+      mainContainer.insertBefore(fragment, mainContainer.children[ULIndex + 1]);
+
+      //If <ul> tag doesn't have children then delete the tag
+      let childrenOfUL = UL.children,
+        amountOfChildren = childrenOfUL.length;
+      if (amountOfChildren == 0) {
+        UL.remove();
       }
     }
-
-    //Add fragment after <ul> tag
-    mainContainer.insertBefore(fragment, mainContainer.children[ULIndex + 1]);
-
-    //If <ul> tag doesn't have children then delete the tag
-    let childrenOfUL = UL.children,
-      amountOfChildren = childrenOfUL.length;
-    if (amountOfChildren == 0) {
-      UL.remove();
-    }
+    makeOnlyULs(
+      firstSelectedElement,
+      firstParentIndex,
+      lastSelectedElement,
+      mainContainer
+    );
   } else {
     //Replace all selected elements with <ul> tag if they're not <ul> tags
-    for (let i = firstParentIndex; i < lastParentIndex + 1; i++) {
-      let child = mainChildren[i],
-        nodeName = child.nodeName;
-      if (nodeName != "UL") {
-        replaceElement(child, "ul");
+    function replaceNotUL(firstParentIndex, lastParentIndex, mainChildren){
+      for (let i = firstParentIndex; i < lastParentIndex + 1; i++) {
+        let child = mainChildren[i],
+          nodeName = child.nodeName;
+        if (nodeName != "UL") {
+          replaceElement(child, "ul");
+        }
       }
     }
+    replaceNotUL(firstParentIndex, lastParentIndex, mainChildren);
 
     //Remove all tags what don't have any content
     function clearEmptyContainers() {
@@ -1295,60 +1324,63 @@ function makeUL1() {
       childsAmount = elementChilds.length,
       elementsForLi = [];
 
-    for (let i = 0; i < childsAmount; i++) {
-      let child = elementChilds[i],
-        nodeName = child.nodeName;
-
-      if (nodeName == "UL") {
-        elementsForLi[count] = child;
-        count++;
-      } else if (count > 0) {
-        elementsForLi.forEach(function (element) {
-          let children = element.childNodes,
-            length = children.length,
-            innerFragment = document.createDocumentFragment(),
-            isWithLI = false;
-
-          while (length != 0) {
-            if (children[0].nodeName == "LI") {
-              isWithLI = true;
-              break;
+    function addLi (fragment, elementChilds, childsAmount, elementsForLi) {
+      for (let i = 0; i < childsAmount; i++) {
+        let child = elementChilds[i],
+          nodeName = child.nodeName;
+  
+        if (nodeName == "UL") {
+          elementsForLi[count] = child;
+          count++;
+        } else if (count > 0) {
+          elementsForLi.forEach(function (element) {
+            let children = element.childNodes,
+              length = children.length,
+              innerFragment = document.createDocumentFragment(),
+              isWithLI = false;
+  
+            while (length != 0) {
+              if (children[0].nodeName == "LI") {
+                isWithLI = true;
+                break;
+              }
+              innerFragment.appendChild(children[0]);
+              length--;
             }
-            innerFragment.appendChild(children[0]);
-            length--;
+  
+            if (isWithLI) {
+            } else {
+              let li = document.createElement("li");
+  
+              li.appendChild(innerFragment);
+              fragment.appendChild(li);
+            }
+          });
+  
+          // let firstChild = elementsForLi[0].firstChild;
+          // console.log(firstChild)
+  
+          // while (elementsForLi[0].firstChild) {
+          //   console.log(firstChild);
+          //   elementsForLi[0].removeChild(elementsForLi[0].firstChild);
+          // }
+  
+          elementsForLi[0].appendChild(fragment);
+  
+          for (let k = 1; k < count; k++) {
+            let element = elementsForLi[k];
+  
+            element.remove();
           }
-
-          if (isWithLI) {
-          } else {
-            let li = document.createElement("li");
-
-            li.appendChild(innerFragment);
-            fragment.appendChild(li);
+  
+          if (count != 1) {
+            childsAmount -= count;
           }
-        });
-
-        // let firstChild = elementsForLi[0].firstChild;
-        // console.log(firstChild)
-
-        // while (elementsForLi[0].firstChild) {
-        //   console.log(firstChild);
-        //   elementsForLi[0].removeChild(elementsForLi[0].firstChild);
-        // }
-
-        elementsForLi[0].appendChild(fragment);
-
-        for (let k = 1; k < count; k++) {
-          let element = elementsForLi[k];
-
-          element.remove();
+          count = 0;
         }
-
-        if (count != 1) {
-          childsAmount -= count;
-        }
-        count = 0;
       }
     }
+    addLi(fragment, elementChilds, childsAmount, elementsForLi);
 
     if (count != 0) {
       elementsForLi.forEach(function (element) {
