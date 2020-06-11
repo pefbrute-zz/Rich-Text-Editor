@@ -1163,17 +1163,26 @@ function makeUL() {
 }
 
 function makeUL1() {
-  let selection = document.getSelection(),
-    firstSelectedElement = selection.anchorNode,
-    lastSelectedElement = selection.focusNode,
-    mainContainer = document.getElementById("work-area"),
-    parentOfFirstElement = findChild(firstSelectedElement, mainContainer),
-    parentOfLastElement = findChild(lastSelectedElement, mainContainer);
+  function getSelectedParents(mainContainer) {
+    let selection = document.getSelection(),
+      firstSelectedElement = selection.anchorNode,
+      lastSelectedElement = selection.focusNode,
+      parentOfFirstElement = findChild(firstSelectedElement, mainContainer),
+      parentOfLastElement = findChild(lastSelectedElement, mainContainer);
+    return [parentOfFirstElement, parentOfLastElement];
+  }
+
+  let mainContainer = document.getElementById("work-area"),
+    parentOfFirstElement = getSelectedParents(mainContainer)[0],
+    parentOfLastElement = getSelectedParents(mainContainer)[1];
 
   //Find indexes of parent of first selected element and last selected element
-  function getParentsIndexes() {
-    let mainChildren = mainContainer.children,
-      childsAmount = mainChildren.length,
+  function getParentsIndexes(
+    mainChildren,
+    parentOfFirstElement,
+    parentOfLastElement
+  ) {
+    let childsAmount = mainChildren.length,
       firstParentIndex = -1,
       lastParentIndex = -1;
 
@@ -1189,8 +1198,16 @@ function makeUL1() {
   }
 
   let mainChildren = mainContainer.children,
-    firstParentIndex = getParentsIndexes()[0],
-    lastParentIndex = getParentsIndexes()[1];
+    firstParentIndex = getParentsIndexes(
+      mainChildren,
+      parentOfFirstElement,
+      parentOfLastElement
+    )[0],
+    lastParentIndex = getParentsIndexes(
+      mainChildren,
+      parentOfFirstElement,
+      parentOfLastElement
+    )[1];
 
   //Change indexes if selection was from the end
   function swapIndexes(firstParentIndex, lastParentIndex) {
@@ -1318,58 +1335,90 @@ function makeUL1() {
     clearEmptyContainers();
 
     let fragment = document.createDocumentFragment(),
-      count = 0,
       element = document.getElementById("work-area"),
       elementChilds = element.children,
       childsAmount = elementChilds.length,
-      elementsForLi = [];
+      elementsForLi = [],
+      count = 0;
 
-      function addLi(fragment, elementsForLi) {
-        elementsForLi.forEach(function (element) {
-          let children = element.childNodes,
-            length = children.length,
-            innerFragment = document.createDocumentFragment(),
-            isWithLI = false;
+    function addLi(fragment, elementsForLi) {
+      elementsForLi.forEach(function (element) {
+        let children = element.childNodes,
+          length = children.length,
+          innerFragment = document.createDocumentFragment(),
+          isWithLI = false;
 
-          while (length != 0) {
-            if (children[0].nodeName == "LI") {
-              isWithLI = true;
-              break;
+        while (length != 0) {
+          if (children[0].nodeName == "LI") {
+            isWithLI = true;
+            break;
+          }
+          innerFragment.appendChild(children[0]);
+          length--;
+        }
+
+        if (isWithLI) {
+        } else {
+          let li = document.createElement("li");
+
+          li.appendChild(innerFragment);
+          fragment.appendChild(li);
+        }
+      });
+
+      elementsForLi[0].appendChild(fragment);
+
+      //Finish this part!
+      //
+      function getNewULIndexes(elementsForLi, count) {
+        let newULIndexes = [],
+        index = -1;
+        for (let g = 1; g < count; g++) {
+          let element = elementsForLi[g],
+            children = element.children,
+            childrenAmount = children.length;
+            if (children[0].nodeName != "LI"){
+              index++;
+              newULIndexes[index] = element;
             }
-            innerFragment.appendChild(children[0]);
-            length--;
+
+          for (let z = 0; z < childrenAmount; z++) {
+            let child = children[z];
+            if (child.nodeName == "LI") {
+              break;
+            } else {
+
+              // newULIndexes[]
+            }
           }
+        }
+        return newULIndexes;
+      }
 
-          if (isWithLI) {
-          } else {
-            let li = document.createElement("li");
+      let newULindexes = getNewULIndexes(elementsForLi, count);
+      console.log(newULindexes);
+      //
+      //
+      
+      //dangerous moment
+      //
+      for (let k = 1; k < count; k++) {
+        let element = elementsForLi[k];
 
-            li.appendChild(innerFragment);
-            fragment.appendChild(li);
-          }
-        });
+        // if (element ){
 
-        // let firstChild = elementsForLi[0].firstChild;
-        // console.log(firstChild)
-
-        // while (elementsForLi[0].firstChild) {
-        //   console.log(firstChild);
-        //   elementsForLi[0].removeChild(elementsForLi[0].firstChild);
         // }
 
-        elementsForLi[0].appendChild(fragment);
-
-        for (let k = 1; k < count; k++) {
-          let element = elementsForLi[k];
-
-          element.remove();
-        }
-
-        if (count != 1) {
-          childsAmount -= count;
-        }
-        count = 0;
+        element.remove();
       }
+      //
+      //
+
+      if (count != 1) {
+        childsAmount -= count;
+      }
+      count = 0;
+    }
 
     for (let i = 0; i < childsAmount; i++) {
       let child = elementChilds[i],
@@ -1379,6 +1428,7 @@ function makeUL1() {
         elementsForLi[count] = child;
         count++;
       } else if (count > 0) {
+        debugger;
         addLi(fragment, elementsForLi);
       }
     }
@@ -1387,6 +1437,7 @@ function makeUL1() {
       addLi(fragment, elementsForLi);
     }
   }
+  let selection = document.getSelection();
   selection.empty();
 }
 
