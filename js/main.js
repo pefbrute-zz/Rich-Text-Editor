@@ -1383,7 +1383,7 @@ function makeUL1() {
       }
     }
 
-    if (count != 0) {
+    if (count > 0) {
       addLi(fragment, elementsForLi);
     }
   }
