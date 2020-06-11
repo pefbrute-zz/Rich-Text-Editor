@@ -1293,7 +1293,7 @@ function makeUL1() {
     );
   } else {
     //Replace all selected elements with <ul> tag if they're not <ul> tags
-    function replaceNotUL(firstParentIndex, lastParentIndex, mainChildren){
+    function replaceNotUL(firstParentIndex, lastParentIndex, mainChildren) {
       for (let i = firstParentIndex; i < lastParentIndex + 1; i++) {
         let child = mainChildren[i],
           nodeName = child.nodeName;
@@ -1324,97 +1324,67 @@ function makeUL1() {
       childsAmount = elementChilds.length,
       elementsForLi = [];
 
-    function addLi (fragment, elementChilds, childsAmount, elementsForLi) {
-      for (let i = 0; i < childsAmount; i++) {
-        let child = elementChilds[i],
-          nodeName = child.nodeName;
-  
-        if (nodeName == "UL") {
-          elementsForLi[count] = child;
-          count++;
-        } else if (count > 0) {
-          elementsForLi.forEach(function (element) {
-            let children = element.childNodes,
-              length = children.length,
-              innerFragment = document.createDocumentFragment(),
-              isWithLI = false;
-  
-            while (length != 0) {
-              if (children[0].nodeName == "LI") {
-                isWithLI = true;
-                break;
-              }
-              innerFragment.appendChild(children[0]);
-              length--;
+      function addLi(fragment, elementsForLi) {
+        elementsForLi.forEach(function (element) {
+          let children = element.childNodes,
+            length = children.length,
+            innerFragment = document.createDocumentFragment(),
+            isWithLI = false;
+
+          while (length != 0) {
+            if (children[0].nodeName == "LI") {
+              isWithLI = true;
+              break;
             }
-  
-            if (isWithLI) {
-            } else {
-              let li = document.createElement("li");
-  
-              li.appendChild(innerFragment);
-              fragment.appendChild(li);
-            }
-          });
-  
-          // let firstChild = elementsForLi[0].firstChild;
-          // console.log(firstChild)
-  
-          // while (elementsForLi[0].firstChild) {
-          //   console.log(firstChild);
-          //   elementsForLi[0].removeChild(elementsForLi[0].firstChild);
-          // }
-  
-          elementsForLi[0].appendChild(fragment);
-  
-          for (let k = 1; k < count; k++) {
-            let element = elementsForLi[k];
-  
-            element.remove();
+            innerFragment.appendChild(children[0]);
+            length--;
           }
-  
-          if (count != 1) {
-            childsAmount -= count;
+
+          if (isWithLI) {
+          } else {
+            let li = document.createElement("li");
+
+            li.appendChild(innerFragment);
+            fragment.appendChild(li);
           }
-          count = 0;
+        });
+
+        // let firstChild = elementsForLi[0].firstChild;
+        // console.log(firstChild)
+
+        // while (elementsForLi[0].firstChild) {
+        //   console.log(firstChild);
+        //   elementsForLi[0].removeChild(elementsForLi[0].firstChild);
+        // }
+
+        elementsForLi[0].appendChild(fragment);
+
+        for (let k = 1; k < count; k++) {
+          let element = elementsForLi[k];
+
+          element.remove();
         }
+
+        if (count != 1) {
+          childsAmount -= count;
+        }
+        count = 0;
+      }
+
+    for (let i = 0; i < childsAmount; i++) {
+      let child = elementChilds[i],
+        nodeName = child.nodeName;
+
+      if (nodeName == "UL") {
+        elementsForLi[count] = child;
+        count++;
+      } else if (count > 0) {
+        addLi(fragment, elementsForLi);
       }
     }
-    addLi(fragment, elementChilds, childsAmount, elementsForLi);
 
     if (count != 0) {
-      elementsForLi.forEach(function (element) {
-        let children = element.childNodes,
-          length = children.length,
-          innerFragment = document.createDocumentFragment();
-
-        while (length != 0) {
-          innerFragment.appendChild(children[0]);
-          length--;
-        }
-
-        let li = document.createElement("li");
-
-        li.appendChild(innerFragment);
-        fragment.appendChild(li);
-      });
-
-      // while (elementsForLi[0].firstChild) {
-      //   elementsForLi[0].removeChild(elementsForLi[0].firstChild);
-      // }
-
-      elementsForLi[0].appendChild(fragment);
-
-      for (let k = 1; k < count; k++) {
-        let element = elementsForLi[k];
-        element.remove();
-      }
-
-      if (count != 1) {
-        childsAmount -= count;
-      }
-
-      count = 0;
+      addLi(fragment, elementsForLi);
     }
   }
   selection.empty();
