@@ -759,11 +759,12 @@ element.addEventListener("keypress", function (e) {
 });
 
 tests = () => {
-  makeUL();
+  // makeUL();
+  makeUL1();
 };
 
 //Not Done Yet
-//
+/*
 function makeList(type) {
   let selection = document.getSelection(),
     firstSelectedElement = selection.anchorNode,
@@ -938,7 +939,7 @@ function makeList(type) {
     }
   }
 }
-//
+*/
 //
 
 function makeUL() {
@@ -1060,14 +1061,13 @@ function makeUL() {
     clearEmptyContainers();
 
     let fragment = document.createDocumentFragment(),
+      count = 0,
       element = document.getElementById("work-area"),
       elementChilds = element.children,
-      childsLength = elementChilds.length,
-      count = 0;
+      childsAmount = elementChilds.length,
+      elementsForLi = [];
 
-    elementsForLi = [];
-
-    for (let i = 0; i < childsLength; i++) {
+    for (let i = 0; i < childsAmount; i++) {
       let child = elementChilds[i],
         nodeName = child.nodeName;
 
@@ -1075,20 +1075,30 @@ function makeUL() {
         elementsForLi[count] = child;
         count++;
       } else if (count > 0) {
+        debugger;
+
         elementsForLi.forEach(function (element) {
           let children = element.childNodes,
             length = children.length,
-            innerFragment = document.createDocumentFragment();
+            innerFragment = document.createDocumentFragment(),
+            isWithLI = false;
 
           while (length != 0) {
+            if (children[0].nodeName == "LI") {
+              isWithLI = true;
+              break;
+            }
             innerFragment.appendChild(children[0]);
             length--;
           }
 
-          let li = document.createElement("li");
+          if (isWithLI) {
+          } else {
+            let li = document.createElement("li");
 
-          li.appendChild(innerFragment);
-          fragment.appendChild(li);
+            li.appendChild(innerFragment);
+            fragment.appendChild(li);
+          }
         });
 
         // let firstChild = elementsForLi[0].firstChild;
@@ -1108,11 +1118,12 @@ function makeUL() {
         }
 
         if (count != 1) {
-          childsLength -= count;
+          childsAmount -= count;
         }
         count = 0;
       }
     }
+
     if (count != 0) {
       elementsForLi.forEach(function (element) {
         let children = element.childNodes,
@@ -1142,7 +1153,7 @@ function makeUL() {
       }
 
       if (count != 1) {
-        childsLength -= count;
+        childsAmount -= count;
       }
 
       count = 0;
@@ -1151,6 +1162,233 @@ function makeUL() {
   selection.empty();
 }
 
+function makeUL1() {
+  let selection = document.getSelection(),
+    firstSelectedElement = selection.anchorNode,
+    lastSelectedElement = selection.focusNode,
+    mainContainer = document.getElementById("work-area"),
+    parentOfFirstElement = findChild(firstSelectedElement, mainContainer),
+    parentOfLastElement = findChild(lastSelectedElement, mainContainer);
+
+  //Find indexes of parent of first selected element and last selected element
+  function getParentsIndexes() {
+    let mainChildren = mainContainer.children,
+      childsAmount = mainChildren.length,
+      firstParentIndex = -1,
+      lastParentIndex = -1;
+
+    for (let i = 0; i < childsAmount; i++) {
+      if (mainChildren[i] == parentOfFirstElement) {
+        firstParentIndex = i;
+      }
+      if (mainChildren[i] == parentOfLastElement) {
+        lastParentIndex = i;
+      }
+    }
+    return [firstParentIndex, lastParentIndex];
+  }
+
+  let mainChildren = mainContainer.children,
+     firstParentIndex = getParentsIndexes()[0],
+     lastParentIndex = getParentsIndexes()[1];
+
+  //Change indexes if selection was from the end
+  if (firstParentIndex > lastParentIndex) {
+    [firstParentIndex, lastParentIndex] = [lastParentIndex, firstParentIndex];
+  }
+
+  //Count how much <ul> tags was selected
+  let countULs = 0;
+  for (let i = firstParentIndex; i < lastParentIndex + 1; i++) {
+    if (mainChildren[i].nodeName == "UL") {
+      countULs++;
+    }
+  }
+
+  // if we selected only <ul> tags
+  if (countULs == lastParentIndex + 1 - firstParentIndex) {
+    let firstLi = findSecondChlid(firstSelectedElement, mainContainer),
+      lastLi = findSecondChlid(lastSelectedElement, mainContainer),
+      UL = findChild(firstSelectedElement, mainContainer),
+      ULIndex = firstParentIndex,
+      children = UL.children,
+      childrenAmount = children.length,
+      firstLiIndex = -1,
+      lastLiIndex = -1;
+
+    //Find indexes of first and last selected <li> elements in <ul> tag
+    for (let i = 0; i < childrenAmount; i++) {
+      if (children[i] == firstLi) {
+        firstLiIndex = i;
+      } else if (children[i] == lastLi) {
+        lastLiIndex = i;
+      }
+    }
+
+    let fragment = document.createDocumentFragment(),
+      liContent = "";
+
+    //If last selected index not found (The same like index of first selected element)
+    //then remove only the first selected <li> element
+    //and add <p> tag with content after selected <ul> tag
+    if (lastLiIndex == -1) {
+      let p = document.createElement("p");
+
+      liContent = children[firstLiIndex].innerHTML;
+      UL.children[firstLiIndex].remove();
+      p.innerHTML = liContent;
+
+      fragment.appendChild(p);
+
+      //Else remove all selected <li> elements and add <p> tags after <ul> element
+    } else {
+      while (firstLiIndex != lastLiIndex + 1) {
+        let p = document.createElement("p");
+
+        liContent = children[firstLiIndex].innerHTML;
+
+        UL.children[firstLiIndex].remove();
+        lastLiIndex--;
+
+        p.innerHTML = liContent;
+
+        fragment.appendChild(p);
+      }
+    }
+
+    //Add fragment after <ul> tag
+    mainContainer.insertBefore(fragment, mainContainer.children[ULIndex + 1]);
+
+    //If <ul> tag doesn't have children then delete the tag
+    let childrenOfUL = UL.children,
+      amountOfChildren = childrenOfUL.length;
+    if (amountOfChildren == 0) {
+      UL.remove();
+    }
+  } else {
+    //Replace all selected elements with <ul> tag if they're not <ul> tags
+    for (let i = firstParentIndex; i < lastParentIndex + 1; i++) {
+      let child = mainChildren[i],
+        nodeName = child.nodeName;
+      if (nodeName != "UL") {
+        replaceElement(child, "ul");
+      }
+    }
+
+    //Remove all tags what don't have any content
+    function clearEmptyContainers() {
+      let childsAmount = mainChildren.length;
+      for (let i = 0; i < childsAmount; i++) {
+        let child = mainChildren[i];
+        if (child.textContent == "") {
+          mainContainer.removeChild(mainContainer.children[i]);
+          childsAmount--;
+        }
+      }
+    }
+    clearEmptyContainers();
+
+    let fragment = document.createDocumentFragment(),
+      count = 0,
+      element = document.getElementById("work-area"),
+      elementChilds = element.children,
+      childsAmount = elementChilds.length,
+      elementsForLi = [];
+
+    for (let i = 0; i < childsAmount; i++) {
+      let child = elementChilds[i],
+        nodeName = child.nodeName;
+
+      if (nodeName == "UL") {
+        elementsForLi[count] = child;
+        count++;
+      } else if (count > 0) {
+        elementsForLi.forEach(function (element) {
+          let children = element.childNodes,
+            length = children.length,
+            innerFragment = document.createDocumentFragment(),
+            isWithLI = false;
+
+          while (length != 0) {
+            if (children[0].nodeName == "LI") {
+              isWithLI = true;
+              break;
+            }
+            innerFragment.appendChild(children[0]);
+            length--;
+          }
+
+          if (isWithLI) {
+          } else {
+            let li = document.createElement("li");
+
+            li.appendChild(innerFragment);
+            fragment.appendChild(li);
+          }
+        });
+
+        // let firstChild = elementsForLi[0].firstChild;
+        // console.log(firstChild)
+
+        // while (elementsForLi[0].firstChild) {
+        //   console.log(firstChild);
+        //   elementsForLi[0].removeChild(elementsForLi[0].firstChild);
+        // }
+
+        elementsForLi[0].appendChild(fragment);
+
+        for (let k = 1; k < count; k++) {
+          let element = elementsForLi[k];
+
+          element.remove();
+        }
+
+        if (count != 1) {
+          childsAmount -= count;
+        }
+        count = 0;
+      }
+    }
+
+    if (count != 0) {
+      elementsForLi.forEach(function (element) {
+        let children = element.childNodes,
+          length = children.length,
+          innerFragment = document.createDocumentFragment();
+
+        while (length != 0) {
+          innerFragment.appendChild(children[0]);
+          length--;
+        }
+
+        let li = document.createElement("li");
+
+        li.appendChild(innerFragment);
+        fragment.appendChild(li);
+      });
+
+      // while (elementsForLi[0].firstChild) {
+      //   elementsForLi[0].removeChild(elementsForLi[0].firstChild);
+      // }
+
+      elementsForLi[0].appendChild(fragment);
+
+      for (let k = 1; k < count; k++) {
+        let element = elementsForLi[k];
+        element.remove();
+      }
+
+      if (count != 1) {
+        childsAmount -= count;
+      }
+
+      count = 0;
+    }
+  }
+  selection.empty();
+}
+
+/*
 function makeOL() {
   let selection = document.getSelection(),
     firstSelectedElement = selection.anchorNode,
@@ -1190,7 +1428,7 @@ function makeOL() {
       OL = findChild(firstSelectedElement, mainContainer),
       OLIndex = firstParentIndex,
       children = OL.children,
-      childrenCount = children.length,
+      childrenAmount = children.length,
       firstLiIndex = -1,
       lastLiIndex = -1;
 
@@ -1325,3 +1563,4 @@ function makeOL() {
     }
   }
 }
+*/
