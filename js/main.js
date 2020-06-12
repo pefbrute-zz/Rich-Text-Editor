@@ -1075,7 +1075,7 @@ function makeUL() {
         elementsForLi[count] = child;
         count++;
       } else if (count > 0) {
-        debugger;
+        // debugger;
 
         elementsForLi.forEach(function (element) {
           let children = element.childNodes,
@@ -1372,44 +1372,54 @@ function makeUL1() {
       //
       function getNewULIndexes(elementsForLi, count) {
         let newULIndexes = [],
-        index = -1;
-        for (let g = 1; g < count; g++) {
+          index = -1;
+        for (let g = 0; g < count; g++) {
           let element = elementsForLi[g],
             children = element.children,
             childrenAmount = children.length;
-            if (children[0].nodeName != "LI"){
-              index++;
-              newULIndexes[index] = element;
-            }
 
-          for (let z = 0; z < childrenAmount; z++) {
-            let child = children[z];
-            if (child.nodeName == "LI") {
-              break;
-            } else {
+          console.log(childrenAmount);
+          console.log(children);
 
-              // newULIndexes[]
-            }
+          // debugger;
+
+          if (children[0].nodeName != "LI") {
+            index++;
+            newULIndexes[index] = element;
           }
+
+          // for (let z = 0; z < childrenAmount; z++) {
+          //   let child = children[z];
+          //   if (child.nodeName == "LI") {
+          //     break;
+          //   } else {
+          //     // newULIndexes[]
+          //   }
+          // }
         }
+        console.log(newULIndexes);
         return newULIndexes;
       }
 
-      let newULindexes = getNewULIndexes(elementsForLi, count);
-      console.log(newULindexes);
+      let newULIndexes = getNewULIndexes(elementsForLi, count);
+      console.log(newULIndexes);
+
+      debugger;
       //
       //
-      
+
       //dangerous moment
       //
       for (let k = 1; k < count; k++) {
-        let element = elementsForLi[k];
+        let element = elementsForLi[k],
+          childNodes = element.childNodes;
+        if (childNodes != "LI") {
+          element.remove();
+        }
 
         // if (element ){
 
         // }
-
-        element.remove();
       }
       //
       //
@@ -1428,7 +1438,7 @@ function makeUL1() {
         elementsForLi[count] = child;
         count++;
       } else if (count > 0) {
-        debugger;
+        // debugger;
         addLi(fragment, elementsForLi);
       }
     }
