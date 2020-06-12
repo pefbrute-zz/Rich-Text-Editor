@@ -1237,12 +1237,61 @@ function makeUL1() {
 
   // if we selected only <ul> tags turn them into <p> tags
   if (countULs == lastParentIndex + 1 - firstParentIndex) {
+    let selection = document.getSelection(),
+      firstSelectedElement = selection.anchorNode,
+      lastSelectedElement = selection.focusNode;
+
     function makeOnlyULs(
       firstSelectedElement,
-      firstParentIndex,
       lastSelectedElement,
+      firstParentIndex,
       mainContainer
     ) {
+      function swapSelectionNodes() {
+        function getSelectionIndexes() {
+          function getParent() {
+            let parent = firstSelectedElement;
+
+            while (parent.parentElement != mainContainer) {
+              parent = parent.parentElement;
+            }
+            
+            return parent;
+          }
+          let parentNode = getParent(),
+            childs = parentNode.children,
+            childsAmount = childs.length,
+            indexOfFirstSelectedLi = -1,
+            indexOfLastSelectedLi = -1;
+
+          for (let i = 0; i < childsAmount; i++) {
+            if (childs[i] == firstSelectedElement.parentElement) {
+              indexOfFirstSelectedLi = i;
+            } else if (childs[i] == lastSelectedElement.parentElement) {
+              indexOfLastSelectedLi = i;
+            }
+          }
+
+          return [indexOfFirstSelectedLi, indexOfLastSelectedLi];
+        }
+
+        let firstIndex = getSelectionIndexes()[0],
+          lastIndex = getSelectionIndexes()[1];
+
+        if (firstIndex > lastIndex) {
+          [firstSelectedElement, lastSelectedElement] = [
+            lastSelectedElement,
+            firstSelectedElement,
+          ];
+        }
+        return [firstSelectedElement, lastSelectedElement];
+      }
+
+      let selectedElements = swapSelectionNodes();
+      firstSelectedElement = selectedElements[0];
+      lastSelectedElement = selectedElements[1];
+
+      console.log(lastSelectedElement);
       let firstLi = findSecondChlid(firstSelectedElement, mainContainer),
         lastLi = findSecondChlid(lastSelectedElement, mainContainer),
         UL = findChild(firstSelectedElement, mainContainer),
@@ -1304,8 +1353,8 @@ function makeUL1() {
     }
     makeOnlyULs(
       firstSelectedElement,
-      firstParentIndex,
       lastSelectedElement,
+      firstParentIndex,
       mainContainer
     );
   } else {
@@ -1368,58 +1417,18 @@ function makeUL1() {
 
       elementsForLi[0].appendChild(fragment);
 
-      //Finish this part!
-      //
-      function getNewULIndexes(elementsForLi, count) {
-        let newULIndexes = [],
-          index = -1;
-        for (let g = 0; g < count; g++) {
-          let element = elementsForLi[g],
-            children = element.children,
-            childrenAmount = children.length;
-
-          console.log(childrenAmount);
-          console.log(children);
-
-          // debugger;
-
-          if (children[0].nodeName != "LI") {
-            index++;
-            newULIndexes[index] = element;
-          }
-
-          // for (let z = 0; z < childrenAmount; z++) {
-          //   let child = children[z];
-          //   if (child.nodeName == "LI") {
-          //     break;
-          //   } else {
-          //     // newULIndexes[]
-          //   }
-          // }
-        }
-        console.log(newULIndexes);
-        return newULIndexes;
-      }
-
-      let newULIndexes = getNewULIndexes(elementsForLi, count);
-      console.log(newULIndexes);
-
-      debugger;
-      //
-      //
-
       //dangerous moment
       //
       for (let k = 1; k < count; k++) {
         let element = elementsForLi[k],
           childNodes = element.childNodes;
-        if (childNodes != "LI") {
-          element.remove();
+
+        console.log(childNodes);
+        if (childNodes[0] != undefined) {
+          if (childNodes[0].nodeName != "LI") {
+            element.remove();
+          }
         }
-
-        // if (element ){
-
-        // }
       }
       //
       //
@@ -1438,7 +1447,7 @@ function makeUL1() {
         elementsForLi[count] = child;
         count++;
       } else if (count > 0) {
-        // debugger;
+        debugger;
         addLi(fragment, elementsForLi);
       }
     }
@@ -1450,6 +1459,10 @@ function makeUL1() {
   let selection = document.getSelection();
   selection.empty();
 }
+
+// function makeUL2() {
+
+// }
 
 /*
 function makeOL() {
