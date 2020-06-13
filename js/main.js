@@ -1334,14 +1334,26 @@ function makeUL1() {
         return [firstLi, lastLi];
       }
 
+      function getUlParent() {
+        let parent = firstSelectedElement;
+
+        while (parent.parentElement != mainContainer) {
+          parent = parent.parentElement;
+        }
+
+        return parent;
+      }
+
       let firstLi = getLiParents()[0],
         lastLi = getLiParents()[1],
-        UL = findChild(firstSelectedElement, mainContainer),
+        UL = getUlParent(),
         ULIndex = firstParentIndex,
         children = UL.children,
         childrenAmount = children.length,
         firstLiIndex = -1,
         lastLiIndex = -1;
+
+      console.log(firstLi, lastLi);
 
       //Find indexes of first and last selected <li> elements in <ul> tag
       for (let i = 0; i < childrenAmount; i++) {
