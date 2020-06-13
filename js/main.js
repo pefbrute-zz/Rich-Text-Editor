@@ -1383,7 +1383,7 @@ function makeUL1() {
 
         fragment.appendChild(p);
 
-        //Else remove all selected <li> elements and add <p> tags after <ul> element
+        //Else remove all selected <li> elements and add <p> tags
       } else {
         let index = lastLiIndex + 1;
 
