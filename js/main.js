@@ -1382,7 +1382,6 @@ function makeUL1() {
         p.innerHTML = liContent;
 
         fragment.appendChild(p);
-
         //Else remove all selected <li> elements and add <p> tags
       } else {
         let index = lastLiIndex + 1;
@@ -1413,10 +1412,41 @@ function makeUL1() {
           fragment,
           mainContainer.children[ULIndex + 1]
         );
-      }
-      // else {
+      } else {
+        let endOfFirstPart = firstLiIndex - 1,
+          // startOfLastPart = firstLiIndex,
+          firstPart = document.createDocumentFragment(),
+          lastPart = document.createDocumentFragment();
 
-      // }
+        while (endOfFirstPart >= 0) {
+          console.log(endOfFirstPart);
+          let firstChild = UL.children[0];
+
+          firstPart.appendChild(firstChild);
+          endOfFirstPart--;
+        }
+
+        let childrenAmount = UL.children.length;
+        while (childrenAmount != 0) {
+          let firstChild = UL.children[0];
+
+          lastPart.appendChild(firstChild);
+          childrenAmount--;
+        }
+        UL.remove();
+
+        console.log(firstPart, lastPart);
+
+        let firstUl = document.createElement("UL"),
+          lastUl = document.createElement("UL");
+
+        firstUl.appendChild(firstPart);
+        lastUl.appendChild(lastPart);
+
+        mainContainer.insertBefore(lastUl, mainContainer.children[ULIndex]);
+        mainContainer.insertBefore(fragment, mainContainer.children[ULIndex]);
+        mainContainer.insertBefore(firstUl, mainContainer.children[ULIndex]);
+      }
 
       //If <ul> tag doesn't have children then delete the tag
       let childrenOfUL = UL.children,
