@@ -1363,6 +1363,7 @@ function makeUL1() {
           lastLiIndex = i;
         }
       }
+      console.log(firstLiIndex, lastLiIndex, childrenAmount);
 
       let fragment = document.createDocumentFragment(),
         liContent = "";
@@ -1381,13 +1382,14 @@ function makeUL1() {
 
         //Else remove all selected <li> elements and add <p> tags after <ul> element
       } else {
-        while (firstLiIndex != lastLiIndex + 1) {
+        let index = lastLiIndex + 1;
+        while (firstLiIndex != index) {
           let p = document.createElement("p");
 
           liContent = children[firstLiIndex].innerHTML;
 
           UL.children[firstLiIndex].remove();
-          lastLiIndex--;
+          index--;
 
           p.innerHTML = liContent;
 
