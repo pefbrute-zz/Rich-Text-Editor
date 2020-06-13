@@ -1247,6 +1247,7 @@ function makeUL1() {
       firstParentIndex,
       mainContainer
     ) {
+
       function swapSelectionNodes() {
         function getSelectionIndexes() {
           function getParent() {
@@ -1341,8 +1342,14 @@ function makeUL1() {
         }
       }
 
-      //Add fragment after <ul> tag
-      mainContainer.insertBefore(fragment, mainContainer.children[ULIndex + 1]);
+      //If selection started from the start of the list, then append <p> tags before the list
+      console.log()
+      if (firstLiIndex == 0){
+        mainContainer.insertBefore(fragment, mainContainer.children[ULIndex]);
+      //Else if selection ends in the end of list append after this list
+      }else if (lastLiIndex == childrenAmount){
+        mainContainer.insertBefore(fragment, mainContainer.children[ULIndex + 1]);
+      }
 
       //If <ul> tag doesn't have children then delete the tag
       let childrenOfUL = UL.children,
