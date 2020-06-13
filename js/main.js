@@ -1247,37 +1247,62 @@ function makeUL1() {
       firstParentIndex,
       mainContainer
     ) {
-
       function swapSelectionNodes() {
         function getSelectionIndexes() {
-          function getParent() {
+          
+          //Get Selected <ul> tag
+          function getUlParent() {
             let parent = firstSelectedElement;
 
             while (parent.parentElement != mainContainer) {
               parent = parent.parentElement;
             }
-            
+
             return parent;
           }
-          let parentNode = getParent(),
+
+          //Get Selected <li> tags (first and last one)
+          function getLiParents() {
+            let firstParent = firstSelectedElement,
+              lastParent = lastSelectedElement;
+
+            while (firstParent.parentElement.nodeName != "UL") {
+              firstParent = firstParent.parentElement;
+            }
+
+            while (lastParent.parentElement.nodeName != "UL") {
+              lastParent = lastParent.parentElement;
+            }
+
+            return [firstParent, lastParent];
+          }
+
+          let parentNode = getUlParent(),
             childs = parentNode.children,
             childsAmount = childs.length,
+            firstSelectedLi = getLiParents()[0],
+            lastSelectedElement = getLiParents()[1],
             indexOfFirstSelectedLi = -1,
             indexOfLastSelectedLi = -1;
+          
+            console.log(firstSelectedLi, lastSelectedElement)
 
           for (let i = 0; i < childsAmount; i++) {
-            if (childs[i] == firstSelectedElement.parentElement) {
+            if (childs[i] == firstSelectedLi) {
               indexOfFirstSelectedLi = i;
-            } else if (childs[i] == lastSelectedElement.parentElement) {
+            } else if (childs[i] == lastSelectedElement) {
               indexOfLastSelectedLi = i;
             }
           }
+
+          console.log(indexOfFirstSelectedLi, indexOfLastSelectedLi);
 
           return [indexOfFirstSelectedLi, indexOfLastSelectedLi];
         }
 
         let firstIndex = getSelectionIndexes()[0],
           lastIndex = getSelectionIndexes()[1];
+        console.log(firstIndex, lastIndex);
 
         if (firstIndex > lastIndex) {
           [firstSelectedElement, lastSelectedElement] = [
@@ -1292,7 +1317,9 @@ function makeUL1() {
       firstSelectedElement = selectedElements[0];
       lastSelectedElement = selectedElements[1];
 
-      console.log(lastSelectedElement);
+      console.log(firstSelectedElement, lastSelectedElement);
+      console.log(firstSelectedElement, lastSelectedElement);
+
       let firstLi = findSecondChlid(firstSelectedElement, mainContainer),
         lastLi = findSecondChlid(lastSelectedElement, mainContainer),
         UL = findChild(firstSelectedElement, mainContainer),
@@ -1314,7 +1341,7 @@ function makeUL1() {
       let fragment = document.createDocumentFragment(),
         liContent = "";
 
-      //If last selected index not found (The same like index of first selected element)
+      //If last selected index not found (Equal to index of first selected element)
       //then remove only the first selected <li> element
       //and add <p> tag with content after selected <ul> tag
       if (lastLiIndex == -1) {
@@ -1342,13 +1369,22 @@ function makeUL1() {
         }
       }
 
+      // if (firstLiIndex > lastLiIndex) {
+      //   [firstLiIndex, lastLiIndex] = [lastLiIndex, firstLiIndex];
+      // }
+      // console.log(firstLiIndex, lastLiIndex, childrenAmount);
+
       //If selection started from the start of the list, then append <p> tags before the list
-      console.log()
-      if (firstLiIndex == 0){
+      if (firstLiIndex == 0) {
         mainContainer.insertBefore(fragment, mainContainer.children[ULIndex]);
-      //Else if selection ends in the end of list append after this list
-      }else if (lastLiIndex == childrenAmount){
-        mainContainer.insertBefore(fragment, mainContainer.children[ULIndex + 1]);
+        //Else if selection ends in the end of list append after this list
+      }
+      // if (lastLiIndex == childrenAmount - 1)
+      else {
+        mainContainer.insertBefore(
+          fragment,
+          mainContainer.children[ULIndex + 1]
+        );
       }
 
       //If <ul> tag doesn't have children then delete the tag
