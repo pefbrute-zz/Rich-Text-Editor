@@ -1334,8 +1334,8 @@ function makeUL1() {
         return [firstLi, lastLi];
       }
 
-      let firstLi = findSecondChlid(firstSelectedElement, mainContainer),
-        lastLi = findSecondChlid(lastSelectedElement, mainContainer),
+      let firstLi = getLiParents()[0],
+        lastLi = getLiParents()[1],
         UL = findChild(firstSelectedElement, mainContainer),
         ULIndex = firstParentIndex,
         children = UL.children,
@@ -1408,7 +1408,7 @@ function makeUL1() {
         UL.remove();
       }
     }
-    
+
     makeOnlyULs(
       firstSelectedElement,
       lastSelectedElement,
