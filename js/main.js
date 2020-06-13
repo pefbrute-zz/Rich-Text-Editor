@@ -1383,14 +1383,13 @@ function makeUL1() {
         //Else remove all selected <li> elements and add <p> tags after <ul> element
       } else {
         let index = lastLiIndex + 1;
+
         while (firstLiIndex != index) {
           let p = document.createElement("p");
 
           liContent = children[firstLiIndex].innerHTML;
-
           UL.children[firstLiIndex].remove();
           index--;
-
           p.innerHTML = liContent;
 
           fragment.appendChild(p);
@@ -1406,9 +1405,10 @@ function makeUL1() {
       if (firstLiIndex == 0) {
         mainContainer.insertBefore(fragment, mainContainer.children[ULIndex]);
         //Else if selection ends in the end of list append after this list
-      }
-      // if (lastLiIndex == childrenAmount - 1)
-      else {
+      } else if (
+        lastLiIndex == childrenAmount - 1 ||
+        firstLiIndex == childrenAmount - 1
+      ) {
         mainContainer.insertBefore(
           fragment,
           mainContainer.children[ULIndex + 1]
