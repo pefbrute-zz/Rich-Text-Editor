@@ -1365,13 +1365,16 @@ function makeUL1() {
       }
       console.log(firstLiIndex, lastLiIndex, childrenAmount);
 
+      if (lastLiIndex == -1) {
+        lastLiIndex = firstLiIndex;
+      }
+
       let fragment = document.createDocumentFragment(),
         liContent = "";
 
-      //If last selected index not found (Equal to index of first selected element)
-      //then remove only the first selected <li> element
-      //and add <p> tag with content after selected <ul> tag
-      if (lastLiIndex == -1) {
+      //If selected only one <li> then remove only the this <li> element
+      //and add <p> tag with content of <li> after selected <ul> tag
+      if (lastLiIndex == firstLiIndex) {
         let p = document.createElement("p");
 
         liContent = children[firstLiIndex].innerHTML;
@@ -1396,9 +1399,6 @@ function makeUL1() {
         }
       }
 
-      // if (firstLiIndex > lastLiIndex) {
-      //   [firstLiIndex, lastLiIndex] = [lastLiIndex, firstLiIndex];
-      // }
       console.log(firstLiIndex, lastLiIndex, childrenAmount);
 
       //If selection started from the start of the list, then append <p> tags before the list
@@ -1414,6 +1414,9 @@ function makeUL1() {
           mainContainer.children[ULIndex + 1]
         );
       }
+      // else {
+
+      // }
 
       //If <ul> tag doesn't have children then delete the tag
       let childrenOfUL = UL.children,
