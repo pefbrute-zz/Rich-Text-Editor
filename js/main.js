@@ -1236,7 +1236,11 @@ function makeUL1() {
   let countULs = getULamount(firstParentIndex, lastParentIndex);
 
   // if we selected only <ul> tags turn them into <p> tags
+  //
+  //Think about condition!
   if (countULs == lastParentIndex + 1 - firstParentIndex) {
+    //
+    //
     let selection = document.getSelection(),
       firstSelectedElement = selection.anchorNode,
       lastSelectedElement = selection.focusNode;
@@ -1249,7 +1253,6 @@ function makeUL1() {
     ) {
       function swapSelectionNodes() {
         function getSelectionIndexes() {
-          
           //Get Selected <ul> tag
           function getUlParent() {
             let parent = firstSelectedElement;
@@ -1281,16 +1284,14 @@ function makeUL1() {
             childs = parentNode.children,
             childsAmount = childs.length,
             firstSelectedLi = getLiParents()[0],
-            lastSelectedElement = getLiParents()[1],
+            lastSelectedLi = getLiParents()[1],
             indexOfFirstSelectedLi = -1,
             indexOfLastSelectedLi = -1;
-          
-            console.log(firstSelectedLi, lastSelectedElement)
 
           for (let i = 0; i < childsAmount; i++) {
             if (childs[i] == firstSelectedLi) {
               indexOfFirstSelectedLi = i;
-            } else if (childs[i] == lastSelectedElement) {
+            } else if (childs[i] == lastSelectedLi) {
               indexOfLastSelectedLi = i;
             }
           }
@@ -1302,7 +1303,6 @@ function makeUL1() {
 
         let firstIndex = getSelectionIndexes()[0],
           lastIndex = getSelectionIndexes()[1];
-        console.log(firstIndex, lastIndex);
 
         if (firstIndex > lastIndex) {
           [firstSelectedElement, lastSelectedElement] = [
@@ -1318,7 +1318,21 @@ function makeUL1() {
       lastSelectedElement = selectedElements[1];
 
       console.log(firstSelectedElement, lastSelectedElement);
-      console.log(firstSelectedElement, lastSelectedElement);
+
+      function getLiParents() {
+        let firstLi = firstSelectedElement,
+          lastLi = lastSelectedElement;
+
+        while (firstLi.parentElement.nodeName != "UL") {
+          firstLi = firstLi.parentElement;
+        }
+
+        while (lastLi.parentElement.nodeName != "UL") {
+          lastLi = lastLi.parentElement;
+        }
+
+        return [firstLi, lastLi];
+      }
 
       let firstLi = findSecondChlid(firstSelectedElement, mainContainer),
         lastLi = findSecondChlid(lastSelectedElement, mainContainer),
@@ -1372,7 +1386,7 @@ function makeUL1() {
       // if (firstLiIndex > lastLiIndex) {
       //   [firstLiIndex, lastLiIndex] = [lastLiIndex, firstLiIndex];
       // }
-      // console.log(firstLiIndex, lastLiIndex, childrenAmount);
+      console.log(firstLiIndex, lastLiIndex, childrenAmount);
 
       //If selection started from the start of the list, then append <p> tags before the list
       if (firstLiIndex == 0) {
@@ -1394,6 +1408,7 @@ function makeUL1() {
         UL.remove();
       }
     }
+    
     makeOnlyULs(
       firstSelectedElement,
       lastSelectedElement,
@@ -1499,6 +1514,7 @@ function makeUL1() {
       addLi(fragment, elementsForLi);
     }
   }
+
   let selection = document.getSelection();
   selection.empty();
 }
