@@ -1102,10 +1102,9 @@ function makeUL() {
         });
 
         // let firstChild = elementsForLi[0].firstChild;
-        // console.log(firstChild)
 
         // while (elementsForLi[0].firstChild) {
-        //   console.log(firstChild);
+        //
         //   elementsForLi[0].removeChild(elementsForLi[0].firstChild);
         // }
 
@@ -1163,6 +1162,8 @@ function makeUL() {
 }
 
 function makeUL1() {
+  console.time();
+
   function getSelectedParents(mainContainer) {
     let selection = document.getSelection(),
       firstSelectedElement = selection.anchorNode,
@@ -1296,8 +1297,6 @@ function makeUL1() {
             }
           }
 
-          console.log(indexOfFirstSelectedLi, indexOfLastSelectedLi);
-
           return [indexOfFirstSelectedLi, indexOfLastSelectedLi];
         }
 
@@ -1316,8 +1315,6 @@ function makeUL1() {
       let selectedElements = swapSelectionNodes();
       firstSelectedElement = selectedElements[0];
       lastSelectedElement = selectedElements[1];
-
-      console.log(firstSelectedElement, lastSelectedElement);
 
       function getLiParents() {
         let firstLi = firstSelectedElement,
@@ -1353,8 +1350,6 @@ function makeUL1() {
         firstLiIndex = -1,
         lastLiIndex = -1;
 
-      console.log(firstLi, lastLi);
-
       //Find indexes of first and last selected <li> elements in <ul> tag
       for (let i = 0; i < childrenAmount; i++) {
         if (children[i] == firstLi) {
@@ -1363,7 +1358,6 @@ function makeUL1() {
           lastLiIndex = i;
         }
       }
-      console.log(firstLiIndex, lastLiIndex, childrenAmount);
 
       if (lastLiIndex == -1) {
         lastLiIndex = firstLiIndex;
@@ -1398,8 +1392,6 @@ function makeUL1() {
         }
       }
 
-      console.log(firstLiIndex, lastLiIndex, childrenAmount);
-
       //If selection started from the start of the list, then append <p> tags before the list
       if (firstLiIndex == 0) {
         mainContainer.insertBefore(fragment, mainContainer.children[ULIndex]);
@@ -1419,7 +1411,6 @@ function makeUL1() {
           lastPart = document.createDocumentFragment();
 
         while (endOfFirstPart >= 0) {
-          console.log(endOfFirstPart);
           let firstChild = UL.children[0];
 
           firstPart.appendChild(firstChild);
@@ -1434,8 +1425,6 @@ function makeUL1() {
           childrenAmount--;
         }
         UL.remove();
-
-        console.log(firstPart, lastPart);
 
         let firstUl = document.createElement("UL"),
           lastUl = document.createElement("UL");
@@ -1528,7 +1517,6 @@ function makeUL1() {
         let element = elementsForLi[k],
           childNodes = element.childNodes;
 
-        console.log(childNodes);
         if (childNodes[0] != undefined) {
           if (childNodes[0].nodeName != "LI") {
             element.remove();
@@ -1564,6 +1552,7 @@ function makeUL1() {
 
   let selection = document.getSelection();
   selection.empty();
+  console.timeEnd();
 }
 
 // function makeUL2() {
