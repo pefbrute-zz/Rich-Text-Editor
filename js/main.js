@@ -1477,14 +1477,15 @@ function makeUL1() {
     }
     clearEmptyContainers();
 
-    let fragment = document.createDocumentFragment(),
-      editor = document.getElementById("work-area"),
+    // let fragment = document.createDocumentFragment(),
+    let  editor = document.getElementById("work-area"),
       editorChildren = editor.children,
       childrenAmount = editorChildren.length,
       elementsToTurnIntoLi = [],
       count = 0;
 
-    function addLi(fragment, elementsToTurnIntoLi) {
+    function turnIntoLi(elementsToTurnIntoLi) {
+      let fragment = document.createDocumentFragment();
       elementsToTurnIntoLi.forEach(function (element) {
         let children = element.childNodes,
           length = children.length,
@@ -1534,23 +1535,25 @@ function makeUL1() {
 
     for (let i = 0; i < childrenAmount; i++) {
       let child = editorChildren[i],
-        nodeName = child.nodeName;
+        childName = child.nodeName;
 
-      if (nodeName == "UL") {
+      if (childName == "UL") {
         elementsToTurnIntoLi[count] = child;
         count++;
       } else if (count > 0) {
-        addLi(fragment, elementsToTurnIntoLi);
+        turnIntoLi(elementsToTurnIntoLi);
       }
     }
 
+    //If stopped on last element and it didn't turned it into li
     if (count > 0) {
-      addLi(fragment, elementsToTurnIntoLi);
+      turnIntoLi(elementsToTurnIntoLi);
     }
   }
 
   let selection = document.getSelection();
   selection.empty();
+
   console.timeEnd();
 }
 
