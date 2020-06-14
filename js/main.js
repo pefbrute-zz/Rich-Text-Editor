@@ -1487,13 +1487,14 @@ function makeUL1() {
       let fragment = document.createDocumentFragment(),
         elementsAmount = elementsToTurnIntoLi.length;
 
-      for (i = 0; i < elementsToTurnIntoLi; i++) {
+      for (i = 0; i < elementsAmount; i++) {
+        let element = elementsToTurnIntoLi[i],
+        children = element.childNodes,
+        length = children.length,
+        innerFragment = document.createDocumentFragment(),
+        isWithLI = false;
+        
         console.log(element);
-        let children = element.childNodes,
-          length = children.length,
-          innerFragment = document.createDocumentFragment(),
-          isWithLI = false;
-
         while (length != 0) {
           if (children[0].nodeName == "LI") {
             isWithLI = true;
@@ -1513,54 +1514,9 @@ function makeUL1() {
         }
       }
 
-      // elementsToTurnIntoLi.forEach(function (element) {
-      //   console.log(element);
-      //   let children = element.childNodes,
-      //     length = children.length,
-      //     innerFragment = document.createDocumentFragment(),
-      //     isWithLI = false;
-
-      //   while (length != 0) {
-      //     if (children[0].nodeName == "LI") {
-      //       isWithLI = true;
-      //       break;
-      //     }
-      //     innerFragment.appendChild(children[0]);
-      //     length--;
-      //   }
-
-      //   if (isWithLI) {
-      //     debugger;
-      //   } else {
-      //     let li = document.createElement("li");
-
-      //     li.appendChild(innerFragment);
-      //     fragment.appendChild(li);
-      //   }
-      // });
 
       elementsToTurnIntoLi[0].appendChild(fragment);
 
-      //dangerous moment
-      //
-
-      // for (let k = 1; k < count; k++) {
-      //   debugger;
-
-      //   let elementToTurnIntoLi = elementsToTurnIntoLi[k],
-      //     elementChilds = elementToTurnIntoLi.childNodes,
-      //     firstElement = elementChilds[0];
-
-      //   if (firstElement != undefined) {
-      //     let elementName = firstElement.nodeName;
-      //     if (elementName != "LI") {
-      //       element.remove();
-      //     }
-      //   }
-      // }
-
-      //
-      //
 
       if (count != 1) {
         childrenAmount -= count;
