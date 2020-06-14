@@ -870,14 +870,14 @@ function makeList(type) {
       childsLength = elementChilds.length,
       count = 0;
 
-    elementsForLi = [];
+    elementsToTurnIntoLi = [];
 
     for (let i = 0; i < childsLength; i++) {
       if (elementChilds[i].nodeName == type) {
-        elementsForLi[count] = elementChilds[i];
+        elementsToTurnIntoLi[count] = elementChilds[i];
         count++;
       } else if (count > 0) {
-        elementsForLi.forEach(function (element) {
+        elementsToTurnIntoLi.forEach(function (element) {
           let children = element.childNodes;
           let length = children.length,
             innerFragment = document.createDocumentFragment();
@@ -891,14 +891,14 @@ function makeList(type) {
           fragment.appendChild(li);
         });
 
-        while (elementsForLi[0].firstChild) {
-          elementsForLi[0].removeChild(elementsForLi[0].firstChild);
+        while (elementsToTurnIntoLi[0].firstChild) {
+          elementsToTurnIntoLi[0].removeChild(elementsToTurnIntoLi[0].firstChild);
         }
 
-        elementsForLi[0].appendChild(fragment);
+        elementsToTurnIntoLi[0].appendChild(fragment);
 
         for (let k = 1; k < count; k++) {
-          elementsForLi[k].remove();
+          elementsToTurnIntoLi[k].remove();
         }
 
         if (count != 1) {
@@ -908,7 +908,7 @@ function makeList(type) {
       }
     }
     if (count != 0) {
-      elementsForLi.forEach(function (element) {
+      elementsToTurnIntoLi.forEach(function (element) {
         let children = element.childNodes;
         let length = children.length,
           innerFragment = document.createDocumentFragment();
@@ -922,14 +922,14 @@ function makeList(type) {
         fragment.appendChild(li);
       });
 
-      while (elementsForLi[0].firstChild) {
-        elementsForLi[0].removeChild(elementsForLi[0].firstChild);
+      while (elementsToTurnIntoLi[0].firstChild) {
+        elementsToTurnIntoLi[0].removeChild(elementsToTurnIntoLi[0].firstChild);
       }
 
-      elementsForLi[0].appendChild(fragment);
+      elementsToTurnIntoLi[0].appendChild(fragment);
 
       for (let k = 1; k < count; k++) {
-        elementsForLi[k].remove();
+        elementsToTurnIntoLi[k].remove();
       }
 
       if (count != 1) {
@@ -1065,18 +1065,18 @@ function makeUL() {
       element = document.getElementById("work-area"),
       elementChilds = element.children,
       childsAmount = elementChilds.length,
-      elementsForLi = [];
+      elementsToTurnIntoLi = [];
 
     for (let i = 0; i < childsAmount; i++) {
       let child = elementChilds[i],
         nodeName = child.nodeName;
 
       if (nodeName == "UL") {
-        elementsForLi[count] = child;
+        elementsToTurnIntoLi[count] = child;
         count++;
       } else if (count > 0) {
 
-        elementsForLi.forEach(function (element) {
+        elementsToTurnIntoLi.forEach(function (element) {
           let children = element.childNodes,
             length = children.length,
             innerFragment = document.createDocumentFragment(),
@@ -1100,17 +1100,17 @@ function makeUL() {
           }
         });
 
-        // let firstChild = elementsForLi[0].firstChild;
+        // let firstChild = elementsToTurnIntoLi[0].firstChild;
 
-        // while (elementsForLi[0].firstChild) {
+        // while (elementsToTurnIntoLi[0].firstChild) {
         //
-        //   elementsForLi[0].removeChild(elementsForLi[0].firstChild);
+        //   elementsToTurnIntoLi[0].removeChild(elementsToTurnIntoLi[0].firstChild);
         // }
 
-        elementsForLi[0].appendChild(fragment);
+        elementsToTurnIntoLi[0].appendChild(fragment);
 
         for (let k = 1; k < count; k++) {
-          let element = elementsForLi[k];
+          let element = elementsToTurnIntoLi[k];
 
           element.remove();
         }
@@ -1123,7 +1123,7 @@ function makeUL() {
     }
 
     if (count != 0) {
-      elementsForLi.forEach(function (element) {
+      elementsToTurnIntoLi.forEach(function (element) {
         let children = element.childNodes,
           length = children.length,
           innerFragment = document.createDocumentFragment();
@@ -1139,14 +1139,14 @@ function makeUL() {
         fragment.appendChild(li);
       });
 
-      // while (elementsForLi[0].firstChild) {
-      //   elementsForLi[0].removeChild(elementsForLi[0].firstChild);
+      // while (elementsToTurnIntoLi[0].firstChild) {
+      //   elementsToTurnIntoLi[0].removeChild(elementsToTurnIntoLi[0].firstChild);
       // }
 
-      elementsForLi[0].appendChild(fragment);
+      elementsToTurnIntoLi[0].appendChild(fragment);
 
       for (let k = 1; k < count; k++) {
-        let element = elementsForLi[k];
+        let element = elementsToTurnIntoLi[k];
         element.remove();
       }
 
@@ -1478,14 +1478,14 @@ function makeUL1() {
     clearEmptyContainers();
 
     let fragment = document.createDocumentFragment(),
-      mainContainer = document.getElementById("work-area"),
-      mainContainerChilds = mainContainer.children,
-      childsAmount = mainContainerChilds.length,
-      elementsForLi = [],
+      editor = document.getElementById("work-area"),
+      editorChilds = editor.children,
+      childsAmount = editorChilds.length,
+      elementsToTurnIntoLi = [],
       count = 0;
 
-    function addLi(fragment, elementsForLi) {
-      elementsForLi.forEach(function (element) {
+    function addLi(fragment, elementsToTurnIntoLi) {
+      elementsToTurnIntoLi.forEach(function (element) {
         let children = element.childNodes,
           length = children.length,
           innerFragment = document.createDocumentFragment(),
@@ -1509,12 +1509,12 @@ function makeUL1() {
         }
       });
 
-      elementsForLi[0].appendChild(fragment);
+      elementsToTurnIntoLi[0].appendChild(fragment);
 
       //dangerous moment
       //
       for (let k = 1; k < count; k++) {
-        let element = elementsForLi[k],
+        let element = elementsToTurnIntoLi[k],
           childNodes = element.childNodes;
 
         if (childNodes[0] != undefined) {
@@ -1533,19 +1533,19 @@ function makeUL1() {
     }
 
     for (let i = 0; i < childsAmount; i++) {
-      let child = mainContainerChilds[i],
+      let child = editorChilds[i],
         nodeName = child.nodeName;
 
       if (nodeName == "UL") {
-        elementsForLi[count] = child;
+        elementsToTurnIntoLi[count] = child;
         count++;
       } else if (count > 0) {
-        addLi(fragment, elementsForLi);
+        addLi(fragment, elementsToTurnIntoLi);
       }
     }
 
     if (count > 0) {
-      addLi(fragment, elementsForLi);
+      addLi(fragment, elementsToTurnIntoLi);
     }
   }
 
@@ -1664,14 +1664,14 @@ function makeOL() {
       childsLength = elementChilds.length,
       count = 0;
 
-    elementsForLi = [];
+    elementsToTurnIntoLi = [];
 
     for (let i = 0; i < childsLength; i++) {
       if (elementChilds[i].nodeName == "OL") {
-        elementsForLi[count] = elementChilds[i];
+        elementsToTurnIntoLi[count] = elementChilds[i];
         count++;
       } else if (count > 0) {
-        elementsForLi.forEach(function (element) {
+        elementsToTurnIntoLi.forEach(function (element) {
           let children = element.childNodes;
           let length = children.length,
             innerFragment = document.createDocumentFragment();
@@ -1685,14 +1685,14 @@ function makeOL() {
           fragment.appendChild(li);
         });
 
-        while (elementsForLi[0].firstChild) {
-          elementsForLi[0].removeChild(elementsForLi[0].firstChild);
+        while (elementsToTurnIntoLi[0].firstChild) {
+          elementsToTurnIntoLi[0].removeChild(elementsToTurnIntoLi[0].firstChild);
         }
 
-        elementsForLi[0].appendChild(fragment);
+        elementsToTurnIntoLi[0].appendChild(fragment);
 
         for (let k = 1; k < count; k++) {
-          elementsForLi[k].remove();
+          elementsToTurnIntoLi[k].remove();
         }
 
         if (count != 1) {
@@ -1702,7 +1702,7 @@ function makeOL() {
       }
     }
     if (count != 0) {
-      elementsForLi.forEach(function (element) {
+      elementsToTurnIntoLi.forEach(function (element) {
         let children = element.childNodes;
         let length = children.length,
           innerFragment = document.createDocumentFragment();
@@ -1716,14 +1716,14 @@ function makeOL() {
         fragment.appendChild(li);
       });
 
-      while (elementsForLi[0].firstChild) {
-        elementsForLi[0].removeChild(elementsForLi[0].firstChild);
+      while (elementsToTurnIntoLi[0].firstChild) {
+        elementsToTurnIntoLi[0].removeChild(elementsToTurnIntoLi[0].firstChild);
       }
 
-      elementsForLi[0].appendChild(fragment);
+      elementsToTurnIntoLi[0].appendChild(fragment);
 
       for (let k = 1; k < count; k++) {
-        elementsForLi[k].remove();
+        elementsToTurnIntoLi[k].remove();
       }
 
       if (count != 1) {
