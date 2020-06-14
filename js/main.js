@@ -1484,9 +1484,11 @@ function makeUL1() {
       count = 0;
 
     function turnIntoLi(elementsToTurnIntoLi) {
-      let fragment = document.createDocumentFragment();
+      let fragment = document.createDocumentFragment(),
+        elementsAmount = elementsToTurnIntoLi.length;
 
-      elementsToTurnIntoLi.forEach(function (element) {
+      for (i = 0; i < elementsToTurnIntoLi; i++) {
+        console.log(element);
         let children = element.childNodes,
           length = children.length,
           innerFragment = document.createDocumentFragment(),
@@ -1503,19 +1505,45 @@ function makeUL1() {
 
         if (isWithLI) {
           debugger;
-
         } else {
           let li = document.createElement("li");
 
           li.appendChild(innerFragment);
           fragment.appendChild(li);
         }
-      });
+      }
+
+      // elementsToTurnIntoLi.forEach(function (element) {
+      //   console.log(element);
+      //   let children = element.childNodes,
+      //     length = children.length,
+      //     innerFragment = document.createDocumentFragment(),
+      //     isWithLI = false;
+
+      //   while (length != 0) {
+      //     if (children[0].nodeName == "LI") {
+      //       isWithLI = true;
+      //       break;
+      //     }
+      //     innerFragment.appendChild(children[0]);
+      //     length--;
+      //   }
+
+      //   if (isWithLI) {
+      //     debugger;
+      //   } else {
+      //     let li = document.createElement("li");
+
+      //     li.appendChild(innerFragment);
+      //     fragment.appendChild(li);
+      //   }
+      // });
 
       elementsToTurnIntoLi[0].appendChild(fragment);
 
       //dangerous moment
       //
+
       // for (let k = 1; k < count; k++) {
       //   debugger;
 
@@ -1530,6 +1558,7 @@ function makeUL1() {
       //     }
       //   }
       // }
+
       //
       //
 
@@ -1549,6 +1578,10 @@ function makeUL1() {
         count++;
       } else if (count > 0) {
         turnIntoLi(elementsToTurnIntoLi);
+        // if (count != 1){
+        //   childrenAmount -= count;
+        // }
+        // count = 0
       }
     }
 
