@@ -1064,10 +1064,10 @@ function makeUL() {
       count = 0,
       element = document.getElementById("work-area"),
       elementChilds = element.children,
-      childsAmount = elementChilds.length,
+      childrenAmount = elementChilds.length,
       elementsToTurnIntoLi = [];
 
-    for (let i = 0; i < childsAmount; i++) {
+    for (let i = 0; i < childrenAmount; i++) {
       let child = elementChilds[i],
         nodeName = child.nodeName;
 
@@ -1116,7 +1116,7 @@ function makeUL() {
         }
 
         if (count != 1) {
-          childsAmount -= count;
+          childrenAmount -= count;
         }
         count = 0;
       }
@@ -1151,7 +1151,7 @@ function makeUL() {
       }
 
       if (count != 1) {
-        childsAmount -= count;
+        childrenAmount -= count;
       }
 
       count = 0;
@@ -1182,11 +1182,11 @@ function makeUL1() {
     parentOfFirstElement,
     parentOfLastElement
   ) {
-    let childsAmount = mainChildren.length,
+    let childrenAmount = mainChildren.length,
       firstParentIndex = -1,
       lastParentIndex = -1;
 
-    for (let i = 0; i < childsAmount; i++) {
+    for (let i = 0; i < childrenAmount; i++) {
       if (mainChildren[i] == parentOfFirstElement) {
         firstParentIndex = i;
       }
@@ -1282,13 +1282,13 @@ function makeUL1() {
 
           let parentNode = getUlParent(),
             childs = parentNode.children,
-            childsAmount = childs.length,
+            childrenAmount = childs.length,
             firstSelectedLi = getLiParents()[0],
             lastSelectedLi = getLiParents()[1],
             indexOfFirstSelectedLi = -1,
             indexOfLastSelectedLi = -1;
 
-          for (let i = 0; i < childsAmount; i++) {
+          for (let i = 0; i < childrenAmount; i++) {
             if (childs[i] == firstSelectedLi) {
               indexOfFirstSelectedLi = i;
             } else if (childs[i] == lastSelectedLi) {
@@ -1466,12 +1466,12 @@ function makeUL1() {
 
     //Remove all tags what don't have any content
     function clearEmptyContainers() {
-      let childsAmount = mainChildren.length;
-      for (let i = 0; i < childsAmount; i++) {
+      let childrenAmount = mainChildren.length;
+      for (let i = 0; i < childrenAmount; i++) {
         let child = mainChildren[i];
         if (child.textContent == "") {
           mainContainer.removeChild(mainContainer.children[i]);
-          childsAmount--;
+          childrenAmount--;
         }
       }
     }
@@ -1479,8 +1479,8 @@ function makeUL1() {
 
     let fragment = document.createDocumentFragment(),
       editor = document.getElementById("work-area"),
-      editorChilds = editor.children,
-      childsAmount = editorChilds.length,
+      editorChildren = editor.children,
+      childrenAmount = editorChildren.length,
       elementsToTurnIntoLi = [],
       count = 0;
 
@@ -1527,13 +1527,13 @@ function makeUL1() {
       //
 
       if (count != 1) {
-        childsAmount -= count;
+        childrenAmount -= count;
       }
       count = 0;
     }
 
-    for (let i = 0; i < childsAmount; i++) {
-      let child = editorChilds[i],
+    for (let i = 0; i < childrenAmount; i++) {
+      let child = editorChildren[i],
         nodeName = child.nodeName;
 
       if (nodeName == "UL") {
