@@ -1075,7 +1075,6 @@ function makeUL() {
         elementsToTurnIntoLi[count] = child;
         count++;
       } else if (count > 0) {
-
         elementsToTurnIntoLi.forEach(function (element) {
           let children = element.childNodes,
             length = children.length,
@@ -1478,7 +1477,7 @@ function makeUL1() {
     clearEmptyContainers();
 
     // let fragment = document.createDocumentFragment(),
-    let  editor = document.getElementById("work-area"),
+    let editor = document.getElementById("work-area"),
       editorChildren = editor.children,
       childrenAmount = editorChildren.length,
       elementsToTurnIntoLi = [],
@@ -1516,10 +1515,10 @@ function makeUL1() {
       //
       for (let k = 1; k < count; k++) {
         let element = elementsToTurnIntoLi[k],
-          childNodes = element.childNodes;
+          elementChilds = element.childNodes;
 
-        if (childNodes[0] != undefined) {
-          if (childNodes[0].nodeName != "LI") {
+        if (elementChilds[0] != undefined) {
+          if (elementChilds[0].nodeName != "LI") {
             element.remove();
           }
         }
@@ -1547,6 +1546,7 @@ function makeUL1() {
 
     //If stopped on last element and it didn't turned it into li
     if (count > 0) {
+      debugger;
       turnIntoLi(elementsToTurnIntoLi);
     }
   }
