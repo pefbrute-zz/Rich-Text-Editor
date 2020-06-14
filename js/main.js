@@ -1075,7 +1075,6 @@ function makeUL() {
         elementsForLi[count] = child;
         count++;
       } else if (count > 0) {
-        // debugger;
 
         elementsForLi.forEach(function (element) {
           let children = element.childNodes,
@@ -1424,6 +1423,7 @@ function makeUL1() {
           lastPart.appendChild(firstChild);
           childrenAmount--;
         }
+
         UL.remove();
 
         let firstUl = document.createElement("UL"),
@@ -1437,7 +1437,7 @@ function makeUL1() {
         mainContainer.insertBefore(firstUl, mainContainer.children[ULIndex]);
       }
 
-      //If <ul> tag doesn't have children then delete the tag
+      //If <ul> is empty then delete it.
       let childrenOfUL = UL.children,
         amountOfChildren = childrenOfUL.length;
       if (amountOfChildren == 0) {
@@ -1452,7 +1452,7 @@ function makeUL1() {
       mainContainer
     );
   } else {
-    //Replace all selected elements with <ul> tag if they're not <ul> tags
+    //If selected not just <ul> tags then turn selected tags into <ul> (if they're not already)
     function replaceNotUL(firstParentIndex, lastParentIndex, mainChildren) {
       for (let i = firstParentIndex; i < lastParentIndex + 1; i++) {
         let child = mainChildren[i],
@@ -1478,9 +1478,9 @@ function makeUL1() {
     clearEmptyContainers();
 
     let fragment = document.createDocumentFragment(),
-      element = document.getElementById("work-area"),
-      elementChilds = element.children,
-      childsAmount = elementChilds.length,
+      mainContainer = document.getElementById("work-area"),
+      mainContainerChilds = mainContainer.children,
+      childsAmount = mainContainerChilds.length,
       elementsForLi = [],
       count = 0;
 
@@ -1533,14 +1533,13 @@ function makeUL1() {
     }
 
     for (let i = 0; i < childsAmount; i++) {
-      let child = elementChilds[i],
+      let child = mainContainerChilds[i],
         nodeName = child.nodeName;
 
       if (nodeName == "UL") {
         elementsForLi[count] = child;
         count++;
       } else if (count > 0) {
-        debugger;
         addLi(fragment, elementsForLi);
       }
     }
