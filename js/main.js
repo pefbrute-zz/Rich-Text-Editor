@@ -1485,6 +1485,7 @@ function makeUL1() {
 
     function turnIntoLi(elementsToTurnIntoLi) {
       let fragment = document.createDocumentFragment();
+
       elementsToTurnIntoLi.forEach(function (element) {
         let children = element.childNodes,
           length = children.length,
@@ -1501,6 +1502,8 @@ function makeUL1() {
         }
 
         if (isWithLI) {
+          debugger;
+
         } else {
           let li = document.createElement("li");
 
@@ -1513,16 +1516,20 @@ function makeUL1() {
 
       //dangerous moment
       //
-      for (let k = 1; k < count; k++) {
-        let element = elementsToTurnIntoLi[k],
-          elementChilds = element.childNodes;
+      // for (let k = 1; k < count; k++) {
+      //   debugger;
 
-        if (elementChilds[0] != undefined) {
-          if (elementChilds[0].nodeName != "LI") {
-            element.remove();
-          }
-        }
-      }
+      //   let elementToTurnIntoLi = elementsToTurnIntoLi[k],
+      //     elementChilds = elementToTurnIntoLi.childNodes,
+      //     firstElement = elementChilds[0];
+
+      //   if (firstElement != undefined) {
+      //     let elementName = firstElement.nodeName;
+      //     if (elementName != "LI") {
+      //       element.remove();
+      //     }
+      //   }
+      // }
       //
       //
 
@@ -1532,6 +1539,7 @@ function makeUL1() {
       count = 0;
     }
 
+    debugger;
     for (let i = 0; i < childrenAmount; i++) {
       let child = editorChildren[i],
         childName = child.nodeName;
@@ -1546,7 +1554,8 @@ function makeUL1() {
 
     //If stopped on last element and it didn't turned it into li
     if (count > 0) {
-      debugger;
+      // debugger;
+
       turnIntoLi(elementsToTurnIntoLi);
     }
   }
