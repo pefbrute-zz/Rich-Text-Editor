@@ -838,7 +838,11 @@ function makeUL1() {
   let ULsAmount = getULamount(firstParentIndex, lastParentIndex);
 
   // If we selected only <ul> tags then turn them into <p> tags
-  if (ULsAmount == 1) {
+  //
+  //Think about condition!
+  if (ULsAmount == lastParentIndex + 1 - firstParentIndex) {
+    //
+    //
     let selection = document.getSelection(),
       firstSelectedElement = selection.anchorNode,
       lastSelectedElement = selection.focusNode;
