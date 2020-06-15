@@ -1234,7 +1234,7 @@ function makeUL1() {
 
   let countULs = getULamount(firstParentIndex, lastParentIndex);
 
-  // if we selected only <ul> tags turn them into <p> tags
+  // If we selected only <ul> tags then turn them into <p> tags
   //
   //Think about condition!
   if (countULs == lastParentIndex + 1 - firstParentIndex) {
@@ -1485,17 +1485,31 @@ function makeUL1() {
 
     function turnIntoLi(elementsToTurnIntoLi) {
       let fragment = document.createDocumentFragment(),
-        elementsAmount = elementsToTurnIntoLi.length;
+        elementsAmount = elementsToTurnIntoLi.length,
+        index = 0;
 
       for (i = 0; i < elementsAmount; i++) {
         let element = elementsToTurnIntoLi[i],
-        children = element.childNodes,
+          children = element.childNodes,
           length = children.length,
           innerFragment = document.createDocumentFragment(),
           isWithLI = false;
-          
-          console.log(element);
-          while (length != 0) {
+
+        function hasLi(element) {
+          let children = element.childNodes,
+            amount = children.length;
+
+          for (let i = 0; i < amount; i++) {
+            if (children[i].nodeName == "LI") {
+              return true;
+            }
+          }
+          return false;
+        }
+
+        console.log(element);
+
+        while (length != 0) {
           if (children[0].nodeName == "LI") {
             isWithLI = true;
             break;
@@ -1508,30 +1522,42 @@ function makeUL1() {
           debugger;
         } else {
           let li = document.createElement("li");
-          
+
           li.appendChild(innerFragment);
           fragment.appendChild(li);
+
+          if (elementsToTurnIntoLi[i + 1] != undefined) {
+            if (hasLi(elementsToTurnIntoLi[i + 1])) {
+              elementsToTurnIntoLi[index].appendChild(fragment);
+
+              if (elementsToTurnIntoLi[i + 2] != undefined) {
+                index = i + 2;
+              }
+            }
+          }
         }
       }
 
-      elementsToTurnIntoLi[0].appendChild(fragment);
-      
+      elementsToTurnIntoLi[index].appendChild(fragment);
+      debugger;
+
       if (count != 1) {
         childrenAmount -= count;
       }
       count = 0;
       clearEmptyContainers();
     }
-    
+
     debugger;
     for (let i = 0; i < childrenAmount; i++) {
       let child = editorChildren[i],
-      childName = child.nodeName;
-      
+        childName = child.nodeName;
+
       if (childName == "UL") {
         elementsToTurnIntoLi[count] = child;
         count++;
       } else if (count > 0) {
+        debugger;
         turnIntoLi(elementsToTurnIntoLi);
         elementsToTurnIntoLi = [];
         // if (count != 1){
