@@ -1539,7 +1539,26 @@ function makeUL1() {
       }
 
       elementsToTurnIntoLi[index].appendChild(fragment);
+      console.log(elementsToTurnIntoLi[index]);
       debugger;
+
+      let secondUL = elementsToTurnIntoLi[1];
+      while (secondUL != undefined) {
+        let firstUL = elementsToTurnIntoLi[0];
+
+        let secondUL = elementsToTurnIntoLi[1];
+
+        if (secondUL == undefined){
+          break;
+        }
+        let childrenOfsecondUL = secondUL.children,
+          firstChildOfsecondUL = () => childrenOfsecondUL[0];
+
+        while (firstChildOfsecondUL() != undefined)
+          firstUL.appendChild(firstChildOfsecondUL());
+
+        elementsToTurnIntoLi.splice(1, 1);
+      }
 
       if (count != 1) {
         childrenAmount -= count;
@@ -1548,7 +1567,6 @@ function makeUL1() {
       clearEmptyContainers();
     }
 
-    debugger;
     for (let i = 0; i < childrenAmount; i++) {
       let child = editorChildren[i],
         childName = child.nodeName;
