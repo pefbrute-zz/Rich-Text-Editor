@@ -1467,8 +1467,11 @@ function makeUL1() {
     function clearEmptyContainers() {
       let childrenAmount = mainChildren.length;
       for (let i = 0; i < childrenAmount; i++) {
-        let child = mainChildren[i];
-        if (child.textContent == "") {
+        let child = mainChildren[i],
+          textContent = child.textContent;
+
+        textContent = clearExtraSpaces(textContent);
+        if (textContent == "") {
           mainContainer.removeChild(mainContainer.children[i]);
           childrenAmount--;
         }
@@ -1560,7 +1563,6 @@ function makeUL1() {
         childrenAmount -= count;
       }
       count = 0;
-      clearEmptyContainers();
     }
 
     for (let i = 0; i < childrenAmount; i++) {
@@ -1573,10 +1575,6 @@ function makeUL1() {
       } else if (count > 0) {
         turnIntoLi(elementsToTurnIntoLi);
         elementsToTurnIntoLi = [];
-        // if (count != 1){
-        //   childrenAmount -= count;
-        // }
-        // count = 0
       }
     }
 
@@ -1595,9 +1593,6 @@ function makeUL1() {
   console.timeEnd();
 }
 
-// function makeUL2() {
-
-// }
 
 /*
 function makeOL() {
