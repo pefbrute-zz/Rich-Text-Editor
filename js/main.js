@@ -1166,10 +1166,10 @@ function makeUL1() {
         clearEmptyContainers();
       }
 
-      if (count != 1) {
-        childrenAmount -= count;
-      }
-      count = 0;
+      // if (count != 1) {
+      //   childrenAmount -= count;
+      // }
+      // count = 0;
     }
 
     for (let i = 0; i < childrenAmount; i++) {
@@ -1182,6 +1182,11 @@ function makeUL1() {
       } else if (count > 0) {
         turnIntoLi(elementsToTurnIntoLi);
         elementsToTurnIntoLi = [];
+        
+        if (count != 1) {
+          childrenAmount -= count;
+        }
+        count = 0;
       }
     }
 
