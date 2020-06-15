@@ -1507,8 +1507,6 @@ function makeUL1() {
           return false;
         }
 
-        console.log(element);
-
         while (length != 0) {
           if (children[0].nodeName == "LI") {
             isWithLI = true;
@@ -1519,7 +1517,6 @@ function makeUL1() {
         }
 
         if (isWithLI) {
-          debugger;
         } else {
           let li = document.createElement("li");
 
@@ -1539,8 +1536,6 @@ function makeUL1() {
       }
 
       elementsToTurnIntoLi[index].appendChild(fragment);
-      console.log(elementsToTurnIntoLi[index]);
-      debugger;
 
       let secondUL = elementsToTurnIntoLi[1];
       while (secondUL != undefined) {
@@ -1548,7 +1543,7 @@ function makeUL1() {
 
         let secondUL = elementsToTurnIntoLi[1];
 
-        if (secondUL == undefined){
+        if (secondUL == undefined) {
           break;
         }
         let childrenOfsecondUL = secondUL.children,
@@ -1558,6 +1553,7 @@ function makeUL1() {
           firstUL.appendChild(firstChildOfsecondUL());
 
         elementsToTurnIntoLi.splice(1, 1);
+        clearEmptyContainers();
       }
 
       if (count != 1) {
@@ -1575,7 +1571,6 @@ function makeUL1() {
         elementsToTurnIntoLi[count] = child;
         count++;
       } else if (count > 0) {
-        debugger;
         turnIntoLi(elementsToTurnIntoLi);
         elementsToTurnIntoLi = [];
         // if (count != 1){
@@ -1587,7 +1582,6 @@ function makeUL1() {
 
     //If stopped on last element and it didn't turned it into li
     if (count > 0) {
-      // debugger;
       turnIntoLi(elementsToTurnIntoLi);
       elementsToTurnIntoLi = [];
     }
