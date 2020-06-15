@@ -857,10 +857,11 @@ function makeUL1() {
         function getSelectionIndexes() {
           //Get Selected <ul> tag
           function getUlParent() {
-            let parent = firstSelectedElement;
+            let parent = firstSelectedElement,
+            superParent = () => parent.parentElement;
 
-            while (parent.parentElement != mainContainer) {
-              parent = parent.parentElement;
+            while (superParent() != mainContainer) {
+              parent = superParent();
             }
 
             return parent;
