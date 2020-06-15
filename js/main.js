@@ -1139,11 +1139,15 @@ function makeUL1() {
 
           //If the next element is already done (turned into <ul> tag with <li> elements)
           //Then append the element to the previous element
-          if (elementsToTurnIntoLi[i + 1] != undefined) {
-            if (hasLi(elementsToTurnIntoLi[i + 1])) {
-              elementsToTurnIntoLi[index].appendChild(fragment);
+          let nextElement = elementsToTurnIntoLi[i + 1];
+          if (nextElement != undefined) {
+            if (hasLi(nextElement)) {
+              let ulForMerging = elementsToTurnIntoLi[index],
+                elementAfterNextElement = elementsToTurnIntoLi[i + 2];
 
-              if (elementsToTurnIntoLi[i + 2] != undefined) {
+              ulForMerging.appendChild(fragment);
+
+              if (elementAfterNextElement != undefined) {
                 index = i + 2;
               }
             }
