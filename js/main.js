@@ -835,12 +835,12 @@ function makeUL1() {
     return count;
   }
 
-  let countULs = getULamount(firstParentIndex, lastParentIndex);
+  let ULsAmount = getULamount(firstParentIndex, lastParentIndex);
 
   // If we selected only <ul> tags then turn them into <p> tags
   //
   //Think about condition!
-  if (countULs == lastParentIndex + 1 - firstParentIndex) {
+  if (ULsAmount == lastParentIndex + 1 - firstParentIndex) {
     //
     //
     let selection = document.getSelection(),
@@ -1059,6 +1059,7 @@ function makeUL1() {
       for (let i = firstParentIndex; i < lastParentIndex + 1; i++) {
         let child = mainChildren[i],
           nodeName = child.nodeName;
+
         if (nodeName != "UL") {
           replaceElement(child, "ul");
         }
@@ -1068,14 +1069,17 @@ function makeUL1() {
 
     //Remove all tags what don't have any content
     function clearEmptyContainers() {
-      let childrenAmount = mainChildren.length;
+      let mainContainer = document.getElementById("work-area"),
+        mainChildren = mainContainer.children,
+        childrenAmount = mainChildren.length;
+
       for (let i = 0; i < childrenAmount; i++) {
         let child = mainChildren[i],
           textContent = child.textContent;
 
         textContent = clearExtraSpaces(textContent);
         if (textContent == "") {
-          mainContainer.removeChild(mainContainer.children[i]);
+          mainContainer.removeChild(child);
           childrenAmount--;
         }
       }
