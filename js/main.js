@@ -1155,7 +1155,8 @@ function makeUL1() {
         }
       }
 
-      elementsToTurnIntoLi[index].appendChild(fragment);
+      let ulForMerging = elementsToTurnIntoLi[index];
+      ulForMerging.appendChild(fragment);
 
       //Merge separated <ul> tags
       let secondUL = elementsToTurnIntoLi[1];
