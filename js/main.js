@@ -1118,10 +1118,14 @@ function makeUL1() {
         }
 
         while (length != 0) {
-          if (children[0].nodeName == "LI") {
+          let child = children[0],
+            childName = child.nodeName;
+
+          if (childName == "LI") {
             isWithLI = true;
             break;
           }
+
           innerFragment.appendChild(children[0]);
           length--;
         }
@@ -1133,6 +1137,8 @@ function makeUL1() {
           li.appendChild(innerFragment);
           fragment.appendChild(li);
 
+          //If the next element is already done (turned into <ul> tag with <li> elements)
+          //Then append the element to the previous element
           if (elementsToTurnIntoLi[i + 1] != undefined) {
             if (hasLi(elementsToTurnIntoLi[i + 1])) {
               elementsToTurnIntoLi[index].appendChild(fragment);
@@ -1147,17 +1153,18 @@ function makeUL1() {
 
       elementsToTurnIntoLi[index].appendChild(fragment);
 
+      //Merge separated <ul> tags
       let secondUL = elementsToTurnIntoLi[1];
       while (secondUL != undefined) {
-        let firstUL = elementsToTurnIntoLi[0];
-
-        let secondUL = elementsToTurnIntoLi[1];
+        let firstUL = elementsToTurnIntoLi[0],
+          secondUL = elementsToTurnIntoLi[1];
 
         if (secondUL == undefined) {
           break;
         }
-        let childrenOfsecondUL = secondUL.children,
-          firstChildOfsecondUL = () => childrenOfsecondUL[0];
+
+        let childrenOfSecondUL = secondUL.children,
+          firstChildOfsecondUL = () => childrenOfSecondUL[0];
 
         while (firstChildOfsecondUL() != undefined)
           firstUL.appendChild(firstChildOfsecondUL());
@@ -1165,11 +1172,6 @@ function makeUL1() {
         elementsToTurnIntoLi.splice(1, 1);
         clearEmptyContainers();
       }
-
-      // if (count != 1) {
-      //   childrenAmount -= count;
-      // }
-      // count = 0;
     }
 
     for (let i = 0; i < childrenAmount; i++) {
@@ -1182,7 +1184,7 @@ function makeUL1() {
       } else if (count > 0) {
         turnIntoLi(elementsToTurnIntoLi);
         elementsToTurnIntoLi = [];
-        
+
         if (count != 1) {
           childrenAmount -= count;
         }
@@ -1204,4 +1206,3 @@ function makeUL1() {
 
   console.timeEnd();
 }
-
