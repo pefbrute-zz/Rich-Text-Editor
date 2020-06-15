@@ -858,7 +858,7 @@ function makeUL1() {
           //Get Selected <ul> tag
           function getUlParent() {
             let parent = firstSelectedElement,
-            superParent = () => parent.parentElement;
+              superParent = () => parent.parentElement;
 
             while (superParent() != mainContainer) {
               parent = superParent();
@@ -919,14 +919,18 @@ function makeUL1() {
 
       function getLiParents() {
         let firstLi = firstSelectedElement,
-          lastLi = lastSelectedElement;
+          lastLi = lastSelectedElement,
+          superFirstLiParent = () => firstLi.parentElement,
+          superFirstLiParentName = () => superFirstLiParent().nodeName,
+          superLastLiParent = () => lastLi.parentElement,
+          superLastLiParentName = () => superLastLiParent().nodeName,
 
-        while (firstLi.parentElement.nodeName != "UL") {
-          firstLi = firstLi.parentElement;
+        while (superFirstLiParentName() != "UL") {
+          firstLi = superParent();
         }
 
-        while (lastLi.parentElement.nodeName != "UL") {
-          lastLi = lastLi.parentElement;
+        while (superLastLiParentName() != "UL") {
+          lastLi = superLastLiParent();
         }
 
         return [firstLi, lastLi];
