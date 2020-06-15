@@ -863,7 +863,6 @@ function makeUL1() {
             while (superParent() != mainContainer) {
               parent = superParent();
             }
-
             return parent;
           }
 
