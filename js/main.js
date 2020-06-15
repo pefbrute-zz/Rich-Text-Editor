@@ -920,17 +920,15 @@ function makeUL1() {
       function getLiParents() {
         let firstLi = firstSelectedElement,
           lastLi = lastSelectedElement,
-          superFirstLiParent = () => firstLi.parentElement,
-          superFirstLiParentName = () => superFirstLiParent().nodeName,
-          superLastLiParent = () => lastLi.parentElement,
-          superLastLiParentName = () => superLastLiParent().nodeName,
+          superParent = (firstLi) => firstLi.parentElement,
+          superParentName = () => superParent(firstLi).nodeName;
 
-        while (superFirstLiParentName() != "UL") {
-          firstLi = superParent();
+        while (superParentName() != "UL") {
+          firstLi = superParent(firstLi);
         }
 
-        while (superLastLiParentName() != "UL") {
-          lastLi = superLastLiParent();
+        while (lastLi.parentElement.nodeName != "UL") {
+          lastLi = lastLi.parentElement;
         }
 
         return [firstLi, lastLi];
