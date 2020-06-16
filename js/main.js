@@ -923,10 +923,10 @@ function makeUL1() {
         //
         let firstLi = firstSelectedElement,
           lastLi = lastSelectedElement,
-          superParent = (firstLi) => firstLi.parentElement,
-          superParentName = () => superParent(firstLi).nodeName;
+          superParent = (someElement) => someElement.parentElement,
+          superParentName = (someElement) => superParent(someElement).nodeName;
 
-        while (superParentName() != "UL") {
+        while (superParentName(firstLi) != "UL") {
           firstLi = superParent(firstLi);
         }
 
