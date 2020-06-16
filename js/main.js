@@ -824,7 +824,7 @@ function makeUL1() {
   lastParentIndex = parentsIndexes[1];
 
   //Count how much <ul> tags was selected
-  function getSelectedULamount(firstParentIndex, lastParentIndex) {
+  function getULamount(firstParentIndex, lastParentIndex) {
     let count = 0;
 
     for (let i = firstParentIndex; i < lastParentIndex + 1; i++) {
@@ -835,7 +835,7 @@ function makeUL1() {
     return count;
   }
 
-  let ULsAmount = getSelectedULamount(firstParentIndex, lastParentIndex);
+  let ULsAmount = getULamount(firstParentIndex, lastParentIndex);
 
   // If we selected only <ul> tags then turn them into <p> tags
   //
@@ -856,8 +856,8 @@ function makeUL1() {
       function swapSelectionNodes() {
         function getSelectionIndexes() {
           //Get Selected <ul> tag
-          function getSelectedUL() {
-              let UL = firstSelectedElement,
+          function getUL() {
+            let UL = firstSelectedElement,
               getParent = (element) => element.parentElement;
 
             while (getParent(UL) != mainContainer) {
@@ -868,21 +868,23 @@ function makeUL1() {
 
           //Get Selected <li> tags (first and last one)
           function getFirstLiAndLastLi() {
-            let firstParent = firstSelectedElement,
-              lastParent = lastSelectedElement;
+            let firstLi = firstSelectedElement,
+              lastLi = lastSelectedElement,
+              getParent = (element) => element.parentElement,
+              getParentName = (element) => getParent(element).nodeName;
 
-            while (firstParent.parentElement.nodeName != "UL") {
-              firstParent = firstParent.parentElement;
+            while (getParentName(firstLi) != "UL") {
+              firstLi = getParent(firstLi);
             }
 
-            while (lastParent.parentElement.nodeName != "UL") {
-              lastParent = lastParent.parentElement;
+            while (getParentName(lastLi) != "UL") {
+              lastLi = getParent(lastLi);
             }
 
-            return [firstParent, lastParent];
+            return [firstLi, lastLi];
           }
 
-          let parentNode = getSelectedUL(),
+          let parentNode = getUL(),
             childs = parentNode.children,
             childrenAmount = childs.length,
             firstSelectedLi = getFirstLiAndLastLi()[0],
@@ -934,7 +936,7 @@ function makeUL1() {
         return [firstLi, lastLi];
       }
 
-      function getSelectedUL() {
+      function getUL() {
         let parent = firstSelectedElement;
 
         while (parent.parentElement != mainContainer) {
@@ -946,7 +948,7 @@ function makeUL1() {
 
       let firstLi = getFirstLiAndLastLi()[0],
         lastLi = getFirstLiAndLastLi()[1],
-        UL = getSelectedUL(),
+        UL = getUL(),
         ULIndex = firstParentIndex,
         children = UL.children,
         childrenAmount = children.length,
