@@ -965,24 +965,24 @@ function makeUL1() {
         firstLi,
         lastLi
       ) {
-        let firstLiIndex = -1,
+        let firstSelectedLiIndex = -1,
           lastLiIndex = -1;
 
         for (let i = 0; i < ulChildrenAmount; i++) {
           let child = ulChildren[i];
 
           if (child == firstLi) {
-            firstLiIndex = i;
+            firstSelectedLiIndex = i;
           } else if (child == lastLi) {
             lastLiIndex = i;
           }
         }
 
         if (lastLiIndex == -1) {
-          lastLiIndex = firstLiIndex;
+          lastLiIndex = firstSelectedLiIndex;
         }
 
-        return [firstLiIndex, lastLiIndex];
+        return [firstSelectedLiIndex, lastLiIndex];
       }
 
       let firstAndLastLiIndexes = getFirstLiAndLastLiIndexes(
@@ -991,32 +991,32 @@ function makeUL1() {
           firstLi,
           lastLi
         ),
-        firstLiIndex = firstAndLastLiIndexes[0],
-        lastLiIndex = firstAndLastLiIndexes[1];
+        firstSelectedLiIndex = firstAndLastLiIndexes[0],
+        lastSelectedLiIndex = firstAndLastLiIndexes[1];
 
       let fragment = document.createDocumentFragment(),
         liContent = "";
 
       //If selected only one <li> then remove only the <li> element
       //and add <p> tag with content of the <li> after selected <ul> tag
-      if (lastLiIndex == firstLiIndex) {
+      if (lastSelectedLiIndex == firstSelectedLiIndex) {
         let p = document.createElement("p"),
-          firstSelectedLi = children[firstLiIndex];
+          firstSelectedLi = children[firstSelectedLiIndex],
+          liContent = firstSelectedLi.innerHTML;
 
-        liContent = firstSelectedLi.innerHTML;
-        UL.children[firstLiIndex].remove();
+        firstSelectedLi.remove();
+
         p.innerHTML = liContent;
-
         fragment.appendChild(p);
       } else {
         //Else remove all selected <li> elements and add <p> tags
-        let index = lastLiIndex + 1;
+        let index = lastSelectedLiIndex + 1;
 
-        while (firstLiIndex != index) {
+        while (firstSelectedLiIndex != index) {
           let p = document.createElement("p");
 
-          liContent = children[firstLiIndex].innerHTML;
-          UL.children[firstLiIndex].remove();
+          liContent = children[firstSelectedLiIndex].innerHTML;
+          UL.children[firstSelectedLiIndex].remove();
           index--;
           p.innerHTML = liContent;
 
@@ -1025,25 +1025,25 @@ function makeUL1() {
       }
 
       let indexOfLastLi = childrenAmount - 1;
-      
+
       //If selection started from the start of the list, then append <p> tags before the list
-      if (firstLiIndex == 0) {
+      if (firstSelectedLiIndex == 0) {
         let mainContainerChildren = mainContainer.children,
           ul = mainContainerChildren[ULIndex];
 
         mainContainer.insertBefore(fragment, ul);
         //Else if selection ends in the end of list append after this list
       } else if (
-        lastLiIndex == indexOfLastLi ||
-        firstLiIndex == indexOfLastLi
+        lastSelectedLiIndex == indexOfLastLi ||
+        firstSelectedLiIndex == indexOfLastLi
       ) {
         mainContainer.insertBefore(
           fragment,
           mainContainer.children[ULIndex + 1]
         );
       } else {
-        let endOfFirstPart = firstLiIndex - 1,
-          // startOfLastPart = firstLiIndex,
+        let endOfFirstPart = firstSelectedLiIndex - 1,
+          // startOfLastPart = firstSelectedLiIndex,
           firstPart = document.createDocumentFragment(),
           lastPart = document.createDocumentFragment();
 
