@@ -893,9 +893,11 @@ function makeUL1() {
             indexOfLastSelectedLi = -1;
 
           for (let i = 0; i < childrenAmount; i++) {
-            if (childs[i] == firstSelectedLi) {
+            let child = childs[i];
+
+            if (child == firstSelectedLi) {
               indexOfFirstSelectedLi = i;
-            } else if (childs[i] == lastSelectedLi) {
+            } else if (child == lastSelectedLi) {
               indexOfLastSelectedLi = i;
             }
           }
@@ -912,6 +914,7 @@ function makeUL1() {
             firstSelectedElement,
           ];
         }
+
         return [firstSelectedElement, lastSelectedElement];
       }
 
@@ -937,13 +940,15 @@ function makeUL1() {
       }
 
       function getUL() {
-        let parent = firstSelectedElement;
+        let UL = firstSelectedElement,
+          workAreaContainer = document.getElementById("work-area"),
+          getParent = (element) => element.parentElement;
 
-        while (parent.parentElement != mainContainer) {
-          parent = parent.parentElement;
+        while (getParent(UL) != workAreaContainer) {
+          UL = getParent(UL);
         }
 
-        return parent;
+        return UL;
       }
 
       let firstLi = getFirstLiAndLastLi()[0],
@@ -951,22 +956,37 @@ function makeUL1() {
         UL = getUL(),
         ULIndex = firstParentIndex,
         children = UL.children,
-        childrenAmount = children.length,
-        firstLiIndex = -1,
-        lastLiIndex = -1;
+        childrenAmount = children.length;
 
       //Find indexes of first and last selected <li> elements in <ul> tag
-      for (let i = 0; i < childrenAmount; i++) {
-        if (children[i] == firstLi) {
-          firstLiIndex = i;
-        } else if (children[i] == lastLi) {
-          lastLiIndex = i;
+      function getFirstLiAndLastLiIndexes(ulChildren, ulChildrenAmount, firstLi, lastLi){
+        let firstLiIndex = -1,
+        lastLiIndex = -1;
+
+        for (let i = 0; i < ulChildrenAmount; i++) {
+          let child = ulChildren[i];
+  
+          if (child == firstLi) {
+            firstLiIndex = i;
+          } else if (child == lastLi) {
+            lastLiIndex = i;
+          }
         }
+
+        if (lastLiIndex == -1) {
+          lastLiIndex = firstLiIndex;
+        }
+
+        return [firstLiIndex, lastLiIndex];
       }
 
-      if (lastLiIndex == -1) {
-        lastLiIndex = firstLiIndex;
-      }
+      let firstLiIndex = getFirstLiAndLastLiIndexes(children, childrenAmount, firstLi, lastLi)[0],
+      lastLiIndex = getFirstLiAndLastLiIndexes(children, childrenAmount, firstLi, lastLi)[1];
+
+      //If lastLiIndex wasn't changed after declaration then we selected only one <li> element
+      // if (lastLiIndex == -1) {
+      //   lastLiIndex = firstLiIndex;
+      // }
 
       let fragment = document.createDocumentFragment(),
         liContent = "";
@@ -974,15 +994,16 @@ function makeUL1() {
       //If selected only one <li> then remove only the this <li> element
       //and add <p> tag with content of <li> after selected <ul> tag
       if (lastLiIndex == firstLiIndex) {
-        let p = document.createElement("p");
+        let p = document.createElement("p"),
+        firstSelectedLi = children[firstLiIndex];
 
-        liContent = children[firstLiIndex].innerHTML;
+        liContent = firstSelectedLi.innerHTML;
         UL.children[firstLiIndex].remove();
         p.innerHTML = liContent;
 
         fragment.appendChild(p);
-        //Else remove all selected <li> elements and add <p> tags
       } else {
+        //Else remove all selected <li> elements and add <p> tags
         let index = lastLiIndex + 1;
 
         while (firstLiIndex != index) {
