@@ -1024,6 +1024,8 @@ function makeUL1() {
         }
       }
 
+      let indexOfLastLi = childrenAmount - 1;
+      
       //If selection started from the start of the list, then append <p> tags before the list
       if (firstLiIndex == 0) {
         let mainContainerChildren = mainContainer.children,
@@ -1032,8 +1034,8 @@ function makeUL1() {
         mainContainer.insertBefore(fragment, ul);
         //Else if selection ends in the end of list append after this list
       } else if (
-        lastLiIndex == childrenAmount - 1 ||
-        firstLiIndex == childrenAmount - 1
+        lastLiIndex == indexOfLastLi ||
+        firstLiIndex == indexOfLastLi
       ) {
         mainContainer.insertBefore(
           fragment,
