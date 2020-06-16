@@ -918,9 +918,6 @@ function makeUL1() {
       lastSelectedElement = selectedElements[1];
 
       function getLiParents() {
-        
-        //Upgrade this part//
-        //
         let firstLi = firstSelectedElement,
           lastLi = lastSelectedElement,
           superParent = (someElement) => someElement.parentElement,
@@ -930,13 +927,13 @@ function makeUL1() {
           firstLi = superParent(firstLi);
         }
 
-        while (lastLi.parentElement.nodeName != "UL") {
-          lastLi = lastLi.parentElement;
+        while (superParentName(lastLi) != "UL") {
+          lastLi = superParent(lastLi);
         }
-        //
-        //
+        let firstUL = firstLi,
+          lastUL = lastLi;
 
-        return [firstLi, lastLi];
+        return [firstUL, lastUL];
       }
 
       function getUlParent() {
