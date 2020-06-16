@@ -958,14 +958,19 @@ function makeUL1() {
         children = UL.children,
         childrenAmount = children.length;
 
-      //Find indexes of first and last selected <li> elements in <ul> tag
-      function getFirstLiAndLastLiIndexes(ulChildren, ulChildrenAmount, firstLi, lastLi){
+      //Get indexes of first and last selected <li> elements in <ul> tag
+      function getFirstLiAndLastLiIndexes(
+        ulChildren,
+        ulChildrenAmount,
+        firstLi,
+        lastLi
+      ) {
         let firstLiIndex = -1,
-        lastLiIndex = -1;
+          lastLiIndex = -1;
 
         for (let i = 0; i < ulChildrenAmount; i++) {
           let child = ulChildren[i];
-  
+
           if (child == firstLi) {
             firstLiIndex = i;
           } else if (child == lastLi) {
@@ -980,22 +985,23 @@ function makeUL1() {
         return [firstLiIndex, lastLiIndex];
       }
 
-      let firstLiIndex = getFirstLiAndLastLiIndexes(children, childrenAmount, firstLi, lastLi)[0],
-      lastLiIndex = getFirstLiAndLastLiIndexes(children, childrenAmount, firstLi, lastLi)[1];
-
-      //If lastLiIndex wasn't changed after declaration then we selected only one <li> element
-      // if (lastLiIndex == -1) {
-      //   lastLiIndex = firstLiIndex;
-      // }
+      let firstAndLastLiIndexes = getFirstLiAndLastLiIndexes(
+          children,
+          childrenAmount,
+          firstLi,
+          lastLi
+        ),
+        firstLiIndex = firstAndLastLiIndexes[0],
+        lastLiIndex = firstAndLastLiIndexes[1];
 
       let fragment = document.createDocumentFragment(),
         liContent = "";
 
-      //If selected only one <li> then remove only the this <li> element
-      //and add <p> tag with content of <li> after selected <ul> tag
+      //If selected only one <li> then remove only the <li> element
+      //and add <p> tag with content of the <li> after selected <ul> tag
       if (lastLiIndex == firstLiIndex) {
         let p = document.createElement("p"),
-        firstSelectedLi = children[firstLiIndex];
+          firstSelectedLi = children[firstLiIndex];
 
         liContent = firstSelectedLi.innerHTML;
         UL.children[firstLiIndex].remove();
@@ -1020,7 +1026,10 @@ function makeUL1() {
 
       //If selection started from the start of the list, then append <p> tags before the list
       if (firstLiIndex == 0) {
-        mainContainer.insertBefore(fragment, mainContainer.children[ULIndex]);
+        let mainContainerChildren = mainContainer.children,
+          ul = mainContainerChildren[ULIndex];
+
+        mainContainer.insertBefore(fragment, ul);
         //Else if selection ends in the end of list append after this list
       } else if (
         lastLiIndex == childrenAmount - 1 ||
