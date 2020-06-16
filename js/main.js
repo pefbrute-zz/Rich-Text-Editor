@@ -1045,35 +1045,42 @@ function makeUL1() {
       } else {
         let indexOfLastLiInFirstPart = indexOfFirstSelectedLi - 1,
           firstPart = document.createDocumentFragment(),
-          lastPart = document.createDocumentFragment();
+          lastPart = document.createDocumentFragment(),
+          mainContainer = document.getElementById('work-area'),
+          childrenOfMainContainer = mainContainer.children;
+          ul = childrenOfMainContainer[ULIndex],
+          ulChildren = ul.children;
 
         while (indexOfLastLiInFirstPart >= 0) {
-          let ulChildren = UL.children,
+          let ulChildren = ul.children,
             firstChild = ulChildren[0];
 
           firstPart.appendChild(firstChild);
           indexOfLastLiInFirstPart--;
         }
 
-        let childrenAmount = UL.children.length;
-        while (childrenAmount != 0) {
-          let firstChild = UL.children[0];
+        let amountOfChildrenOfUL = ulChildren.length;
 
-          lastPart.appendChild(firstChild);
-          childrenAmount--;
+        while (amountOfChildrenOfUL != 0) {
+          let ulChildren = ul.children,
+            firstChildOfUL = ulChildren[0];
+
+          lastPart.appendChild(firstChildOfUL);
+          amountOfChildrenOfUL--;
         }
 
-        UL.remove();
+        ul.remove();
 
         let firstUl = document.createElement("UL"),
-          lastUl = document.createElement("UL");
+          lastUl = document.createElement("UL"),
+          childOfMainContainer = childrenOfMainContainer[ULIndex];
 
         firstUl.appendChild(firstPart);
         lastUl.appendChild(lastPart);
 
-        mainContainer.insertBefore(lastUl, mainContainer.children[ULIndex]);
-        mainContainer.insertBefore(fragment, mainContainer.children[ULIndex]);
-        mainContainer.insertBefore(firstUl, mainContainer.children[ULIndex]);
+        mainContainer.insertBefore(firstUl, childOfMainContainer);
+        mainContainer.insertBefore(fragment, childOfMainContainer);
+        mainContainer.insertBefore(lastUl, childOfMainContainer);
       }
 
       //If <ul> is empty then delete it.
