@@ -801,16 +801,13 @@ function makeUL1() {
   }
 
   let mainChildren = mainContainer.children,
-    firstParentIndex = getParentsIndexes(
-      mainChildren,
-      parentOfFirstElement,
-      parentOfLastElement
-    )[0],
-    lastParentIndex = getParentsIndexes(
-      mainChildren,
-      parentOfFirstElement,
-      parentOfLastElement
-    )[1];
+  firstAndLastParentIndexes = getParentsIndexes(
+    mainChildren,
+    parentOfFirstElement,
+    parentOfLastElement
+  ), 
+    firstParentIndex = firstAndLastParentIndexes[0],
+    lastParentIndex = firstAndLastParentIndexes[1];
 
   //Change indexes if selection was from the end
   function swapIndexes(firstParentIndex, lastParentIndex) {
