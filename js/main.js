@@ -1263,6 +1263,7 @@ function makeUL() {
 
 function makeList(type) {
   // console.time();
+  type = type.toUpperCase();
 
   function getSelectedParents(mainContainer) {
     let selection = document.getSelection(),
