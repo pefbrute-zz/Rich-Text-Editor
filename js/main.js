@@ -789,10 +789,11 @@ function makeUL1() {
       lastParentIndex = -1;
 
     for (let i = 0; i < childrenAmount; i++) {
-      if (mainChildren[i] == parentOfFirstElement) {
+      let child = mainChildren[i];
+      if (child == parentOfFirstElement) {
         firstParentIndex = i;
       }
-      if (mainChildren[i] == parentOfLastElement) {
+      if (child == parentOfLastElement) {
         lastParentIndex = i;
       }
     }
@@ -1151,10 +1152,13 @@ function makeUL1() {
 
         function hasLi(element) {
           let children = element.childNodes,
-            amount = children.length;
+            childAmount = children.length;
 
-          for (let i = 0; i < amount; i++) {
-            if (children[i].nodeName == "LI") {
+          for (let i = 0; i < childAmount; i++) {
+            let child = children[i],
+            childName = child.nodeName;
+
+            if (childName == "LI") {
               return true;
             }
           }
@@ -1163,14 +1167,15 @@ function makeUL1() {
 
         while (length != 0) {
           let child = children[0],
-            childName = child.nodeName;
+            childName = child.nodeName,
+            firstChild = children[0];
 
           if (childName == "LI") {
             isWithLI = true;
             break;
           }
 
-          innerFragment.appendChild(children[0]);
+          innerFragment.appendChild(firstChild);
           length--;
         }
 
