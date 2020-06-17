@@ -638,71 +638,31 @@
           <input id="url" placeholder="link" class="form-control" />
         </span>
 
-        <a class="icon" href="">
+        <a class="icon" href="javascript:void(0)" onclick="addImage()">
           <i class="fas fa-image"></i>
-        </a>
-
-        <a class="icon" href="js/main.js">
-          Source Code Link
         </a>
 
         <a class="icon" href="javascript:void(0)" onclick="tests()">
           <i class="fas fa-vial"></i>
         </a>
+        <input class="hidden" type="file" id="filetag" />
+        
+        <a class="icon" href="js/main.js">
+          Source Code Link
+        </a>        
       </div>
-
+      
       <div class="work-area" contenteditable="true" id="work-area">
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore ab
           aut officiis dolor quas quam assumenda eius aspernatur, nemo commodi.
         </p>
-        <ol>
-          <li>Lorem ipsum dolor sit.</li>
-          <li>Lorem ipsum dolor sit.</li>
-        </ol>
-        <ul>
-          <li>1.Lorem ip<b>sum</b> dulor sit.</li>
-          <li>2.Lorem ipsum <em>dulor</em> sit.</li>
-          <li>3.Lorem ipsum <em>dulor</em> sit.</li>
-          <li>4.Lorem ipsum <em>dulor</em> sit.</li>
-          <li>5.Lorem ipsum <em>dulor</em> sit.</li>
-          <li>6.Lorem ip<b>sum</b> dulor sit.</li>
-        </ul>
-        <p>
-          The First Text and Some text of it.
-        </p>
-        <p>
-          The Second Text and Some text of it.
-        </p>
-        <p>
-          The Third Text and Some text of it.
-        </p>
-        <p>
-          The Fourth Text and Some text of it.
-        </p>
-        <p>
-          The Fifth Text and Some text of it.
-        </p>
-        <p>
-          The Sixth Text and Some text of it.
-        </p>
-        <ul>
-          <li>
-            The Seventh One and Some text of it.
-          </li>
-        </ul>
-        <p>The Eigth One and Some text of it</p>
-        <p>The Ninth One and Some text of it</p>
-        <p>The Tenth One and Some text of it</p>
-        <ul>
-          <li>
-            The Eleventh One and Some text of it
-          </li>
-        </ul>
         <p>The Twelnth One and Some text of it</p>
         <p>The Thirteenth One and Some text of it</p>
+        <img src="" id="preview" />
       </div>
     </div>
+
     <script src="js/lib/rangy-core.js"></script>
     <script src="js/lib/rangy-classapplier.js"></script>
     <script src="js/lib/rangy-selectionsaverestore.js"></script>

@@ -758,10 +758,6 @@ element.addEventListener("keypress", function (e) {
   }
 });
 
-tests = () => {
-  makeList("OL");
-};
-
 function makeList(type) {
   // console.time();
   type = type.toUpperCase();
@@ -1051,7 +1047,8 @@ function makeList(type) {
           lastPart = document.createDocumentFragment(),
           mainContainer = document.getElementById("work-area"),
           childrenOfMainContainer = mainContainer.children;
-        (list = childrenOfMainContainer[ListIndex]), (listChildren = list.children);
+        (list = childrenOfMainContainer[ListIndex]),
+          (listChildren = list.children);
 
         while (indexOfLastLiInFirstPart >= 0) {
           let listChildren = list.children,
@@ -1262,4 +1259,38 @@ function makeList(type) {
   // console.timeEnd();
 }
 
+tests = () => {
+  addImage();
+};
 
+let fileTag = document.getElementById("filetag"),
+  preview = document.getElementById("preview");
+
+fileTag.addEventListener("change", function () {
+  changeImage(this);
+});
+
+function changeImage(input) {
+  var reader,
+  files = input.files,
+  file = files[0];
+
+  if (files && file) {
+    reader = new FileReader();
+
+    reader.onload = function (e) {
+      preview.setAttribute("src", e.target.result);
+      
+      console.log(e, e.target, e.target.result);
+    };
+
+    reader.readAsDataURL(file);
+  }
+}
+
+function addImage() {
+  let getElement = (id) => document.getElementById(id),
+    fileTag = getElement("filetag");
+  
+  fileTag.click();
+}
