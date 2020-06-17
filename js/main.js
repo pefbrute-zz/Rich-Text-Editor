@@ -1263,25 +1263,27 @@ tests = () => {
   addImage();
 };
 
-let fileTag = document.getElementById("filetag"),
-  preview = document.getElementById("preview");
-
+// Make function of it smhw
+//
+let fileTag = document.getElementById("filetag");
 fileTag.addEventListener("change", function () {
   changeImage(this);
 });
 
 function changeImage(input) {
   var reader,
-  files = input.files,
-  file = files[0];
+    files = input.files,
+    file = files[0],
+    image = document.querySelector("img[src='']");
 
   if (files && file) {
     reader = new FileReader();
 
-    reader.onload = function (e) {
-      preview.setAttribute("src", e.target.result);
-      
-      console.log(e, e.target, e.target.result);
+    reader.onload = function (event) {
+      let target = event.target,
+        result = target.result;
+
+      image.setAttribute("src", result);
     };
 
     reader.readAsDataURL(file);
@@ -1290,7 +1292,16 @@ function changeImage(input) {
 
 function addImage() {
   let getElement = (id) => document.getElementById(id),
-    fileTag = getElement("filetag");
-  
+    fileTag = getElement("filetag"),
+    selection = document.getSelection(),
+    range = selection.getRangeAt(0),
+    image = document.createElement("img");
+
+    
+    selection.deleteFromDocument();
+    image.setAttribute("src", "");
+    range.insertNode(image);
+
   fileTag.click();
 }
+//
