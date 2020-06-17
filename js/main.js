@@ -1357,15 +1357,15 @@ function makeList(type) {
     ) {
       function swapSelectionNodes() {
         function getSelectionIndexes() {
-          //Get Selected <ul> tag
-          function getUL() {
-            let UL = firstSelectedElement,
+          //Get Selected <list> tag
+          function getList() {
+            let List = firstSelectedElement,
               getParent = (element) => element.parentElement;
 
-            while (getParent(UL) != mainContainer) {
-              UL = getParent(UL);
+            while (getParent(List) != mainContainer) {
+              List = getParent(List);
             }
-            return UL;
+            return List;
           }
 
           //Get Selected <li> tags (first and last one)
@@ -1386,7 +1386,7 @@ function makeList(type) {
             return [firstLi, lastLi];
           }
 
-          let parentNode = getUL(),
+          let parentNode = getList(),
             childs = parentNode.children,
             childrenAmount = childs.length,
             firstSelectedLi = getFirstLiAndLastLi()[0],
@@ -1441,37 +1441,37 @@ function makeList(type) {
         return [firstLi, lastLi];
       }
 
-      function getUL() {
-        let UL = firstSelectedElement,
+      function getList() {
+        let List = firstSelectedElement,
           workAreaContainer = document.getElementById("work-area"),
           getParent = (element) => element.parentElement;
 
-        while (getParent(UL) != workAreaContainer) {
-          UL = getParent(UL);
+        while (getParent(List) != workAreaContainer) {
+          List = getParent(List);
         }
 
-        return UL;
+        return List;
       }
 
       let firstLi = getFirstLiAndLastLi()[0],
         lastLi = getFirstLiAndLastLi()[1],
-        UL = getUL(),
-        ULIndex = firstParentIndex,
-        children = UL.children,
+        List = getList(),
+        ListIndex = firstParentIndex,
+        children = List.children,
         childrenAmount = children.length;
 
-      //Get indexes of first and last selected <li> elements in <ul> tag
+      //Get indexes of first and last selected <li> elements in <list> tag
       function getFirstLiAndLastLiIndexes(
-        ulChildren,
-        ulChildrenAmount,
+        listChildren,
+        listChildrenAmount,
         firstLi,
         lastLi
       ) {
         let indexOfFirstSelectedLi = -1,
           lastLiIndex = -1;
 
-        for (let i = 0; i < ulChildrenAmount; i++) {
-          let child = ulChildren[i];
+        for (let i = 0; i < listChildrenAmount; i++) {
+          let child = listChildren[i];
 
           if (child == firstLi) {
             indexOfFirstSelectedLi = i;
@@ -1499,7 +1499,7 @@ function makeList(type) {
       let fragment = document.createDocumentFragment();
 
       //If selected only one <li> then remove only the <li> element
-      //and add <p> tag with content of the <li> after selected <ul> tag
+      //and add <p> tag with content of the <li> after selected <list> tag
       if (indexOfLastSelectedLi == indexOfFirstSelectedLi) {
         let p = document.createElement("p"),
           firstSelectedLi = children[indexOfFirstSelectedLi],
@@ -1531,9 +1531,9 @@ function makeList(type) {
       //If selection started from the start of the list, then append <p> tags before the list
       if (indexOfFirstSelectedLi == 0) {
         let mainContainerChildren = mainContainer.children,
-          ul = mainContainerChildren[ULIndex];
+          list = mainContainerChildren[ListIndex];
 
-        mainContainer.insertBefore(fragment, ul);
+        mainContainer.insertBefore(fragment, list);
         //Else if selection ends in the end of list append after this list
       } else if (
         indexOfLastSelectedLi == indexOfLastLi ||
@@ -1541,7 +1541,7 @@ function makeList(type) {
       ) {
         mainContainer.insertBefore(
           fragment,
-          mainContainer.children[ULIndex + 1]
+          mainContainer.children[ListIndex + 1]
         );
       } else {
         let indexOfLastLiInFirstPart = indexOfFirstSelectedLi - 1,
@@ -1549,31 +1549,31 @@ function makeList(type) {
           lastPart = document.createDocumentFragment(),
           mainContainer = document.getElementById("work-area"),
           childrenOfMainContainer = mainContainer.children;
-        (ul = childrenOfMainContainer[ULIndex]), (ulChildren = ul.children);
+        (list = childrenOfMainContainer[ListIndex]), (listChildren = list.children);
 
         while (indexOfLastLiInFirstPart >= 0) {
-          let ulChildren = ul.children,
-            firstChild = ulChildren[0];
+          let listChildren = list.children,
+            firstChild = listChildren[0];
 
           firstPart.appendChild(firstChild);
           indexOfLastLiInFirstPart--;
         }
 
-        let amountOfChildrenOfUL = ulChildren.length;
+        let amountOfChildrenOfList = listChildren.length;
 
-        while (amountOfChildrenOfUL != 0) {
-          let ulChildren = ul.children,
-            firstChildOfUL = ulChildren[0];
+        while (amountOfChildrenOfList != 0) {
+          let listChildren = list.children,
+            firstChildOfList = listChildren[0];
 
-          lastPart.appendChild(firstChildOfUL);
-          amountOfChildrenOfUL--;
+          lastPart.appendChild(firstChildOfList);
+          amountOfChildrenOfList--;
         }
 
-        ul.remove();
+        list.remove();
 
         let firstUl = document.createElement(type),
           lastUl = document.createElement(type),
-          childOfMainContainer = childrenOfMainContainer[ULIndex];
+          childOfMainContainer = childrenOfMainContainer[ListIndex];
 
         firstUl.appendChild(firstPart);
         lastUl.appendChild(lastPart);
@@ -1583,11 +1583,11 @@ function makeList(type) {
         mainContainer.insertBefore(lastUl, childOfMainContainer);
       }
 
-      //If <ul> is empty then delete it.
-      let childrenOfUL = UL.children,
-        amountOfChildren = childrenOfUL.length;
+      //If <list> is empty then delete it.
+      let childrenOfList = List.children,
+        amountOfChildren = childrenOfList.length;
       if (amountOfChildren == 0) {
-        UL.remove();
+        List.remove();
       }
     }
 
@@ -1598,18 +1598,18 @@ function makeList(type) {
       mainContainer
     );
   } else {
-    //If selected not just <ul> tags then turn selected tags into <ul> (if they're not already)
-    function replaceNotUL(firstParentIndex, lastParentIndex, mainChildren) {
+    //If selected not just <list> tags then turn selected tags into <list> (if they're not already)
+    function replaceNotList(firstParentIndex, lastParentIndex, mainChildren) {
       for (let i = firstParentIndex; i < lastParentIndex + 1; i++) {
         let child = mainChildren[i],
           nodeName = child.nodeName;
 
         if (nodeName != type) {
-          replaceElement(child, "ul");
+          replaceElement(child, type);
         }
       }
     }
-    replaceNotUL(firstParentIndex, lastParentIndex, mainChildren);
+    replaceNotList(firstParentIndex, lastParentIndex, mainChildren);
 
     //Remove all tags what don't have any content
     function clearEmptyContainers() {
@@ -1685,15 +1685,15 @@ function makeList(type) {
           li.appendChild(innerFragment);
           fragment.appendChild(li);
 
-          //If the next element is already done (turned into <ul> tag with <li> elements)
+          //If the next element is already done (turned into <list> tag with <li> elements)
           //Then append the element to the previous element
           let nextElement = elementsToTurnIntoLi[i + 1];
           if (nextElement != undefined) {
             if (hasLi(nextElement)) {
-              let ulForMerging = elementsToTurnIntoLi[index],
+              let listForMerging = elementsToTurnIntoLi[index],
                 elementAfterNextElement = elementsToTurnIntoLi[i + 2];
 
-              ulForMerging.appendChild(fragment);
+              listForMerging.appendChild(fragment);
 
               if (elementAfterNextElement != undefined) {
                 index = i + 2;
@@ -1703,24 +1703,24 @@ function makeList(type) {
         }
       }
 
-      let ulForMerging = elementsToTurnIntoLi[index];
-      ulForMerging.appendChild(fragment);
+      let listForMerging = elementsToTurnIntoLi[index];
+      listForMerging.appendChild(fragment);
 
-      //Merge separated <ul> tags
-      let secondUL = elementsToTurnIntoLi[1];
-      while (secondUL != undefined) {
-        let firstUL = elementsToTurnIntoLi[0],
-          secondUL = elementsToTurnIntoLi[1];
+      //Merge separated <list> tags
+      let secondList = elementsToTurnIntoLi[1];
+      while (secondList != undefined) {
+        let firstList = elementsToTurnIntoLi[0],
+          secondList = elementsToTurnIntoLi[1];
 
-        if (secondUL == undefined) {
+        if (secondList == undefined) {
           break;
         }
 
-        let childrenOfSecondUL = secondUL.children,
-          firstChildOfsecondUL = () => childrenOfSecondUL[0];
+        let childrenOfSecondList = secondList.children,
+          firstChildOfsecondList = () => childrenOfSecondList[0];
 
-        while (firstChildOfsecondUL() != undefined)
-          firstUL.appendChild(firstChildOfsecondUL());
+        while (firstChildOfsecondList() != undefined)
+          firstList.appendChild(firstChildOfsecondList());
 
         elementsToTurnIntoLi.splice(1, 1);
         clearEmptyContainers();
