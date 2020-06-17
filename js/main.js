@@ -759,10 +759,10 @@ element.addEventListener("keypress", function (e) {
 });
 
 tests = () => {
-  makeUL1();
+  makeUL();
 };
 
-function makeUL1() {
+function makeUL() {
   console.time();
 
   function getSelectedParents(mainContainer) {
@@ -801,11 +801,11 @@ function makeUL1() {
   }
 
   let mainChildren = mainContainer.children,
-  firstAndLastParentIndexes = getParentsIndexes(
-    mainChildren,
-    parentOfFirstElement,
-    parentOfLastElement
-  ), 
+    firstAndLastParentIndexes = getParentsIndexes(
+      mainChildren,
+      parentOfFirstElement,
+      parentOfLastElement
+    ),
     firstParentIndex = firstAndLastParentIndexes[0],
     lastParentIndex = firstAndLastParentIndexes[1];
 
@@ -823,10 +823,14 @@ function makeUL1() {
 
   //Count how much <ul> tags was selected
   function getULamount(firstParentIndex, lastParentIndex) {
-    let count = 0;
+    let count = 0,
+      index = lastParentIndex + 1;
 
-    for (let i = firstParentIndex; i < lastParentIndex + 1; i++) {
-      if (mainChildren[i].nodeName == "UL") {
+    for (let i = firstParentIndex; i < index; i++) {
+      let mainChild = mainChildren[i],
+        mainChildName = mainChild.nodeName;
+
+      if (mainChildName == "UL") {
         count++;
       }
     }
@@ -838,7 +842,8 @@ function makeUL1() {
   // If we selected only <ul> tags then turn them into <p> tags
   //
   //Think about condition!
-  if (ULsAmount == lastParentIndex + 1 - firstParentIndex) {
+  let index = lastParentIndex + 1;
+  if (ULsAmount == index - firstParentIndex) {
     //
     //
     let selection = document.getSelection(),
@@ -993,7 +998,6 @@ function makeUL1() {
         indexOfLastSelectedLi = firstAndLastLiIndexes[1];
 
       let fragment = document.createDocumentFragment();
-      // liContent = "";
 
       //If selected only one <li> then remove only the <li> element
       //and add <p> tag with content of the <li> after selected <ul> tag
@@ -1044,10 +1048,9 @@ function makeUL1() {
         let indexOfLastLiInFirstPart = indexOfFirstSelectedLi - 1,
           firstPart = document.createDocumentFragment(),
           lastPart = document.createDocumentFragment(),
-          mainContainer = document.getElementById('work-area'),
+          mainContainer = document.getElementById("work-area"),
           childrenOfMainContainer = mainContainer.children;
-          ul = childrenOfMainContainer[ULIndex],
-          ulChildren = ul.children;
+        (ul = childrenOfMainContainer[ULIndex]), (ulChildren = ul.children);
 
         while (indexOfLastLiInFirstPart >= 0) {
           let ulChildren = ul.children,
@@ -1153,7 +1156,7 @@ function makeUL1() {
 
           for (let i = 0; i < childAmount; i++) {
             let child = children[i],
-            childName = child.nodeName;
+              childName = child.nodeName;
 
             if (childName == "LI") {
               return true;
