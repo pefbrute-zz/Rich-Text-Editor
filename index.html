@@ -635,19 +635,23 @@
           <i class="fa fa-link fa-fw"></i>
         </a>
         <span class="url">
-          <input id="url" placeholder="link" class="form-control" />
-        </span>drop
+          <input id="url" placeholder="link" class="form-control" /> </span
+        >
 
         <a class="icon" href="javascript:void(0)" onclick="addImage()">
           <i class="fas fa-image"></i>
         </a>
 
-        <a class="icon" href="javascript:void(0)" onclick="addDropdown('dropdown-video')">
+        <a
+          class="icon"
+          href="javascript:void(0)"
+          onclick="addDropdown('dropdown-video')"
+        >
           <i class="fas fa-film"></i>
         </a>
         <span class="hidden" id="dropdown-video" tabindex="-1">
           <label for="url-input">Enter video: </label>
-          <input id="url-input" type="text" placeholder="Embed URL">
+          <input id="url-input" type="text" placeholder="Embed URL" />
           <a href="javascript:void(0)" onclick="addVideoByURL()">Save</a>
         </span>
 
@@ -662,12 +666,9 @@
       </div>
 
       <div class="work-area" contenteditable="true" id="work-area">
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore ab
-          aut officiis dolor quas quam assumenda eius aspernatur, nemo commodi.
-        </p>
-        <p>The Twelnth One and Some text of it</p>
-        <p>The Thirteenth One and Some text of it</p>
+        <p>Lorem <strong>ipsum</strong> dolor sit amet.</p>
+        <p>The Twelnth One and <em>Some</em> text of it</p>
+        <p>The Thirteenth <strong>One</strong> and Some text of it</p>
       </div>
     </div>
 

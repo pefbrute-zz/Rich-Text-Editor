@@ -1263,9 +1263,6 @@ function makeList(type) {
   // console.timeEnd();
 }
 
-tests = () => {
-};
-
 // Make function of it smhw
 //
 let fileTag = document.getElementById("filetag");
@@ -1320,6 +1317,36 @@ function addVideoByURL() {
   iframe.setAttribute("frameborder", "0");
   iframe.setAttribute("allowfullscreen", "true");
   range.insertNode(iframe);
-  
-  input.value = ""
+
+  input.value = "";
+}
+
+tests = () => {
+  clearFormatting();
+};
+
+function clearFormatting() {
+  let selection = document.getSelection(),
+    anchorNode = selection.anchorNode,
+    firstTag = anchorNode.parentElement,
+    firstParentTag = anchorNode.parentElement,
+    firstParentTagName = firstParentTag.nodeName,
+    // lastParentTag = anchorNode.parentElement,
+    // lastParentTagName = lastParentTag.nodeName,
+    range = selection.getRangeAt(0),
+    fragment = range.cloneContents(),
+    strippedContent = fragment.textContent;
+
+  console.log(selection, fragment);
+
+  if (firstParentTagName != "P") {
+    while (firstParentTag.parentElement.nodeName != "P") {
+      firstParentTag = firstParentTag.parentElement;
+      firstParentTagName = firstParentTag.nodeName;
+      firstTag = firstParentTag;
+    }
+  }
+  selection.deleteFromDocument();
+
+  firstTag.after(strippedContent);
 }
