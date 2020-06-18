@@ -1264,7 +1264,6 @@ function makeList(type) {
 }
 
 tests = () => {
-  addVideoByURL();
 };
 
 // Make function of it smhw
@@ -1321,4 +1320,6 @@ function addVideoByURL() {
   iframe.setAttribute("frameborder", "0");
   iframe.setAttribute("allowfullscreen", "true");
   range.insertNode(iframe);
+  
+  input.value = ""
 }
