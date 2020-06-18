@@ -1326,11 +1326,14 @@ tests = () => {
 };
 
 function clearFormatting() {
+  console.time();
+
   let selection = document.getSelection(),
     anchorNode = selection.anchorNode,
     firstTag = anchorNode.parentElement,
     firstParentTag = anchorNode.parentElement,
     firstParentTagName = firstParentTag.nodeName,
+    focusNode = selection.focusNode,
     // lastParentTag = anchorNode.parentElement,
     // lastParentTagName = lastParentTag.nodeName,
     range = selection.getRangeAt(0),
@@ -1347,6 +1350,30 @@ function clearFormatting() {
     }
   }
   selection.deleteFromDocument();
+  
+  let textNode = document.createTextNode(strippedContent);
+  range.insertNode(textNode);
 
-  firstTag.after(strippedContent);
+  let firstTagName = firstTag.nodeName;
+  console.log(firstTag);
+  console.log(firstTag.childNodes);
+
+  if (anchorNode == focusNode && firstTagName != "P"){
+    let firstTagChilds = firstTag.childNodes;
+
+
+    let firstElement = document.createElement(firstTagName),
+    secondElement = document.createElement(firstTagName);
+
+    firstElement.innerHTML = firstTagChilds[0].textContent;
+    secondElement.innerHTML = firstTagChilds[2].textContent;
+    debugger
+    
+    firstTag.remove();    
+    range.insertNode(secondElement);
+    range.insertNode(textNode);
+    range.insertNode(firstElement);
+  }
+
+  console.timeEnd();
 }
