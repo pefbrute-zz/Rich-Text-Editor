@@ -165,12 +165,16 @@ function addTag(tagName, url) {
     let anchors = document.querySelectorAll("[class=anchor]"),
       anchorsLength = anchors.length,
       url = document.getElementById("url");
+    //Make refactoring!
+    //
     for (let i = 0; i < anchorsLength; i++) {
       anchors[i].href = url.value;
       anchors[i].className = anchors[i].className + time;
     }
     time++;
     url.value = "";
+    //
+    //
   }
 }
 
@@ -1260,7 +1264,7 @@ function makeList(type) {
 }
 
 tests = () => {
-  addImage();
+  addVideoByURL();
 };
 
 // Make function of it smhw
@@ -1297,11 +1301,24 @@ function addImage() {
     range = selection.getRangeAt(0),
     image = document.createElement("img");
 
-    
-    selection.deleteFromDocument();
-    image.setAttribute("src", "");
-    range.insertNode(image);
+  selection.deleteFromDocument();
+  image.setAttribute("src", "");
+  range.insertNode(image);
 
   fileTag.click();
 }
 //
+
+function addVideoByURL() {
+  let selection = document.getSelection(),
+    range = selection.getRangeAt(0),
+    iframe = document.createElement("iframe"),
+    input = document.getElementById("url-input"),
+    URL = input.value;
+
+  selection.deleteFromDocument();
+  iframe.setAttribute("src", URL);
+  iframe.setAttribute("frameborder", "0");
+  iframe.setAttribute("allowfullscreen", "true");
+  range.insertNode(iframe);
+}

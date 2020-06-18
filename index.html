@@ -642,14 +642,23 @@
           <i class="fas fa-image"></i>
         </a>
 
+        <a class="icon" href="javascript:void(0)" onclick="addDropdown('dropdown-video')">
+          <i class="fas fa-film"></i>
+        </a>
+        <span class="hidden" id="dropdown dropdown-video" tabindex="-1">
+          <label for="url-input">Enter video: </label>
+          <input id="url-input" type="text" placeholder="Embed URL">
+          <a href="javascript:void(0)" onclick="addVideoByURL()">Save</a>
+        </span>
+
         <a class="icon" href="javascript:void(0)" onclick="tests()">
           <i class="fas fa-vial"></i>
         </a>
         <input class="hidden" type="file" id="filetag" />
-        
+
         <a class="icon" href="js/main.js">
           Source Code Link
-        </a>        
+        </a>
       </div>
 
       <div class="work-area" contenteditable="true" id="work-area">
