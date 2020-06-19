@@ -1341,14 +1341,10 @@ function clearFormatting() {
     strippedContent = fragment.textContent,
     mainContainer = document.getElementById("work-area");
 
-  console.log(firstParentTag, firstParentTagName);
-  console.log(findChild(firstTag, mainContainer));
-  console.log(findSecondChild(firstTag, mainContainer));
-  debugger;
-
-  if (findChild(firstParentTag, mainContainer).nodeName == "P") {
-    firstParentTag = findChild(firstParentTag);
+  if (findChild(anchorNode, mainContainer).nodeName == "P") {
+    firstParentTag = findChild(anchorNode, mainContainer);
     firstParentTagName = "P";
+    console.log(fragment);
     selection.deleteFromDocument();
 
     let textNode = document.createTextNode(strippedContent);
@@ -1375,10 +1371,18 @@ function clearFormatting() {
       range.insertNode(textNode);
       range.insertNode(firstElement);
     }
-  } else if (findChild(firstParentTag, mainContainer).nodeName == "UL") {
-    
+  } else if (
+    findChild(anchorNode, mainContainer).nodeName == "UL" ||
+    findChild(anchorNode, mainContainer).nodeName == "OL"
+  ) {
+    firstParentTag = findChild(anchorNode, mainContainer);
+    firstParentTagName = firstParentTag.nodeName;
+    // makeList(firstParentTagName);
+
+    console.log(fragment, strippedContent);
+    // console.log(findSecondChild(anchorNode, mainContainer));
+    // selection.deleteFromDocument();
   }
-  
 
   console.timeEnd();
 }
