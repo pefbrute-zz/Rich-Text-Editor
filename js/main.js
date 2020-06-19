@@ -311,7 +311,7 @@ function findChild(element, parent) {
   }
 }
 
-function findSecondChlid(element, parent) {
+function findSecondChild(element, parent) {
   if (element == undefined) {
     throw new Error("You didn't add child element");
   } else if (parent == undefined) {
@@ -1338,38 +1338,51 @@ function clearFormatting() {
     // lastParentTagName = lastParentTag.nodeName,
     range = selection.getRangeAt(0),
     fragment = range.cloneContents(),
-    strippedContent = fragment.textContent;
+    strippedContent = fragment.textContent,
+    mainContainer = document.getElementById('work-area');
 
-  console.log(selection, fragment);
+  console.log(firstParentTag, firstParentTagName);
+  console.log(findChild(firstTag, mainContainer));
+  console.log(findSecondChild(firstTag, mainContainer));
+  debugger;
 
   if (firstParentTagName != "P") {
-    while (firstParentTag.parentElement.nodeName != "P") {
-      firstParentTag = firstParentTag.parentElement;
-      firstParentTagName = firstParentTag.nodeName;
-      firstTag = firstParentTag;
+    if (firstParentTagName == "LI") {
+      while (firstParentTag.parentElement.nodeName != "UL" && firstParentTag.parentElement.nodeName != "OL") {
+        firstParentTag = firstParentTag.parentElement;
+        firstParentTagName = firstParentTag.nodeName;
+        firstTag = firstParentTag;
+      }
+    } else {
+      while (firstParentTag.parentElement.nodeName != "P") {
+        firstParentTag = firstParentTag.parentElement;
+        firstParentTagName = firstParentTag.nodeName;
+        firstTag = firstParentTag;
+      }
     }
   }
   selection.deleteFromDocument();
-  
+
   let textNode = document.createTextNode(strippedContent);
   range.insertNode(textNode);
 
   let firstTagName = firstTag.nodeName;
+
   console.log(firstTag);
   console.log(firstTag.childNodes);
+  console.log(textNode);
 
-  if (anchorNode == focusNode && firstTagName != "P"){
+  if (anchorNode == focusNode && firstTagName != "P") {
     let firstTagChilds = firstTag.childNodes;
 
-
     let firstElement = document.createElement(firstTagName),
-    secondElement = document.createElement(firstTagName);
+      secondElement = document.createElement(firstTagName);
 
     firstElement.innerHTML = firstTagChilds[0].textContent;
     secondElement.innerHTML = firstTagChilds[2].textContent;
-    debugger
-    
-    firstTag.remove();    
+    debugger;
+
+    firstTag.remove();
     range.insertNode(secondElement);
     range.insertNode(textNode);
     range.insertNode(firstElement);
