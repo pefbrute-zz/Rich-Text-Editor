@@ -1339,54 +1339,46 @@ function clearFormatting() {
     range = selection.getRangeAt(0),
     fragment = range.cloneContents(),
     strippedContent = fragment.textContent,
-    mainContainer = document.getElementById('work-area');
+    mainContainer = document.getElementById("work-area");
 
   console.log(firstParentTag, firstParentTagName);
   console.log(findChild(firstTag, mainContainer));
   console.log(findSecondChild(firstTag, mainContainer));
   debugger;
 
-  if (firstParentTagName != "P") {
-    if (firstParentTagName == "LI") {
-      while (firstParentTag.parentElement.nodeName != "UL" && firstParentTag.parentElement.nodeName != "OL") {
-        firstParentTag = firstParentTag.parentElement;
-        firstParentTagName = firstParentTag.nodeName;
-        firstTag = firstParentTag;
-      }
-    } else {
-      while (firstParentTag.parentElement.nodeName != "P") {
-        firstParentTag = firstParentTag.parentElement;
-        firstParentTagName = firstParentTag.nodeName;
-        firstTag = firstParentTag;
-      }
-    }
-  }
-  selection.deleteFromDocument();
+  if (findChild(firstParentTag, mainContainer).nodeName == "P") {
+    firstParentTag = findChild(firstParentTag);
+    firstParentTagName = "P";
+    selection.deleteFromDocument();
 
-  let textNode = document.createTextNode(strippedContent);
-  range.insertNode(textNode);
-
-  let firstTagName = firstTag.nodeName;
-
-  console.log(firstTag);
-  console.log(firstTag.childNodes);
-  console.log(textNode);
-
-  if (anchorNode == focusNode && firstTagName != "P") {
-    let firstTagChilds = firstTag.childNodes;
-
-    let firstElement = document.createElement(firstTagName),
-      secondElement = document.createElement(firstTagName);
-
-    firstElement.innerHTML = firstTagChilds[0].textContent;
-    secondElement.innerHTML = firstTagChilds[2].textContent;
-    debugger;
-
-    firstTag.remove();
-    range.insertNode(secondElement);
+    let textNode = document.createTextNode(strippedContent);
     range.insertNode(textNode);
-    range.insertNode(firstElement);
+
+    let firstTagName = firstTag.nodeName;
+
+    console.log(firstTag);
+    console.log(firstTag.childNodes);
+    console.log(textNode);
+
+    if (anchorNode == focusNode && firstTagName != "P") {
+      let firstTagChilds = firstTag.childNodes;
+
+      let firstElement = document.createElement(firstTagName),
+        secondElement = document.createElement(firstTagName);
+
+      firstElement.innerHTML = firstTagChilds[0].textContent;
+      secondElement.innerHTML = firstTagChilds[2].textContent;
+      debugger;
+
+      firstTag.remove();
+      range.insertNode(secondElement);
+      range.insertNode(textNode);
+      range.insertNode(firstElement);
+    }
+  } else if (findChild(firstParentTag, mainContainer).nodeName == "UL") {
+    
   }
+  
 
   console.timeEnd();
 }
