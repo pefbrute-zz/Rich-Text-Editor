@@ -1409,6 +1409,8 @@ function getChildIndex(child, parent) {
   return indexOfChild;
 }
 
+let someArray = [];
+
 function clearFormatting1() {
   console.time();
 
@@ -1424,6 +1426,7 @@ function clearFormatting1() {
     fragment = range.cloneContents(),
     fragmentChildren = fragment.children,
     fragmentChildrenAmount = fragmentChildren.length,
+    fragmentWithFirstAndLastSelectedChildren = document.createDocumentFragment(),
     strippedContent = fragment.textContent,
     mainContainer = document.getElementById("work-area"),
     nodeWithStrippedContent,
@@ -1434,20 +1437,48 @@ function clearFormatting1() {
     firstSelectedChild,
     mainContainer
   );
-
+  // mainContainer.
   console.log(indexOfFirstSelectedChild);
-  // lastSelectedChild = getChild(focusNode, mainContainer);
+  lastSelectedChild = getChild(focusNode, mainContainer);
 
-  console.log(firstSelectedChild);
-  console.log(fragment);
   selection.deleteFromDocument();
+  console.log(firstSelectedChild, lastSelectedChild);
+  let clonedFirstSelectedChild = firstSelectedChild.cloneNode(true),
+    clonedLastSelectedChild = lastSelectedChild.cloneNode(true);
 
-  for (let i = 0; i < fragmentChildrenAmount; i++){
-    
-  }
-  firstChildStrippedContent = fragmentChildren[0].textContent;
-  nodeWithStrippedContent = createTextNode(firstChildStrippedContent);
-  firstSelectedChild.appendChild(nodeWithStrippedContent);
+  fragmentWithFirstAndLastSelectedChildren.append(clonedFirstSelectedChild);
+  fragmentWithFirstAndLastSelectedChildren.append(clonedLastSelectedChild);
+  firstSelectedChild.remove();
+  lastSelectedChild.remove();
+  debugger;
+  // firstSelectedChild.remove();
+  // lastSelectedChild.remove();
+  console.log("Some fragment:", fragmentWithFirstAndLastSelectedChildren);
+  console.log(fragment);
+
+  // for (let i = 0; i < fragmentChildrenAmount; i++) {
+  //   debugger;
+  //   let fragmentChild = fragmentChildren[i];
+  //   firstChildStrippedContent = fragmentChild.textContent;
+  //   nodeWithStrippedContent = createTextNode(firstChildStrippedContent);
+  //   if (firstSelectedChild == undefined) {
+  //     let newNode = document.createElement(fragmentChild.nodeName);
+  //     newNode.appendChild(nodeWithStrippedContent);
+  //   } else {
+  //     if (i + 1 == fragmentChildrenAmount) {
+  //       firstSelectedChild.prepend(nodeWithStrippedContent);
+  //       firstSelectedChild = firstSelectedChild.nextElementSibling;
+  //     } else {
+  //       firstSelectedChild.appendChild(nodeWithStrippedContent);
+  //       firstSelectedChild = firstSelectedChild.nextElementSibling;
+  //     }
+  //   }
+  // }
+
+  // firstChildStrippedContent = fragmentChildren[0].textContent;
+  // nodeWithStrippedContent = createTextNode(firstChildStrippedContent);
+  // firstSelectedChild.appendChild(nodeWithStrippedContent);
+  console.log(fragmentChildren);
 
   console.timeEnd();
 }
