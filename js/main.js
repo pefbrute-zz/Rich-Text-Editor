@@ -295,7 +295,7 @@ function addSize(sizeName) {
 }
 
 //It finds child of (parent) element from some (element)
-function findChild(element, parent) {
+function getChild(element, parent) {
   if (element == undefined) {
     throw new Error("You didn't add child element");
   } else if (parent == undefined) {
@@ -311,7 +311,7 @@ function findChild(element, parent) {
   }
 }
 
-function findSecondChild(element, parent) {
+function getSecondChild(element, parent) {
   if (element == undefined) {
     throw new Error("You didn't add child element");
   } else if (parent == undefined) {
@@ -365,8 +365,8 @@ function replaceContainerTag(tag) {
   var tag = tag.toUpperCase();
 
   let mainContainer = document.getElementById("work-area"),
-    firstSelectedElement = findFirstSelectedChilds(mainContainer)[0],
-    lastSelectedElement = findFirstSelectedChilds(mainContainer)[1];
+    firstSelectedElement = getFirstSelectedChilds(mainContainer)[0],
+    lastSelectedElement = getFirstSelectedChilds(mainContainer)[1];
 
   if (firstSelectedElement != undefined && lastSelectedElement != undefined) {
     let p = [],
@@ -431,7 +431,7 @@ function highlightPre() {
   console.timeEnd();
 }
 
-function findFirstSelectedChilds(bigParent) {
+function getFirstSelectedChilds(bigParent) {
   let selection = document.getSelection(),
     range = selection.getRangeAt(0),
     wrongContainer = document.getElementById("sample-toolbar"),
@@ -456,8 +456,8 @@ function findFirstSelectedChilds(bigParent) {
         lastSelectedElement = firstNode;
       }
 
-      firstElement = findChild(firstSelectedElement, bigParent);
-      secondElement = findChild(lastSelectedElement, bigParent);
+      firstElement = getChild(firstSelectedElement, bigParent);
+      secondElement = getChild(lastSelectedElement, bigParent);
 
       return [firstElement, secondElement];
     } else {
@@ -471,8 +471,8 @@ function findFirstSelectedChilds(bigParent) {
 //It toggles class with (className) to selected first childs of <div class="work-area">
 function addContainerClass(className) {
   let mainContainer = document.getElementById("work-area"),
-    firstSelectedElement = findFirstSelectedChilds(mainContainer)[0],
-    lastSelectedElement = findFirstSelectedChilds(mainContainer)[1];
+    firstSelectedElement = getFirstSelectedChilds(mainContainer)[0],
+    lastSelectedElement = getFirstSelectedChilds(mainContainer)[1];
 
   if (firstSelectedElement != undefined && lastSelectedElement != undefined) {
     if (className.substring(0, 6) == "indent") {
@@ -770,8 +770,8 @@ function makeList(type) {
     let selection = document.getSelection(),
       firstSelectedElement = selection.anchorNode,
       lastSelectedElement = selection.focusNode,
-      parentOfFirstElement = findChild(firstSelectedElement, mainContainer),
-      parentOfLastElement = findChild(lastSelectedElement, mainContainer);
+      parentOfFirstElement = getChild(firstSelectedElement, mainContainer),
+      parentOfLastElement = getChild(lastSelectedElement, mainContainer);
     return [parentOfFirstElement, parentOfLastElement];
   }
 
@@ -1322,7 +1322,7 @@ function addVideoByURL() {
 }
 
 tests = () => {
-  clearFormatting();
+  clearFormatting1();
 };
 
 function clearFormatting() {
@@ -1341,8 +1341,8 @@ function clearFormatting() {
     strippedContent = fragment.textContent,
     mainContainer = document.getElementById("work-area");
 
-  if (findChild(anchorNode, mainContainer).nodeName == "P") {
-    firstParentTag = findChild(anchorNode, mainContainer);
+  if (getChild(anchorNode, mainContainer).nodeName == "P") {
+    firstParentTag = getChild(anchorNode, mainContainer);
     firstParentTagName = "P";
     console.log(fragment);
     selection.deleteFromDocument();
@@ -1355,6 +1355,9 @@ function clearFormatting() {
     console.log(firstTag);
     console.log(firstTag.childNodes);
     console.log(textNode);
+
+    //If selection started and finished in some tag (not main <p>)
+    //then devide this tag in two parts and insert cleaned text between them
 
     if (anchorNode == focusNode && firstTagName != "P") {
       let firstTagChilds = firstTag.childNodes;
@@ -1371,18 +1374,80 @@ function clearFormatting() {
       range.insertNode(textNode);
       range.insertNode(firstElement);
     }
+    //
+    //
   } else if (
-    findChild(anchorNode, mainContainer).nodeName == "UL" ||
-    findChild(anchorNode, mainContainer).nodeName == "OL"
+    getChild(anchorNode, mainContainer).nodeName == "UL" ||
+    getChild(anchorNode, mainContainer).nodeName == "OL"
   ) {
-    firstParentTag = findChild(anchorNode, mainContainer);
+    firstParentTag = getChild(anchorNode, mainContainer);
     firstParentTagName = firstParentTag.nodeName;
     // makeList(firstParentTagName);
 
     console.log(fragment, strippedContent);
-    // console.log(findSecondChild(anchorNode, mainContainer));
+    // console.log(getSecondChild(anchorNode, mainContainer));
     // selection.deleteFromDocument();
   }
+
+  console.timeEnd();
+}
+
+function getChildIndex(child, parent) {
+  let children = parent.children,
+    childrenAmount = children.length,
+    indexOfChild = -1;
+
+  for (let i = 0; i < childrenAmount; i++) {
+    let childOfParent = children[i];
+
+    if (child == childOfParent) {
+      indexOfChild = i;
+      break;
+    }
+  }
+
+  return indexOfChild;
+}
+
+function clearFormatting1() {
+  console.time();
+
+  let selection = document.getSelection(),
+    anchorNode = selection.anchorNode,
+    firstTag = anchorNode.parentElement,
+    firstParentTag = anchorNode.parentElement,
+    firstParentTagName = firstParentTag.nodeName,
+    focusNode = selection.focusNode,
+    // lastParentTag = anchorNode.parentElement,
+    // lastParentTagName = lastParentTag.nodeName,
+    range = selection.getRangeAt(0),
+    fragment = range.cloneContents(),
+    fragmentChildren = fragment.children,
+    fragmentChildrenAmount = fragmentChildren.length,
+    strippedContent = fragment.textContent,
+    mainContainer = document.getElementById("work-area"),
+    nodeWithStrippedContent,
+    createTextNode = (text) => document.createTextNode(text);
+
+  let firstSelectedChild = getChild(anchorNode, mainContainer);
+  let indexOfFirstSelectedChild = getChildIndex(
+    firstSelectedChild,
+    mainContainer
+  );
+
+  console.log(indexOfFirstSelectedChild);
+  // lastSelectedChild = getChild(focusNode, mainContainer);
+
+  console.log(firstSelectedChild);
+  console.log(fragment);
+  selection.deleteFromDocument();
+
+  for (let i = 0; i < fragmentChildrenAmount; i++){
+    
+  }
+  firstChildStrippedContent = fragmentChildren[0].textContent;
+  nodeWithStrippedContent = createTextNode(firstChildStrippedContent);
+  firstSelectedChild.appendChild(nodeWithStrippedContent);
 
   console.timeEnd();
 }
