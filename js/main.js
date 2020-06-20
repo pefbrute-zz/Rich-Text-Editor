@@ -762,6 +762,23 @@ element.addEventListener("keypress", function (e) {
   }
 });
 
+function clearEmptyContainers() {
+  let mainContainer = document.getElementById("work-area"),
+    mainChildren = mainContainer.children,
+    childrenAmount = mainChildren.length;
+
+  for (let i = 0; i < childrenAmount; i++) {
+    let child = mainChildren[i],
+      textContent = child.textContent;
+
+    textContent = clearExtraSpaces(textContent);
+    if (textContent == "") {
+      mainContainer.removeChild(child);
+      childrenAmount--;
+    }
+  }
+}
+
 function makeList(type) {
   // console.time();
   type = type.toUpperCase();
@@ -1413,6 +1430,7 @@ let someArray = [];
 
 function clearFormatting1() {
   console.time();
+  clearEmptyContainers();
 
   let selection = document.getSelection(),
     anchorNode = selection.anchorNode,
@@ -1430,7 +1448,10 @@ function clearFormatting1() {
     strippedContent = fragment.textContent,
     mainContainer = document.getElementById("work-area"),
     nodeWithStrippedContent,
-    createTextNode = (text) => document.createTextNode(text);
+    resultFragment = document.createDocumentFragment(),
+    fragmentBeforeDeletion = document.createDocumentFragment(),
+    createTextNode = (text) => document.createTextNode(text),
+    elementsBetweenFirstAndLastSelectedChilds = [];
 
   let firstSelectedChild = getChild(anchorNode, mainContainer);
   let indexOfFirstSelectedChild = getChildIndex(
@@ -1441,20 +1462,32 @@ function clearFormatting1() {
   console.log(indexOfFirstSelectedChild);
   lastSelectedChild = getChild(focusNode, mainContainer);
 
-  selection.deleteFromDocument();
-  console.log(firstSelectedChild, lastSelectedChild);
   let clonedFirstSelectedChild = firstSelectedChild.cloneNode(true),
     clonedLastSelectedChild = lastSelectedChild.cloneNode(true);
 
-  fragmentWithFirstAndLastSelectedChildren.append(clonedFirstSelectedChild);
-  fragmentWithFirstAndLastSelectedChildren.append(clonedLastSelectedChild);
-  firstSelectedChild.remove();
-  lastSelectedChild.remove();
-  debugger;
+  fragmentBeforeDeletion.append(clonedFirstSelectedChild);
+  fragmentBeforeDeletion.append(clonedLastSelectedChild);
+
+  console.log(firstSelectedChild, lastSelectedChild);
+  // clonedFirstSelectedChild = firstSelectedChild.cloneNode(true),
+  //   clonedLastSelectedChild = lastSelectedChild.cloneNode(true);
+
+  // fragmentWithFirstAndLastSelectedChildren.append(clonedFirstSelectedChild);
+  // fragmentWithFirstAndLastSelectedChildren.append(clonedLastSelectedChild);
+
   // firstSelectedChild.remove();
   // lastSelectedChild.remove();
-  console.log("Some fragment:", fragmentWithFirstAndLastSelectedChildren);
-  console.log(fragment);
+
+  console.log("Fragment before deletion: ", fragmentBeforeDeletion);
+  console.log(
+    "Fragment to what add cleaned text:",
+    fragmentWithFirstAndLastSelectedChildren
+  );
+  console.log("Fragment what to clean:", fragment);
+  console.log("Fragment what to add to editor", resultFragment);
+
+  // let firstFragmentChild = fragmentWithFirstAndLastSelectedChildren.children[0],
+  //   lastFragmentChild = fragmentWithFirstAndLastSelectedChildren.children[1];
 
   // for (let i = 0; i < fragmentChildrenAmount; i++) {
   //   debugger;
@@ -1474,6 +1507,61 @@ function clearFormatting1() {
   //     }
   //   }
   // }
+  function clearElement(element) {
+    let strippedContent = element.textContent;
+    element.innerHTML = strippedContent;
+    return element;
+  }
+
+  if (fragmentChildrenAmount > 2) {
+    let i = 0,
+      nextElement = firstSelectedChild.nextElementSibling,
+      someFragment = document.createDocumentFragment();
+
+    while (nextElement != lastSelectedChild) {
+      debugger;
+      elementsBetweenFirstAndLastSelectedChilds[i] = nextElement;
+      someFragment.appendChild(clearElement(nextElement));
+      nextElement = nextElement.nextElementSibling;
+      if (nextElement == null) break;
+      i++;
+    }
+
+    console.log(elementsBetweenFirstAndLastSelectedChilds);
+    console.log(someFragment);
+    debugger;
+
+    selection.deleteFromDocument();
+    let firstFragmentChild = fragmentChildren[0],
+    lastFragmentChild = fragmentChildren[fragmentChildrenAmount - 1];
+    console.log(firstFragmentChild, lastFragmentChild);
+
+    firstSelectedChild.append(firstFragmentChild.textContent);
+    lastSelectedChild.prepend(lastFragmentChild.textContent);
+    firstSelectedChild.after(someFragment);
+    // firstSelectedChild.remove();
+    // lastSelectedChild.remove();
+  } else {
+    for (let i = 0; i < fragmentChildrenAmount; i++) {
+      debugger;
+      selection.deleteFromDocument();
+      let fragmentChild = fragmentChildren[i];
+      firstChildStrippedContent = fragmentChild.textContent;
+      nodeWithStrippedContent = createTextNode(firstChildStrippedContent);
+      if (firstSelectedChild == undefined) {
+        let newNode = document.createElement(fragmentChild.nodeName);
+        newNode.appendChild(nodeWithStrippedContent);
+      } else {
+        if (i + 1 == fragmentChildrenAmount) {
+          firstSelectedChild.prepend(nodeWithStrippedContent);
+          firstSelectedChild = firstSelectedChild.nextElementSibling;
+        } else {
+          firstSelectedChild.appendChild(nodeWithStrippedContent);
+          firstSelectedChild = firstSelectedChild.nextElementSibling;
+        }
+      }
+    }
+  }
 
   // firstChildStrippedContent = fragmentChildren[0].textContent;
   // nodeWithStrippedContent = createTextNode(firstChildStrippedContent);
