@@ -161,6 +161,7 @@ let time = 0;
 function addTag(tagName, url) {
   tagName = capitalizeFirstLetter(tagName);
   TagAppliers[tagName].toggleSelection();
+
   if (url) {
     let anchors = document.querySelectorAll("[class=anchor]"),
       anchorsLength = anchors.length,
@@ -1453,14 +1454,16 @@ function clearFormatting1() {
     createTextNode = (text) => document.createTextNode(text),
     elementsBetweenFirstAndLastSelectedChilds = [];
 
-  let firstSelectedChild = getChild(anchorNode, mainContainer);
-  let indexOfFirstSelectedChild = getChildIndex(
-    firstSelectedChild,
-    mainContainer
-  );
+  let firstSelectedChild = getChild(anchorNode, mainContainer),
+    lastSelectedChild = getChild(focusNode, mainContainer),
+    indexOfFirstSelectedChild = getChildIndex(
+      firstSelectedChild,
+      mainContainer
+    ),
+    indexOfLastSelectedChild = getChildIndex(lastSelectedChild, mainContainer),
+    distance = indexOfLastSelectedChild - indexOfFirstSelectedChild + 1;
   // mainContainer.
-  console.log(indexOfFirstSelectedChild);
-  lastSelectedChild = getChild(focusNode, mainContainer);
+  console.log(indexOfLastSelectedChild - indexOfFirstSelectedChild);
 
   let clonedFirstSelectedChild = firstSelectedChild.cloneNode(true),
     clonedLastSelectedChild = lastSelectedChild.cloneNode(true);
@@ -1513,27 +1516,42 @@ function clearFormatting1() {
     return element;
   }
 
-  if (fragmentChildrenAmount > 2) {
-    let i = 0,
+  if (distance > 2) {
+    let mainContainer = document.getElementById("work-area"),
+      mainContainerChilds = mainContainer.children,
+      mainChildsAmount = mainContainerChilds.length,
       nextElement = firstSelectedChild.nextElementSibling,
-      someFragment = document.createDocumentFragment();
+      someFragment = document.createDocumentFragment(),
+      nextNextElement = firstSelectedChild.nextElementSibling,
+      i = 0;
 
-    while (nextElement != lastSelectedChild) {
-      debugger;
-      elementsBetweenFirstAndLastSelectedChilds[i] = nextElement;
-      someFragment.appendChild(clearElement(nextElement));
-      nextElement = nextElement.nextElementSibling;
-      if (nextElement == null) break;
+    ///
+    ///
+    while (
+      mainContainerChilds[indexOfFirstSelectedChild + 1] != lastSelectedChild
+    ) {
+      let child = mainContainerChilds[indexOfFirstSelectedChild + 1];
+
+      elementsBetweenFirstAndLastSelectedChilds[i] = child;
+
+      someFragment.appendChild(clearElement(child));
       i++;
+      // nextElementNextElement =
+      //   nextElement.nextElementSibling.nextElementSibling;
+
+      // nextElement = nextElement.nextElementSibling;
+      // if (nextElement == null) break;
+      // g++;
     }
+    ///
+    ///
 
     console.log(elementsBetweenFirstAndLastSelectedChilds);
     console.log(someFragment);
-    debugger;
 
     selection.deleteFromDocument();
     let firstFragmentChild = fragmentChildren[0],
-    lastFragmentChild = fragmentChildren[fragmentChildrenAmount - 1];
+      lastFragmentChild = fragmentChildren[fragmentChildrenAmount - 1];
     console.log(firstFragmentChild, lastFragmentChild);
 
     firstSelectedChild.append(firstFragmentChild.textContent);
@@ -1541,9 +1559,8 @@ function clearFormatting1() {
     firstSelectedChild.after(someFragment);
     // firstSelectedChild.remove();
     // lastSelectedChild.remove();
-  } else {
+  } else if (distance == 2) {
     for (let i = 0; i < fragmentChildrenAmount; i++) {
-      debugger;
       selection.deleteFromDocument();
       let fragmentChild = fragmentChildren[i];
       firstChildStrippedContent = fragmentChild.textContent;
@@ -1559,6 +1576,50 @@ function clearFormatting1() {
           firstSelectedChild.appendChild(nodeWithStrippedContent);
           firstSelectedChild = firstSelectedChild.nextElementSibling;
         }
+      }
+    }
+  } else if (distance == 1) {
+    console.log(selection);
+    if (anchorNode.parentElement.nodeName == "P") {
+    } else {
+      let secondFirstParent = getSecondChild(anchorNode, mainContainer),
+        secondLastParent = getSecondChild(focusNode, mainContainer);
+
+      if (secondFirstParent == secondLastParent) {
+        let endOfFirstPart = selection.anchorOffset,
+          startOfSecondPart = selection.anchorOffset,
+          parent = getSecondChild(anchorNode, mainContainer),
+          parentName = parent.nodeName,
+          tags = [],
+          tag = anchorNode,
+          tagParent = tag.parentElement,
+          tagsAmount = 1,
+          i = 0;
+        fragmentChildren;
+
+        while (tagParent != firstSelectedChild) {
+          tags[i] = tagParent;
+          i++;
+          tagParent = tagParent.parentElement;
+        }
+
+        console.log(tags);
+
+        for (let g = 0; g < i; g++) {
+          addTag(tags[g].nodeName.toLowerCase());
+        }
+        range = selection.getRangeAt(0);
+        let newFragment = document.createTextNode(
+          range.cloneContents().textContent
+        );
+        console.log(newFragment);
+        selection.deleteFromDocument();
+        range.insertNode(newFragment);
+
+        // console.log(parentName);
+        // addTag(parentName.toLowerCase());
+      } else {
+        let textNode = createTextNode(strippedContent)
       }
     }
   }
