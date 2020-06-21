@@ -1581,6 +1581,9 @@ function clearFormatting1() {
   } else if (distance == 1) {
     console.log(selection);
     if (anchorNode.parentElement.nodeName == "P") {
+      let textNode = createTextNode(strippedContent);
+      selection.deleteFromDocument();
+      range.insertNode(textNode);
     } else {
       let secondFirstParent = getSecondChild(anchorNode, mainContainer),
         secondLastParent = getSecondChild(focusNode, mainContainer);
@@ -1618,8 +1621,6 @@ function clearFormatting1() {
 
         // console.log(parentName);
         // addTag(parentName.toLowerCase());
-      } else {
-        let textNode = createTextNode(strippedContent)
       }
     }
   }
