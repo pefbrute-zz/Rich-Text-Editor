@@ -1598,6 +1598,14 @@ function clearFormatting1() {
 
         // console.log(parentName);
         // addTag(parentName.toLowerCase());
+      } else {
+        let p = getChild(anchorNode, mainContainer),
+        parentTag = getChild(anchorNode, p);
+
+        selection.deleteFromDocument();
+        parentTag.after(createTextNode(strippedContent));
+        console.log(selection, selection.getRangeAt(0));
+        console.log(parentTag);
       }
     }
   }
@@ -1605,5 +1613,5 @@ function clearFormatting1() {
   // firstChildStrippedContent = fragmentChildren[0].textContent;
   // nodeWithStrippedContent = createTextNode(firstChildStrippedContent);
   // firstSelectedChild.appendChild(nodeWithStrippedContent);
-  console.log(fragmentChildren);
+  // console.log(fragmentChildren);
 }
