@@ -1570,7 +1570,7 @@ function clearFormatting1() {
 
       if (distanceBetweenSelectedLiElements > 2) {
         let someFragment = document.createDocumentFragment(),
-        elementsBetweenFirstAndLastSelectedLiElements = [];
+          elementsBetweenFirstAndLastSelectedLiElements = [],
           i = 0;
 
         while (ulChildren[indexOfFirstSelectedLi + 1] != lastSelectedLi) {
@@ -1590,16 +1590,26 @@ function clearFormatting1() {
           lastFragmentChild = fragmentChildren[fragmentChildrenAmount - 1];
         console.log(firstFragmentChild, lastFragmentChild);
 
-        firstSelectedChild.append(firstFragmentChild.textContent);
-        lastSelectedChild.prepend(lastFragmentChild.textContent);
-        firstSelectedChild.after(someFragment);
-      }
+        firstSelectedLi.append(firstFragmentChild.textContent);
+        lastSelectedLi.prepend(lastFragmentChild.textContent);
+        firstSelectedLi.after(someFragment);
 
-      console.log(indexOfFirstSelectedLi);
-      // while (firstSelectedLiIndex != indexOfLastSelectedLi + 1) {
-      //   fragmentAfterUL.append(ul.children[firstSelectedLiIndex]);
-      //   indexOfLastSelectedLi--;
-      // }
+        console.log(indexOfFirstSelectedLi);
+
+        while (indexOfFirstSelectedLi != indexOfLastSelectedLi + 1) {
+          fragmentAfterUL.append(ul.children[indexOfFirstSelectedLi]);
+          indexOfLastSelectedLi--;
+        }
+
+        for (let i = 0; i < fragmentAfterUL.children.length; i++) {
+          let child = fragmentAfterUL.children[i];
+          (innerHTMLOfChild = child.innerHTML),
+            (p = document.createElement("P"));
+          p.innerHTML = innerHTMLOfChild;
+          fragmentAfterUL.replaceChild(p, child);
+        }
+        ul.after(fragmentAfterUL);
+      }
 
       console.log(fragmentAfterUL);
     } else {
