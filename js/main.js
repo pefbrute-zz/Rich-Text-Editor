@@ -1340,7 +1340,14 @@ function addVideoByURL() {
 }
 
 tests = () => {
-  clearFormatting1();
+  function performanceTest(someFunction){
+    const t0 = performance.now()
+    someFunction();
+    const t1 = performance.now()
+    console.log(`Clear formatting function completed in: ${t1 - t0} milleseconds`);
+  }
+
+  performanceTest(clearFormatting1);
 };
 
 function clearFormatting() {
@@ -1430,7 +1437,6 @@ function getChildIndex(child, parent) {
 let someArray = [];
 
 function clearFormatting1() {
-  console.time();
   clearEmptyContainers();
 
   let selection = document.getSelection(),
@@ -1472,14 +1478,6 @@ function clearFormatting1() {
   fragmentBeforeDeletion.append(clonedLastSelectedChild);
 
   console.log(firstSelectedChild, lastSelectedChild);
-  // clonedFirstSelectedChild = firstSelectedChild.cloneNode(true),
-  //   clonedLastSelectedChild = lastSelectedChild.cloneNode(true);
-
-  // fragmentWithFirstAndLastSelectedChildren.append(clonedFirstSelectedChild);
-  // fragmentWithFirstAndLastSelectedChildren.append(clonedLastSelectedChild);
-
-  // firstSelectedChild.remove();
-  // lastSelectedChild.remove();
 
   console.log("Fragment before deletion: ", fragmentBeforeDeletion);
   console.log(
@@ -1489,27 +1487,6 @@ function clearFormatting1() {
   console.log("Fragment what to clean:", fragment);
   console.log("Fragment what to add to editor", resultFragment);
 
-  // let firstFragmentChild = fragmentWithFirstAndLastSelectedChildren.children[0],
-  //   lastFragmentChild = fragmentWithFirstAndLastSelectedChildren.children[1];
-
-  // for (let i = 0; i < fragmentChildrenAmount; i++) {
-  //   debugger;
-  //   let fragmentChild = fragmentChildren[i];
-  //   firstChildStrippedContent = fragmentChild.textContent;
-  //   nodeWithStrippedContent = createTextNode(firstChildStrippedContent);
-  //   if (firstSelectedChild == undefined) {
-  //     let newNode = document.createElement(fragmentChild.nodeName);
-  //     newNode.appendChild(nodeWithStrippedContent);
-  //   } else {
-  //     if (i + 1 == fragmentChildrenAmount) {
-  //       firstSelectedChild.prepend(nodeWithStrippedContent);
-  //       firstSelectedChild = firstSelectedChild.nextElementSibling;
-  //     } else {
-  //       firstSelectedChild.appendChild(nodeWithStrippedContent);
-  //       firstSelectedChild = firstSelectedChild.nextElementSibling;
-  //     }
-  //   }
-  // }
   function clearElement(element) {
     let strippedContent = element.textContent;
     element.innerHTML = strippedContent;
@@ -1629,6 +1606,4 @@ function clearFormatting1() {
   // nodeWithStrippedContent = createTextNode(firstChildStrippedContent);
   // firstSelectedChild.appendChild(nodeWithStrippedContent);
   console.log(fragmentChildren);
-
-  console.timeEnd();
 }
