@@ -296,6 +296,7 @@ function addSize(sizeName) {
 }
 
 //It finds child of (parent) element from some (element)
+//First Level Child
 function getChild(element, parent) {
   if (element == undefined) {
     throw new Error("You didn't add child element");
@@ -312,6 +313,7 @@ function getChild(element, parent) {
   }
 }
 
+//Second Level Child
 function getSecondChild(element, parent) {
   if (element == undefined) {
     throw new Error("You didn't add child element");
@@ -1470,8 +1472,9 @@ function clearFormatting1() {
     ),
     indexOfLastSelectedChild = getChildIndex(lastSelectedChild, mainContainer),
     distance = indexOfLastSelectedChild - indexOfFirstSelectedChild + 1;
+
   // mainContainer.
-  console.log(indexOfLastSelectedChild - indexOfFirstSelectedChild);
+  console.log(distance);
 
   let clonedFirstSelectedChild = firstSelectedChild.cloneNode(true),
     clonedLastSelectedChild = lastSelectedChild.cloneNode(true);
@@ -1529,11 +1532,12 @@ function clearFormatting1() {
     // firstSelectedChild.remove();
     // lastSelectedChild.remove();
   } else if (distance == 2) {
+    selection.deleteFromDocument();
     for (let i = 0; i < fragmentChildrenAmount; i++) {
-      selection.deleteFromDocument();
       let fragmentChild = fragmentChildren[i];
       firstChildStrippedContent = fragmentChild.textContent;
       nodeWithStrippedContent = createTextNode(firstChildStrippedContent);
+
       if (firstSelectedChild == undefined) {
         let newNode = document.createElement(fragmentChild.nodeName);
         newNode.appendChild(nodeWithStrippedContent);
@@ -1553,6 +1557,51 @@ function clearFormatting1() {
       let textNode = createTextNode(strippedContent);
       selection.deleteFromDocument();
       range.insertNode(textNode);
+    } else if (getChild(anchorNode, mainContainer).nodeName == "UL") {
+      let firstSelectedLi = getSecondChild(anchorNode, mainContainer),
+        lastSelectedLi = getSecondChild(focusNode, mainContainer),
+        ul = getChild(anchorNode, mainContainer),
+        ulChildren = ul.children,
+        indexOfFirstSelectedLi = getChildIndex(firstSelectedLi, ul),
+        indexOfLastSelectedLi = getChildIndex(lastSelectedLi, ul),
+        fragmentAfterUL = document.createDocumentFragment(),
+        distanceBetweenSelectedLiElements =
+          indexOfLastSelectedLi - indexOfFirstSelectedLi + 1;
+
+      if (distanceBetweenSelectedLiElements > 2) {
+        let someFragment = document.createDocumentFragment(),
+        elementsBetweenFirstAndLastSelectedLiElements = [];
+          i = 0;
+
+        while (ulChildren[indexOfFirstSelectedLi + 1] != lastSelectedLi) {
+          let child = ulChildren[indexOfFirstSelectedLi + 1];
+
+          elementsBetweenFirstAndLastSelectedLiElements[i] = child;
+
+          someFragment.appendChild(clearElement(child));
+          i++;
+        }
+
+        console.log(elementsBetweenFirstAndLastSelectedLiElements);
+        console.log(someFragment);
+
+        selection.deleteFromDocument();
+        let firstFragmentChild = fragmentChildren[0],
+          lastFragmentChild = fragmentChildren[fragmentChildrenAmount - 1];
+        console.log(firstFragmentChild, lastFragmentChild);
+
+        firstSelectedChild.append(firstFragmentChild.textContent);
+        lastSelectedChild.prepend(lastFragmentChild.textContent);
+        firstSelectedChild.after(someFragment);
+      }
+
+      console.log(indexOfFirstSelectedLi);
+      // while (firstSelectedLiIndex != indexOfLastSelectedLi + 1) {
+      //   fragmentAfterUL.append(ul.children[firstSelectedLiIndex]);
+      //   indexOfLastSelectedLi--;
+      // }
+
+      console.log(fragmentAfterUL);
     } else {
       let secondFirstParent = getSecondChild(anchorNode, mainContainer),
         secondLastParent = getSecondChild(focusNode, mainContainer);
