@@ -1595,9 +1595,6 @@ function clearFormatting1() {
         console.log(newFragment);
         selection.deleteFromDocument();
         range.insertNode(newFragment);
-
-        // console.log(parentName);
-        // addTag(parentName.toLowerCase());
       } else {
         let p = getChild(anchorNode, mainContainer),
         parentTag = getChild(anchorNode, p);
@@ -1609,9 +1606,4 @@ function clearFormatting1() {
       }
     }
   }
-
-  // firstChildStrippedContent = fragmentChildren[0].textContent;
-  // nodeWithStrippedContent = createTextNode(firstChildStrippedContent);
-  // firstSelectedChild.appendChild(nodeWithStrippedContent);
-  // console.log(fragmentChildren);
 }
