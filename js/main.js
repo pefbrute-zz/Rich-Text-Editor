@@ -1340,11 +1340,13 @@ function addVideoByURL() {
 }
 
 tests = () => {
-  function performanceTest(someFunction){
-    const t0 = performance.now()
+  function performanceTest(someFunction) {
+    const t0 = performance.now();
     someFunction();
-    const t1 = performance.now()
-    console.log(`Clear formatting function completed in: ${t1 - t0} milleseconds`);
+    const t1 = performance.now();
+    console.log(
+      `Clear formatting function completed in: ${t1 - t0} milleseconds`
+    );
   }
 
   performanceTest(clearFormatting1);
@@ -1502,8 +1504,6 @@ function clearFormatting1() {
       nextNextElement = firstSelectedChild.nextElementSibling,
       i = 0;
 
-    ///
-    ///
     while (
       mainContainerChilds[indexOfFirstSelectedChild + 1] != lastSelectedChild
     ) {
@@ -1513,15 +1513,7 @@ function clearFormatting1() {
 
       someFragment.appendChild(clearElement(child));
       i++;
-      // nextElementNextElement =
-      //   nextElement.nextElementSibling.nextElementSibling;
-
-      // nextElement = nextElement.nextElementSibling;
-      // if (nextElement == null) break;
-      // g++;
     }
-    ///
-    ///
 
     console.log(elementsBetweenFirstAndLastSelectedChilds);
     console.log(someFragment);
@@ -1597,7 +1589,7 @@ function clearFormatting1() {
         range.insertNode(newFragment);
       } else {
         let p = getChild(anchorNode, mainContainer),
-        parentTag = getChild(anchorNode, p);
+          parentTag = getChild(anchorNode, p);
 
         selection.deleteFromDocument();
         parentTag.after(createTextNode(strippedContent));
