@@ -1629,14 +1629,12 @@ function clearFormatting1() {
           mainContainer.insertBefore(lastUl, childOfMainContainer);
         }
       } else if (distanceBetweenSelectedLiElements == 1) {
-        debugger;
+        let textNode = createTextNode(strippedContent),
+          indexBeginning = indexOfFirstSelectedLi,
+          indexEnd = indexOfLastSelectedLi;
 
-        let textNode = createTextNode(strippedContent);
         selection.deleteFromDocument();
         range.insertNode(textNode);
-
-        let indexBeginning = indexOfFirstSelectedLi,
-          indexEnd = indexOfLastSelectedLi;
 
         while (indexBeginning != indexEnd + 1) {
           fragmentAfterUL.append(ul.children[indexBeginning]);
