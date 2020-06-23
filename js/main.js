@@ -1420,16 +1420,16 @@ function removeFormatting() {
   if (distance > 2) {
     let mainContainer = document.getElementById("work-area"),
       mainContainerChilds = mainContainer.children,
-      someFragment = document.createDocumentFragment(),
+      fragmentWithChildsBetweenFirstAndLastSelectedElements = document.createDocumentFragment(),
       i = 0,
       index = indexOfFirstSelectedChild + 1,
-      nextChild = () => mainContainerChilds[index];
+      childAfterFirstSelectedChild = () => mainContainerChilds[index];
 
-    while (nextChild() != lastSelectedChild) {
-      let child = nextChild();
+    while (childAfterFirstSelectedChild() != lastSelectedChild) {
+      let child = childAfterFirstSelectedChild();
       elementsBetweenFirstAndLastSelectedChilds[i] = child;
 
-      someFragment.appendChild(clearElement( child) );
+      fragmentWithChildsBetweenFirstAndLastSelectedElements.appendChild(clearElement( child) );
       i++;
     }
 
@@ -1440,22 +1440,28 @@ function removeFormatting() {
 
     firstSelectedChild.append(firstFragmentChild.textContent);
     lastSelectedChild.prepend(lastFragmentChild.textContent);
-    firstSelectedChild.after(someFragment);
+    firstSelectedChild.after(fragmentWithChildsBetweenFirstAndLastSelectedElements);
   } else if (distance == 2) {
+    debugger;
+    
     selection.deleteFromDocument();
     for (let i = 0; i < fragmentChildrenAmount; i++) {
-      let fragmentChild = fragmentChildren[i];
+      let fragmentChild = fragmentChildren[i],
+      fragmentChildName = fragmentChild.nodeName,
       firstChildStrippedContent = fragmentChild.textContent;
       nodeWithStrippedContent = createTextNode(firstChildStrippedContent);
 
       if (firstSelectedChild == undefined) {
-        let newNode = document.createElement(fragmentChild.nodeName);
+        let newNode = document.createElement(fragmentChildName);
         newNode.appendChild(nodeWithStrippedContent);
       } else {
+        // If it's the last child then prepend it before first selected child
         if (i + 1 == fragmentChildrenAmount) {
           firstSelectedChild.prepend(nodeWithStrippedContent);
           firstSelectedChild = firstSelectedChild.nextElementSibling;
-        } else {
+        }
+        //Else append it after first selected child
+        else {
           firstSelectedChild.appendChild(nodeWithStrippedContent);
           firstSelectedChild = firstSelectedChild.nextElementSibling;
         }
