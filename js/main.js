@@ -1385,7 +1385,6 @@ function removeFormatting() {
     strippedContent = fragment.textContent,
     mainContainer = document.getElementById("work-area"),
     nodeWithStrippedContent,
-    fragmentBeforeDeletion = document.createDocumentFragment(),
     createTextNode = (text) => document.createTextNode(text),
     elementsBetweenFirstAndLastSelectedChilds = [];
 
@@ -1395,18 +1394,26 @@ function removeFormatting() {
       firstSelectedChild,
       mainContainer
     ),
-    indexOfLastSelectedChild = getChildIndex(lastSelectedChild, mainContainer),
-    distance = indexOfLastSelectedChild - indexOfFirstSelectedChild + 1;
+    indexOfLastSelectedChild = getChildIndex(lastSelectedChild, mainContainer);
 
-  let clonedFirstSelectedChild = firstSelectedChild.cloneNode(true),
-    clonedLastSelectedChild = lastSelectedChild.cloneNode(true);
+  // Swap start and end nodes and their indexes of the selection, if it's started from the end
+  if (indexOfFirstSelectedChild > indexOfLastSelectedChild) {
+    [indexOfFirstSelectedChild, indexOfLastSelectedChild] = [
+      indexOfLastSelectedChild,
+      indexOfFirstSelectedChild,
+    ];
+    [firstSelectedChild, lastSelectedChild] = [
+      lastSelectedChild,
+      firstSelectedChild,
+    ];
+  }
 
-  fragmentBeforeDeletion.append(clonedFirstSelectedChild);
-  fragmentBeforeDeletion.append(clonedLastSelectedChild);
+  let distance = indexOfLastSelectedChild - indexOfFirstSelectedChild + 1;
 
   function clearElement(element) {
     let strippedContent = element.textContent;
     element.innerHTML = strippedContent;
+
     return element;
   }
 
@@ -1414,15 +1421,15 @@ function removeFormatting() {
     let mainContainer = document.getElementById("work-area"),
       mainContainerChilds = mainContainer.children,
       someFragment = document.createDocumentFragment(),
-      i = 0;
+      i = 0,
+      index = indexOfFirstSelectedChild + 1,
+      nextChild = () => mainContainerChilds[index];
 
-    while (
-      mainContainerChilds[indexOfFirstSelectedChild + 1] != lastSelectedChild
-    ) {
-      let child = mainContainerChilds[indexOfFirstSelectedChild + 1];
+    while (nextChild() != lastSelectedChild) {
+      let child = nextChild();
       elementsBetweenFirstAndLastSelectedChilds[i] = child;
 
-      someFragment.appendChild(clearElement(child));
+      someFragment.appendChild(clearElement( child) );
       i++;
     }
 
@@ -1466,9 +1473,18 @@ function removeFormatting() {
         ulChildren = ul.children,
         indexOfFirstSelectedLi = getChildIndex(firstSelectedLi, ul),
         indexOfLastSelectedLi = getChildIndex(lastSelectedLi, ul),
-        fragmentAfterUL = document.createDocumentFragment(),
-        distanceBetweenSelectedLiElements =
-          indexOfLastSelectedLi - indexOfFirstSelectedLi + 1;
+        fragmentAfterUL = document.createDocumentFragment();
+
+      if (indexOfFirstSelectedLi > indexOfLastSelectedLi) {
+        [indexOfFirstSelectedLi, indexOfLastSelectedLi] = [
+          indexOfLastSelectedLi,
+          indexOfFirstSelectedLi,
+        ];
+        [firstSelectedLi, lastSelectedLi] = [lastSelectedLi, firstSelectedLi];
+      }
+
+      let distanceBetweenSelectedLiElements =
+        indexOfLastSelectedLi - indexOfFirstSelectedLi + 1;
 
       if (distanceBetweenSelectedLiElements >= 2) {
         let someFragment = document.createDocumentFragment(),
