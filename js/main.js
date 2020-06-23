@@ -1056,23 +1056,24 @@ function makeList(type) {
           list = mainContainerChildren[ListIndex];
 
         mainContainer.insertBefore(fragment, list);
-        //Else if selection ends in the end of list append after this list
       } else if (
         indexOfLastSelectedLi == indexOfLastLi ||
         indexOfFirstSelectedLi == indexOfLastLi
       ) {
+        //Else if selection ends in the end of list append after this list
         mainContainer.insertBefore(
           fragment,
           mainContainer.children[ListIndex + 1]
         );
       } else {
+        //Else if selection starts and ends in the middle of list append in the middle
         let indexOfLastLiInFirstPart = indexOfFirstSelectedLi - 1,
           firstPart = document.createDocumentFragment(),
           lastPart = document.createDocumentFragment(),
           mainContainer = document.getElementById("work-area"),
-          childrenOfMainContainer = mainContainer.children;
-        (list = childrenOfMainContainer[ListIndex]),
-          (listChildren = list.children);
+          childrenOfMainContainer = mainContainer.children,
+          list = childrenOfMainContainer[ListIndex],
+          listChildren = list.children;
 
         while (indexOfLastLiInFirstPart >= 0) {
           let listChildren = list.children,
@@ -1596,19 +1597,28 @@ function clearFormatting1() {
 
         console.log(indexOfFirstSelectedLi);
 
-        while (indexOfFirstSelectedLi != indexOfLastSelectedLi + 1) {
-          fragmentAfterUL.append(ul.children[indexOfFirstSelectedLi]);
-          indexOfLastSelectedLi--;
+        let indexBeginning = indexOfFirstSelectedLi,
+          indexEnd = indexOfLastSelectedLi,
+          ulChildrenAmount = ulChildren.length;
+
+        while (indexBeginning != indexEnd + 1) {
+          fragmentAfterUL.append(ul.children[indexBeginning]);
+          indexEnd--;
         }
 
         for (let i = 0; i < fragmentAfterUL.children.length; i++) {
-          let child = fragmentAfterUL.children[i];
-          (innerHTMLOfChild = child.innerHTML),
-            (p = document.createElement("P"));
+          let child = fragmentAfterUL.children[i],
+            innerHTMLOfChild = child.innerHTML,
+            p = document.createElement("P");
           p.innerHTML = innerHTMLOfChild;
           fragmentAfterUL.replaceChild(p, child);
         }
-        ul.after(fragmentAfterUL);
+        if (indexOfFirstSelectedLi == 0) {
+          ul.before(fragmentAfterUL);
+        } else if (indexOfLastSelectedLi == ulChildrenAmount - 1) {
+          ul.after(fragmentAfterUL);
+        } else {
+        }
       }
 
       console.log(fragmentAfterUL);
