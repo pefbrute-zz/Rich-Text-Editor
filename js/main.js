@@ -1425,7 +1425,7 @@ function clearFormatting() {
 function getChildIndex(child, parent) {
   let children = parent.children,
     childrenAmount = children.length,
-    indexOfChild = -1;
+    indexOfChild = undefined;
 
   for (let i = 0; i < childrenAmount; i++) {
     let childOfParent = children[i];
@@ -1569,7 +1569,7 @@ function clearFormatting1() {
         distanceBetweenSelectedLiElements =
           indexOfLastSelectedLi - indexOfFirstSelectedLi + 1;
 
-      if (distanceBetweenSelectedLiElements > 2) {
+      if (distanceBetweenSelectedLiElements >= 2) {
         let someFragment = document.createDocumentFragment(),
           elementsBetweenFirstAndLastSelectedLiElements = [],
           i = 0;
@@ -1591,9 +1591,13 @@ function clearFormatting1() {
           lastFragmentChild = fragmentChildren[fragmentChildrenAmount - 1];
         console.log(firstFragmentChild, lastFragmentChild);
 
-        firstSelectedLi.append(firstFragmentChild.textContent);
-        lastSelectedLi.prepend(lastFragmentChild.textContent);
-        firstSelectedLi.after(someFragment);
+        if (indexOfFirstSelectedLi != indexOfLastSelectedLi) {
+          firstSelectedLi.append(firstFragmentChild.textContent);
+          lastSelectedLi.prepend(lastFragmentChild.textContent);
+          firstSelectedLi.after(someFragment);
+        } else {
+          firstSelectedLi.append(firstFragmentChild.textContent);
+        }
 
         console.log(indexOfFirstSelectedLi);
 
@@ -1613,12 +1617,113 @@ function clearFormatting1() {
           p.innerHTML = innerHTMLOfChild;
           fragmentAfterUL.replaceChild(p, child);
         }
+
+        ulChildrenAmount = ulChildren.length;
+
         if (indexOfFirstSelectedLi == 0) {
           ul.before(fragmentAfterUL);
         } else if (indexOfLastSelectedLi == ulChildrenAmount - 1) {
           ul.after(fragmentAfterUL);
         } else {
+          debugger;
+          let indexOfLastLiInFirstPart = indexOfFirstSelectedLi - 1,
+            firstPart = document.createDocumentFragment(),
+            lastPart = document.createDocumentFragment(),
+            mainContainer = document.getElementById("work-area"),
+            childrenOfMainContainer = mainContainer.children,
+            ulIndex = getChildIndex(ul, mainContainer),
+            ulName = ul.nodeName,
+            ulChildren = ul.children,
+            amountOfChildrenOfUl = ulChildren.length;
+
+          while (indexOfLastLiInFirstPart >= 0) {
+            let firstChild = ulChildren[0];
+
+            firstPart.appendChild(firstChild);
+            indexOfLastLiInFirstPart--;
+          }
+
+          amountOfChildrenOfUl = ulChildren.length;
+          while (amountOfChildrenOfUl != 0) {
+            let firstChildOfUl = ulChildren[0];
+
+            lastPart.appendChild(firstChildOfUl);
+            amountOfChildrenOfUl--;
+          }
+
+          ul.remove();
+
+          let firstUl = document.createElement(ulName),
+            lastUl = document.createElement(ulName),
+            childOfMainContainer = childrenOfMainContainer[ulIndex];
+
+          firstUl.appendChild(firstPart);
+          lastUl.appendChild(lastPart);
+
+          mainContainer.insertBefore(firstUl, childOfMainContainer);
+          mainContainer.insertBefore(fragmentAfterUL, childOfMainContainer);
+          mainContainer.insertBefore(lastUl, childOfMainContainer);
         }
+      } else if (distanceBetweenSelectedLiElements == 1) {
+        debugger;
+
+        let textNode = createTextNode(strippedContent);
+        selection.deleteFromDocument();
+        range.insertNode(textNode);
+
+        let indexBeginning = indexOfFirstSelectedLi,
+          indexEnd = indexOfLastSelectedLi;
+
+        while (indexBeginning != indexEnd + 1) {
+          fragmentAfterUL.append(ul.children[indexBeginning]);
+          indexEnd--;
+        }
+
+        for (let i = 0; i < fragmentAfterUL.children.length; i++) {
+          let child = fragmentAfterUL.children[i],
+            innerHTMLOfChild = child.innerHTML,
+            p = document.createElement("P");
+          p.innerHTML = innerHTMLOfChild;
+          fragmentAfterUL.replaceChild(p, child);
+        }
+
+        let indexOfLastLiInFirstPart = indexOfFirstSelectedLi - 1,
+          firstPart = document.createDocumentFragment(),
+          lastPart = document.createDocumentFragment(),
+          mainContainer = document.getElementById("work-area"),
+          childrenOfMainContainer = mainContainer.children,
+          ulIndex = getChildIndex(ul, mainContainer),
+          ulName = ul.nodeName,
+          ulChildren = ul.children,
+          amountOfChildrenOfUl = ulChildren.length;
+
+        while (indexOfLastLiInFirstPart >= 0) {
+          let firstChild = ulChildren[0];
+
+          firstPart.appendChild(firstChild);
+          indexOfLastLiInFirstPart--;
+        }
+
+        amountOfChildrenOfUl = ulChildren.length;
+        while (amountOfChildrenOfUl != 0) {
+          let firstChildOfUl = ulChildren[0];
+
+          lastPart.appendChild(firstChildOfUl);
+          amountOfChildrenOfUl--;
+        }
+
+        ul.remove();
+
+        let firstUl = document.createElement(ulName),
+          lastUl = document.createElement(ulName),
+          childOfMainContainer = childrenOfMainContainer[ulIndex];
+
+        firstUl.appendChild(firstPart);
+        lastUl.appendChild(lastPart);
+
+        mainContainer.insertBefore(firstUl, childOfMainContainer);
+        mainContainer.insertBefore(fragmentAfterUL, childOfMainContainer);
+        mainContainer.insertBefore(lastUl, childOfMainContainer);
       }
 
       console.log(fragmentAfterUL);
