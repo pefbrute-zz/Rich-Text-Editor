@@ -1352,75 +1352,8 @@ tests = () => {
     );
   }
 
-  performanceTest(clearFormatting1);
+  performanceTest(removeFormatting);
 };
-
-function clearFormatting() {
-  console.time();
-
-  let selection = document.getSelection(),
-    anchorNode = selection.anchorNode,
-    firstTag = anchorNode.parentElement,
-    firstParentTag = anchorNode.parentElement,
-    firstParentTagName = firstParentTag.nodeName,
-    focusNode = selection.focusNode,
-    // lastParentTag = anchorNode.parentElement,
-    // lastParentTagName = lastParentTag.nodeName,
-    range = selection.getRangeAt(0),
-    fragment = range.cloneContents(),
-    strippedContent = fragment.textContent,
-    mainContainer = document.getElementById("work-area");
-
-  if (getChild(anchorNode, mainContainer).nodeName == "P") {
-    firstParentTag = getChild(anchorNode, mainContainer);
-    firstParentTagName = "P";
-    console.log(fragment);
-    selection.deleteFromDocument();
-
-    let textNode = document.createTextNode(strippedContent);
-    range.insertNode(textNode);
-
-    let firstTagName = firstTag.nodeName;
-
-    console.log(firstTag);
-    console.log(firstTag.childNodes);
-    console.log(textNode);
-
-    //If selection started and finished in some tag (not main <p>)
-    //then devide this tag in two parts and insert cleaned text between them
-
-    if (anchorNode == focusNode && firstTagName != "P") {
-      let firstTagChilds = firstTag.childNodes;
-
-      let firstElement = document.createElement(firstTagName),
-        secondElement = document.createElement(firstTagName);
-
-      firstElement.innerHTML = firstTagChilds[0].textContent;
-      secondElement.innerHTML = firstTagChilds[2].textContent;
-      debugger;
-
-      firstTag.remove();
-      range.insertNode(secondElement);
-      range.insertNode(textNode);
-      range.insertNode(firstElement);
-    }
-    //
-    //
-  } else if (
-    getChild(anchorNode, mainContainer).nodeName == "UL" ||
-    getChild(anchorNode, mainContainer).nodeName == "OL"
-  ) {
-    firstParentTag = getChild(anchorNode, mainContainer);
-    firstParentTagName = firstParentTag.nodeName;
-    // makeList(firstParentTagName);
-
-    console.log(fragment, strippedContent);
-    // console.log(getSecondChild(anchorNode, mainContainer));
-    // selection.deleteFromDocument();
-  }
-
-  console.timeEnd();
-}
 
 function getChildIndex(child, parent) {
   let children = parent.children,
@@ -1439,9 +1372,7 @@ function getChildIndex(child, parent) {
   return indexOfChild;
 }
 
-let someArray = [];
-
-function clearFormatting1() {
+function removeFormatting() {
   clearEmptyContainers();
 
   let selection = document.getSelection(),
