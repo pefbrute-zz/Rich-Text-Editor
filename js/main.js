@@ -1446,21 +1446,14 @@ function clearFormatting1() {
 
   let selection = document.getSelection(),
     anchorNode = selection.anchorNode,
-    firstTag = anchorNode.parentElement,
-    firstParentTag = anchorNode.parentElement,
-    firstParentTagName = firstParentTag.nodeName,
     focusNode = selection.focusNode,
-    // lastParentTag = anchorNode.parentElement,
-    // lastParentTagName = lastParentTag.nodeName,
     range = selection.getRangeAt(0),
     fragment = range.cloneContents(),
     fragmentChildren = fragment.children,
     fragmentChildrenAmount = fragmentChildren.length,
-    fragmentWithFirstAndLastSelectedChildren = document.createDocumentFragment(),
     strippedContent = fragment.textContent,
     mainContainer = document.getElementById("work-area"),
     nodeWithStrippedContent,
-    resultFragment = document.createDocumentFragment(),
     fragmentBeforeDeletion = document.createDocumentFragment(),
     createTextNode = (text) => document.createTextNode(text),
     elementsBetweenFirstAndLastSelectedChilds = [];
@@ -1474,24 +1467,11 @@ function clearFormatting1() {
     indexOfLastSelectedChild = getChildIndex(lastSelectedChild, mainContainer),
     distance = indexOfLastSelectedChild - indexOfFirstSelectedChild + 1;
 
-  // mainContainer.
-  console.log(distance);
-
   let clonedFirstSelectedChild = firstSelectedChild.cloneNode(true),
     clonedLastSelectedChild = lastSelectedChild.cloneNode(true);
 
   fragmentBeforeDeletion.append(clonedFirstSelectedChild);
   fragmentBeforeDeletion.append(clonedLastSelectedChild);
-
-  console.log(firstSelectedChild, lastSelectedChild);
-
-  console.log("Fragment before deletion: ", fragmentBeforeDeletion);
-  console.log(
-    "Fragment to what add cleaned text:",
-    fragmentWithFirstAndLastSelectedChildren
-  );
-  console.log("Fragment what to clean:", fragment);
-  console.log("Fragment what to add to editor", resultFragment);
 
   function clearElement(element) {
     let strippedContent = element.textContent;
@@ -1502,36 +1482,27 @@ function clearFormatting1() {
   if (distance > 2) {
     let mainContainer = document.getElementById("work-area"),
       mainContainerChilds = mainContainer.children,
-      mainChildsAmount = mainContainerChilds.length,
-      nextElement = firstSelectedChild.nextElementSibling,
       someFragment = document.createDocumentFragment(),
-      nextNextElement = firstSelectedChild.nextElementSibling,
       i = 0;
 
     while (
       mainContainerChilds[indexOfFirstSelectedChild + 1] != lastSelectedChild
     ) {
       let child = mainContainerChilds[indexOfFirstSelectedChild + 1];
-
       elementsBetweenFirstAndLastSelectedChilds[i] = child;
 
       someFragment.appendChild(clearElement(child));
       i++;
     }
 
-    console.log(elementsBetweenFirstAndLastSelectedChilds);
-    console.log(someFragment);
-
     selection.deleteFromDocument();
+
     let firstFragmentChild = fragmentChildren[0],
       lastFragmentChild = fragmentChildren[fragmentChildrenAmount - 1];
-    console.log(firstFragmentChild, lastFragmentChild);
 
     firstSelectedChild.append(firstFragmentChild.textContent);
     lastSelectedChild.prepend(lastFragmentChild.textContent);
     firstSelectedChild.after(someFragment);
-    // firstSelectedChild.remove();
-    // lastSelectedChild.remove();
   } else if (distance == 2) {
     selection.deleteFromDocument();
     for (let i = 0; i < fragmentChildrenAmount; i++) {
@@ -1553,7 +1524,6 @@ function clearFormatting1() {
       }
     }
   } else if (distance == 1) {
-    console.log(selection);
     if (anchorNode.parentElement.nodeName == "P") {
       let textNode = createTextNode(strippedContent);
       selection.deleteFromDocument();
@@ -1583,13 +1553,9 @@ function clearFormatting1() {
           i++;
         }
 
-        console.log(elementsBetweenFirstAndLastSelectedLiElements);
-        console.log(someFragment);
-
         selection.deleteFromDocument();
         let firstFragmentChild = fragmentChildren[0],
           lastFragmentChild = fragmentChildren[fragmentChildrenAmount - 1];
-        console.log(firstFragmentChild, lastFragmentChild);
 
         if (indexOfFirstSelectedLi != indexOfLastSelectedLi) {
           firstSelectedLi.append(firstFragmentChild.textContent);
@@ -1598,8 +1564,6 @@ function clearFormatting1() {
         } else {
           firstSelectedLi.append(firstFragmentChild.textContent);
         }
-
-        console.log(indexOfFirstSelectedLi);
 
         let indexBeginning = indexOfFirstSelectedLi,
           indexEnd = indexOfLastSelectedLi,
@@ -1725,21 +1689,14 @@ function clearFormatting1() {
         mainContainer.insertBefore(fragmentAfterUL, childOfMainContainer);
         mainContainer.insertBefore(lastUl, childOfMainContainer);
       }
-
-      console.log(fragmentAfterUL);
     } else {
       let secondFirstParent = getSecondChild(anchorNode, mainContainer),
         secondLastParent = getSecondChild(focusNode, mainContainer);
 
       if (secondFirstParent == secondLastParent) {
-        let endOfFirstPart = selection.anchorOffset,
-          startOfSecondPart = selection.anchorOffset,
-          parent = getSecondChild(anchorNode, mainContainer),
-          parentName = parent.nodeName,
-          tags = [],
+        let tags = [],
           tag = anchorNode,
           tagParent = tag.parentElement,
-          tagsAmount = 1,
           i = 0;
         fragmentChildren;
 
@@ -1749,16 +1706,15 @@ function clearFormatting1() {
           tagParent = tagParent.parentElement;
         }
 
-        console.log(tags);
-
         for (let g = 0; g < i; g++) {
           addTag(tags[g].nodeName.toLowerCase());
         }
         range = selection.getRangeAt(0);
+
         let newFragment = document.createTextNode(
           range.cloneContents().textContent
         );
-        console.log(newFragment);
+
         selection.deleteFromDocument();
         range.insertNode(newFragment);
       } else {
@@ -1767,8 +1723,6 @@ function clearFormatting1() {
 
         selection.deleteFromDocument();
         parentTag.after(createTextNode(strippedContent));
-        console.log(selection, selection.getRangeAt(0));
-        console.log(parentTag);
       }
     }
   }
