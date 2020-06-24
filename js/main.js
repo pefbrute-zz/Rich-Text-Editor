@@ -87,18 +87,22 @@ for (let i = 0; i <= colorsLastElementIndex; i++) {
 function capitalizeFirstLetter(string) {
   var firstCharacter = string.charAt(0),
     firstCharacterInUpperCase = firstCharacter.toUpperCase(),
-    stringWithoutFirstCharacter = string.splice(1);
+    stringWithoutFirstCharacter = string.slice(1);
 
-  firstCharacterInUpperCase + stringWithoutFirstCharacter;
+  string = firstCharacterInUpperCase + stringWithoutFirstCharacter;
+
+  return string;
 }
 
 //Makes first letter lower case
 function lowerFirstLetter(string) {
   var firstCharacter = string.charAt(0),
     firstCharacterInLowerCase = firstCharacter.toLowerCase(),
-    stringWithoutFirstCharacter = string.splice(1);
+    stringWithoutFirstCharacter = string.slice(1);
 
-  firstCharacterInLowerCase + stringWithoutFirstCharacter;
+  string = firstCharacterInLowerCase + stringWithoutFirstCharacter;
+
+  return string;
 }
 
 //Clears spaces in the start and end of the text and also between words
