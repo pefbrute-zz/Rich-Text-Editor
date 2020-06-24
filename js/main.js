@@ -1429,47 +1429,60 @@ function removeFormatting() {
       let child = childAfterFirstSelectedChild();
       elementsBetweenFirstAndLastSelectedChilds[i] = child;
 
-      fragmentWithChildsBetweenFirstAndLastSelectedElements.appendChild(clearElement( child) );
+      fragmentWithChildsBetweenFirstAndLastSelectedElements.appendChild(
+        clearElement(child)
+      );
       i++;
     }
 
     selection.deleteFromDocument();
 
-    let firstFragmentChild = fragmentChildren[0],
-      lastFragmentChild = fragmentChildren[fragmentChildrenAmount - 1];
+    let firstChildOfFragment = fragmentChildren[0],
+      lastChildOfFragment = fragmentChildren[fragmentChildrenAmount - 1],
+      textOfFirstChildOfFragment = firstChildOfFragment.textContent,
+      textOfLastChildOfFragment = lastChildOfFragment.textContent;
 
-    firstSelectedChild.append(firstFragmentChild.textContent);
-    lastSelectedChild.prepend(lastFragmentChild.textContent);
-    firstSelectedChild.after(fragmentWithChildsBetweenFirstAndLastSelectedElements);
+    firstSelectedChild.append(textOfFirstChildOfFragment);
+    lastSelectedChild.prepend(textOfLastChildOfFragment);
+    firstSelectedChild.after(
+      fragmentWithChildsBetweenFirstAndLastSelectedElements
+    );
   } else if (distance == 2) {
     debugger;
-    
+
     selection.deleteFromDocument();
     for (let i = 0; i < fragmentChildrenAmount; i++) {
       let fragmentChild = fragmentChildren[i],
-      fragmentChildName = fragmentChild.nodeName,
-      firstChildStrippedContent = fragmentChild.textContent;
-      nodeWithStrippedContent = createTextNode(firstChildStrippedContent);
+        fragmentChildName = fragmentChild.nodeName,
+        firstChildStrippedContent = fragmentChild.textContent,
+        nodeWithStrippedContent = createTextNode(firstChildStrippedContent),
+        nextSiblingOfFirstSelectedChild = () =>
+          firstSelectedChild.nextElementSibling;
 
       if (firstSelectedChild == undefined) {
         let newNode = document.createElement(fragmentChildName);
+
         newNode.appendChild(nodeWithStrippedContent);
       } else {
         // If it's the last child then prepend it before first selected child
         if (i + 1 == fragmentChildrenAmount) {
           firstSelectedChild.prepend(nodeWithStrippedContent);
-          firstSelectedChild = firstSelectedChild.nextElementSibling;
+          firstSelectedChild = nextSiblingOfFirstSelectedChild();
         }
         //Else append it after first selected child
         else {
           firstSelectedChild.appendChild(nodeWithStrippedContent);
-          firstSelectedChild = firstSelectedChild.nextElementSibling;
+          firstSelectedChild = nextSiblingOfFirstSelectedChild();
         }
       }
     }
   } else if (distance == 1) {
-    if (anchorNode.parentElement.nodeName == "P") {
+    let parentOfFirstSelectedElement = anchorNode.parentElement,
+    nameOfParentOfFirstSelectedElement = parentOfFirstSelectedElement.nodeName;
+
+    if (nameOfParentOfFirstSelectedElement == "P") {
       let textNode = createTextNode(strippedContent);
+
       selection.deleteFromDocument();
       range.insertNode(textNode);
     } else if (getChild(anchorNode, mainContainer).nodeName == "UL") {
