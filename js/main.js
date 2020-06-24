@@ -1,5 +1,9 @@
 window.addEventListener("load", function () {
-  document.getElementById("work-area").setAttribute("contenteditable", "true");
+  let mainContainer = document.getElementById("work-area"),
+    nameOfAttribute = "contenteditable",
+    valueOfAttribute = "true";
+
+  mainContainer.setAttribute(nameOfAttribute, valueOfAttribute);
 });
 
 function format(command, value) {
@@ -15,13 +19,16 @@ function addDropdown(dropdownId) {
 
   if (dropdownsLength > 0) {
     for (let i = 0; i <= dropdownsLastElementIndex; i++) {
-      if (dropdowns[i] != dropdown) {
-        dropdowns[i].className = "hidden";
+      let dropdownElement = dropdowns[i];
+
+      if (dropdownElement != dropdown) {
+        dropdownElement.className = "hidden";
       }
     }
   }
+  let classNameOfDropdown = dropdown.className;
 
-  if (dropdown.className == dropdownId) {
+  if (classNameOfDropdown == dropdownId) {
     dropdown.className = "hidden";
   } else {
     dropdown.className = dropdownId;
@@ -35,13 +42,20 @@ function makeColorAppliers(ColorObject, classesNumber, colorName) {
   let number = 0;
 
   while (number <= classesNumber) {
-    let className = "text-" + colorName.toLowerCase() + number;
+    let colorNameInLowerCase = colorName.toLowerCase(),
+      colorNameWithNumber = colorNameInLowerCase + number,
+      textBeginning = "text-",
+      backgroundBeginning = "background-",
+      className = textBeginning + colorNameWithNumber;
+
     ColorObject[colorName].Text[number] = rangy.createClassApplier(className);
 
-    className = "background-" + colorName.toLowerCase() + number;
+    className = backgroundBeginning + colorNameWithNumber;
+
     ColorObject[colorName].Background[number] = rangy.createClassApplier(
       className
     );
+
     number++;
   }
 }
@@ -53,23 +67,39 @@ let classesNumber = 4,
 
 //Add Text and Background objects to all colors
 for (let i = 0; i <= colorsLastElementIndex; i++) {
-  ColorAppliers[colors[i]] = {};
-  ColorAppliers[colors[i]]["Text"] = {};
-  ColorAppliers[colors[i]]["Background"] = {};
+  let color = colors[i],
+    nameOfTextObject = "Text",
+    nameOfBackgroundObject = "Background";
+
+  ColorAppliers[color] = {};
+  ColorAppliers[color][nameOfTextObject] = {};
+  ColorAppliers[color][nameOfBackgroundObject] = {};
 }
 
 //Make color appliers for colors in array
 for (let i = 0; i <= colorsLastElementIndex; i++) {
-  makeColorAppliers(ColorAppliers, classesNumber, colors[i]);
+  let color = colors[i];
+
+  makeColorAppliers(ColorAppliers, classesNumber, color);
 }
 
 //Makes first letter upper case
-var capitalizeFirstLetter = (string) =>
-  string.charAt(0).toUpperCase() + string.slice(1);
+function capitalizeFirstLetter(string) {
+  var firstCharacter = string.charAt(0),
+    firstCharacterInUpperCase = firstCharacter.toUpperCase(),
+    stringWithoutFirstCharacter = string.splice(1);
+
+  firstCharacterInUpperCase + stringWithoutFirstCharacter;
+}
 
 //Makes first letter lower case
-var lowerFirstLetter = (string) =>
-  string.charAt(0).toLowerCase() + string.slice(1);
+function lowerFirstLetter(string) {
+  var firstCharacter = string.charAt(0),
+    firstCharacterInLowerCase = firstCharacter.toLowerCase(),
+    stringWithoutFirstCharacter = string.splice(1);
+
+  firstCharacterInLowerCase + stringWithoutFirstCharacter;
+}
 
 //Clears spaces in the start and end of the text and also between words
 var clearExtraSpaces = (string) => {
@@ -1545,31 +1575,37 @@ function removeFormatting() {
 
         let indexBeginning = indexOfFirstSelectedLi,
           indexEnd = indexOfLastSelectedLi,
-          ulChildrenAmount = ulChildren.length;
+          amountOfLi = indexEnd + 1;
+        ulChildrenAmount = ulChildren.length;
 
-        while (indexBeginning != indexEnd + 1) {
+        while (indexBeginning != amountOfLi) {
           let firstChild = ulChildren[indexBeginning];
 
           fragmentAfterUL.append(firstChild);
-          indexEnd--;
+          amountOfLi--;
         }
 
-        for (let i = 0; i < fragmentAfterUL.children.length; i++) {
+        let childrenOfFragmentAfterUL = fragmentAfterUL.children,
+          amountOfChildrenOfFragmentAfterUL = childrenOfFragmentAfterUL.length;
+
+        for (let i = 0; i < amountOfChildrenOfFragmentAfterUL; i++) {
           let child = fragmentAfterUL.children[i],
             innerHTMLOfChild = child.innerHTML,
             p = document.createElement("P");
+
           p.innerHTML = innerHTMLOfChild;
           fragmentAfterUL.replaceChild(p, child);
         }
 
         ulChildrenAmount = ulChildren.length;
 
+        let indexOfEnd = ulChildrenAmount - 1;
+
         if (indexOfFirstSelectedLi == 0) {
           ul.before(fragmentAfterUL);
-        } else if (indexOfLastSelectedLi == ulChildrenAmount - 1) {
+        } else if (indexOfLastSelectedLi == indexOfEnd) {
           ul.after(fragmentAfterUL);
         } else {
-          debugger;
           let indexOfLastLiInFirstPart = indexOfFirstSelectedLi - 1,
             firstPart = document.createDocumentFragment(),
             lastPart = document.createDocumentFragment(),
@@ -1611,20 +1647,24 @@ function removeFormatting() {
       } else if (distanceBetweenSelectedLiElements == 1) {
         let textNode = createTextNode(strippedContent),
           indexBeginning = indexOfFirstSelectedLi,
-          indexEnd = indexOfLastSelectedLi;
+          indexEnd = indexOfLastSelectedLi,
+          amountOfLi = indexEnd + 1;
 
         selection.deleteFromDocument();
         range.insertNode(textNode);
 
-        while (indexBeginning != indexEnd + 1) {
-          fragmentAfterUL.append(ul.children[indexBeginning]);
-          indexEnd--;
+        while (indexBeginning != amountOfLi) {
+          let firstChild = ulChildren[indexBeginning];
+
+          fragmentAfterUL.append(firstChild);
+          amountOfLi--;
         }
 
         for (let i = 0; i < fragmentAfterUL.children.length; i++) {
           let child = fragmentAfterUL.children[i],
             innerHTMLOfChild = child.innerHTML,
             p = document.createElement("P");
+
           p.innerHTML = innerHTMLOfChild;
           fragmentAfterUL.replaceChild(p, child);
         }
@@ -1685,16 +1725,20 @@ function removeFormatting() {
         }
 
         for (let g = 0; g < i; g++) {
-          addTag(tags[g].nodeName.toLowerCase());
+          let tag = tags[g],
+            nameOfTag = tag.nodeName,
+            nameOfTagInLowerCase = nameOfTag.toLowerCase();
+
+          addTag(nameOfTagInLowerCase);
         }
         range = selection.getRangeAt(0);
 
-        let newFragment = document.createTextNode(
-          range.cloneContents().textContent
-        );
+        let newFragmentt = range.cloneContents(),
+          textOfNewFragmentt = newFragmentt.textContent,
+          textNodeFromNewFragmentt = createTextNode(textOfNewFragmentt);
 
         selection.deleteFromDocument();
-        range.insertNode(newFragment);
+        range.insertNode(textNodeFromNewFragmentt);
       } else {
         let p = getChild(anchorNode, mainContainer),
           parentTag = getChild(anchorNode, p);
