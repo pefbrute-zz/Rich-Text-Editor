@@ -116,14 +116,13 @@ var clearExtraSpaces = (string) => {
 
 //It deletes repeated classes (what starts with similar text)
 function clearClasses(classNameBeginning) {
-  let classes = document.querySelectorAll(
-      "[class*=" + classNameBeginning + "]"
-    ),
+  let query = "[class*=" + classNameBeginning + "]",
+    classes = document.querySelectorAll(query),
     classesAmount = classes.length;
 
   for (let i = 0; i < classesAmount; i++) {
-    let classElement = classes[i],
-      className = () => classes[i].className,
+    let classElement = () => classes[i],
+      className = () => classElement().className,
       namesInClass = () => className().split(" "),
       lastNamesInClass = namesInClass();
 
@@ -147,23 +146,29 @@ function clearClasses(classNameBeginning) {
 
     if (classesAmount != 1) {
       for (let j = 0; j < classesAmount; j++) {
-        lastNamesInClass.splice(classesIndexes[j], 1);
+        let index = classesIndexes[j];
+
+        lastNamesInClass.splice(index, 1);
         classesAmount--;
       }
     }
 
-    classElement.className = lastNamesInClass.join(" ");
+    let allClasses = lastNamesInClass.join(" ");
+
+    classElement.className = allClasses;
   }
 }
 
 //Toggle class to selected text
 function addColor(color, type, number) {
-  color = capitalizeFirstLetter(color);
-  type = capitalizeFirstLetter(type);
-  ColorAppliers[color][type][number].toggleSelection();
+  let capitalizedColor = capitalizeFirstLetter(color),
+    capitalizedType = capitalizeFirstLetter(type);
+
+  ColorAppliers[capitalizedColor][capitalizedType][number].toggleSelection();
 
   let sign = "-",
-    classNameBeginning = lowerFirstLetter(type) + sign;
+    loweredType = lowerFirstLetter(type),
+    classNameBeginning = loweredType + sign;
 
   clearClasses(classNameBeginning);
 }
@@ -196,23 +201,27 @@ let time = 0;
 //It adds tag with (tagName) to selected text.
 //If it passes url then it makes anchor tag with (url)
 function addTag(tagName, url) {
-  tagName = capitalizeFirstLetter(tagName);
-  TagAppliers[tagName].toggleSelection();
+  let capitalizedTagName = capitalizeFirstLetter(tagName);
+  TagAppliers[capitalizedTagName].toggleSelection();
 
   if (url) {
-    let anchors = document.querySelectorAll("[class=anchor]"),
+    let query = "[class=anchor]",
+      anchors = document.querySelectorAll(query),
       anchorsLength = anchors.length,
-      url = document.getElementById("url");
-    //Make refactoring!
-    //
+      url = document.getElementById("url"),
+      urlValue = url.value;
+
     for (let i = 0; i < anchorsLength; i++) {
-      anchors[i].href = url.value;
-      anchors[i].className = anchors[i].className + time;
+      let anchor = anchors[i],
+        anchorClassName = anchor.className,
+        anchorClassNameWithTime = anchorClassName + time;
+
+      anchor.href = urlValue;
+      anchor.className = anchorClassNameWithTime;
     }
+
     time++;
     url.value = "";
-    //
-    //
   }
 }
 
