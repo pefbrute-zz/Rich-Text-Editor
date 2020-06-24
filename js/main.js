@@ -333,8 +333,9 @@ let SizeAppliers = {
 function addSize(sizeName) {
   SizeAppliers[sizeName].toggleSelection();
 
-  let elements = document.querySelectorAll("[class*=" + sizeName + "]"),
-    length = elements.length;
+  let querySelector = "[class*=" + sizeName + "]",
+    elements = document.querySelectorAll(querySelector),
+    amountOfElements = elements.length;
 
   if (sizeName == "normal") {
     var i = 2;
@@ -342,27 +343,33 @@ function addSize(sizeName) {
     var i = 1;
   }
 
-  if (length > 1) {
+  if (amountOfElements > 1) {
     var names = ["small", "normal", "large", "huge"],
       namesLength = names.length;
 
-    for (i; i < length; i++) {
-      var classNamesList = elements[i].className.split(" "),
-        classNamesListLength = classNamesList.length;
+    for (i; i < amountOfElements; i++) {
+      let element = elements[i],
+        classNameOfElement = element.className;
 
-      if (classNamesListLength > 1) {
-        for (let k = 0; k < classNamesListLength; k++) {
+      var splittedClassName = classNameOfElement.split(" "),
+        amountOfClasses = splittedClassName.length;
+
+      if (amountOfClasses > 1) {
+        for (let k = 0; k < amountOfClasses; k++) {
           for (let j = 0; j < namesLength; j++) {
-            if (
-              classNamesList[k] == names[j] &&
-              classNamesList[k] != sizeName
-            ) {
-              classNamesList.splice(k, 1);
-              classNamesListLength--;
+            let name = names[j],
+              splittedClass = splittedClassName[k];
+
+            if (splittedClass == name && splittedClass != sizeName) {
+              splittedClassName.splice(k, 1);
+              amountOfClasses--;
             }
           }
         }
-        elements[i].className = classNamesList.join(" ");
+
+        let allClasses = splittedClassName.join(" ");
+
+        element.className = allClasses;
       }
     }
   }
@@ -410,24 +417,37 @@ function replaceElement(source, newType) {
   // Create the document fragment
   const frag = document.createDocumentFragment();
 
+  let firstChildOfOldTag = () => source.firstChild;
+
   // Fill it with what's in the source element
   // Including attributes
-  while (source.firstChild) {
-    for (let i = 0; i < source.attributes.length; i++) {
-      attributes.push(source.attributes[i]);
+  while (firstChildOfOldTag()) {
+    let attributesOfOldTag = source.attributes,
+      amountOfAttributesOfOldTag = attributesOfOldTag.length;
+
+    for (let i = 0; i < amountOfAttributesOfOldTag; i++) {
+      let attribute = attributes[i];
+
+      attributes.push(attribute);
     }
-    frag.appendChild(source.firstChild);
+    frag.appendChild(firstChildOfOldTag());
   }
   // Create the new element
-  const newElem = document.createElement(newType);
+  const newElement = document.createElement(newType);
 
   // Empty the document fragment into it
-  newElem.appendChild(frag);
+  newElement.appendChild(frag);
 
   // Add attributes of old element to new element
-  let length = attributes.length;
-  for (let i = 0; i <= length - 1; i++) {
-    newElem.setAttribute(attributes[i].name, attributes[i].value);
+  let amountOfNewAttributes = attributes.length,
+    indexOfLastAttribute = amountOfNewAttributes - 1;
+
+  for (let i = 0; i <= indexOfLastAttribute; i++) {
+    let attribute = attributes[i],
+      attributeName = attribute.name,
+      attributeValue = attribute.value;
+
+    newElement.setAttribute(attributeName, attributeValue);
   }
 
   // Replace the source element with the new element on the page
