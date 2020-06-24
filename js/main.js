@@ -119,9 +119,9 @@ function clearClasses(classNameBeginning) {
   let classes = document.querySelectorAll(
       "[class*=" + classNameBeginning + "]"
     ),
-    classesLength = classes.length;
+    classesAmount = classes.length;
 
-  for (let i = 0; i < classesLength; i++) {
+  for (let i = 0; i < classesAmount; i++) {
     let classElement = classes[i],
       className = () => classes[i].className,
       namesInClass = () => className().split(" "),
@@ -129,20 +129,23 @@ function clearClasses(classNameBeginning) {
 
     classElement.className = clearExtraSpaces(className());
 
-    let length = classNameBeginning.length;
-    let classesAmount = 0,
+    let length = classNameBeginning.length,
+      classesAmount = 0,
       classesIndexes = [],
       k = 0;
 
     for (let j = 0; j <= lastNamesInClass.length - 1; j++) {
-      if (lastNamesInClass[j].substring(0, length) == classNameBeginning) {
+      let name = lastNamesInClass[j],
+        partOfName = name.substring(0, length);
+
+      if (partOfName == classNameBeginning) {
         classesIndexes[k] = j;
         classesAmount++;
         k++;
       }
     }
-    if (classesAmount == 1) {
-    } else {
+
+    if (classesAmount != 1) {
       for (let j = 0; j < classesAmount; j++) {
         lastNamesInClass.splice(classesIndexes[j], 1);
         classesAmount--;
