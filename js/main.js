@@ -235,35 +235,53 @@ let FontAppliers = {
 
 //It adds font class (sofia, ubuntu-mono, etc.) to selected text
 function addFont(fontName) {
-  let signIndex = fontName.indexOf("-");
-  fontName = capitalizeFirstLetter(fontName);
+  let signIndex = fontName.indexOf("-"),
+    amountOfCharactersInFontName = capitalizedFontName.length,
+    capitalizedFontName = capitalizeFirstLetter(fontName);
 
   if (signIndex > 0) {
-    fontName =
-      fontName.substring(0, signIndex) +
-      capitalizeFirstLetter(fontName.substring(signIndex + 1, fontName.length));
+    let firstPart = capitalizedFontName.substring(0, signIndex),
+      startIndexOfSecondPart = signIndex + 1,
+      secondPart = capitalizedFontName.substring(
+        startIndexOfSecondPart,
+        amountOfCharactersInFontName
+      );
+    capitalizedSecondPart = capitalizeFirstLetter(secondPart);
+
+    capitalizedFontName = firstPart + capitalizedSecondPart;
   }
-  FontAppliers[fontName].toggleSelection();
+
+  FontAppliers[capitalizedFontName].toggleSelection();
 
   if (signIndex > 0) {
-    fontName =
-      lowerFirstLetter(fontName.substring(0, signIndex)) +
-      "-" +
-      lowerFirstLetter(fontName.substring(signIndex, fontName.length));
+    let startIndexOfFirstPart = 0,
+      firstPart = capitalizedFontName.substring(
+        startIndexOfFirstPart,
+        signIndex
+      ),
+      secondPart = capitalizedFontName.substring(
+        signIndex,
+        amountOfCharactersInFontName
+      ),
+      loweredFirstPart = lowerFirstLetter(firstPart),
+      loweredSecondPart = lowerFirstLetter(secondPart);
+
+    capitalizedFontName = loweredFirstPart + "-" + loweredSecondPart;
   } else {
-    fontName = lowerFirstLetter(fontName);
+    capitalizedFontName = lowerFirstLetter(capitalizedFontName);
   }
 
-  let elements = document.querySelectorAll("[class*=" + fontName + "]"),
-    length = elements.length;
+  let querySelector = "[class*=" + capitalizedFontName + "]",
+    elements = document.querySelectorAll(querySelector),
+    amountOfElements = elements.length;
 
-  if (fontName == "sofia") {
+  if (capitalizedFontName == "sofia") {
     var i = 2;
   } else {
     var i = 1;
   }
 
-  if (length > 1) {
+  if (amountOfElements > 1) {
     var names = [
         "sofia",
         "slabo-13px",
@@ -271,25 +289,34 @@ function addFont(fontName) {
         "inconsolata",
         "ubuntu-mono",
       ],
-      namesLength = names.length;
+      amountOfNames = names.length;
 
-    for (i; i < length; i++) {
-      if (elements[i].className.split(" ").length > 1) {
-        var classNamesList = elements[i].className.split(" "),
-          classNamesListLength = classNamesList.length;
+    for (i; i < amountOfElements; i++) {
+      let element = elements[i],
+        classNameOfElement = element.className,
+        splittedClassName = classNameOfElement.split(" "),
+        amountOfClassesInClassName = splittedClassName.length;
 
-        for (let k = 0; k < classNamesListLength; k++) {
-          for (let j = 0; j < namesLength; j++) {
+      if (amountOfClassesInClassName > 1) {
+        var classNamesList = splittedClassName,
+          classNamesListAmount = classNamesList.length;
+
+        for (let k = 0; k < classNamesListAmount; k++) {
+          for (let j = 0; j < amountOfNames; j++) {
+            let name = names[j];
+
             if (
-              classNamesList[k] == names[j] &&
-              classNamesList[k] != fontName
+              classNamesList[k] == name &&
+              classNamesList[k] != capitalizedFontName
             ) {
               classNamesList.splice(k, 1);
-              classNamesListLength--;
+              classNamesListAmount--;
             }
           }
         }
-        elements[i].className = classNamesList.join(" ");
+        let allClasses = classNamesList.join(" ");
+
+        element.className = allClasses;
       }
     }
   }
