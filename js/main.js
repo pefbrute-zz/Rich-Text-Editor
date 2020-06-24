@@ -458,52 +458,71 @@ function replaceElement(source, newType) {
 
 //It replaces selected childs tag of <div class="work-area"> with (tag)
 function replaceContainerTag(tag) {
-  var tag = tag.toUpperCase();
+  var tagInUpperCase = tag.toUpperCase();
 
   let mainContainer = document.getElementById("work-area"),
-    firstSelectedElement = getFirstSelectedChilds(mainContainer)[0],
-    lastSelectedElement = getFirstSelectedChilds(mainContainer)[1];
+    selectedElements = gitFirstSelectedChilds(mainContainer),
+    firstSelectedElement = selectedElements[0],
+    lastSelectedElement = selectedElements[1];
 
   if (firstSelectedElement != undefined && lastSelectedElement != undefined) {
     let p = [],
       pCounter = 0,
       tagData = {
-        tagName: tag,
+        tagName: tagInUpperCase,
         tagCounter: 0,
         selectedTags: [],
       };
 
     do {
-      if (firstSelectedElement.tagName == tagData.tagName) {
+      let nameOfFirstSelectedElement = firstSelectedElement.tagName,
+        nameOfTag = tagData.tagName;
+
+      if (nameOfFirstSelectedElement == nameOfTag) {
         p[pCounter] = firstSelectedElement;
         pCounter++;
       } else {
-        tagData.selectedTags[tagData.tagCounter] = firstSelectedElement;
+        let amountOfTags = tagData.tagCounter;
+
+        tagData.selectedTags[amountOfTags] = firstSelectedElement;
         tagData.tagCounter++;
       }
 
-      if (
-        firstSelectedElement.nextElementSibling ==
-        lastSelectedElement.nextElementSibling
-      ) {
+      let elementAfterFirstSelectedElement =
+          firstSelectedElement.nextElementSibling,
+        elementAfterLastSelectedElement =
+          lastSelectedElement.nextElementSibling;
+
+      if (elementAfterFirstSelectedElement == elementAfterLastSelectedElement) {
         break;
       }
 
-      firstSelectedElement = firstSelectedElement.nextElementSibling;
-    } while (firstSelectedElement != lastSelectedElement.nextElementSibling);
-    pCounterMinus1 = pCounter - 1;
+      firstSelectedElement = elementAfterFirstSelectedElement;
+    } while (firstSelectedElement != elementAfterLastSelectedElement);
+
+    lastIndexOfElementInParagraph = pCounter - 1;
+
     if (pCounter != 0) {
-      for (let i = 0; i <= pCounterMinus1; i++) {
-        replaceElement(p[i], "p");
-      }
-    }
-    if (tagData.tagCounter != 0) {
-      for (let i = 0; i <= tagData.tagCounter - 1; i++) {
-        replaceElement(tagData.selectedTags[i], tagData.tagName);
+      for (let i = 0; i <= lastIndexOfElementInParagraph; i++) {
+        let someTag = p[i];
+        replaceElement(someTag, "p");
       }
     }
 
-    if (tag == "PRE") {
+    let amountOfTags = tagData.tagCounter,
+      indexOfLastTag = amountOfTags - 1;
+
+    if (amountOfTags != 0) {
+      for (let i = 0; i <= indexOfLastTag; i++) {
+        let selectedTags = tagData.selectedTags,
+          selectedTag = selectedTags[i],
+          nameOfSelectedTag = tagData.tagName;
+
+        replaceElement(selectedTag, nameOfSelectedTag);
+      }
+    }
+
+    if (tagInUpperCase == "PRE") {
       clearTagsAtPreContainer();
       // init();
       removeSpellcheck();
@@ -519,12 +538,10 @@ function replaceContainerTag(tag) {
 //It highlights specific words + all numbers in <pre>
 function highlightPre() {
   let savedSelection = rangy.saveSelection();
-  console.time();
   highlightKeywords();
   highlightNumbers();
   rangy.restoreSelection(savedSelection);
   localStorage.clear();
-  console.timeEnd();
 }
 
 function getFirstSelectedChilds(bigParent) {
@@ -536,9 +553,9 @@ function getFirstSelectedChilds(bigParent) {
     verific =
       firstNode.nodeName == "#text" &&
       range.commonAncestorContainer != wrongContainer;
+
   if (bigParent != undefined) {
     if (verific) {
-      // let mainContainer = document.getElementById("work-area"),
       let firstSelectedElement = firstNode,
         lastSelectedElement = lastNode,
         startElement = range.startContainer,
@@ -548,8 +565,16 @@ function getFirstSelectedChilds(bigParent) {
         firstSelectedElement != startElement &&
         lastSelectedElement != endElement
       ) {
-        firstSelectedElement = lastNode;
-        lastSelectedElement = firstNode;
+        // firstSelectedElement = lastNode;
+        // lastSelectedElement = firstNode;
+
+        firstAndLastSelectedElements = swap(
+          firstSelectedElement,
+          lastSelectedElement
+        );
+
+        firstSelectedElement = firstAndLastSelectedElements[0];
+        lastSelectedElement = firstAndLastSelectedElements[1];
       }
 
       firstElement = getChild(firstSelectedElement, bigParent);
@@ -571,69 +596,75 @@ function addContainerClass(className) {
     lastSelectedElement = getFirstSelectedChilds(mainContainer)[1];
 
   if (firstSelectedElement != undefined && lastSelectedElement != undefined) {
-    if (className.substring(0, 6) == "indent") {
+    let classNameBeginning = className.substring(0, 6);
+
+    if (classNameBeginning == "indent") {
       let sign = className.substring(6, 7),
         classBeginning = "indent";
 
       do {
-        if (firstSelectedElement.nodeName != "#text") {
+        let nameOfFirstSelectedElement = firstSelectedElement.nodeName;
+
+        if (nameOfFirstSelectedElement != "#text") {
           let firstSelectedElementClassName = firstSelectedElement.className,
-            dataValue = firstSelectedElement.attributes["data-value"];
+            attributesOfFirstSelectedElement = firstSelectedElement.attributes,
+            dataValue = attributesOfFirstSelectedElement["data-value"];
 
           if (dataValue != undefined) {
-            let value = parseInt(
-              firstSelectedElement.attributes["data-value"].nodeValue
-            );
+            let valueOfDataValue = dataValue.nodeValue,
+              parsedDataValue = parseInt(valueOfDataValue);
+
             if (sign == "+") {
-              if (value <= 7) {
-                let cleanElement = clearExtraSpaces(
-                    firstSelectedElement.className
-                  ),
+              if (parsedDataValue <= 7) {
+                let className = firstSelectedElement.className;
+                let cleanElement = clearExtraSpaces(className),
                   classes = cleanElement.split(" "),
-                  length = classes.length;
-                for (let j = 0; j < length; j++) {
+                  amountOfClasses = classes.length;
+                for (let j = 0; j < amountOfClasses; j++) {
                   let classBeginning = classes[j].substring(0, 6);
                   if (classBeginning == "indent") {
                     classes.splice(j, 1);
                     j--;
-                    length--;
+                    amountOfClasses--;
                   }
                 }
                 classes = classes.join(" ");
 
-                value++;
+                parsedDataValue++;
 
-                firstSelectedElement.attributes["data-value"].nodeValue = value;
+                firstSelectedElement.attributes[
+                  "data-value"
+                ].nodeValue = parsedDataValue;
 
                 firstSelectedElement.className = clearExtraSpaces(
-                  classes + " " + classBeginning + "-" + value
+                  classes + " " + classBeginning + "-" + parsedDataValue
                 );
               }
             } else {
-              if (value >= 1) {
-                if (value == 1) {
-                  let clearElement = clearExtraSpaces(
-                      firstSelectedElement.className
-                    ),
+              if (parsedDataValue >= 1) {
+                if (parsedDataValue == 1) {
+                  let className = firstSelectedElement.className,
+                    clearElement = clearExtraSpaces(className),
                     classes = clearElement.split(" "),
-                    length = classes.length;
+                    amountOfClasses = classes.length;
 
                   firstSelectedElement.removeAttribute("data-value");
 
-                  if (length == 1) {
+                  if (amountOfClasses == 1) {
                     firstSelectedElement.removeAttribute("class");
                   } else {
-                    for (let j = 0; j < length; j++) {
-                      let classBeginning = classes[j].substring(0, 6);
+                    for (let j = 0; j < amountOfClasses; j++) {
+                      let someClass = classes[j],
+                        classBeginning = someClass.substring(0, 6);
 
                       if (classBeginning == "indent") {
                         classes.splice(j, 1);
 
                         j--;
-                        length--;
+                        amountOfClasses--;
                       }
                     }
-                    if (length == 0) {
+                    if (amountOfClasses == 0) {
                       firstSelectedElement.removeAttribute("class");
                     }
                     classes = classes.join(" ");
@@ -642,30 +673,36 @@ function addContainerClass(className) {
                 } else {
                   // repeated code too
                   //
-                  let classes = firstSelectedElement.className.split(" "),
-                    length = classes.length;
+                  let className = firstSelectedElement.className;
+                  let classes = className.split(" "),
+                    amountOfClasses = classes.length;
 
-                  for (let j = 0; j < length; j++) {
-                    let classBeginning = classes[j].substring(0, 6);
+                  for (let j = 0; j < amountOfClasses; j++) {
+                    let someClass = classes[j],
+                      classBeginning = someClass.substring(0, 6);
 
                     if (classBeginning == "indent") {
                       classes.splice(j, 1);
 
                       j--;
-                      length--;
+                      amountOfClasses--;
                     }
                   }
 
                   classes = classes.join(" ");
-                  value--;
+                  parsedDataValue--;
 
                   firstSelectedElement.attributes[
                     "data-value"
-                  ].nodeValue = value;
+                  ].nodeValue = parsedDataValue;
 
-                  firstSelectedElement.className = clearExtraSpaces(
-                    classes + " " + classBeginning + "-" + value
-                  );
+                  let classesWithClassBeginningAndParsedDataValue =
+                      classes + " " + classBeginning + "-" + parsedDataValue,
+                    classesWithoutExtraSpaces = clearExtraSpaces(
+                      classesWithClassBeginningAndParsedDataValue
+                    );
+
+                  firstSelectedElement.className = classesWithoutExtraSpaces;
                   //
                   //
                 }
@@ -674,10 +711,17 @@ function addContainerClass(className) {
           } else if (className == "indent+") {
             firstSelectedElement.setAttribute("data-value", 1);
 
-            let value = firstSelectedElement.attributes["data-value"].value;
+            let attributesOfFirstSelectedElement =
+                firstSelectedElement.attributes,
+              parsedDataValue =
+                attributesOfFirstSelectedElement["data-value"].value;
 
             firstSelectedElement.className = clearExtraSpaces(
-              firstSelectedElementClassName + " " + classBeginning + "-" + value
+              firstSelectedElementClassName +
+                " " +
+                classBeginning +
+                "-" +
+                parsedDataValue
             );
           }
         }
