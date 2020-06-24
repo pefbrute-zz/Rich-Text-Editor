@@ -1372,6 +1372,12 @@ function getChildIndex(child, parent) {
   return indexOfChild;
 }
 
+function swap(firstThing, secondThing) {
+  [firstThing, secondThing] = [secondThing, firstThing];
+
+  return [firstThing, secondThing];
+}
+
 function removeFormatting() {
   clearEmptyContainers();
 
@@ -1398,14 +1404,13 @@ function removeFormatting() {
 
   // Swap start and end nodes and their indexes of the selection, if it's started from the end
   if (indexOfFirstSelectedChild > indexOfLastSelectedChild) {
-    [indexOfFirstSelectedChild, indexOfLastSelectedChild] = [
-      indexOfLastSelectedChild,
-      indexOfFirstSelectedChild,
-    ];
-    [firstSelectedChild, lastSelectedChild] = [
-      lastSelectedChild,
-      firstSelectedChild,
-    ];
+    let indexes = swap(indexOfFirstSelectedChild, indexOfLastSelectedChild),
+      childs = swap(firstSelectedChild, lastSelectedChild);
+
+    indexOfFirstSelectedChild = indexes[0];
+    indexOfLastSelectedChild = indexes[1];
+    firstSelectedChild = childs[0];
+    lastSelectedChild = childs[1];
   }
 
   let distance = indexOfLastSelectedChild - indexOfFirstSelectedChild + 1;
@@ -1478,14 +1483,18 @@ function removeFormatting() {
     }
   } else if (distance == 1) {
     let parentOfFirstSelectedElement = anchorNode.parentElement,
-    nameOfParentOfFirstSelectedElement = parentOfFirstSelectedElement.nodeName;
+      nameOfParentOfFirstSelectedElement =
+        parentOfFirstSelectedElement.nodeName,
+      firstLevelChildOfMainContainer = getChild(anchorNode, mainContainer),
+      nameOfFirstLevelChildOfMainContainer =
+        firstLevelChildOfMainContainer.nodeName;
 
     if (nameOfParentOfFirstSelectedElement == "P") {
       let textNode = createTextNode(strippedContent);
 
       selection.deleteFromDocument();
       range.insertNode(textNode);
-    } else if (getChild(anchorNode, mainContainer).nodeName == "UL") {
+    } else if (nameOfFirstLevelChildOfMainContainer == "UL") {
       let firstSelectedLi = getSecondChild(anchorNode, mainContainer),
         lastSelectedLi = getSecondChild(focusNode, mainContainer),
         ul = getChild(anchorNode, mainContainer),
@@ -1520,15 +1529,18 @@ function removeFormatting() {
         }
 
         selection.deleteFromDocument();
+
         let firstFragmentChild = fragmentChildren[0],
-          lastFragmentChild = fragmentChildren[fragmentChildrenAmount - 1];
+          lastFragmentChild = fragmentChildren[fragmentChildrenAmount - 1],
+          textOfFirstSelectedLi = firstFragmentChild.textContent,
+          textOfLastSelectedLi = lastFragmentChild.textContent;
 
         if (indexOfFirstSelectedLi != indexOfLastSelectedLi) {
-          firstSelectedLi.append(firstFragmentChild.textContent);
-          lastSelectedLi.prepend(lastFragmentChild.textContent);
+          firstSelectedLi.append(textOfFirstSelectedLi);
+          lastSelectedLi.prepend(textOfLastSelectedLi);
           firstSelectedLi.after(someFragment);
         } else {
-          firstSelectedLi.append(firstFragmentChild.textContent);
+          firstSelectedLi.append(textOfFirstSelectedLi);
         }
 
         let indexBeginning = indexOfFirstSelectedLi,
@@ -1536,7 +1548,9 @@ function removeFormatting() {
           ulChildrenAmount = ulChildren.length;
 
         while (indexBeginning != indexEnd + 1) {
-          fragmentAfterUL.append(ul.children[indexBeginning]);
+          let firstChild = ulChildren[indexBeginning];
+
+          fragmentAfterUL.append(firstChild);
           indexEnd--;
         }
 
