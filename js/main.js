@@ -236,8 +236,8 @@ let FontAppliers = {
 //It adds font class (sofia, ubuntu-mono, etc.) to selected text
 function addFont(fontName) {
   let signIndex = fontName.indexOf("-"),
-    amountOfCharactersInFontName = capitalizedFontName.length,
-    capitalizedFontName = capitalizeFirstLetter(fontName);
+    capitalizedFontName = capitalizeFirstLetter(fontName),
+    amountOfCharactersInFontName = capitalizedFontName.length;
 
   if (signIndex > 0) {
     let firstPart = capitalizedFontName.substring(0, signIndex),
