@@ -453,7 +453,7 @@ function replaceElement(source, newType) {
   // Replace the source element with the new element on the page
   let parentNode = source.parentNode;
 
-  parentNode.replaceChild(newElem, source);
+  parentNode.replaceChild(newElement, source);
 }
 
 //It replaces selected childs tag of <div class="work-area"> with (tag)
@@ -461,7 +461,7 @@ function replaceContainerTag(tag) {
   var tagInUpperCase = tag.toUpperCase();
 
   let mainContainer = document.getElementById("work-area"),
-    selectedElements = gitFirstSelectedChilds(mainContainer),
+    selectedElements = getFirstSelectedChilds(mainContainer),
     firstSelectedElement = selectedElements[0],
     lastSelectedElement = selectedElements[1];
 
@@ -488,7 +488,7 @@ function replaceContainerTag(tag) {
         tagData.tagCounter++;
       }
 
-      let elementAfterFirstSelectedElement =
+      var elementAfterFirstSelectedElement =
           firstSelectedElement.nextElementSibling,
         elementAfterLastSelectedElement =
           lastSelectedElement.nextElementSibling;
@@ -733,20 +733,22 @@ function addContainerClass(className) {
       );
     } else {
       do {
-        if (firstSelectedElement.className == className) {
+        let classNameOfFirstSelectedElement = firstSelectedElement.className;
+
+        if (classNameOfFirstSelectedElement == className) {
           firstSelectedElement.removeAttribute("class");
-        } else if (firstSelectedElement.className != undefined) {
-          if (firstSelectedElement.className == "") {
+        } else if (classNameOfFirstSelectedElement != undefined) {
+          if (classNameOfFirstSelectedElement == "") {
             firstSelectedElement.className = className;
           } else {
             let classes = firstSelectedElement.className.split(" "),
-              length = classes.length;
+              classesAmount = classes.length;
 
-            if (length == 1) {
+            if (classesAmount == 1) {
               let classNameIndex = className.indexOf("-"),
                 classNameBeginning = className.substring(0, classNameIndex),
-                classIndex = firstSelectedElement.className.indexOf("-"),
-                classBeginning = firstSelectedElement.className.substring(
+                classIndex = classNameOfFirstSelectedElement.indexOf("-"),
+                classBeginning = classNameOfFirstSelectedElement.substring(
                   0,
                   classIndex
                 );
@@ -755,7 +757,7 @@ function addContainerClass(className) {
                 firstSelectedElement.className = className;
               } else {
                 firstSelectedElement.className =
-                  firstSelectedElement.className + " " + className;
+                  classNameOfFirstSelectedElement + " " + className;
               }
             } else {
               // repeated code
@@ -763,19 +765,22 @@ function addContainerClass(className) {
               let classNameIndex = className.indexOf("-"),
                 classNameBeginning = className.substring(0, classNameIndex);
 
-              for (let j = 0; j < length; j++) {
-                let classIndex = classes[j].indexOf("-"),
-                  classBeginning = classes[j].substring(0, classIndex);
+              for (let j = 0; j < classesAmount; j++) {
+                let someClass = classes[j],
+                  classIndex = someClass.indexOf("-"),
+                  classBeginning = someClass.substring(0, classIndex);
 
                 if (classBeginning == classNameBeginning) {
                   classes.splice(j, 1);
                   j--;
-                  length--;
+                  classesAmount--;
                 }
               }
+
               classes = classes.join(" ");
+              let allClasses = classes;
               firstSelectedElement.className = clearExtraSpaces(
-                classes + " " + className
+                allClasses + " " + className
               );
               //
               //
