@@ -985,7 +985,7 @@ function makeList(type) {
   lastParentIndex = parentsIndexes[1];
 
   //Count how much list tags was selected
-  function getListsamount(firstParentIndex, lastParentIndex) {
+  function getAmountOfLists(firstParentIndex, lastParentIndex) {
     let count = 0,
       index = lastParentIndex + 1;
 
@@ -1000,13 +1000,13 @@ function makeList(type) {
     return count;
   }
 
-  let ListsAmount = getListsamount(firstParentIndex, lastParentIndex);
+  let amountOfLists = getAmountOfLists(firstParentIndex, lastParentIndex);
 
   // If we selected only list tags then turn them into <p> tags
   //
   //Think about condition!
   let index = lastParentIndex + 1;
-  if (ListsAmount == index - firstParentIndex) {
+  if (amountOfLists == index - firstParentIndex) {
     //
     //
     let selection = document.getSelection(),
@@ -1437,16 +1437,17 @@ function changeImage(input) {
   var reader,
     files = input.files,
     file = files[0],
-    image = document.querySelector("img[src='']");
+    querySelector = "img[src='']";
+  image = document.querySelector(querySelector);
 
   if (files && file) {
     reader = new FileReader();
 
     reader.onload = function (event) {
-      let target = event.target,
-        result = target.result;
+      let newReader = event.target,
+        photoURL = newReader.result;
 
-      image.setAttribute("src", result);
+      image.setAttribute("src", photoURL);
     };
 
     reader.readAsDataURL(file);
@@ -1466,7 +1467,6 @@ function addImage() {
 
   fileTag.click();
 }
-//
 
 function addVideoByURL() {
   let selection = document.getSelection(),
@@ -1537,7 +1537,9 @@ function removeFormatting() {
     elementsBetweenFirstAndLastSelectedChilds = [];
 
   let firstSelectedChild = getChild(anchorNode, mainContainer),
+    nameOfFirstSelectedChild = firstSelectedChild.nodeName,
     lastSelectedChild = getChild(focusNode, mainContainer),
+    nameOfLastSelectedChild = lastSelectedChild.nodeName,
     indexOfFirstSelectedChild = getChildIndex(
       firstSelectedChild,
       mainContainer
@@ -1597,31 +1599,125 @@ function removeFormatting() {
   } else if (distance == 2) {
     debugger;
 
-    selection.deleteFromDocument();
-    for (let i = 0; i < fragmentChildrenAmount; i++) {
-      let fragmentChild = fragmentChildren[i],
-        fragmentChildName = fragmentChild.nodeName,
-        firstChildStrippedContent = fragmentChild.textContent,
-        nodeWithStrippedContent = createTextNode(firstChildStrippedContent),
-        nextSiblingOfFirstSelectedChild = () =>
-          firstSelectedChild.nextElementSibling;
+    if (nameOfFirstSelectedChild == "P" && nameOfLastSelectedChild == "P") {
+      console.log("Hi!");
+      selection.deleteFromDocument();
+      for (let i = 0; i < fragmentChildrenAmount; i++) {
+        let fragmentChild = fragmentChildren[i],
+          fragmentChildName = fragmentChild.nodeName,
+          firstChildStrippedContent = fragmentChild.textContent,
+          nodeWithStrippedContent = createTextNode(firstChildStrippedContent),
+          nextSiblingOfFirstSelectedChild = () =>
+            firstSelectedChild.nextElementSibling;
 
-      if (firstSelectedChild == undefined) {
-        let newNode = document.createElement(fragmentChildName);
+        if (firstSelectedChild == undefined) {
+          let newNode = document.createElement(fragmentChildName);
 
-        newNode.appendChild(nodeWithStrippedContent);
-      } else {
-        // If it's the last child then prepend it before first selected child
-        if (i + 1 == fragmentChildrenAmount) {
-          firstSelectedChild.prepend(nodeWithStrippedContent);
-          firstSelectedChild = nextSiblingOfFirstSelectedChild();
-        }
-        //Else append it after first selected child
-        else {
-          firstSelectedChild.appendChild(nodeWithStrippedContent);
-          firstSelectedChild = nextSiblingOfFirstSelectedChild();
+          newNode.appendChild(nodeWithStrippedContent);
+        } else {
+          // If it's the last child then prepend it before first selected child
+          if (i + 1 == fragmentChildrenAmount) {
+            firstSelectedChild.prepend(nodeWithStrippedContent);
+            firstSelectedChild = nextSiblingOfFirstSelectedChild();
+          }
+          //Else append it after first selected child
+          else {
+            firstSelectedChild.appendChild(nodeWithStrippedContent);
+            firstSelectedChild = nextSiblingOfFirstSelectedChild();
+          }
         }
       }
+    } else if (
+      nameOfFirstSelectedChild == "P" &&
+      nameOfLastSelectedChild == "UL"
+    ) {
+      console.log(fragment);
+      console.log(nameOfFirstSelectedChild, nameOfLastSelectedChild);
+      let firstSelectedLi = getSecondChild(anchorNode, mainContainer),
+        lastSelectedLi = getSecondChild(focusNode, mainContainer),
+        ul = getChild(anchorNode, mainContainer),
+        ulChildren = ul.children,
+        indexOfFirstSelectedLi = getChildIndex(firstSelectedLi, ul),
+        indexOfLastSelectedLi = getChildIndex(lastSelectedLi, ul),
+        fragmentAfterUL = document.createDocumentFragment();
+
+      if (indexOfFirstSelectedLi > indexOfLastSelectedLi) {
+        [indexOfFirstSelectedLi, indexOfLastSelectedLi] = [
+          indexOfLastSelectedLi,
+          indexOfFirstSelectedLi,
+        ];
+        [firstSelectedLi, lastSelectedLi] = [lastSelectedLi, firstSelectedLi];
+      }
+
+      let distanceBetweenSelectedLiElements =
+        indexOfLastSelectedLi - indexOfFirstSelectedLi + 1;
+
+      if (distanceBetweenSelectedLiElements >= 2) {
+        let someFragment = document.createDocumentFragment(),
+          elementsBetweenFirstAndLastSelectedLiElements = [],
+          i = 0;
+
+        while (ulChildren[indexOfFirstSelectedLi + 1] != lastSelectedLi) {
+          let child = ulChildren[indexOfFirstSelectedLi + 1];
+
+          elementsBetweenFirstAndLastSelectedLiElements[i] = child;
+
+          someFragment.appendChild(clearElement(child));
+          i++;
+        }
+
+        selection.deleteFromDocument();
+
+        let firstFragmentChild = fragmentChildren[0],
+          lastFragmentChild = fragmentChildren[fragmentChildrenAmount - 1],
+          textOfFirstSelectedLi = firstFragmentChild.textContent,
+          textOfLastSelectedLi = lastFragmentChild.textContent;
+
+        if (indexOfFirstSelectedLi != indexOfLastSelectedLi) {
+          firstSelectedLi.append(textOfFirstSelectedLi);
+          lastSelectedLi.prepend(textOfLastSelectedLi);
+          firstSelectedLi.after(someFragment);
+        } else {
+          firstSelectedLi.append(textOfFirstSelectedLi);
+        }
+
+        let indexBeginning = indexOfFirstSelectedLi,
+          indexEnd = indexOfLastSelectedLi,
+          amountOfLi = indexEnd + 1;
+        ulChildrenAmount = ulChildren.length;
+
+        while (indexBeginning != amountOfLi) {
+          let firstChild = ulChildren[indexBeginning];
+
+          fragmentAfterUL.append(firstChild);
+          amountOfLi--;
+        }
+
+        let childrenOfFragmentAfterUL = fragmentAfterUL.children,
+          amountOfChildrenOfFragmentAfterUL = childrenOfFragmentAfterUL.length;
+
+        for (let i = 0; i < amountOfChildrenOfFragmentAfterUL; i++) {
+          let child = fragmentAfterUL.children[i],
+            innerHTMLOfChild = child.innerHTML,
+            p = document.createElement("P");
+
+          p.innerHTML = innerHTMLOfChild;
+          fragmentAfterUL.replaceChild(p, child);
+        }
+
+        ulChildrenAmount = ulChildren.length;
+
+        let indexOfEnd = ulChildrenAmount - 1;
+
+        if (indexOfFirstSelectedLi == 0) {
+          ul.before(fragmentAfterUL);
+        }
+      }
+    } else if (
+      nameOfFirstSelectedChild == "UL" &&
+      nameOfLastSelectedChild == "P"
+    ) {
+      console.log(nameOfFirstSelectedChild, nameOfLastSelectedChild);
     }
   } else if (distance == 1) {
     let parentOfFirstSelectedElement = anchorNode.parentElement,
