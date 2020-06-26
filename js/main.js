@@ -193,6 +193,7 @@ let TagAppliers = {
   A: rangy.createClassApplier("anchor", Options["A"]),
   Sup: rangy.createClassApplier("superscript", Options["Sup"]),
   Sub: rangy.createClassApplier("subscript", Options["Sub"]),
+  Selected: rangy.createClassApplier("selected", Options["Selected"]),
 };
 
 //Add tag to selected text
@@ -1532,8 +1533,8 @@ function removeFormatting() {
     fragmentChildrenAmount = fragmentChildren.length,
     strippedContent = fragment.textContent,
     mainContainer = document.getElementById("work-area"),
-    nodeWithStrippedContent,
     createTextNode = (text) => document.createTextNode(text),
+    nodeWithStrippedContent = createTextNode(strippedContent),
     elementsBetweenFirstAndLastSelectedChilds = [];
 
   let firstSelectedChild = getChild(anchorNode, mainContainer),
@@ -1597,8 +1598,6 @@ function removeFormatting() {
       fragmentWithChildsBetweenFirstAndLastSelectedElements
     );
   } else if (distance == 2) {
-    debugger;
-
     if (nameOfFirstSelectedChild == "P" && nameOfLastSelectedChild == "P") {
       console.log("Hi!");
       selection.deleteFromDocument();
@@ -1634,77 +1633,88 @@ function removeFormatting() {
     ) {
       console.log(fragment);
       console.log(nameOfFirstSelectedChild, nameOfLastSelectedChild);
-      let ul = getChild(lastSelectedChild, mainContainer),
+      // let startMarker = document.createElement("start"),
+      //   endMarker = document.createElement("end"),
+      //   clonedRange = range.cloneRange(),
+      // secondClone = range.cloneRange();
+
+      // clonedRange.insertNode(startMarker);
+      // clonedRange.collapse(false);
+      // clonedRange.insertNode(endMarker);
+
+      range.extractContents();
+
+      // addTag("Selected");
+      let fragmentWithLi = document.createDocumentFragment(),
+        lastLi = getSecondChild(focusNode, mainContainer),
+        ul = getChild(focusNode, mainContainer),
         ulChildren = ul.children,
-        firstSelectedLi = ulChildren[0],
-        lastSelectedLi = getSecondChild(focusNode, mainContainer),
-        indexOfFirstSelectedLi = 0,
-        indexOfLastSelectedLi = getChildIndex(lastSelectedLi, ul),
-        fragmentAfterUL = document.createDocumentFragment();
+        indexOfLastLi = getChildIndex(lastLi, ul);
 
-      let distanceBetweenSelectedLiElements =
-        indexOfLastSelectedLi - indexOfFirstSelectedLi + 1;
+      while (ulChildren[0] != ulChildren[indexOfLastLi + 1]) {
+        fragmentWithLi.append(ulChildren[0]);
+        indexOfLastLi--;
+      }
 
-      if (distanceBetweenSelectedLiElements >= 2) {
-        let someFragment = document.createDocumentFragment(),
-          elementsBetweenFirstAndLastSelectedLiElements = [],
-          i = 0;
+      let childrenOfFragmentWithLi = fragmentWithLi.children,
+        amountOfChildrenOfFragmentWithLi = childrenOfFragmentWithLi.length;
 
-        while (ulChildren[indexOfFirstSelectedLi] != ulChildren[indexOfLastSelectedLi + 1]) {
-          let child = ulChildren[indexOfFirstSelectedLi];
+      for (let i = 0; i < amountOfChildrenOfFragmentWithLi; i++) {
+        let child = childrenOfFragmentWithLi[i],
+          innerHTMLOfChild = child.innerHTML,
+          p = document.createElement("P");
 
-          elementsBetweenFirstAndLastSelectedLiElements[i] = child;
+        p.innerHTML = innerHTMLOfChild;
+        fragmentWithLi.replaceChild(p, child);
+      }
+      let fragmentWithP = fragmentWithLi,
+        childrenOfFragmentWithP = childrenOfFragmentWithLi,
+        amountOfChildrenOfFragmentWithP = amountOfChildrenOfFragmentWithLi;
 
-          someFragment.appendChild(clearElement(child));
-          indexOfLastSelectedLi--;
+      ul.before(fragmentWithP);
+
+      // Not working. Change it!
+      //
+      if (amountOfChildrenOfFragmentWithP > 1) {
+        let mainContainer = document.getElementById("work-area"),
+          mainContainerChilds = mainContainer.children,
+          fragmentWithChildsBetweenFirstAndLastSelectedElements = document.createDocumentFragment(),
+          i = 0,
+          index = indexOfFirstSelectedChild + 1,
+          childAfterFirstSelectedChild = () => mainContainerChilds[index];
+
+        while (childAfterFirstSelectedChild() != lastSelectedChild) {
+          let child = childAfterFirstSelectedChild();
+          elementsBetweenFirstAndLastSelectedChilds[i] = child;
+
+          fragmentWithChildsBetweenFirstAndLastSelectedElements.appendChild(
+            clearElement(child)
+          );
           i++;
         }
 
         selection.deleteFromDocument();
 
-        let firstFragmentChild = fragmentChildren[1].children[0],
-          lastFragmentChild = fragmentChildren[1].children[fragmentChildrenAmount - 1],
-          textOfFirstSelectedLi = firstFragmentChild.textContent,
-          textOfLastSelectedLi = lastFragmentChild.textContent;
+        let firstChildOfFragment = fragmentChildren[0],
+          lastChildOfFragment = fragmentChildren[fragmentChildrenAmount - 1],
+          textOfFirstChildOfFragment = firstChildOfFragment.textContent,
+          textOfLastChildOfFragment = lastChildOfFragment.textContent;
 
-        if (indexOfFirstSelectedLi != indexOfLastSelectedLi) {
-          firstSelectedLi.append(textOfFirstSelectedLi);
-          lastSelectedLi.prepend(textOfLastSelectedLi);
-          firstSelectedLi.after(someFragment);
-        } else {
-          firstSelectedLi.append(textOfFirstSelectedLi);
-        }
-
-        let indexBeginning = indexOfFirstSelectedLi,
-          indexEnd = indexOfLastSelectedLi,
-          amountOfLi = indexEnd + 1;
-        ulChildrenAmount = ulChildren.length;
-
-        while (indexBeginning != amountOfLi) {
-          let firstChild = ulChildren[indexBeginning];
-
-          fragmentAfterUL.append(firstChild);
-          amountOfLi--;
-        }
-
-        let childrenOfFragmentAfterUL = fragmentAfterUL.children,
-          amountOfChildrenOfFragmentAfterUL = childrenOfFragmentAfterUL.length;
-
-        for (let i = 0; i < amountOfChildrenOfFragmentAfterUL; i++) {
-          let child = fragmentAfterUL.children[i],
-            innerHTMLOfChild = child.innerHTML,
-            p = document.createElement("P");
-
-          p.innerHTML = innerHTMLOfChild;
-          fragmentAfterUL.replaceChild(p, child);
-        }
-
-        ulChildrenAmount = ulChildren.length;
-
-        if (indexOfFirstSelectedLi == 0) {
-          ul.before(fragmentAfterUL);
-        }
+        firstSelectedChild.append(textOfFirstChildOfFragment);
+        lastSelectedChild.prepend(textOfLastChildOfFragment);
+        firstSelectedChild.after(
+          fragmentWithChildsBetweenFirstAndLastSelectedElements
+        );
       }
+      //
+      //
+
+      // let newFragment = range.cloneContents(),
+      // childrenOfNewFragment = newFragment.children;
+      // console.log (childrenOfNewFragment[0].innerHTML.indexOf("</start>") );
+
+      console.log(selection);
+      // console.log(newFragment);
     } else if (
       nameOfFirstSelectedChild == "UL" &&
       nameOfLastSelectedChild == "P"
