@@ -1644,7 +1644,7 @@ function removeFormatting() {
 
       // range.extractContents();
 
-      addTag("Selected");
+      addTag("selected");
       let fragmentWithLi = document.createDocumentFragment(),
         lastLi = getSecondChild(focusNode, mainContainer),
         ul = getChild(focusNode, mainContainer),
@@ -1667,16 +1667,81 @@ function removeFormatting() {
         p.innerHTML = innerHTMLOfChild;
         fragmentWithLi.replaceChild(p, child);
       }
-      let fragmentWithP = fragmentWithLi,
-        childrenOfFragmentWithP = childrenOfFragmentWithLi,
-        amountOfChildrenOfFragmentWithP = amountOfChildrenOfFragmentWithLi;
+      let fragmentWithP = fragmentWithLi;
+      // childrenOfFragmentWithP = childrenOfFragmentWithLi,
+      // amountOfChildrenOfFragmentWithP = amountOfChildrenOfFragmentWithLi;
 
       ul.before(fragmentWithP);
 
-      
+      let querySelector = "[class*=selected]",
+        selectedParts = document.querySelectorAll(querySelector);
 
-      console.log(selection);
-      // console.log(newFragment);
+      console.log(
+        getChild(selectedParts[0], mainContainer) ==
+          getChild(selectedParts[1], mainContainer)
+      );
+      console.log(
+        getChild(selectedParts[0], mainContainer) ==
+          getChild(selectedParts[5], mainContainer)
+      );
+      let selectedPartsInFirstP = [],
+        selectedPartsInLastP = [],
+        i = 0,
+        firstPart = selectedParts[0],
+        amountOfSelectedParts = selectedParts.length,
+        indexOfLastSelectedPart = amountOfSelectedParts - 1;
+      lastPart = selectedParts[indexOfLastSelectedPart];
+
+      while (
+        getChild(firstPart, mainContainer) ==
+        getChild(selectedParts[i], mainContainer)
+      ) {
+        selectedPartsInFirstP.push(selectedParts[i]);
+        i++;
+      }
+
+      i = indexOfLastSelectedPart;
+      while (
+        getChild(lastPart, mainContainer) ==
+        getChild(selectedParts[i], mainContainer)
+      ) {
+        selectedPartsInLastP.push(selectedParts[i]);
+        i--;
+      }
+
+      selectedPartsInLastP.reverse();
+
+      console.log(selectedParts);
+      console.log(selectedPartsInFirstP);
+      console.log(selectedPartsInLastP);
+
+      let bigFirstContent = "",
+        bigLastContent = "",
+        lastSelectedP = lastSelectedChild.previousSibling;
+
+      for (let i = 0; i < selectedPartsInFirstP.length; i++) {
+        bigFirstContent = bigFirstContent.concat(
+          selectedPartsInFirstP[i].textContent
+        );
+
+        selectedPartsInFirstP[i].remove();
+      }
+
+      for (let i = 0; i < selectedPartsInLastP.length; i++) {
+        bigLastContent = bigLastContent.concat(
+          selectedPartsInLastP[i].textContent
+        );
+
+        selectedPartsInLastP[i].remove();
+      }
+
+      console.log(bigFirstContent);
+
+      let textNodeWithBigFirstContent = createTextNode(bigFirstContent),
+      textNodeWithBigLastContent = createTextNode(bigLastContent);
+
+      firstSelectedChild.append(textNodeWithBigFirstContent);
+      lastSelectedP.prepend(textNodeWithBigLastContent);
     } else if (
       nameOfFirstSelectedChild == "UL" &&
       nameOfLastSelectedChild == "P"
