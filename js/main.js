@@ -1642,9 +1642,9 @@ function removeFormatting() {
       // clonedRange.collapse(false);
       // clonedRange.insertNode(endMarker);
 
-      range.extractContents();
+      // range.extractContents();
 
-      // addTag("Selected");
+      addTag("Selected");
       let fragmentWithLi = document.createDocumentFragment(),
         lastLi = getSecondChild(focusNode, mainContainer),
         ul = getChild(focusNode, mainContainer),
@@ -1673,45 +1673,7 @@ function removeFormatting() {
 
       ul.before(fragmentWithP);
 
-      // Not working. Change it!
-      //
-      if (amountOfChildrenOfFragmentWithP > 1) {
-        let mainContainer = document.getElementById("work-area"),
-          mainContainerChilds = mainContainer.children,
-          fragmentWithChildsBetweenFirstAndLastSelectedElements = document.createDocumentFragment(),
-          i = 0,
-          index = indexOfFirstSelectedChild + 1,
-          childAfterFirstSelectedChild = () => mainContainerChilds[index];
-
-        while (childAfterFirstSelectedChild() != lastSelectedChild) {
-          let child = childAfterFirstSelectedChild();
-          elementsBetweenFirstAndLastSelectedChilds[i] = child;
-
-          fragmentWithChildsBetweenFirstAndLastSelectedElements.appendChild(
-            clearElement(child)
-          );
-          i++;
-        }
-
-        selection.deleteFromDocument();
-
-        let firstChildOfFragment = fragmentChildren[0],
-          lastChildOfFragment = fragmentChildren[fragmentChildrenAmount - 1],
-          textOfFirstChildOfFragment = firstChildOfFragment.textContent,
-          textOfLastChildOfFragment = lastChildOfFragment.textContent;
-
-        firstSelectedChild.append(textOfFirstChildOfFragment);
-        lastSelectedChild.prepend(textOfLastChildOfFragment);
-        firstSelectedChild.after(
-          fragmentWithChildsBetweenFirstAndLastSelectedElements
-        );
-      }
-      //
-      //
-
-      // let newFragment = range.cloneContents(),
-      // childrenOfNewFragment = newFragment.children;
-      // console.log (childrenOfNewFragment[0].innerHTML.indexOf("</start>") );
+      
 
       console.log(selection);
       // console.log(newFragment);
