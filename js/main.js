@@ -1771,22 +1771,35 @@ function removeFormatting() {
         let indexOfPartAfterFirstP = indexOfLastPartInSelectedPartsInFirstP + 1,
           fragment = document.createDocumentFragment();
 
-        for (
-          let i = indexOfPartAfterFirstP;
-          i < indexOfFirstPartInSelectedPartsInLastP;
-          i++
-        ) {
-          firstRestPart = selectedParts[indexOfPartAfterFirstP];
+        let j = indexOfPartAfterFirstP;
 
-          let p = document.createElement("p");
+        while (
+          selectedParts[indexOfLastPartInSelectedPartsInFirstP + 1] !=
+          selectedParts[indexOfFirstPartInSelectedPartsInLastP]
+        ) {
+          debugger;
+
+          let indexOfPartAfterFirstP = j,
+            firstRestPart = selectedParts[j];
+          console.log(firstRestPart);
+
+          let p = document.createElement("p"),
+            j = indexOfPartAfterFirstP;
           while (
             getChild(firstRestPart, mainContainer) ==
             getChild(selectedParts[j], mainContainer)
           ) {
-            p.push(selectedParts[j]);
+            let part = selectedParts[j],
+              contentOfPart = part.textContent;
+
+            p.textContent = p.textContent.concat(contentOfPart);
             j++;
           }
+          fragment.append(p);
+          // selectedParts.splice(indexOfPartAfterFirstP, j + 2);
+          console.log(selectedParts);
         }
+        console.log(fragment);
       }
     } else if (
       nameOfFirstSelectedChild == "UL" &&
