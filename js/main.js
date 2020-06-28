@@ -1763,6 +1763,7 @@ function removeFormatting() {
         amountOfSelectedPartsInLastP
       );
 
+      // Clean format of remaining parts if there are such
       if (
         amountOfSelectedParts !=
         amountOfSelectedPartsInFirstP + amountOfSelectedPartsInLastP
