@@ -1439,8 +1439,6 @@ function makeList(type) {
 
   let selection = document.getSelection();
   selection.empty();
-
-  // console.timeEnd();
 }
 
 // Make function of it smhw
@@ -1552,7 +1550,6 @@ function removeFormatting() {
     strippedContent = fragment.textContent,
     mainContainer = document.getElementById("work-area"),
     createTextNode = (text) => document.createTextNode(text),
-    nodeWithStrippedContent = createTextNode(strippedContent),
     elementsBetweenFirstAndLastSelectedChilds = [];
 
   let firstSelectedChild = getChild(anchorNode, mainContainer),
@@ -1654,10 +1651,11 @@ function removeFormatting() {
         lastLi = getSecondChild(focusNode, mainContainer),
         ul = getChild(focusNode, mainContainer),
         ulChildren = ul.children,
-        indexOfLastLi = getChildIndex(lastLi, ul);
+        indexOfLastLi = getChildIndex(lastLi, ul),
+        getFirstLi = () => ulChildren[0];
 
-      while (ulChildren[0] != ulChildren[indexOfLastLi + 1]) {
-        fragmentWithLi.append(ulChildren[0]);
+      while (getFirstLi() != ulChildren[indexOfLastLi + 1]) {
+        fragmentWithLi.append(getFirstLi());
         indexOfLastLi--;
       }
 
@@ -1829,13 +1827,11 @@ function removeFormatting() {
         firstSelectedLi = getSecondChild(anchorNode, mainContainer),
         ul = getChild(anchorNode, mainContainer),
         ulChildren = ul.children,
-        amountOfUlChildren = ulChildren.length,
         indexOfFirstSelectedLi = getChildIndex(firstSelectedLi, ul),
         getFirstSelectedLi = () => ulChildren[indexOfFirstSelectedLi];
         
 
-      while ( getFirstSelectedLi() != undefined ) {
-        debugger;
+      while ( getFirstSelectedLi() ) {
         console.log(getFirstSelectedLi());
         fragmentWithLi.append(getFirstSelectedLi());
       }
@@ -1856,8 +1852,6 @@ function removeFormatting() {
       let fragmentWithP = fragmentWithLi;
 
       console.log(fragmentWithP);
-      // childrenOfFragmentWithP = childrenOfFragmentWithLi,
-      // amountOfChildrenOfFragmentWithP = amountOfChildrenOfFragmentWithLi;
 
       ul.after(fragmentWithP);
       debugger;
@@ -2242,4 +2236,6 @@ function removeFormatting() {
       }
     }
   }
+  
+  selection.empty();
 }
