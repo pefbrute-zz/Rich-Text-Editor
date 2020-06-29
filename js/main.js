@@ -1826,19 +1826,23 @@ function removeFormatting() {
     ) {
       addTag("selected");
       let fragmentWithLi = document.createDocumentFragment(),
-        firstLi = getSecondChild(anchorNode, mainContainer),
+        firstSelectedLi = getSecondChild(anchorNode, mainContainer),
         ul = getChild(anchorNode, mainContainer),
         ulChildren = ul.children,
         amountOfUlChildren = ulChildren.length,
-        indexOffirstLi = getChildIndex(firstLi, ul),
-        indexOfLastLi = amountOfUlChildren - 1;
+        indexOfFirstSelectedLi = getChildIndex(firstSelectedLi, ul),
+        indexOfLastLi = amountOfUlChildren - 1,
+        getLastLi = () => ulChildren[indexOfLastLi];
         
 
-      while (ulChildren[indexOfLastLi] != ulChildren[indexOffirstLi - 1]) {
-        fragmentWithLi.append(ulChildren[indexOfLastLi]);
-        indexOffirstLi--;
+      while ( ulChildren[indexOfFirstSelectedLi - 1] != getLastLi() ) {
+        console.log(getLastLi());
+        fragmentWithLi.append(getLastLi());
+        indexOfFirstSelectedLi--;
         indexOfLastLi--;
       }
+
+      console.log(fragmentWithLi);
 
       let childrenOfFragmentWithLi = fragmentWithLi.children,
         amountOfChildrenOfFragmentWithLi = childrenOfFragmentWithLi.length;
@@ -1855,7 +1859,8 @@ function removeFormatting() {
       // childrenOfFragmentWithP = childrenOfFragmentWithLi,
       // amountOfChildrenOfFragmentWithP = amountOfChildrenOfFragmentWithLi;
 
-      ul.before(fragmentWithP);
+      ul.after(fragmentWithP);
+      debugger;
 
       let querySelector = "[class*=selected]",
         selectedParts = document.querySelectorAll(querySelector);
