@@ -394,6 +394,22 @@ function getChild(element, parent) {
   }
 }
 
+function getChildOfMainContainer(element) {
+  if (element == undefined) {
+    throw new Error("You didn't add child element");
+  } else {
+    let parent = document.getElementById("work-area");
+
+    while (element.parentElement != parent) {
+      element = element.parentElement;
+    }
+
+    child = element;
+
+    return child;
+  }
+}
+
 //Second Level Child
 function getSecondChild(element, parent) {
   if (element == undefined) {
@@ -1488,8 +1504,10 @@ function addVideoByURL() {
 tests = () => {
   function performanceTest(someFunction) {
     const t0 = performance.now();
+    console.time();
     someFunction();
     const t1 = performance.now();
+    console.timeEnd();
     console.log(
       `Clear formatting function completed in: ${t1 - t0} milleseconds`
     );
@@ -1631,19 +1649,6 @@ function removeFormatting() {
       nameOfFirstSelectedChild == "P" &&
       nameOfLastSelectedChild == "UL"
     ) {
-      console.log(fragment);
-      console.log(nameOfFirstSelectedChild, nameOfLastSelectedChild);
-      // let startMarker = document.createElement("start"),
-      //   endMarker = document.createElement("end"),
-      //   clonedRange = range.cloneRange(),
-      // secondClone = range.cloneRange();
-
-      // clonedRange.insertNode(startMarker);
-      // clonedRange.collapse(false);
-      // clonedRange.insertNode(endMarker);
-
-      // range.extractContents();
-
       addTag("selected");
       let fragmentWithLi = document.createDocumentFragment(),
         lastLi = getSecondChild(focusNode, mainContainer),
@@ -1770,43 +1775,230 @@ function removeFormatting() {
       ) {
         console.log("There are more parts!");
         let indexOfPartAfterFirstP = indexOfLastPartInSelectedPartsInFirstP + 1,
-          fragment = document.createDocumentFragment();
+          j = indexOfPartAfterFirstP,
+          arrayWithRemainingFragmentParts = [],
+          indexOfLastRemainingPart = indexOfFirstPartInSelectedPartsInLastP - 1;
 
-        let j = indexOfPartAfterFirstP;
-
-        while (
-          selectedParts[indexOfLastPartInSelectedPartsInFirstP + 1] !=
-          selectedParts[indexOfFirstPartInSelectedPartsInLastP]
+        for (
+          let i = indexOfLastPartInSelectedPartsInFirstP + 1;
+          i < indexOfFirstPartInSelectedPartsInLastP;
+          i++
         ) {
-          debugger;
-
-          let indexOfPartAfterFirstP = j,
-            firstRestPart = selectedParts[j];
-          console.log(firstRestPart);
-
-          let p = document.createElement("p"),
-            j = indexOfPartAfterFirstP;
-          while (
-            getChild(firstRestPart, mainContainer) ==
-            getChild(selectedParts[j], mainContainer)
-          ) {
-            let part = selectedParts[j],
-              contentOfPart = part.textContent;
-
-            p.textContent = p.textContent.concat(contentOfPart);
-            j++;
-          }
-          fragment.append(p);
-          // selectedParts.splice(indexOfPartAfterFirstP, j + 2);
-          console.log(selectedParts);
+          arrayWithRemainingFragmentParts.push(selectedParts[i]);
         }
-        console.log(fragment);
+
+        let fragmentWithRemainingParts = document.createDocumentFragment();
+
+        while (arrayWithRemainingFragmentParts.length != 0) {
+
+          let commonParent = getChildOfMainContainer(
+              arrayWithRemainingFragmentParts[0]
+            ),
+            p = document.createElement("P");
+
+          while (
+            commonParent ==
+            getChildOfMainContainer(arrayWithRemainingFragmentParts[0])
+          ) {
+            let part = arrayWithRemainingFragmentParts[0],
+              strippedContent = part.textContent,
+              textNodeWithStrippedContent = createTextNode(strippedContent);
+
+            p.append(textNodeWithStrippedContent);
+            part.remove();
+            arrayWithRemainingFragmentParts.shift();
+
+            if (arrayWithRemainingFragmentParts[0] == undefined) {
+              break;
+            }
+          }
+
+          commonParent.remove();
+          fragmentWithRemainingParts.append(p);
+        }
+
+        firstSelectedChild.after(fragmentWithRemainingParts);
+
       }
     } else if (
       nameOfFirstSelectedChild == "UL" &&
       nameOfLastSelectedChild == "P"
     ) {
-      console.log(nameOfFirstSelectedChild, nameOfLastSelectedChild);
+      addTag("selected");
+      let fragmentWithLi = document.createDocumentFragment(),
+        firstLi = getSecondChild(anchorNode, mainContainer),
+        ul = getChild(anchorNode, mainContainer),
+        ulChildren = ul.children,
+        amountOfUlChildren = ulChildren.length,
+        indexOffirstLi = getChildIndex(firstLi, ul),
+        indexOfLastLi = amountOfUlChildren - 1;
+        
+
+      while (ulChildren[indexOfLastLi] != ulChildren[indexOffirstLi - 1]) {
+        fragmentWithLi.append(ulChildren[indexOfLastLi]);
+        indexOffirstLi--;
+        indexOfLastLi--;
+      }
+
+      let childrenOfFragmentWithLi = fragmentWithLi.children,
+        amountOfChildrenOfFragmentWithLi = childrenOfFragmentWithLi.length;
+
+      for (let i = 0; i < amountOfChildrenOfFragmentWithLi; i++) {
+        let child = childrenOfFragmentWithLi[i],
+          innerHTMLOfChild = child.innerHTML,
+          p = document.createElement("P");
+
+        p.innerHTML = innerHTMLOfChild;
+        fragmentWithLi.replaceChild(p, child);
+      }
+      let fragmentWithP = fragmentWithLi;
+      // childrenOfFragmentWithP = childrenOfFragmentWithLi,
+      // amountOfChildrenOfFragmentWithP = amountOfChildrenOfFragmentWithLi;
+
+      ul.before(fragmentWithP);
+
+      let querySelector = "[class*=selected]",
+        selectedParts = document.querySelectorAll(querySelector);
+
+      console.log(
+        getChild(selectedParts[0], mainContainer) ==
+          getChild(selectedParts[1], mainContainer)
+      );
+      console.log(
+        getChild(selectedParts[0], mainContainer) ==
+          getChild(selectedParts[5], mainContainer)
+      );
+      let selectedPartsInFirstP = [],
+        selectedPartsInLastP = [],
+        i = 0,
+        firstPart = selectedParts[0],
+        amountOfSelectedParts = selectedParts.length,
+        indexOfLastSelectedPart = amountOfSelectedParts - 1;
+      lastPart = selectedParts[indexOfLastSelectedPart];
+
+      while (
+        getChild(firstPart, mainContainer) ==
+        getChild(selectedParts[i], mainContainer)
+      ) {
+        selectedPartsInFirstP.push(selectedParts[i]);
+        i++;
+      }
+      let amountOfSelectedPartsInFirstP = i,
+        indexOfLastPartInSelectedPartsInFirstP = i - 1;
+
+      let j = indexOfLastSelectedPart;
+      while (
+        getChild(lastPart, mainContainer) ==
+        getChild(selectedParts[j], mainContainer)
+      ) {
+        selectedPartsInLastP.push(selectedParts[j]);
+        j--;
+      }
+      let amountOfSelectedPartsInLastP = indexOfLastSelectedPart - j,
+        indexOfFirstPartInSelectedPartsInLastP = j + 1;
+      amountOfSelectedParts = selectedParts.length;
+
+      console.log(
+        "Index of last part in selected parts in first paragraph: ",
+        indexOfLastPartInSelectedPartsInFirstP
+      );
+      console.log(
+        "Index of first part in selected parts in last paragraph: ",
+        indexOfFirstPartInSelectedPartsInLastP
+      );
+
+      selectedPartsInLastP.reverse();
+
+      console.log(selectedParts, amountOfSelectedParts);
+      console.log(selectedPartsInFirstP);
+      console.log(selectedPartsInLastP);
+
+      let bigFirstContent = "",
+        bigLastContent = "",
+        lastSelectedP = lastSelectedChild.previousSibling;
+
+      for (let i = 0; i < selectedPartsInFirstP.length; i++) {
+        bigFirstContent = bigFirstContent.concat(
+          selectedPartsInFirstP[i].textContent
+        );
+
+        selectedPartsInFirstP[i].remove();
+      }
+
+      for (let i = 0; i < selectedPartsInLastP.length; i++) {
+        bigLastContent = bigLastContent.concat(
+          selectedPartsInLastP[i].textContent
+        );
+
+        selectedPartsInLastP[i].remove();
+      }
+
+      console.log(bigFirstContent);
+
+      let textNodeWithBigFirstContent = createTextNode(bigFirstContent),
+        textNodeWithBigLastContent = createTextNode(bigLastContent);
+
+      firstSelectedChild.append(textNodeWithBigFirstContent);
+      lastSelectedP.prepend(textNodeWithBigLastContent);
+
+      console.log(
+        amountOfSelectedParts,
+        amountOfSelectedPartsInFirstP,
+        amountOfSelectedPartsInLastP
+      );
+
+      // Clean format of remaining parts if there are such
+      if (
+        amountOfSelectedParts !=
+        amountOfSelectedPartsInFirstP + amountOfSelectedPartsInLastP
+      ) {
+        console.log("There are more parts!");
+        let indexOfPartAfterFirstP = indexOfLastPartInSelectedPartsInFirstP + 1,
+          j = indexOfPartAfterFirstP,
+          arrayWithRemainingFragmentParts = [],
+          indexOfLastRemainingPart = indexOfFirstPartInSelectedPartsInLastP - 1;
+
+        for (
+          let i = indexOfLastPartInSelectedPartsInFirstP + 1;
+          i < indexOfFirstPartInSelectedPartsInLastP;
+          i++
+        ) {
+          arrayWithRemainingFragmentParts.push(selectedParts[i]);
+        }
+
+        let fragmentWithRemainingParts = document.createDocumentFragment();
+
+        while (arrayWithRemainingFragmentParts.length != 0) {
+
+          let commonParent = getChildOfMainContainer(
+              arrayWithRemainingFragmentParts[0]
+            ),
+            p = document.createElement("P");
+
+          while (
+            commonParent ==
+            getChildOfMainContainer(arrayWithRemainingFragmentParts[0])
+          ) {
+            let part = arrayWithRemainingFragmentParts[0],
+              strippedContent = part.textContent,
+              textNodeWithStrippedContent = createTextNode(strippedContent);
+
+            p.append(textNodeWithStrippedContent);
+            part.remove();
+            arrayWithRemainingFragmentParts.shift();
+
+            if (arrayWithRemainingFragmentParts[0] == undefined) {
+              break;
+            }
+          }
+
+          commonParent.remove();
+          fragmentWithRemainingParts.append(p);
+        }
+
+        firstSelectedChild.after(fragmentWithRemainingParts);
+
+      }
     }
   } else if (distance == 1) {
     let parentOfFirstSelectedElement = anchorNode.parentElement,
