@@ -1831,15 +1831,13 @@ function removeFormatting() {
         ulChildren = ul.children,
         amountOfUlChildren = ulChildren.length,
         indexOfFirstSelectedLi = getChildIndex(firstSelectedLi, ul),
-        indexOfLastLi = amountOfUlChildren - 1,
-        getLastLi = () => ulChildren[indexOfLastLi];
+        getFirstSelectedLi = () => ulChildren[indexOfFirstSelectedLi];
         
 
-      while ( ulChildren[indexOfFirstSelectedLi - 1] != getLastLi() ) {
-        console.log(getLastLi());
-        fragmentWithLi.append(getLastLi());
-        indexOfFirstSelectedLi--;
-        indexOfLastLi--;
+      while ( getFirstSelectedLi() != undefined ) {
+        debugger;
+        console.log(getFirstSelectedLi());
+        fragmentWithLi.append(getFirstSelectedLi());
       }
 
       console.log(fragmentWithLi);
@@ -1856,6 +1854,8 @@ function removeFormatting() {
         fragmentWithLi.replaceChild(p, child);
       }
       let fragmentWithP = fragmentWithLi;
+
+      console.log(fragmentWithP);
       // childrenOfFragmentWithP = childrenOfFragmentWithLi,
       // amountOfChildrenOfFragmentWithP = amountOfChildrenOfFragmentWithLi;
 
