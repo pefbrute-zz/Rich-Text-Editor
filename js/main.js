@@ -1788,7 +1788,6 @@ function removeFormatting() {
         let fragmentWithRemainingParts = document.createDocumentFragment();
 
         while (arrayWithRemainingFragmentParts.length != 0) {
-
           let commonParent = getChildOfMainContainer(
               arrayWithRemainingFragmentParts[0]
             ),
@@ -1816,7 +1815,6 @@ function removeFormatting() {
         }
 
         firstSelectedChild.after(fragmentWithRemainingParts);
-
       }
     } else if (
       nameOfFirstSelectedChild == "UL" &&
@@ -1829,9 +1827,8 @@ function removeFormatting() {
         ulChildren = ul.children,
         indexOfFirstSelectedLi = getChildIndex(firstSelectedLi, ul),
         getFirstSelectedLi = () => ulChildren[indexOfFirstSelectedLi];
-        
 
-      while ( getFirstSelectedLi() ) {
+      while (getFirstSelectedLi()) {
         console.log(getFirstSelectedLi());
         fragmentWithLi.append(getFirstSelectedLi());
       }
@@ -1859,14 +1856,6 @@ function removeFormatting() {
       let querySelector = "[class*=selected]",
         selectedParts = document.querySelectorAll(querySelector);
 
-      console.log(
-        getChild(selectedParts[0], mainContainer) ==
-          getChild(selectedParts[1], mainContainer)
-      );
-      console.log(
-        getChild(selectedParts[0], mainContainer) ==
-          getChild(selectedParts[5], mainContainer)
-      );
       let selectedPartsInFirstP = [],
         selectedPartsInLastP = [],
         i = 0,
@@ -1893,6 +1882,10 @@ function removeFormatting() {
         selectedPartsInLastP.push(selectedParts[j]);
         j--;
       }
+
+      console.log(selectedPartsInLastP);
+      debugger;
+
       let amountOfSelectedPartsInLastP = indexOfLastSelectedPart - j,
         indexOfFirstPartInSelectedPartsInLastP = j + 1;
       amountOfSelectedParts = selectedParts.length;
@@ -1914,7 +1907,7 @@ function removeFormatting() {
 
       let bigFirstContent = "",
         bigLastContent = "",
-        lastSelectedP = lastSelectedChild.previousSibling;
+        lastSelectedP = lastSelectedChild;
 
       for (let i = 0; i < selectedPartsInFirstP.length; i++) {
         bigFirstContent = bigFirstContent.concat(
@@ -1931,6 +1924,8 @@ function removeFormatting() {
 
         selectedPartsInLastP[i].remove();
       }
+
+      debugger;
 
       console.log(bigFirstContent);
 
@@ -1968,7 +1963,6 @@ function removeFormatting() {
         let fragmentWithRemainingParts = document.createDocumentFragment();
 
         while (arrayWithRemainingFragmentParts.length != 0) {
-
           let commonParent = getChildOfMainContainer(
               arrayWithRemainingFragmentParts[0]
             ),
@@ -1996,7 +1990,6 @@ function removeFormatting() {
         }
 
         firstSelectedChild.after(fragmentWithRemainingParts);
-
       }
     }
   } else if (distance == 1) {
@@ -2236,6 +2229,6 @@ function removeFormatting() {
       }
     }
   }
-  
+
   selection.empty();
 }
