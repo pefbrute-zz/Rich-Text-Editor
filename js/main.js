@@ -1580,9 +1580,8 @@ function removeFormatting() {
     strippedContent = fragment.textContent,
     mainContainer = document.getElementById("work-area"),
     createTextNode = (text) => document.createTextNode(text),
-    elementsBetweenFirstAndLastSelectedChilds = [];
-
-  let firstSelectedChild = getChildOfMainContainer(anchorNode),
+    elementsBetweenFirstAndLastSelectedChilds = [],
+    firstSelectedChild = getChildOfMainContainer(anchorNode),
     lastSelectedChild = getChildOfMainContainer(focusNode),
     indexOfFirstSelectedChild = getChildIndex(
       firstSelectedChild,
@@ -1608,9 +1607,8 @@ function removeFormatting() {
   }
 
   let nameOfFirstSelectedChild = firstSelectedChild.nodeName,
-    nameOfLastSelectedChild = lastSelectedChild.nodeName;
-
-  let distance = indexOfLastSelectedChild - indexOfFirstSelectedChild + 1;
+    nameOfLastSelectedChild = lastSelectedChild.nodeName,
+    distance = indexOfLastSelectedChild - indexOfFirstSelectedChild + 1;
 
   function clearElement(element) {
     let strippedContent = element.textContent;
@@ -1621,57 +1619,67 @@ function removeFormatting() {
 
   function clearElementsFromPToList() {
     addTag("selected");
-    let fragmentWithLi = document.createDocumentFragment(),
-      lastLi = getSecondChildInMainContainer(focusNode),
+    let lastLi = getSecondChildInMainContainer(focusNode),
       ul = getChildOfMainContainer(focusNode),
-      ulChildren = ul.children,
-      indexOfLastLi = getChildIndex(lastLi, ul),
-      getFirstLi = () => ulChildren[0],
-      getLiAfterLastLi = () => ulChildren[indexOfLastLi + 1];
+      ulChildren = ul.children;
 
-    while (getFirstLi() != getLiAfterLastLi()) {
-      fragmentWithLi.append(getFirstLi());
-      indexOfLastLi--;
+    function getFragmentOfSelectedLi() {
+      let fragmentWithLi = document.createDocumentFragment(),
+        indexOfLastLi = getChildIndex(lastLi, ul),
+        getFirstLi = () => ulChildren[0],
+        getLiAfterLastLi = () => ulChildren[indexOfLastLi + 1];
+
+      while (getFirstLi() != getLiAfterLastLi()) {
+        fragmentWithLi.append(getFirstLi());
+        indexOfLastLi--;
+      }
+      return fragmentWithLi;
     }
 
-    let childrenOfFragmentWithLi = fragmentWithLi.children,
-      amountOfChildrenOfFragmentWithLi = childrenOfFragmentWithLi.length;
+    let fragmentWithLi = getFragmentOfSelectedLi();
 
-    for (let i = 0; i < amountOfChildrenOfFragmentWithLi; i++) {
-      let child = childrenOfFragmentWithLi[i],
-        innerHTMLOfChild = child.innerHTML,
-        p = document.createElement("P");
+    function getLiTurnedIntoP() {
+      let childrenOfFragmentWithLi = fragmentWithLi.children,
+        amountOfChildrenOfFragmentWithLi = childrenOfFragmentWithLi.length;
 
-      p.innerHTML = innerHTMLOfChild;
-      fragmentWithLi.replaceChild(p, child);
+      for (let i = 0; i < amountOfChildrenOfFragmentWithLi; i++) {
+        let child = childrenOfFragmentWithLi[i],
+          innerHTMLOfChild = child.innerHTML,
+          p = document.createElement("P");
+
+        p.innerHTML = innerHTMLOfChild;
+        fragmentWithLi.replaceChild(p, child);
+      }
+
+      let fragmentWithP = fragmentWithLi;
+
+      return fragmentWithP;
     }
-    let fragmentWithP = fragmentWithLi;
-    // childrenOfFragmentWithP = childrenOfFragmentWithLi,
-    // amountOfChildrenOfFragmentWithP = amountOfChildrenOfFragmentWithLi;
+
+    let fragmentWithP = getLiTurnedIntoP();
 
     ul.before(fragmentWithP);
 
     let querySelector = "[class*=selected]",
-      selectedParts = document.querySelectorAll(querySelector);
-
-    let selectedPartsInFirstP = [],
+      selectedParts = document.querySelectorAll(querySelector),
+      selectedPartsInFirstP = [],
       selectedPartsInLastP = [],
       i = 0,
       firstPart = selectedParts[0],
       amountOfSelectedParts = selectedParts.length,
-      indexOfLastSelectedPart = amountOfSelectedParts - 1;
-    lastPart = selectedParts[indexOfLastSelectedPart],
-    part = selectedParts[i];
+      indexOfLastSelectedPart = amountOfSelectedParts - 1,
+      lastPart = selectedParts[indexOfLastSelectedPart],
+      part = selectedParts[i];
 
     while (
-      getChild(firstPart, mainContainer) ==
-      getChild(part, mainContainer)
+      getChildOfMainContainer(firstPart) == getChildOfMainContainer(part)
     ) {
       part = selectedParts[i];
-      
+
       selectedPartsInFirstP.push(part);
       i++;
     }
+
     let amountOfSelectedPartsInFirstP = i,
       indexOfLastPartInSelectedPartsInFirstP = i - 1;
 
@@ -1720,10 +1728,7 @@ function removeFormatting() {
       amountOfSelectedParts !=
       amountOfSelectedPartsInFirstP + amountOfSelectedPartsInLastP
     ) {
-      let indexOfPartAfterFirstP = indexOfLastPartInSelectedPartsInFirstP + 1,
-        j = indexOfPartAfterFirstP,
-        arrayWithRemainingFragmentParts = [],
-        indexOfLastRemainingPart = indexOfFirstPartInSelectedPartsInLastP - 1;
+      let arrayWithRemainingFragmentParts = [];
 
       for (
         let i = indexOfLastPartInSelectedPartsInFirstP + 1;
@@ -2225,4 +2230,5 @@ function removeFormatting() {
   }
 
   selection.empty();
+  clearEmptyContainers();
 }
