@@ -6,18 +6,14 @@ window.addEventListener("load", function () {
   mainContainer.setAttribute(nameOfAttribute, valueOfAttribute);
 });
 
-function format(command, value) {
-  document.execCommand(command, false, value);
-}
-
 //Add dropdown class to element with dropdownId
 function addDropdown(dropdownId) {
   let dropdown = document.getElementById(dropdownId),
     dropdowns = document.querySelectorAll("[class*=dropdown]"),
-    dropdownsLength = dropdowns.length,
-    dropdownsLastElementIndex = dropdownsLength - 1;
+    amountOfDropdowns = dropdowns.length,
+    dropdownsLastElementIndex = amountOfDropdowns - 1;
 
-  if (dropdownsLength > 0) {
+  if (amountOfDropdowns > 0) {
     for (let i = 0; i <= dropdownsLastElementIndex; i++) {
       let dropdownElement = dropdowns[i];
 
@@ -1531,6 +1527,24 @@ function getChildIndex(child, parent) {
   return indexOfChild;
 }
 
+function getChildIndexInMainContainer(child) {
+  let mainContainer = document.getElementById("work-area"),
+    children = mainContainer.children,
+    childrenAmount = children.length,
+    indexOfChild = undefined;
+
+  for (let i = 0; i < childrenAmount; i++) {
+    let childOfParent = children[i];
+
+    if (child == childOfParent) {
+      indexOfChild = i;
+      break;
+    }
+  }
+
+  return indexOfChild;
+}
+
 function swap(firstThing, secondThing) {
   [firstThing, secondThing] = [secondThing, firstThing];
 
@@ -1552,28 +1566,37 @@ function removeFormatting() {
     createTextNode = (text) => document.createTextNode(text),
     elementsBetweenFirstAndLastSelectedChilds = [];
 
-  let firstSelectedChild = getChild(anchorNode, mainContainer),
-    nameOfFirstSelectedChild = firstSelectedChild.nodeName,
-    lastSelectedChild = getChild(focusNode, mainContainer),
-    nameOfLastSelectedChild = lastSelectedChild.nodeName,
+  let firstSelectedChild = getChildOfMainContainer(anchorNode),
+    lastSelectedChild = getChildOfMainContainer(focusNode),
     indexOfFirstSelectedChild = getChildIndex(
       firstSelectedChild,
       mainContainer
     ),
-    indexOfLastSelectedChild = getChildIndex(lastSelectedChild, mainContainer);
+    indexOfLastSelectedChild = getChildIndexInMainContainer(lastSelectedChild);
 
   // Swap start and end nodes and their indexes of the selection, if it's started from the end
   if (indexOfFirstSelectedChild > indexOfLastSelectedChild) {
     let indexes = swap(indexOfFirstSelectedChild, indexOfLastSelectedChild),
-      childs = swap(firstSelectedChild, lastSelectedChild);
+      childs = swap(firstSelectedChild, lastSelectedChild),
+      anchorAndFocusNode = swap(anchorNode, focusNode);
 
     indexOfFirstSelectedChild = indexes[0];
     indexOfLastSelectedChild = indexes[1];
+
     firstSelectedChild = childs[0];
     lastSelectedChild = childs[1];
+
+    anchorNode = anchorAndFocusNode[0];
+    focusNode = anchorAndFocusNode[1];
+    // fragmentChildren.reverse();
   }
 
+  let nameOfFirstSelectedChild = firstSelectedChild.nodeName,
+    nameOfLastSelectedChild = lastSelectedChild.nodeName;
+
   let distance = indexOfLastSelectedChild - indexOfFirstSelectedChild + 1;
+
+  debugger;
 
   function clearElement(element) {
     let strippedContent = element.textContent;
@@ -1586,7 +1609,7 @@ function removeFormatting() {
     addTag("selected");
     let fragmentWithLi = document.createDocumentFragment(),
       lastLi = getSecondChild(focusNode, mainContainer),
-      ul = getChild(focusNode, mainContainer),
+      ul = getChildOfMainContainer(focusNode),
       ulChildren = ul.children,
       indexOfLastLi = getChildIndex(lastLi, ul),
       getFirstLi = () => ulChildren[0];
@@ -1616,14 +1639,6 @@ function removeFormatting() {
     let querySelector = "[class*=selected]",
       selectedParts = document.querySelectorAll(querySelector);
 
-    console.log(
-      getChild(selectedParts[0], mainContainer) ==
-        getChild(selectedParts[1], mainContainer)
-    );
-    console.log(
-      getChild(selectedParts[0], mainContainer) ==
-        getChild(selectedParts[5], mainContainer)
-    );
     let selectedPartsInFirstP = [],
       selectedPartsInLastP = [],
       i = 0,
@@ -1654,20 +1669,7 @@ function removeFormatting() {
       indexOfFirstPartInSelectedPartsInLastP = j + 1;
     amountOfSelectedParts = selectedParts.length;
 
-    console.log(
-      "Index of last part in selected parts in first paragraph: ",
-      indexOfLastPartInSelectedPartsInFirstP
-    );
-    console.log(
-      "Index of first part in selected parts in last paragraph: ",
-      indexOfFirstPartInSelectedPartsInLastP
-    );
-
     selectedPartsInLastP.reverse();
-
-    console.log(selectedParts, amountOfSelectedParts);
-    console.log(selectedPartsInFirstP);
-    console.log(selectedPartsInLastP);
 
     let bigFirstContent = "",
       bigLastContent = "",
@@ -1689,26 +1691,17 @@ function removeFormatting() {
       selectedPartsInLastP[i].remove();
     }
 
-    console.log(bigFirstContent);
-
     let textNodeWithBigFirstContent = createTextNode(bigFirstContent),
       textNodeWithBigLastContent = createTextNode(bigLastContent);
 
     firstSelectedChild.append(textNodeWithBigFirstContent);
     lastSelectedP.prepend(textNodeWithBigLastContent);
 
-    console.log(
-      amountOfSelectedParts,
-      amountOfSelectedPartsInFirstP,
-      amountOfSelectedPartsInLastP
-    );
-
     // Clean format of remaining parts if there are such
     if (
       amountOfSelectedParts !=
       amountOfSelectedPartsInFirstP + amountOfSelectedPartsInLastP
     ) {
-      console.log("There are more parts!");
       let indexOfPartAfterFirstP = indexOfLastPartInSelectedPartsInFirstP + 1,
         j = indexOfPartAfterFirstP,
         arrayWithRemainingFragmentParts = [],
@@ -1765,11 +1758,8 @@ function removeFormatting() {
       getFirstSelectedLi = () => ulChildren[indexOfFirstSelectedLi];
 
     while (getFirstSelectedLi()) {
-      console.log(getFirstSelectedLi());
       fragmentWithLi.append(getFirstSelectedLi());
     }
-
-    console.log(fragmentWithLi);
 
     let childrenOfFragmentWithLi = fragmentWithLi.children,
       amountOfChildrenOfFragmentWithLi = childrenOfFragmentWithLi.length;
@@ -1783,8 +1773,6 @@ function removeFormatting() {
       fragmentWithLi.replaceChild(p, child);
     }
     let fragmentWithP = fragmentWithLi;
-
-    console.log(fragmentWithP);
 
     ul.after(fragmentWithP);
 
@@ -1818,26 +1806,11 @@ function removeFormatting() {
       j--;
     }
 
-    console.log(selectedPartsInLastP);
-
     let amountOfSelectedPartsInLastP = indexOfLastSelectedPart - j,
       indexOfFirstPartInSelectedPartsInLastP = j + 1;
     amountOfSelectedParts = selectedParts.length;
 
-    console.log(
-      "Index of last part in selected parts in first paragraph: ",
-      indexOfLastPartInSelectedPartsInFirstP
-    );
-    console.log(
-      "Index of first part in selected parts in last paragraph: ",
-      indexOfFirstPartInSelectedPartsInLastP
-    );
-
     selectedPartsInLastP.reverse();
-
-    console.log(selectedParts, amountOfSelectedParts);
-    console.log(selectedPartsInFirstP);
-    console.log(selectedPartsInLastP);
 
     let bigFirstContent = "",
       bigLastContent = "",
@@ -1859,8 +1832,6 @@ function removeFormatting() {
       selectedPartsInLastP[i].remove();
     }
 
-    console.log(bigFirstContent);
-
     let textNodeWithBigFirstContent = createTextNode(bigFirstContent),
       textNodeWithBigLastContent = createTextNode(bigLastContent);
 
@@ -1870,18 +1841,11 @@ function removeFormatting() {
     firstSelectedP.append(textNodeWithBigFirstContent);
     lastSelectedP.prepend(textNodeWithBigLastContent);
 
-    console.log(
-      amountOfSelectedParts,
-      amountOfSelectedPartsInFirstP,
-      amountOfSelectedPartsInLastP
-    );
-
     // Clean format of remaining parts if there are such
     if (
       amountOfSelectedParts !=
       amountOfSelectedPartsInFirstP + amountOfSelectedPartsInLastP
     ) {
-      console.log("There are more parts!");
       let arrayWithRemainingFragmentParts = [];
 
       for (
@@ -1925,8 +1889,19 @@ function removeFormatting() {
     }
   }
 
+  let conditionWithFirstListAndLastP =
+      (nameOfFirstSelectedChild == "UL" || nameOfFirstSelectedChild == "OL") &&
+      nameOfLastSelectedChild == "P",
+    conditionWithFirstPAndLastList =
+      nameOfFirstSelectedChild == "P" &&
+      (nameOfLastSelectedChild == "UL" || nameOfLastSelectedChild == "OL"),
+    conditionWithBothP =
+      nameOfFirstSelectedChild == "P" && nameOfLastSelectedChild == "P";
+
+  debugger;
+
   if (distance > 2) {
-    if (nameOfFirstSelectedChild == "P" && nameOfLastSelectedChild == "P") {
+    if (conditionWithBothP) {
       let mainContainer = document.getElementById("work-area"),
         mainContainerChilds = mainContainer.children,
         fragmentWithChildsBetweenFirstAndLastSelectedElements = document.createDocumentFragment(),
@@ -1956,20 +1931,13 @@ function removeFormatting() {
       firstSelectedChild.after(
         fragmentWithChildsBetweenFirstAndLastSelectedElements
       );
-    } else if (
-      nameOfFirstSelectedChild == "P" &&
-      (nameOfLastSelectedChild == "UL" || nameOfLastSelectedChild == "OL")
-    ) {
+    } else if (conditionWithFirstPAndLastList) {
       clearElementsFromPToList();
-    } else if (
-      (nameOfFirstSelectedChild == "UL" || nameOfFirstSelectedChild == "OL") &&
-      nameOfLastSelectedChild == "P"
-    ) {
+    } else if (conditionWithFirstListAndLastP) {
       clearElementsFromListToP();
     }
   } else if (distance == 2) {
-    if (nameOfFirstSelectedChild == "P" && nameOfLastSelectedChild == "P") {
-      console.log("Hi!");
+    if (conditionWithBothP) {
       selection.deleteFromDocument();
 
       for (let i = 0; i < fragmentChildrenAmount; i++) {
@@ -1997,15 +1965,10 @@ function removeFormatting() {
           }
         }
       }
-    } else if (
-      nameOfFirstSelectedChild == "P" &&
-      (nameOfLastSelectedChild == "UL" || nameOfLastSelectedChild == "OL")
-    ) {
+    } else if (conditionWithFirstPAndLastList) {
       clearElementsFromPToList();
-    } else if (
-      nameOfFirstSelectedChild == "UL" &&
-      nameOfLastSelectedChild == "P"
-    ) {
+    } else if (conditionWithFirstListAndLastP) {
+      debugger;
       clearElementsFromListToP();
     }
   } else if (distance == 1) {
