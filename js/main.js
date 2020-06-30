@@ -423,6 +423,22 @@ function getSecondChild(element, parent) {
   }
 }
 
+function getSecondChildInMainContainer(element) {
+  if (element == undefined) {
+    throw new Error("You didn't add child element");
+  } else {
+    let parent = document.getElementById("work-area");
+
+    while (element.parentElement.parentElement != parent) {
+      element = element.parentElement;
+    }
+
+    child = element;
+
+    return child;
+  }
+}
+
 //It replaces any tag with new tag
 function replaceElement(source, newType) {
   let attributes = [];
@@ -1596,8 +1612,6 @@ function removeFormatting() {
 
   let distance = indexOfLastSelectedChild - indexOfFirstSelectedChild + 1;
 
-  debugger;
-
   function clearElement(element) {
     let strippedContent = element.textContent;
     element.innerHTML = strippedContent;
@@ -1608,13 +1622,14 @@ function removeFormatting() {
   function clearElementsFromPToList() {
     addTag("selected");
     let fragmentWithLi = document.createDocumentFragment(),
-      lastLi = getSecondChild(focusNode, mainContainer),
+      lastLi = getSecondChildInMainContainer(focusNode),
       ul = getChildOfMainContainer(focusNode),
       ulChildren = ul.children,
       indexOfLastLi = getChildIndex(lastLi, ul),
-      getFirstLi = () => ulChildren[0];
+      getFirstLi = () => ulChildren[0],
+      getLiAfterLastLi = () => ulChildren[indexOfLastLi + 1];
 
-    while (getFirstLi() != ulChildren[indexOfLastLi + 1]) {
+    while (getFirstLi() != getLiAfterLastLi()) {
       fragmentWithLi.append(getFirstLi());
       indexOfLastLi--;
     }
@@ -1645,13 +1660,16 @@ function removeFormatting() {
       firstPart = selectedParts[0],
       amountOfSelectedParts = selectedParts.length,
       indexOfLastSelectedPart = amountOfSelectedParts - 1;
-    lastPart = selectedParts[indexOfLastSelectedPart];
+    lastPart = selectedParts[indexOfLastSelectedPart],
+    part = selectedParts[i];
 
     while (
       getChild(firstPart, mainContainer) ==
-      getChild(selectedParts[i], mainContainer)
+      getChild(part, mainContainer)
     ) {
-      selectedPartsInFirstP.push(selectedParts[i]);
+      part = selectedParts[i];
+      
+      selectedPartsInFirstP.push(part);
       i++;
     }
     let amountOfSelectedPartsInFirstP = i,
@@ -1898,8 +1916,6 @@ function removeFormatting() {
     conditionWithBothP =
       nameOfFirstSelectedChild == "P" && nameOfLastSelectedChild == "P";
 
-  debugger;
-
   if (distance > 2) {
     if (conditionWithBothP) {
       let mainContainer = document.getElementById("work-area"),
@@ -1968,7 +1984,6 @@ function removeFormatting() {
     } else if (conditionWithFirstPAndLastList) {
       clearElementsFromPToList();
     } else if (conditionWithFirstListAndLastP) {
-      debugger;
       clearElementsFromListToP();
     }
   } else if (distance == 1) {
