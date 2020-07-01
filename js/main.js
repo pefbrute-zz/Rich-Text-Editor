@@ -1626,7 +1626,7 @@ function removeFormatting() {
       ul = getChildOfMainContainer(focusNode),
       ulChildren = ul.children;
 
-    function getFragmentOfSelectedLi() {
+    function getFragmentOfSelectedLiElements() {
       let fragmentWithLi = document.createDocumentFragment(),
         indexOfLastLi = getChildIndex(lastLi, ul),
         getFirstLi = () => ulChildren[0],
@@ -1639,7 +1639,7 @@ function removeFormatting() {
       return fragmentWithLi;
     }
 
-    let fragmentWithLi = getFragmentOfSelectedLi();
+    let fragmentWithLi = getFragmentOfSelectedLiElements();
 
     function getLiTurnedIntoP() {
       let childrenOfFragmentWithLi = fragmentWithLi.children,
@@ -1684,9 +1684,9 @@ function removeFormatting() {
     }
 
     let amountOfSelectedPartsInFirstP = i,
-      indexOfLastPartInSelectedPartsInFirstP = i - 1;
+      indexOfLastPartInSelectedPartsInFirstP = i - 1,
+      j = indexOfLastSelectedPart;
 
-    let j = indexOfLastSelectedPart;
     while (
       getChild(lastPart, mainContainer) ==
       getChild(selectedParts[j], mainContainer)
@@ -1694,6 +1694,7 @@ function removeFormatting() {
       selectedPartsInLastP.push(selectedParts[j]);
       j--;
     }
+
     let amountOfSelectedPartsInLastP = indexOfLastSelectedPart - j,
       indexOfFirstPartInSelectedPartsInLastP = j + 1;
     amountOfSelectedParts = selectedParts.length;
@@ -1704,13 +1705,22 @@ function removeFormatting() {
       bigLastContent = "",
       lastSelectedP = lastSelectedChild.previousSibling;
 
-    for (let i = 0; i < selectedPartsInFirstP.length; i++) {
-      bigFirstContent = bigFirstContent.concat(
-        selectedPartsInFirstP[i].textContent
-      );
+    function makeBigContent(someParts) {
+      let bigContent = "",
+        amountOfParts = someParts.length;
 
-      selectedPartsInFirstP[i].remove();
+      for (let i = 0; i < amountOfParts; i++) {
+        let part = someParts[i],
+          contentOfPart = part.textContent;
+
+        bigContent = bigContent.concat(contentOfPart);
+        part.remove();
+      }
+
+      return bigContent;
     }
+
+    bigFirstContent = makeBigContent(selectedPartsInFirstP);
 
     for (let i = 0; i < selectedPartsInLastP.length; i++) {
       bigLastContent = bigLastContent.concat(
@@ -1923,6 +1933,10 @@ function removeFormatting() {
       (nameOfLastSelectedChild == "UL" || nameOfLastSelectedChild == "OL"),
     conditionWithBothP =
       nameOfFirstSelectedChild == "P" && nameOfLastSelectedChild == "P",
+    conditionWithBothLists =
+      nameOfFirstSelectedChild == "OL" &&
+      nameOfLastSelectedChild == "UL" &&
+      (nameOfLastSelectedChild == "UL" || nameOfLastSelectedChild == "OL"),
     isThereListBetween = false;
 
   console.log(
@@ -1952,7 +1966,7 @@ function removeFormatting() {
 
   console.log(isThereListBetween);
 
-  function replaceLists() {
+  function replaceBetweenLists() {
     let listsBetween = [],
       numberOfIndex = 0;
 
@@ -1990,6 +2004,9 @@ function removeFormatting() {
   }
 
   if (distance > 2) {
+    if (isThereListBetween) {
+      replaceBetweenLists();
+    }
     if (conditionWithBothP) {
       function formatBothP() {
         let mainContainer = document.getElementById("work-area"),
@@ -2022,20 +2039,14 @@ function removeFormatting() {
           fragmentWithChildsBetweenFirstAndLastSelectedElements
         );
       }
-      if (isThereListBetween) {
-        replaceLists();
-      }
+
       formatBothP();
     } else if (conditionWithFirstPAndLastList) {
-      if (isThereListBetween) {
-        replaceLists();
-      }
       clearElementsFromPToList();
     } else if (conditionWithFirstListAndLastP) {
-      if (isThereListBetween) {
-        replaceLists();
-      }
       clearElementsFromListToP();
+    } else if (conditionWithBothLists) {
+      function formatBothLists() {}
     }
   } else if (distance == 2) {
     if (conditionWithBothP) {
