@@ -1919,39 +1919,144 @@ function removeFormatting() {
       nameOfFirstSelectedChild == "P" &&
       (nameOfLastSelectedChild == "UL" || nameOfLastSelectedChild == "OL"),
     conditionWithBothP =
-      nameOfFirstSelectedChild == "P" && nameOfLastSelectedChild == "P";
+      nameOfFirstSelectedChild == "P" && nameOfLastSelectedChild == "P",
+    isThereListBetween = false;
+
+  console.log(
+    firstSelectedChild,
+    indexOfFirstSelectedChild,
+    lastSelectedChild,
+    indexOfLastSelectedChild
+  );
+
+  mainContainer = document.getElementById("work-area");
+  let mainContainerChildren = mainContainer.children,
+    amountOfMainContainerChildren = mainContainerChildren.length;
+
+  for (
+    let i = indexOfFirstSelectedChild + 1;
+    i <= indexOfLastSelectedChild - 1;
+    i++
+  ) {
+    let child = mainContainerChildren[i],
+      childName = child.nodeName;
+
+    if (childName == "UL" || childName == "OL") {
+      isThereListBetween = true;
+      break;
+    }
+  }
+
+  console.log(isThereListBetween);
 
   if (distance > 2) {
     if (conditionWithBothP) {
-      let mainContainer = document.getElementById("work-area"),
-        mainContainerChilds = mainContainer.children,
-        fragmentWithChildsBetweenFirstAndLastSelectedElements = document.createDocumentFragment(),
-        i = 0,
-        index = indexOfFirstSelectedChild + 1,
-        childAfterFirstSelectedChild = () => mainContainerChilds[index];
+      if (isThereListBetween) {
+        let listsBetween = [],
+          numberOfIndex = 0;
 
-      while (childAfterFirstSelectedChild() != lastSelectedChild) {
-        let child = childAfterFirstSelectedChild();
-        elementsBetweenFirstAndLastSelectedChilds[i] = child;
+        for (
+          let index = indexOfFirstSelectedChild + 1;
+          index <= indexOfLastSelectedChild - 1;
+          index++
+        ) {
+          let child = mainContainerChildren[index],
+            childName = child.nodeName;
 
-        fragmentWithChildsBetweenFirstAndLastSelectedElements.appendChild(
-          clearElement(child)
+          if (childName == "UL" || childName == "OL") {
+            listsBetween[numberOfIndex] = child;
+            numberOfIndex++;
+          }
+        }
+        console.log(indexesOfListsBetween, numberOfIndex);
+
+        let fragment = document.createDocumentFragment();
+
+        for (let index = 0; index < numberOfIndex; index++) {
+          let indexOfLi = indexesOfListsBetween[index],
+            list = mainContainerChildren[indexOfLi];
+
+          if (index > 0) {
+            console.log(amountOfPreviousListChildren);
+            indexOfLi += amountOfPreviousListChildren - 1;
+          }
+
+          amountOfPreviousListChildren = list.children.length;
+
+          // let amountOfListChildren = list.children.length;
+
+          while (list.firstChild) {
+            let p = document.createElement("P");
+
+            p.textContent = list.firstChild.textContent;
+            fragment.append(p);
+            list.firstChild.remove();
+          }
+
+          list.before(fragment);
+          list.remove();
+        }
+
+        let mainContainer = document.getElementById("work-area"),
+          mainContainerChilds = mainContainer.children,
+          fragmentWithChildsBetweenFirstAndLastSelectedElements = document.createDocumentFragment(),
+          i = 0,
+          index = indexOfFirstSelectedChild + 1,
+          childAfterFirstSelectedChild = () => mainContainerChilds[index];
+
+        while (childAfterFirstSelectedChild() != lastSelectedChild) {
+          let child = childAfterFirstSelectedChild();
+          elementsBetweenFirstAndLastSelectedChilds[i] = child;
+
+          fragmentWithChildsBetweenFirstAndLastSelectedElements.appendChild(
+            clearElement(child)
+          );
+          i++;
+        }
+
+        selection.deleteFromDocument();
+
+        let firstChildOfFragment = fragmentChildren[0],
+          lastChildOfFragment = fragmentChildren[fragmentChildrenAmount - 1],
+          textOfFirstChildOfFragment = firstChildOfFragment.textContent,
+          textOfLastChildOfFragment = lastChildOfFragment.textContent;
+
+        firstSelectedChild.append(textOfFirstChildOfFragment);
+        lastSelectedChild.prepend(textOfLastChildOfFragment);
+        firstSelectedChild.after(
+          fragmentWithChildsBetweenFirstAndLastSelectedElements
         );
-        i++;
+      } else {
+        let mainContainer = document.getElementById("work-area"),
+          mainContainerChilds = mainContainer.children,
+          fragmentWithChildsBetweenFirstAndLastSelectedElements = document.createDocumentFragment(),
+          i = 0,
+          index = indexOfFirstSelectedChild + 1,
+          childAfterFirstSelectedChild = () => mainContainerChilds[index];
+
+        while (childAfterFirstSelectedChild() != lastSelectedChild) {
+          let child = childAfterFirstSelectedChild();
+          elementsBetweenFirstAndLastSelectedChilds[i] = child;
+
+          fragmentWithChildsBetweenFirstAndLastSelectedElements.appendChild(
+            clearElement(child)
+          );
+          i++;
+        }
+
+        selection.deleteFromDocument();
+
+        let firstChildOfFragment = fragmentChildren[0],
+          lastChildOfFragment = fragmentChildren[fragmentChildrenAmount - 1],
+          textOfFirstChildOfFragment = firstChildOfFragment.textContent,
+          textOfLastChildOfFragment = lastChildOfFragment.textContent;
+
+        firstSelectedChild.append(textOfFirstChildOfFragment);
+        lastSelectedChild.prepend(textOfLastChildOfFragment);
+        firstSelectedChild.after(
+          fragmentWithChildsBetweenFirstAndLastSelectedElements
+        );
       }
-
-      selection.deleteFromDocument();
-
-      let firstChildOfFragment = fragmentChildren[0],
-        lastChildOfFragment = fragmentChildren[fragmentChildrenAmount - 1],
-        textOfFirstChildOfFragment = firstChildOfFragment.textContent,
-        textOfLastChildOfFragment = lastChildOfFragment.textContent;
-
-      firstSelectedChild.append(textOfFirstChildOfFragment);
-      lastSelectedChild.prepend(textOfLastChildOfFragment);
-      firstSelectedChild.after(
-        fragmentWithChildsBetweenFirstAndLastSelectedElements
-      );
     } else if (conditionWithFirstPAndLastList) {
       clearElementsFromPToList();
     } else if (conditionWithFirstListAndLastP) {
@@ -2004,7 +2109,10 @@ function removeFormatting() {
 
       selection.deleteFromDocument();
       range.insertNode(textNode);
-    } else if (nameOfFirstLevelChildOfMainContainer == "UL") {
+    } else if (
+      nameOfFirstLevelChildOfMainContainer == "UL" ||
+      nameOfFirstLevelChildOfMainContainer == "OL"
+    ) {
       let firstSelectedLi = getSecondChild(anchorNode, mainContainer),
         lastSelectedLi = getSecondChild(focusNode, mainContainer),
         ul = getChild(anchorNode, mainContainer),
