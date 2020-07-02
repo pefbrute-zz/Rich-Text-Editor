@@ -1938,13 +1938,6 @@ function removeFormatting() {
       (nameOfLastSelectedChild == "UL" || nameOfLastSelectedChild == "OL"),
     isThereListBetween = false;
 
-  console.log(
-    firstSelectedChild,
-    indexOfFirstSelectedChild,
-    lastSelectedChild,
-    indexOfLastSelectedChild
-  );
-
   mainContainer = document.getElementById("work-area");
 
   let mainContainerChildren = mainContainer.children;
@@ -1963,7 +1956,6 @@ function removeFormatting() {
     }
   }
 
-  console.log(isThereListBetween);
 
   function replaceBetweenLists() {
     let listsBetween = [],
@@ -1982,7 +1974,6 @@ function removeFormatting() {
         numberOfIndex++;
       }
     }
-    console.log(listsBetween, numberOfIndex);
 
     let fragment = document.createDocumentFragment();
 
@@ -2083,8 +2074,6 @@ function removeFormatting() {
         }
 
         let fragmentWithLastLi = getFragmentOfLastSelectedLiElements();
-        console.log(fragmentWithFirstLi);
-        console.log(fragmentWithLastLi);
 
         function getLiTurnedIntoP(fragment) {
           let childrenOfFragmentWithLi = fragment.children,
@@ -2121,8 +2110,6 @@ function removeFormatting() {
           lastPart = selectedParts[indexOfLastSelectedPart],
           part = selectedParts[i];
 
-        console.log(selectedParts);
-        debugger;
 
         while (
           getChildOfMainContainer(firstPart) == getChildOfMainContainer(part)
@@ -2131,6 +2118,8 @@ function removeFormatting() {
 
           selectedPartsInFirstP.push(part);
           i++;
+
+          part = selectedParts[i];
         }
 
         let amountOfSelectedPartsInFirstP = i,
@@ -2149,10 +2138,12 @@ function removeFormatting() {
           indexOfFirstPartInSelectedPartsInLastP = j + 1;
         amountOfSelectedParts = selectedParts.length;
 
+
         selectedPartsInLastP.reverse();
 
         let bigFirstContent = "",
           bigLastContent = "",
+          firstSelectedP = firstSelectedChild.nextElementSibling,
           lastSelectedP = lastSelectedChild.previousSibling;
 
         function makeBigContent(someParts) {
@@ -2170,6 +2161,8 @@ function removeFormatting() {
           return bigContent;
         }
 
+        console.log(selectedPartsInFirstP);
+
         bigFirstContent = makeBigContent(selectedPartsInFirstP);
 
         for (let i = 0; i < selectedPartsInLastP.length; i++) {
@@ -2183,8 +2176,9 @@ function removeFormatting() {
         let textNodeWithBigFirstContent = createTextNode(bigFirstContent),
           textNodeWithBigLastContent = createTextNode(bigLastContent);
 
-        firstSelectedChild.append(textNodeWithBigFirstContent);
+        firstSelectedP.append(textNodeWithBigFirstContent);
         lastSelectedP.prepend(textNodeWithBigLastContent);
+
 
         // Clean format of remaining parts if there are such
         if (
@@ -2230,7 +2224,7 @@ function removeFormatting() {
             fragmentWithRemainingParts.append(p);
           }
 
-          firstSelectedChild.after(fragmentWithRemainingParts);
+          firstSelectedP.after(fragmentWithRemainingParts);
         }
       }
 
