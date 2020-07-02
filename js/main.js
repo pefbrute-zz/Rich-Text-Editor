@@ -1956,7 +1956,6 @@ function removeFormatting() {
     }
   }
 
-
   function replaceBetweenLists() {
     let listsBetween = [],
       numberOfIndex = 0;
@@ -1993,43 +1992,43 @@ function removeFormatting() {
     }
   }
 
+  function formatBothP() {
+    let mainContainer = document.getElementById("work-area"),
+      mainContainerChilds = mainContainer.children,
+      fragmentWithChildsBetweenFirstAndLastSelectedElements = document.createDocumentFragment(),
+      i = 0,
+      index = indexOfFirstSelectedChild + 1,
+      childAfterFirstSelectedChild = () => mainContainerChilds[index];
+
+    while (childAfterFirstSelectedChild() != lastSelectedChild) {
+      let child = childAfterFirstSelectedChild();
+      elementsBetweenFirstAndLastSelectedChilds[i] = child;
+
+      fragmentWithChildsBetweenFirstAndLastSelectedElements.appendChild(
+        clearElement(child)
+      );
+      i++;
+    }
+
+    selection.deleteFromDocument();
+
+    let firstChildOfFragment = fragmentChildren[0],
+      lastChildOfFragment = fragmentChildren[fragmentChildrenAmount - 1],
+      textOfFirstChildOfFragment = firstChildOfFragment.textContent,
+      textOfLastChildOfFragment = lastChildOfFragment.textContent;
+
+    firstSelectedChild.append(textOfFirstChildOfFragment);
+    lastSelectedChild.prepend(textOfLastChildOfFragment);
+    firstSelectedChild.after(
+      fragmentWithChildsBetweenFirstAndLastSelectedElements
+    );
+  }
+
   if (distance > 2) {
     if (isThereListBetween) {
       replaceBetweenLists();
     }
     if (conditionWithBothP) {
-      function formatBothP() {
-        let mainContainer = document.getElementById("work-area"),
-          mainContainerChilds = mainContainer.children,
-          fragmentWithChildsBetweenFirstAndLastSelectedElements = document.createDocumentFragment(),
-          i = 0,
-          index = indexOfFirstSelectedChild + 1,
-          childAfterFirstSelectedChild = () => mainContainerChilds[index];
-
-        while (childAfterFirstSelectedChild() != lastSelectedChild) {
-          let child = childAfterFirstSelectedChild();
-          elementsBetweenFirstAndLastSelectedChilds[i] = child;
-
-          fragmentWithChildsBetweenFirstAndLastSelectedElements.appendChild(
-            clearElement(child)
-          );
-          i++;
-        }
-
-        selection.deleteFromDocument();
-
-        let firstChildOfFragment = fragmentChildren[0],
-          lastChildOfFragment = fragmentChildren[fragmentChildrenAmount - 1],
-          textOfFirstChildOfFragment = firstChildOfFragment.textContent,
-          textOfLastChildOfFragment = lastChildOfFragment.textContent;
-
-        firstSelectedChild.append(textOfFirstChildOfFragment);
-        lastSelectedChild.prepend(textOfLastChildOfFragment);
-        firstSelectedChild.after(
-          fragmentWithChildsBetweenFirstAndLastSelectedElements
-        );
-      }
-
       formatBothP();
     } else if (conditionWithFirstPAndLastList) {
       clearElementsFromPToList();
@@ -2038,6 +2037,7 @@ function removeFormatting() {
     } else if (conditionWithBothLists) {
       function formatBothLists() {
         addTag("selected");
+
         let firstLi = getSecondChildInMainContainer(anchorNode),
           firstUL = getChildOfMainContainer(anchorNode),
           firstULChildren = firstUL.children,
@@ -2110,7 +2110,6 @@ function removeFormatting() {
           lastPart = selectedParts[indexOfLastSelectedPart],
           part = selectedParts[i];
 
-
         while (
           getChildOfMainContainer(firstPart) == getChildOfMainContainer(part)
         ) {
@@ -2137,7 +2136,6 @@ function removeFormatting() {
         let amountOfSelectedPartsInLastP = indexOfLastSelectedPart - j,
           indexOfFirstPartInSelectedPartsInLastP = j + 1;
         amountOfSelectedParts = selectedParts.length;
-
 
         selectedPartsInLastP.reverse();
 
@@ -2178,7 +2176,6 @@ function removeFormatting() {
 
         firstSelectedP.append(textNodeWithBigFirstContent);
         lastSelectedP.prepend(textNodeWithBigLastContent);
-
 
         // Clean format of remaining parts if there are such
         if (
@@ -2232,33 +2229,7 @@ function removeFormatting() {
     }
   } else if (distance == 2) {
     if (conditionWithBothP) {
-      selection.deleteFromDocument();
-
-      for (let i = 0; i < fragmentChildrenAmount; i++) {
-        let fragmentChild = fragmentChildren[i],
-          fragmentChildName = fragmentChild.nodeName,
-          firstChildStrippedContent = fragmentChild.textContent,
-          nodeWithStrippedContent = createTextNode(firstChildStrippedContent),
-          nextSiblingOfFirstSelectedChild = () =>
-            firstSelectedChild.nextElementSibling;
-
-        if (firstSelectedChild == undefined) {
-          let newNode = document.createElement(fragmentChildName);
-
-          newNode.appendChild(nodeWithStrippedContent);
-        } else {
-          // If it's the last child then prepend it before first selected child
-          if (i + 1 == fragmentChildrenAmount) {
-            firstSelectedChild.prepend(nodeWithStrippedContent);
-            firstSelectedChild = nextSiblingOfFirstSelectedChild();
-          }
-          //Else append it after first selected child
-          else {
-            firstSelectedChild.appendChild(nodeWithStrippedContent);
-            firstSelectedChild = nextSiblingOfFirstSelectedChild();
-          }
-        }
-      }
+      formatBothP();
     } else if (conditionWithFirstPAndLastList) {
       clearElementsFromPToList();
     } else if (conditionWithFirstListAndLastP) {
