@@ -1956,12 +1956,13 @@ function removeFormatting() {
       }
     }
   }
+  isThereListBetween = checkListBetween(isThereListBetween);
 
-  function checkImageBetween(){}
+  function checkImageBetween(isThereImageBetween) {}
+  isThereImageBetween = checkImageBetween(isThereImageBetween);
 
   let mainContainerChildren = mainContainer.children;
 
-  isThereListBetween = checkListBetween(isThereListBetween);
 
   function formatBothP() {
     let mainContainer = document.getElementById("work-area"),
