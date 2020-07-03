@@ -1936,8 +1936,7 @@ function removeFormatting() {
     conditionWithBothLists =
       (nameOfFirstSelectedChild == "OL" || nameOfFirstSelectedChild == "UL") &&
       (nameOfLastSelectedChild == "UL" || nameOfLastSelectedChild == "OL"),
-    isThereListBetween = false,
-    isThereImageBetween = false;
+    isThereListBetween = false;
 
   function checkListBetween(isThereListBetween) {
     let mainContainer = document.getElementById("work-area"),
@@ -1958,40 +1957,46 @@ function removeFormatting() {
   }
   isThereListBetween = checkListBetween(isThereListBetween);
 
-  debugger;
-
   let mainContainerChildren = mainContainer.children;
 
   function formatBothP() {
-    let mainContainer = document.getElementById("work-area"),
-      mainContainerChilds = mainContainer.children,
-      fragmentWithChildsBetweenFirstAndLastSelectedElements = document.createDocumentFragment(),
+    addTag("selected");
+
+    let querySelector = "[class*=selected]",
+      selectedParts = document.querySelectorAll(querySelector),
+      selectedPartsInFirstP = [],
+      selectedPartsInLastP = [],
       i = 0,
-      index = indexOfFirstSelectedChild + 1,
-      childAfterFirstSelectedChild = () => mainContainerChilds[index];
+      firstPart = selectedParts[0],
+      amountOfSelectedParts = selectedParts.length,
+      indexOfLastSelectedPart = amountOfSelectedParts - 1,
+      lastPart = selectedParts[indexOfLastSelectedPart],
+      part = selectedParts[i];
 
-    while (childAfterFirstSelectedChild() != lastSelectedChild) {
-      let child = childAfterFirstSelectedChild();
-      elementsBetweenFirstAndLastSelectedChilds[i] = child;
+    while (
+      getChildOfMainContainer(firstPart) == getChildOfMainContainer(part)
+    ) {
+      part = selectedParts[i];
 
-      fragmentWithChildsBetweenFirstAndLastSelectedElements.appendChild(
-        clearElement(child)
-      );
+      selectedPartsInFirstP.push(part);
       i++;
+
+      part = selectedParts[i];
     }
 
-    selection.deleteFromDocument();
+    let amountOfSelectedPartsInFirstP = i,
+      indexOfLastPartInSelectedPartsInFirstP = i - 1,
+      j = indexOfLastSelectedPart;
 
-    let firstChildOfFragment = fragmentChildren[0],
-      lastChildOfFragment = fragmentChildren[fragmentChildrenAmount - 1],
-      textOfFirstChildOfFragment = firstChildOfFragment.textContent,
-      textOfLastChildOfFragment = lastChildOfFragment.textContent;
+    while (
+      getChild(lastPart, mainContainer) ==
+      getChild(selectedParts[j], mainContainer)
+    ) {
+      selectedPartsInLastP.push(selectedParts[j]);
+      j--;
+    }
 
-    firstSelectedChild.append(textOfFirstChildOfFragment);
-    lastSelectedChild.prepend(textOfLastChildOfFragment);
-    firstSelectedChild.after(
-      fragmentWithChildsBetweenFirstAndLastSelectedElements
-    );
+    
   }
 
   function formatBothLists() {
@@ -2022,9 +2027,9 @@ function removeFormatting() {
       let fragmentWithLastLi = document.createDocumentFragment(),
         indexOfLastLi = getChildIndex(lastLi, lastUL),
         getFirstLi = () => lastULChildren[0],
-        getLiAfterLastLi = () => lastULChildren[indexOfLastLi + 1];
+        getLiAfterLastSelectedLi = () => lastULChildren[indexOfLastLi + 1];
 
-      while (getFirstLi() != getLiAfterLastLi()) {
+      while (getFirstLi() != getLiAfterLastSelectedLi()) {
         fragmentWithLastLi.append(getFirstLi());
         indexOfLastLi--;
       }
@@ -2242,26 +2247,6 @@ function removeFormatting() {
       clearElementsFromListToP();
     }
   } else if (distance == 1) {
-    // function removeImageInSelection() {
-    //   let images = document.querySelectorAll("IMG");
-
-    //   if (images != undefined) {
-    //     let amountOfImages = images.length;
-
-    //     for (let i = 0; i < amountOfImages; i++) {
-    //       let image = images[i];
-
-    //       if (selection.containsNode(image)) {
-    //         image.remove();
-    //       }
-    //     }
-    //   }
-
-    //   console.log(images);
-    // }
-
-    // removeImageInSelection();
-
     let parentOfFirstSelectedElement = anchorNode.parentElement,
       nameOfParentOfFirstSelectedElement =
         parentOfFirstSelectedElement.nodeName,
