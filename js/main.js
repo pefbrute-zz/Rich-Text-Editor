@@ -1984,6 +1984,9 @@ function removeFormatting() {
       part = selectedParts[i];
     }
 
+    //
+    //
+
     let amountOfSelectedPartsInFirstP = i,
       indexOfLastPartInSelectedPartsInFirstP = i - 1,
       j = indexOfLastSelectedPart;
@@ -1995,8 +1998,97 @@ function removeFormatting() {
       selectedPartsInLastP.push(selectedParts[j]);
       j--;
     }
+    selectedPartsInLastP.reverse();
 
-    
+    //
+    //
+
+    let amountOfSelectedPartsInLastP = indexOfLastSelectedPart - j,
+      indexOfFirstPartInSelectedPartsInLastP = j + 1;
+    amountOfSelectedParts = selectedParts.length;
+
+    let bigFirstContent = "",
+      bigLastContent = "",
+      firstSelectedP = firstSelectedChild,
+      lastSelectedP = lastSelectedChild;
+
+    function makeBigContent(someParts) {
+      let bigContent = "",
+        amountOfParts = someParts.length;
+
+      for (let i = 0; i < amountOfParts; i++) {
+        let part = someParts[i],
+          contentOfPart = part.textContent;
+
+        bigContent = bigContent.concat(contentOfPart);
+        part.remove();
+      }
+
+      return bigContent;
+    }
+
+    bigFirstContent = makeBigContent(selectedPartsInFirstP);
+
+    for (let i = 0; i < selectedPartsInLastP.length; i++) {
+      bigLastContent = bigLastContent.concat(
+        selectedPartsInLastP[i].textContent
+      );
+
+      selectedPartsInLastP[i].remove();
+    }
+
+    let textNodeWithBigFirstContent = createTextNode(bigFirstContent),
+      textNodeWithBigLastContent = createTextNode(bigLastContent);
+
+    firstSelectedP.append(textNodeWithBigFirstContent);
+    lastSelectedP.prepend(textNodeWithBigLastContent);
+
+    // Clean format of remaining parts if there are such
+    if (
+      amountOfSelectedParts !=
+      amountOfSelectedPartsInFirstP + amountOfSelectedPartsInLastP
+    ) {
+      let arrayWithRemainingFragmentParts = [];
+
+      for (
+        let i = indexOfLastPartInSelectedPartsInFirstP + 1;
+        i < indexOfFirstPartInSelectedPartsInLastP;
+        i++
+      ) {
+        arrayWithRemainingFragmentParts.push(selectedParts[i]);
+      }
+
+      let fragmentWithRemainingParts = document.createDocumentFragment();
+
+      while (arrayWithRemainingFragmentParts.length != 0) {
+        let commonParent = getChildOfMainContainer(
+            arrayWithRemainingFragmentParts[0]
+          ),
+          p = document.createElement("P");
+
+        while (
+          commonParent ==
+          getChildOfMainContainer(arrayWithRemainingFragmentParts[0])
+        ) {
+          let part = arrayWithRemainingFragmentParts[0],
+            strippedContent = part.textContent,
+            textNodeWithStrippedContent = createTextNode(strippedContent);
+
+          p.append(textNodeWithStrippedContent);
+          part.remove();
+          arrayWithRemainingFragmentParts.shift();
+
+          if (arrayWithRemainingFragmentParts[0] == undefined) {
+            break;
+          }
+        }
+
+        commonParent.remove();
+        fragmentWithRemainingParts.append(p);
+      }
+
+      firstSelectedP.after(fragmentWithRemainingParts);
+    }
   }
 
   function formatBothLists() {
@@ -2085,6 +2177,8 @@ function removeFormatting() {
       part = selectedParts[i];
     }
 
+    //
+    //
     let amountOfSelectedPartsInFirstP = i,
       indexOfLastPartInSelectedPartsInFirstP = i - 1,
       j = indexOfLastSelectedPart;
@@ -2096,6 +2190,8 @@ function removeFormatting() {
       selectedPartsInLastP.push(selectedParts[j]);
       j--;
     }
+    //
+    //
 
     let amountOfSelectedPartsInLastP = indexOfLastSelectedPart - j,
       indexOfFirstPartInSelectedPartsInLastP = j + 1;
@@ -2138,8 +2234,12 @@ function removeFormatting() {
     let textNodeWithBigFirstContent = createTextNode(bigFirstContent),
       textNodeWithBigLastContent = createTextNode(bigLastContent);
 
+    //Append and prepend clear parts
+    //
     firstSelectedP.append(textNodeWithBigFirstContent);
     lastSelectedP.prepend(textNodeWithBigLastContent);
+    //
+    //
 
     // Clean format of remaining parts if there are such
     if (
