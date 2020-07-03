@@ -1583,7 +1583,6 @@ function removeFormatting() {
     strippedContent = fragment.textContent,
     mainContainer = document.getElementById("work-area"),
     createTextNode = (text) => document.createTextNode(text),
-    elementsBetweenFirstAndLastSelectedChilds = [],
     firstSelectedChild = getChildOfMainContainer(anchorNode),
     lastSelectedChild = getChildOfMainContainer(focusNode),
     indexOfFirstSelectedChild = getChildIndex(
@@ -1786,6 +1785,7 @@ function removeFormatting() {
 
   function clearElementsFromListToP() {
     addTag("selected");
+
     let fragmentWithLi = document.createDocumentFragment(),
       firstSelectedLi = getSecondChild(anchorNode, mainContainer),
       ul = getChild(anchorNode, mainContainer),
@@ -1925,22 +1925,26 @@ function removeFormatting() {
     }
   }
 
-  let conditionWithFirstListAndLastP =
-      (nameOfFirstSelectedChild == "UL" || nameOfFirstSelectedChild == "OL") &&
-      nameOfLastSelectedChild == "P",
-    conditionWithFirstPAndLastList =
-      nameOfFirstSelectedChild == "P" &&
-      (nameOfLastSelectedChild == "UL" || nameOfLastSelectedChild == "OL"),
-    conditionWithBothP =
-      nameOfFirstSelectedChild == "P" && nameOfLastSelectedChild == "P",
-    conditionWithBothLists =
-      (nameOfFirstSelectedChild == "OL" || nameOfFirstSelectedChild == "UL") &&
-      (nameOfLastSelectedChild == "UL" || nameOfLastSelectedChild == "OL"),
+  let isFirstChildUL = nameOfFirstSelectedChild == "UL",
+    isFirstChildOL = nameOfFirstSelectedChild == "OL",
+    isFirstChildParagraph = nameOfFirstSelectedChild == "P",
+    isLastChildUL = nameOfLastSelectedChild == "UL",
+    isLastChildOL = nameOfLastSelectedChild == "OL",
+    isLastChildParapgraph = nameOfLastSelectedChild == "P";
+
+  let isLastChildList = isLastChildUL || isLastChildOL,
+    isFirstChildList = isFirstChildUL || isFirstChildOL;
+
+  let isFirstListAndLastParagraph = isFirstChildList && isLastChildParapgraph,
+    isFirstParagraphAndLastList = isFirstChildParagraph && isLastChildList,
+    isBothParagraphs = isFirstChildParagraph && isLastChildParapgraph,
+    isBothLists = isFirstChildList && isLastChildList,
     isThereListBetween = false;
 
   function checkListBetween(isThereListBetween) {
     let mainContainer = document.getElementById("work-area"),
       mainContainerChildren = mainContainer.children;
+
     for (
       let i = indexOfFirstSelectedChild + 1;
       i <= indexOfLastSelectedChild - 1;
@@ -2329,21 +2333,21 @@ function removeFormatting() {
 
       replaceBetweenLists();
     }
-    if (conditionWithBothP) {
+    if (isBothParagraphs) {
       formatBothP();
-    } else if (conditionWithFirstPAndLastList) {
+    } else if (isFirstParagraphAndLastList) {
       clearElementsFromPToList();
-    } else if (conditionWithFirstListAndLastP) {
+    } else if (isFirstListAndLastParagraph) {
       clearElementsFromListToP();
-    } else if (conditionWithBothLists) {
+    } else if (isBothLists) {
       formatBothLists();
     }
   } else if (distance == 2) {
-    if (conditionWithBothP) {
+    if (isBothParagraphs) {
       formatBothP();
-    } else if (conditionWithFirstPAndLastList) {
+    } else if (isFirstParagraphAndLastList) {
       clearElementsFromPToList();
-    } else if (conditionWithFirstListAndLastP) {
+    } else if (isFirstListAndLastParagraph) {
       clearElementsFromListToP();
     }
   } else if (distance == 1) {
