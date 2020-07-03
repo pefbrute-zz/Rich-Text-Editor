@@ -1958,11 +1958,9 @@ function removeFormatting() {
   }
   isThereListBetween = checkListBetween(isThereListBetween);
 
-  function checkImageBetween(isThereImageBetween) {}
-  isThereImageBetween = checkImageBetween(isThereImageBetween);
+  debugger;
 
   let mainContainerChildren = mainContainer.children;
-
 
   function formatBothP() {
     let mainContainer = document.getElementById("work-area"),
@@ -2244,6 +2242,26 @@ function removeFormatting() {
       clearElementsFromListToP();
     }
   } else if (distance == 1) {
+    // function removeImageInSelection() {
+    //   let images = document.querySelectorAll("IMG");
+
+    //   if (images != undefined) {
+    //     let amountOfImages = images.length;
+
+    //     for (let i = 0; i < amountOfImages; i++) {
+    //       let image = images[i];
+
+    //       if (selection.containsNode(image)) {
+    //         image.remove();
+    //       }
+    //     }
+    //   }
+
+    //   console.log(images);
+    // }
+
+    // removeImageInSelection();
+
     let parentOfFirstSelectedElement = anchorNode.parentElement,
       nameOfParentOfFirstSelectedElement =
         parentOfFirstSelectedElement.nodeName,
