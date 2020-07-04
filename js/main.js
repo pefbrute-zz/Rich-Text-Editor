@@ -2263,10 +2263,8 @@ function removeFormatting() {
       //
       let lastSelectedP = lastSelectedChild.previousSibling;
       lastSelectedP.prepend(textNodeWithBigLastContent);
-
-      return lastSelectedP;
     }
-    let lastSelectedP = removeFormattingInLastSelectedElement();
+    removeFormattingInLastSelectedElement();
 
     let indexOfCurrentPart = selectedPartsInFirstP.length,
       amountOfSelectedPartsInFirstP = indexOfCurrentPart,
