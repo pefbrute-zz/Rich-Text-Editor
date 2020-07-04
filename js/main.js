@@ -2183,8 +2183,10 @@ function removeFormatting() {
 
       return selectedPartsInFirstP;
     }
-    let selectedPartsInFirstP = getSelectedPartsInFirstP(),
-      indexOfCurrentPart = selectedPartsInFirstP.length;
+
+    let selectedPartsInFirstP = getSelectedPartsInFirstP();
+    
+    let indexOfCurrentPart = selectedPartsInFirstP.length;
 
     let querySelector = "[class*=selected]",
       selectedParts = document.querySelectorAll(querySelector),
@@ -2193,19 +2195,22 @@ function removeFormatting() {
       indexOfLastSelectedPart = amountOfSelectedParts - 1,
       lastPart = selectedParts[indexOfLastSelectedPart],
       amountOfSelectedPartsInFirstP = indexOfCurrentPart,
-      indexOfLastPartInSelectedPartsInFirstP = indexOfCurrentPart - 1,
-      j = indexOfLastSelectedPart;
+      indexOfLastPartInSelectedPartsInFirstP = indexOfCurrentPart - 1;
+
+    let clonedIndexOfLastSelectedPart = indexOfLastSelectedPart;
 
     while (
       getChild(lastPart, mainContainer) ==
-      getChild(selectedParts[j], mainContainer)
+      getChild(selectedParts[clonedIndexOfLastSelectedPart], mainContainer)
     ) {
-      selectedPartsInLastP.push(selectedParts[j]);
-      j--;
+      selectedPartsInLastP.push(selectedParts[clonedIndexOfLastSelectedPart]);
+      clonedIndexOfLastSelectedPart--;
     }
 
-    let amountOfSelectedPartsInLastP = indexOfLastSelectedPart - j,
-      indexOfFirstPartInSelectedPartsInLastP = j + 1;
+    let amountOfSelectedPartsInLastP =
+        indexOfLastSelectedPart - clonedIndexOfLastSelectedPart,
+      indexOfFirstPartInSelectedPartsInLastP =
+        clonedIndexOfLastSelectedPart + 1;
     amountOfSelectedParts = selectedParts.length;
 
     selectedPartsInLastP.reverse();
