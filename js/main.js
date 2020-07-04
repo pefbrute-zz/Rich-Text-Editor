@@ -2225,11 +2225,6 @@ function removeFormatting() {
     let indexOfFirstPartInSelectedPartsInLastP = indexOfCurrentPartInLastP + 1;
     amountOfSelectedParts = selectedParts.length;
 
-    let bigFirstContent = "",
-      bigLastContent = "",
-      firstSelectedP = firstSelectedChild.nextElementSibling,
-      lastSelectedP = lastSelectedChild.previousSibling;
-
     function makeBigContent(someParts) {
       let bigContent = "",
         amountOfParts = someParts.length;
@@ -2247,22 +2242,31 @@ function removeFormatting() {
 
     console.log(selectedPartsInFirstP);
 
-    bigFirstContent = makeBigContent(selectedPartsInFirstP);
+    function removeFormattingInFirstSelectedElement() {
+      let bigFirstContent = makeBigContent(selectedPartsInFirstP),
+        textNodeWithBigFirstContent = createTextNode(bigFirstContent);
 
-    for (let i = 0; i < selectedPartsInLastP.length; i++) {
-      bigLastContent = bigLastContent.concat(
-        selectedPartsInLastP[i].textContent
-      );
+      //Append and prepend clear parts
+      //
+      let firstSelectedP = firstSelectedChild.nextElementSibling;
+      firstSelectedP.append(textNodeWithBigFirstContent);
 
-      selectedPartsInLastP[i].remove();
+      return firstSelectedP;
     }
 
-    let textNodeWithBigFirstContent = createTextNode(bigFirstContent),
+    let firstSelectedP = removeFormattingInFirstSelectedElement();
+
+    // let bigFirstContent = makeBigContent(selectedPartsInFirstP),
+    // textNodeWithBigFirstContent = createTextNode(bigFirstContent),
+    
+    let bigLastContent = makeBigContent(selectedPartsInLastP),
       textNodeWithBigLastContent = createTextNode(bigLastContent);
 
     //Append and prepend clear parts
     //
-    firstSelectedP.append(textNodeWithBigFirstContent);
+    // let firstSelectedP = firstSelectedChild.nextElementSibling,
+    let lastSelectedP = lastSelectedChild.previousSibling;
+    // firstSelectedP.append(textNodeWithBigFirstContent);
     lastSelectedP.prepend(textNodeWithBigLastContent);
     //
     //
