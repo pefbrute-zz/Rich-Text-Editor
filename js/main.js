@@ -2214,9 +2214,6 @@ function removeFormatting() {
     let indexOfCurrentPartInLastP =
       amountOfSelectedParts - amountOfSelectedPartsInLastP - 1;
 
-    amountOfSelectedPartsInLastP =
-      indexOfLastSelectedPart - indexOfCurrentPartInLastP;
-
     let indexOfFirstPartInSelectedPartsInLastP = indexOfCurrentPartInLastP + 1;
     amountOfSelectedParts = selectedParts.length;
 
@@ -2259,17 +2256,20 @@ function removeFormatting() {
     }
     removeFormattingInLastSelectedElement();
 
+    let someAmount = indexOfLastSelectedPart - indexOfCurrentPartInLastP;
+
     let indexOfCurrentPart = selectedPartsInFirstP.length,
       amountOfSelectedPartsInFirstP = indexOfCurrentPart;
 
     let summaOfFirstAndLastSelectedParts =
-        amountOfSelectedPartsInFirstP + amountOfSelectedPartsInLastP,
+        amountOfSelectedPartsInFirstP + someAmount,
       isThereExtraParts =
         amountOfSelectedParts != summaOfFirstAndLastSelectedParts;
 
     // Clean format of remaining parts if there are such
     if (isThereExtraParts) {
       let arrayWithRemainingFragmentParts = [],
+        indexOfCurrentPart = selectedPartsInFirstP.length,
         indexOfLastPartInSelectedPartsInFirstP = indexOfCurrentPart - 1;
 
       for (
