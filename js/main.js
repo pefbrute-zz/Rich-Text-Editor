@@ -462,8 +462,6 @@ function replaceElement(source, newType) {
     frag.appendChild(firstChildOfOldTag());
   }
 
-  console.log(attributes);
-
   // Create the new element
   const newElement = document.createElement(newType);
 
@@ -2178,9 +2176,6 @@ function removeFormatting() {
         part = selectedParts[indexOfCurrentPart];
       }
 
-      console.log(indexOfCurrentPart);
-      console.log(selectedPartsInFirstP);
-
       return selectedPartsInFirstP;
     }
 
@@ -2239,8 +2234,6 @@ function removeFormatting() {
 
       return bigContent;
     }
-
-    console.log(selectedPartsInFirstP);
 
     function removeFormattingInFirstSelectedElement() {
       let bigFirstContent = makeBigContent(selectedPartsInFirstP),
