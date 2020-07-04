@@ -2260,15 +2260,17 @@ function removeFormatting() {
     removeFormattingInLastSelectedElement();
 
     let indexOfCurrentPart = selectedPartsInFirstP.length,
-      amountOfSelectedPartsInFirstP = indexOfCurrentPart,
-      indexOfLastPartInSelectedPartsInFirstP = indexOfCurrentPart - 1;
+      amountOfSelectedPartsInFirstP = indexOfCurrentPart;
+
+    let summaOfFirstAndLastSelectedParts =
+        amountOfSelectedPartsInFirstP + amountOfSelectedPartsInLastP,
+      isThereExtraParts =
+        amountOfSelectedParts != summaOfFirstAndLastSelectedParts;
 
     // Clean format of remaining parts if there are such
-    if (
-      amountOfSelectedParts !=
-      amountOfSelectedPartsInFirstP + amountOfSelectedPartsInLastP
-    ) {
-      let arrayWithRemainingFragmentParts = [];
+    if (isThereExtraParts) {
+      let arrayWithRemainingFragmentParts = [],
+        indexOfLastPartInSelectedPartsInFirstP = indexOfCurrentPart - 1;
 
       for (
         let i = indexOfLastPartInSelectedPartsInFirstP + 1;
