@@ -2204,22 +2204,18 @@ function removeFormatting() {
         indexOfCurrentPartInLastP--;
       }
 
-      console.log(indexOfCurrentPartInLastP);
-      console.log(selectedPartsInLastP);
-      console.log(selectedParts);
-
       return selectedPartsInLastP;
     }
+
+    let selectedPartsInLastP = getSelectedPartsInLastP();
 
     let querySelector = "[class*=selected]",
       selectedParts = document.querySelectorAll(querySelector),
       amountOfSelectedParts = selectedParts.length,
       indexOfLastSelectedPart = amountOfSelectedParts - 1;
 
-    let selectedPartsInLastP = getSelectedPartsInLastP(),
-      indexOfCurrentPartInLastP =
-        selectedParts.length - selectedPartsInLastP.length - 1;
-    console.log(indexOfCurrentPartInLastP);
+    let indexOfCurrentPartInLastP =
+      selectedParts.length - selectedPartsInLastP.length - 1;
 
     let amountOfSelectedPartsInLastP =
         indexOfLastSelectedPart - indexOfCurrentPartInLastP,
