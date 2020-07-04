@@ -2185,7 +2185,26 @@ function removeFormatting() {
     }
 
     let selectedPartsInFirstP = getSelectedPartsInFirstP();
-    
+
+    function getSelectedPartsInLastP() {
+      let querySelector = "[class*=selected]",
+        selectedParts = document.querySelectorAll(querySelector),
+        selectedPartsInLastP = [],
+        amountOfSelectedParts = selectedParts.length,
+        indexOfLastSelectedPart = amountOfSelectedParts - 1,
+        lastPart = selectedParts[indexOfLastSelectedPart];
+
+      let indexOfCurrentPartInLastP = indexOfLastSelectedPart;
+
+      while (
+        getChild(lastPart, mainContainer) ==
+        getChild(selectedParts[indexOfCurrentPartInLastP], mainContainer)
+      ) {
+        selectedPartsInLastP.push(selectedParts[indexOfCurrentPartInLastP]);
+        indexOfCurrentPartInLastP--;
+      }
+    }
+
     let indexOfCurrentPart = selectedPartsInFirstP.length;
 
     let querySelector = "[class*=selected]",
@@ -2197,20 +2216,19 @@ function removeFormatting() {
       amountOfSelectedPartsInFirstP = indexOfCurrentPart,
       indexOfLastPartInSelectedPartsInFirstP = indexOfCurrentPart - 1;
 
-    let clonedIndexOfLastSelectedPart = indexOfLastSelectedPart;
+    let indexOfCurrentPartInLastP = indexOfLastSelectedPart;
 
     while (
       getChild(lastPart, mainContainer) ==
-      getChild(selectedParts[clonedIndexOfLastSelectedPart], mainContainer)
+      getChild(selectedParts[indexOfCurrentPartInLastP], mainContainer)
     ) {
-      selectedPartsInLastP.push(selectedParts[clonedIndexOfLastSelectedPart]);
-      clonedIndexOfLastSelectedPart--;
+      selectedPartsInLastP.push(selectedParts[indexOfCurrentPartInLastP]);
+      indexOfCurrentPartInLastP--;
     }
 
     let amountOfSelectedPartsInLastP =
-        indexOfLastSelectedPart - clonedIndexOfLastSelectedPart,
-      indexOfFirstPartInSelectedPartsInLastP =
-        clonedIndexOfLastSelectedPart + 1;
+        indexOfLastSelectedPart - indexOfCurrentPartInLastP,
+      indexOfFirstPartInSelectedPartsInLastP = indexOfCurrentPartInLastP + 1;
     amountOfSelectedParts = selectedParts.length;
 
     selectedPartsInLastP.reverse();
