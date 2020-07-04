@@ -2266,18 +2266,7 @@ function removeFormatting() {
 
       return lastSelectedP;
     }
-
     let lastSelectedP = removeFormattingInLastSelectedElement();
-
-    // let bigLastContent = makeBigContent(selectedPartsInLastP),
-    //   textNodeWithBigLastContent = createTextNode(bigLastContent);
-
-    // //Append and prepend clear parts
-    // //
-    // let lastSelectedP = lastSelectedChild.previousSibling;
-    // lastSelectedP.prepend(textNodeWithBigLastContent);
-    // //
-    // //
 
     let indexOfCurrentPart = selectedPartsInFirstP.length,
       amountOfSelectedPartsInFirstP = indexOfCurrentPart,
