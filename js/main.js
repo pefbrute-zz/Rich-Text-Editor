@@ -2207,7 +2207,9 @@ function removeFormatting() {
       return selectedPartsInLastP;
     }
 
-    let selectedPartsInLastP = getSelectedPartsInLastP();
+    let selectedPartsInLastP = getSelectedPartsInLastP(),
+      amountOfSelectedPartsInLastP = selectedPartsInLastP.length;
+    selectedPartsInLastP.reverse();
 
     let querySelector = "[class*=selected]",
       selectedParts = document.querySelectorAll(querySelector),
@@ -2215,23 +2217,18 @@ function removeFormatting() {
       indexOfLastSelectedPart = amountOfSelectedParts - 1;
 
     let indexOfCurrentPartInLastP =
-      selectedParts.length - selectedPartsInLastP.length - 1;
+      amountOfSelectedParts - amountOfSelectedPartsInLastP - 1;
 
-    let amountOfSelectedPartsInLastP =
-        indexOfLastSelectedPart - indexOfCurrentPartInLastP,
-      indexOfFirstPartInSelectedPartsInLastP = indexOfCurrentPartInLastP + 1;
+    amountOfSelectedPartsInLastP =
+      indexOfLastSelectedPart - indexOfCurrentPartInLastP;
+
+    let indexOfFirstPartInSelectedPartsInLastP = indexOfCurrentPartInLastP + 1;
     amountOfSelectedParts = selectedParts.length;
-
-    selectedPartsInLastP.reverse();
 
     let bigFirstContent = "",
       bigLastContent = "",
       firstSelectedP = firstSelectedChild.nextElementSibling,
       lastSelectedP = lastSelectedChild.previousSibling;
-
-    let indexOfCurrentPart = selectedPartsInFirstP.length,
-      amountOfSelectedPartsInFirstP = indexOfCurrentPart,
-      indexOfLastPartInSelectedPartsInFirstP = indexOfCurrentPart - 1;
 
     function makeBigContent(someParts) {
       let bigContent = "",
@@ -2269,6 +2266,10 @@ function removeFormatting() {
     lastSelectedP.prepend(textNodeWithBigLastContent);
     //
     //
+
+    let indexOfCurrentPart = selectedPartsInFirstP.length,
+      amountOfSelectedPartsInFirstP = indexOfCurrentPart,
+      indexOfLastPartInSelectedPartsInFirstP = indexOfCurrentPart - 1;
 
     // Clean format of remaining parts if there are such
     if (
