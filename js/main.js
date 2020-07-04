@@ -2185,16 +2185,14 @@ function removeFormatting() {
     }
 
     let selectedPartsInFirstP = getSelectedPartsInFirstP(),
-      indexOfCurrentPart = selectedPartsInFirstP.length;
-
-    let querySelector = "[class*=selected]",
+      indexOfCurrentPart = selectedPartsInFirstP.length,
+      querySelector = "[class*=selected]",
       selectedParts = document.querySelectorAll(querySelector),
       selectedPartsInLastP = [],
       amountOfSelectedParts = selectedParts.length,
       indexOfLastSelectedPart = amountOfSelectedParts - 1,
-      lastPart = selectedParts[indexOfLastSelectedPart];
-
-    let amountOfSelectedPartsInFirstP = indexOfCurrentPart,
+      lastPart = selectedParts[indexOfLastSelectedPart],
+      amountOfSelectedPartsInFirstP = indexOfCurrentPart,
       indexOfLastPartInSelectedPartsInFirstP = indexOfCurrentPart - 1,
       j = indexOfLastSelectedPart;
 
