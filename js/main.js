@@ -2096,69 +2096,76 @@ function removeFormatting() {
   function formatBothLists() {
     addTag("selected");
 
-    let firstLi = getSecondChildInMainContainer(anchorNode),
-      firstUL = getChildOfMainContainer(anchorNode);
-
-    function getFragmentOfFirstSelectedLiElements(firstLi, firstUL) {
-      let fragmentWithFirstLi = document.createDocumentFragment(),
-        indexOfFirstSelectedLi = getChildIndex(firstLi, firstUL),
-        firstULChildren = firstUL.children,
-        getFirstSelectedLi = () => firstULChildren[indexOfFirstSelectedLi];
-
-      while (getFirstSelectedLi()) {
-        fragmentWithFirstLi.append(getFirstSelectedLi());
+    function turnFirstAndLastListIntoParagraphs() {
+      function getFragmentOfFirstSelectedLiElements(firstLi, firstUL) {
+        let fragmentWithFirstLi = document.createDocumentFragment(),
+          indexOfFirstSelectedLi = getChildIndex(firstLi, firstUL),
+          firstULChildren = firstUL.children,
+          getFirstSelectedLi = () => firstULChildren[indexOfFirstSelectedLi];
+  
+        while (getFirstSelectedLi()) {
+          fragmentWithFirstLi.append(getFirstSelectedLi());
+        }
+  
+        return fragmentWithFirstLi;
       }
+  
+      function getFragmentOfLastSelectedLiElements(lastLi, lastUL) {
+        let fragmentWithLastLi = document.createDocumentFragment(),
+          lastULChildren = lastUL.children,
+          indexOfLastLi = getChildIndex(lastLi, lastUL),
+          getFirstLi = () => lastULChildren[0],
+          getLiAfterLastSelectedLi = () => lastULChildren[indexOfLastLi + 1];
+  
+        while (getFirstLi() != getLiAfterLastSelectedLi()) {
+          fragmentWithLastLi.append(getFirstLi());
+          indexOfLastLi--;
+        }
+  
+        return fragmentWithLastLi;
+      }
+  
+      function getLiTurnedIntoP(fragment) {
+        let childrenOfFragmentWithLi = fragment.children,
+          amountOfChildrenOfFragmentWithLi = childrenOfFragmentWithLi.length;
+  
+        for (let i = 0; i < amountOfChildrenOfFragmentWithLi; i++) {
+          let child = childrenOfFragmentWithLi[i],
+            innerHTMLOfChild = child.innerHTML,
+            p = document.createElement("P");
+  
+          p.innerHTML = innerHTMLOfChild;
+          fragment.replaceChild(p, child);
+        }
+  
+        let fragmentWithP = fragment;
+  
+        return fragmentWithP;
+      }
+  
+      function insertClearedFirstAndLastP() {
+        let firstLi = getSecondChildInMainContainer(anchorNode),
+          firstUL = getChildOfMainContainer(anchorNode),
+          fragmentWithFirstLi = getFragmentOfFirstSelectedLiElements(
+            firstLi,
+            firstUL
+          ),
+          fragmentWithFirstP = getLiTurnedIntoP(fragmentWithFirstLi);
+    
+        let lastLi = getSecondChildInMainContainer(focusNode),
+          lastUL = getChildOfMainContainer(focusNode),
+          fragmentWithLastLi = getFragmentOfLastSelectedLiElements(lastLi, lastUL),
+          fragmentWithLastP = getLiTurnedIntoP(fragmentWithLastLi);
+    
+        firstUL.after(fragmentWithFirstP);
+        lastUL.before(fragmentWithLastP);
+      }
+  
+      insertClearedFirstAndLastP();
 
-      return fragmentWithFirstLi;
     }
 
-    let fragmentWithFirstLi = getFragmentOfFirstSelectedLiElements(
-      firstLi,
-      firstUL
-    );
-
-    function getFragmentOfLastSelectedLiElements(lastLi, lastUL) {
-      let fragmentWithLastLi = document.createDocumentFragment(),
-        lastULChildren = lastUL.children,
-        indexOfLastLi = getChildIndex(lastLi, lastUL),
-        getFirstLi = () => lastULChildren[0],
-        getLiAfterLastSelectedLi = () => lastULChildren[indexOfLastLi + 1];
-
-      while (getFirstLi() != getLiAfterLastSelectedLi()) {
-        fragmentWithLastLi.append(getFirstLi());
-        indexOfLastLi--;
-      }
-
-      return fragmentWithLastLi;
-    }
-
-    let lastLi = getSecondChildInMainContainer(focusNode),
-      lastUL = getChildOfMainContainer(focusNode),
-      fragmentWithLastLi = getFragmentOfLastSelectedLiElements(lastLi, lastUL);
-
-    function getLiTurnedIntoP(fragment) {
-      let childrenOfFragmentWithLi = fragment.children,
-        amountOfChildrenOfFragmentWithLi = childrenOfFragmentWithLi.length;
-
-      for (let i = 0; i < amountOfChildrenOfFragmentWithLi; i++) {
-        let child = childrenOfFragmentWithLi[i],
-          innerHTMLOfChild = child.innerHTML,
-          p = document.createElement("P");
-
-        p.innerHTML = innerHTMLOfChild;
-        fragment.replaceChild(p, child);
-      }
-
-      let fragmentWithP = fragment;
-
-      return fragmentWithP;
-    }
-
-    let fragmentWithFirstP = getLiTurnedIntoP(fragmentWithFirstLi),
-      fragmentWithLastP = getLiTurnedIntoP(fragmentWithLastLi);
-
-    firstUL.after(fragmentWithFirstP);
-    lastUL.before(fragmentWithLastP);
+    turnFirstAndLastListIntoParagraphs();
 
     function getSelectedPartsInFirstP() {
       let querySelector = "[class*=selected]",
@@ -2246,9 +2253,11 @@ function removeFormatting() {
 
       return firstSelectedP;
     }
-    let firstSelectedP = removeFormattingInFirstSelectedElement(selectedPartsInFirstP);
+    let firstSelectedP = removeFormattingInFirstSelectedElement(
+      selectedPartsInFirstP
+    );
 
-    function removeFormattingInLastSelectedElement() {
+    function removeFormattingInLastSelectedElement(selectedPartsInLastP) {
       let bigLastContent = makeBigContent(selectedPartsInLastP),
         textNodeWithBigLastContent = createTextNode(bigLastContent);
 
@@ -2257,7 +2266,7 @@ function removeFormatting() {
       let lastSelectedP = lastSelectedChild.previousSibling;
       lastSelectedP.prepend(textNodeWithBigLastContent);
     }
-    removeFormattingInLastSelectedElement();
+    removeFormattingInLastSelectedElement(selectedPartsInLastP);
 
     let someAmount = indexOfLastSelectedPart - indexOfCurrentPartInLastP;
 
