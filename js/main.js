@@ -2097,9 +2097,7 @@ function removeFormatting() {
     addTag("selected");
 
     let firstLi = getSecondChildInMainContainer(anchorNode),
-      firstUL = getChildOfMainContainer(anchorNode),
-      lastLi = getSecondChildInMainContainer(focusNode),
-      lastUL = getChildOfMainContainer(focusNode);
+      firstUL = getChildOfMainContainer(anchorNode);
 
     function getFragmentOfFirstSelectedLiElements(firstLi, firstUL) {
       let fragmentWithFirstLi = document.createDocumentFragment(),
@@ -2134,10 +2132,9 @@ function removeFormatting() {
       return fragmentWithLastLi;
     }
 
-    let fragmentWithLastLi = getFragmentOfLastSelectedLiElements(
-      lastLi,
-      lastUL
-    );
+    let lastLi = getSecondChildInMainContainer(focusNode),
+      lastUL = getChildOfMainContainer(focusNode),
+      fragmentWithLastLi = getFragmentOfLastSelectedLiElements(lastLi, lastUL);
 
     function getLiTurnedIntoP(fragment) {
       let childrenOfFragmentWithLi = fragment.children,
@@ -2238,7 +2235,7 @@ function removeFormatting() {
       return bigContent;
     }
 
-    function removeFormattingInFirstSelectedElement() {
+    function removeFormattingInFirstSelectedElement(selectedPartsInFirstP) {
       let bigFirstContent = makeBigContent(selectedPartsInFirstP),
         textNodeWithBigFirstContent = createTextNode(bigFirstContent);
 
@@ -2249,7 +2246,7 @@ function removeFormatting() {
 
       return firstSelectedP;
     }
-    let firstSelectedP = removeFormattingInFirstSelectedElement();
+    let firstSelectedP = removeFormattingInFirstSelectedElement(selectedPartsInFirstP);
 
     function removeFormattingInLastSelectedElement() {
       let bigLastContent = makeBigContent(selectedPartsInLastP),
