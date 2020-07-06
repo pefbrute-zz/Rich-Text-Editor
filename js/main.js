@@ -2098,14 +2098,13 @@ function removeFormatting() {
 
     let firstLi = getSecondChildInMainContainer(anchorNode),
       firstUL = getChildOfMainContainer(anchorNode),
-      firstULChildren = firstUL.children,
       lastLi = getSecondChildInMainContainer(focusNode),
-      lastUL = getChildOfMainContainer(focusNode),
-      lastULChildren = lastUL.children;
+      lastUL = getChildOfMainContainer(focusNode);
 
-    function getFragmentOfFirstSelectedLiElements() {
+    function getFragmentOfFirstSelectedLiElements(firstLi, firstUL) {
       let fragmentWithFirstLi = document.createDocumentFragment(),
         indexOfFirstSelectedLi = getChildIndex(firstLi, firstUL),
+        firstULChildren = firstUL.children,
         getFirstSelectedLi = () => firstULChildren[indexOfFirstSelectedLi];
 
       while (getFirstSelectedLi()) {
@@ -2115,10 +2114,14 @@ function removeFormatting() {
       return fragmentWithFirstLi;
     }
 
-    let fragmentWithFirstLi = getFragmentOfFirstSelectedLiElements();
+    let fragmentWithFirstLi = getFragmentOfFirstSelectedLiElements(
+      firstLi,
+      firstUL
+    );
 
-    function getFragmentOfLastSelectedLiElements() {
+    function getFragmentOfLastSelectedLiElements(lastLi, lastUL) {
       let fragmentWithLastLi = document.createDocumentFragment(),
+        lastULChildren = lastUL.children,
         indexOfLastLi = getChildIndex(lastLi, lastUL),
         getFirstLi = () => lastULChildren[0],
         getLiAfterLastSelectedLi = () => lastULChildren[indexOfLastLi + 1];
@@ -2131,7 +2134,10 @@ function removeFormatting() {
       return fragmentWithLastLi;
     }
 
-    let fragmentWithLastLi = getFragmentOfLastSelectedLiElements();
+    let fragmentWithLastLi = getFragmentOfLastSelectedLiElements(
+      lastLi,
+      lastUL
+    );
 
     function getLiTurnedIntoP(fragment) {
       let childrenOfFragmentWithLi = fragment.children,
