@@ -1965,13 +1965,6 @@ function removeFormatting() {
   function formatBothP() {
     addTag("selected");
 
-    let querySelector = "[class*=selected]",
-      selectedParts = document.querySelectorAll(querySelector),
-      selectedPartsInLastP = [],
-      amountOfSelectedParts = selectedParts.length,
-      indexOfLastSelectedPart = amountOfSelectedParts - 1,
-      lastPart = selectedParts[indexOfLastSelectedPart];
-
     function getSelectedPartsInFirstP() {
       let querySelector = "[class*=selected]",
         selectedParts = document.querySelectorAll(querySelector),
@@ -1995,6 +1988,13 @@ function removeFormatting() {
 
     let selectedPartsInFirstP = getSelectedPartsInFirstP();
 
+    let querySelector = "[class*=selected]",
+      selectedParts = document.querySelectorAll(querySelector),
+      selectedPartsInLastP = [],
+      amountOfSelectedParts = selectedParts.length,
+      indexOfLastSelectedPart = amountOfSelectedParts - 1,
+      lastPart = selectedParts[indexOfLastSelectedPart];
+
     let amountOfSelectedPartsInFirstP = selectedPartsInFirstP.length,
       indexOfLastPartInSelectedPartsInFirstP =
         amountOfSelectedPartsInFirstP - 1,
@@ -2007,14 +2007,26 @@ function removeFormatting() {
       selectedPartsInLastP.push(selectedParts[j]);
       j--;
     }
+
+    let insteadOfJ = selectedParts.length - selectedPartsInLastP.length - 1;
+    console.log(j);
+    console.log(selectedPartsInFirstP);
+    console.log(selectedPartsInLastP);
+    console.log(selectedParts);
+    console.log(insteadOfJ);
+
     selectedPartsInLastP.reverse();
 
     //
     //
 
-    let amountOfSelectedPartsInLastP = indexOfLastSelectedPart - j,
-      indexOfFirstPartInSelectedPartsInLastP = j + 1;
+    let amountOfSelectedPartsInLastP = indexOfLastSelectedPart - insteadOfJ,
+      indexOfFirstPartInSelectedPartsInLastP =
+        selectedParts.length - selectedPartsInLastP.length;
     amountOfSelectedParts = selectedParts.length;
+
+    console.log(amountOfSelectedPartsInLastP);
+    console.log(indexOfFirstPartInSelectedPartsInLastP);
 
     let bigFirstContent = "",
       bigLastContent = "",
