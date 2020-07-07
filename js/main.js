@@ -1930,8 +1930,8 @@ function removeFormatting() {
     isLastChildOL = nameOfLastSelectedChild == "OL",
     isLastChildParapgraph = nameOfLastSelectedChild == "P";
 
-  let isLastChildList = isLastChildUL || isLastChildOL,
-    isFirstChildList = isFirstChildUL || isFirstChildOL;
+  let isFirstChildList = isFirstChildUL || isFirstChildOL,
+    isLastChildList = isLastChildUL || isLastChildOL;
 
   let isFirstListAndLastParagraph = isFirstChildList && isLastChildParapgraph,
     isFirstParagraphAndLastList = isFirstChildParagraph && isLastChildList,
@@ -1939,25 +1939,26 @@ function removeFormatting() {
     isBothLists = isFirstChildList && isLastChildList,
     isThereListBetween = false;
 
-  function checkListBetween(isThereListBetween) {
+  function checkListBetween() {
     let mainContainer = document.getElementById("work-area"),
-      mainContainerChildren = mainContainer.children;
+      mainContainerChildren = mainContainer.children,
+      indexOfFirstUnselectedChild = indexOfFirstSelectedChild + 1,
+      indexOfLastUnselectedChild = indexOfLastSelectedChild - 1;
 
     for (
-      let i = indexOfFirstSelectedChild + 1;
-      i <= indexOfLastSelectedChild - 1;
+      let i = indexOfFirstUnselectedChild;
+      i <= indexOfLastUnselectedChild;
       i++
     ) {
       let child = mainContainerChildren[i],
         childName = child.nodeName;
 
       if (childName == "UL" || childName == "OL") {
-        isThereListBetween = true;
-        return isThereListBetween;
+        return true;
       }
     }
   }
-  isThereListBetween = checkListBetween(isThereListBetween);
+  isThereListBetween = checkListBetween();
 
   let mainContainerChildren = mainContainer.children;
 
@@ -1975,6 +1976,26 @@ function removeFormatting() {
       lastPart = selectedParts[indexOfLastSelectedPart],
       part = selectedParts[i];
 
+    function getSelectedPartsInFirstP() {
+      let querySelector = "[class*=selected]",
+        selectedParts = document.querySelectorAll(querySelector),
+        selectedPartsInFirstP = [],
+        i = 0,
+        firstPart = selectedParts[0],
+        part = selectedParts[i];
+
+      while (
+        getChildOfMainContainer(firstPart) == getChildOfMainContainer(part)
+      ) {
+        part = selectedParts[i];
+
+        selectedPartsInFirstP.push(part);
+        i++;
+
+        part = selectedParts[i];
+      }
+    }
+
     while (
       getChildOfMainContainer(firstPart) == getChildOfMainContainer(part)
     ) {
@@ -1989,8 +2010,8 @@ function removeFormatting() {
     //
     //
 
-    let amountOfSelectedPartsInFirstP = i,
-      indexOfLastPartInSelectedPartsInFirstP = i - 1,
+    let amountOfSelectedPartsInFirstP = selectedPartsInFirstP.length,
+      indexOfLastPartInSelectedPartsInFirstP = amountOfSelectedPartsInFirstP - 1,
       j = indexOfLastSelectedPart;
 
     while (
@@ -2096,233 +2117,244 @@ function removeFormatting() {
   function formatBothLists() {
     addTag("selected");
 
-    function turnFirstAndLastListIntoParagraphs() {
-      function getFragmentOfFirstSelectedLiElements(firstLi, firstUL) {
-        let fragmentWithFirstLi = document.createDocumentFragment(),
-          indexOfFirstSelectedLi = getChildIndex(firstLi, firstUL),
-          firstULChildren = firstUL.children,
-          getFirstSelectedLi = () => firstULChildren[indexOfFirstSelectedLi];
-  
-        while (getFirstSelectedLi()) {
-          fragmentWithFirstLi.append(getFirstSelectedLi());
+    function clearSelectedTags() {
+      function turnFirstAndLastListElementsIntoParagraphs() {
+        function getFragmentOfFirstSelectedLiElements(firstLi, firstUL) {
+          let fragmentWithFirstLi = document.createDocumentFragment(),
+            indexOfFirstSelectedLi = getChildIndex(firstLi, firstUL),
+            firstULChildren = firstUL.children,
+            getFirstSelectedLi = () => firstULChildren[indexOfFirstSelectedLi];
+
+          while (getFirstSelectedLi()) {
+            fragmentWithFirstLi.append(getFirstSelectedLi());
+          }
+
+          return fragmentWithFirstLi;
         }
-  
-        return fragmentWithFirstLi;
-      }
-  
-      function getFragmentOfLastSelectedLiElements(lastLi, lastUL) {
-        let fragmentWithLastLi = document.createDocumentFragment(),
-          lastULChildren = lastUL.children,
-          indexOfLastLi = getChildIndex(lastLi, lastUL),
-          getFirstLi = () => lastULChildren[0],
-          getLiAfterLastSelectedLi = () => lastULChildren[indexOfLastLi + 1];
-  
-        while (getFirstLi() != getLiAfterLastSelectedLi()) {
-          fragmentWithLastLi.append(getFirstLi());
-          indexOfLastLi--;
+
+        function getFragmentOfLastSelectedLiElements(lastLi, lastUL) {
+          let fragmentWithLastLi = document.createDocumentFragment(),
+            lastULChildren = lastUL.children,
+            indexOfLastLi = getChildIndex(lastLi, lastUL),
+            getFirstLi = () => lastULChildren[0],
+            getLiAfterLastSelectedLi = () => lastULChildren[indexOfLastLi + 1];
+
+          while (getFirstLi() != getLiAfterLastSelectedLi()) {
+            fragmentWithLastLi.append(getFirstLi());
+            indexOfLastLi--;
+          }
+
+          return fragmentWithLastLi;
         }
-  
-        return fragmentWithLastLi;
-      }
-  
-      function getLiTurnedIntoP(fragment) {
-        let childrenOfFragmentWithLi = fragment.children,
-          amountOfChildrenOfFragmentWithLi = childrenOfFragmentWithLi.length;
-  
-        for (let i = 0; i < amountOfChildrenOfFragmentWithLi; i++) {
-          let child = childrenOfFragmentWithLi[i],
-            innerHTMLOfChild = child.innerHTML,
-            p = document.createElement("P");
-  
-          p.innerHTML = innerHTMLOfChild;
-          fragment.replaceChild(p, child);
+
+        function getLiTurnedIntoP(fragment) {
+          let childrenOfFragmentWithLi = fragment.children,
+            amountOfChildrenOfFragmentWithLi = childrenOfFragmentWithLi.length;
+
+          for (let i = 0; i < amountOfChildrenOfFragmentWithLi; i++) {
+            let child = childrenOfFragmentWithLi[i],
+              innerHTMLOfChild = child.innerHTML,
+              p = document.createElement("P");
+
+            p.innerHTML = innerHTMLOfChild;
+            fragment.replaceChild(p, child);
+          }
+
+          let fragmentWithP = fragment;
+
+          return fragmentWithP;
         }
-  
-        let fragmentWithP = fragment;
-  
-        return fragmentWithP;
-      }
-  
-      function insertClearedFirstAndLastP() {
-        let firstLi = getSecondChildInMainContainer(anchorNode),
-          firstUL = getChildOfMainContainer(anchorNode),
-          fragmentWithFirstLi = getFragmentOfFirstSelectedLiElements(
-            firstLi,
-            firstUL
-          ),
-          fragmentWithFirstP = getLiTurnedIntoP(fragmentWithFirstLi);
-    
-        let lastLi = getSecondChildInMainContainer(focusNode),
-          lastUL = getChildOfMainContainer(focusNode),
-          fragmentWithLastLi = getFragmentOfLastSelectedLiElements(lastLi, lastUL),
-          fragmentWithLastP = getLiTurnedIntoP(fragmentWithLastLi);
-    
-        firstUL.after(fragmentWithFirstP);
-        lastUL.before(fragmentWithLastP);
-      }
-  
-      insertClearedFirstAndLastP();
 
-    }
+        function insertClearedFirstAndLastP() {
+          let firstLi = getSecondChildInMainContainer(anchorNode),
+            firstUL = getChildOfMainContainer(anchorNode),
+            fragmentWithFirstLi = getFragmentOfFirstSelectedLiElements(
+              firstLi,
+              firstUL
+            ),
+            fragmentWithFirstP = getLiTurnedIntoP(fragmentWithFirstLi);
 
-    turnFirstAndLastListIntoParagraphs();
+          let lastLi = getSecondChildInMainContainer(focusNode),
+            lastUL = getChildOfMainContainer(focusNode),
+            fragmentWithLastLi = getFragmentOfLastSelectedLiElements(
+              lastLi,
+              lastUL
+            ),
+            fragmentWithLastP = getLiTurnedIntoP(fragmentWithLastLi);
 
-    function getSelectedPartsInFirstP() {
-      let querySelector = "[class*=selected]",
-        selectedParts = document.querySelectorAll(querySelector),
-        selectedPartsInFirstP = [],
-        indexOfCurrentPart = 0,
-        firstPart = selectedParts[0],
-        part = selectedParts[indexOfCurrentPart];
+          firstUL.after(fragmentWithFirstP);
+          lastUL.before(fragmentWithLastP);
+        }
 
-      while (
-        getChildOfMainContainer(firstPart) == getChildOfMainContainer(part)
-      ) {
-        part = selectedParts[indexOfCurrentPart];
-
-        selectedPartsInFirstP.push(part);
-        indexOfCurrentPart++;
-
-        part = selectedParts[indexOfCurrentPart];
+        insertClearedFirstAndLastP();
       }
 
-      return selectedPartsInFirstP;
-    }
+      turnFirstAndLastListElementsIntoParagraphs();
 
-    let selectedPartsInFirstP = getSelectedPartsInFirstP();
-
-    function getSelectedPartsInLastP() {
-      let querySelector = "[class*=selected]",
-        selectedParts = document.querySelectorAll(querySelector),
-        selectedPartsInLastP = [],
-        amountOfSelectedParts = selectedParts.length,
-        indexOfLastSelectedPart = amountOfSelectedParts - 1,
-        lastPart = selectedParts[indexOfLastSelectedPart];
-
-      let indexOfCurrentPartInLastP = indexOfLastSelectedPart;
-
-      while (
-        getChild(lastPart, mainContainer) ==
-        getChild(selectedParts[indexOfCurrentPartInLastP], mainContainer)
-      ) {
-        selectedPartsInLastP.push(selectedParts[indexOfCurrentPartInLastP]);
-        indexOfCurrentPartInLastP--;
-      }
-
-      return selectedPartsInLastP;
-    }
-
-    let selectedPartsInLastP = getSelectedPartsInLastP(),
-      amountOfSelectedPartsInLastP = selectedPartsInLastP.length;
-    selectedPartsInLastP.reverse();
-
-    let querySelector = "[class*=selected]",
-      selectedParts = document.querySelectorAll(querySelector),
-      amountOfSelectedParts = selectedParts.length,
-      indexOfLastSelectedPart = amountOfSelectedParts - 1;
-
-    let indexOfCurrentPartInLastP =
-      amountOfSelectedParts - amountOfSelectedPartsInLastP - 1;
-
-    let indexOfFirstPartInSelectedPartsInLastP = indexOfCurrentPartInLastP + 1;
-    amountOfSelectedParts = selectedParts.length;
-
-    function makeBigContent(someParts) {
-      let bigContent = "",
-        amountOfParts = someParts.length;
-
-      for (let i = 0; i < amountOfParts; i++) {
-        let part = someParts[i],
-          contentOfPart = part.textContent;
-
-        bigContent = bigContent.concat(contentOfPart);
-        part.remove();
-      }
-
-      return bigContent;
-    }
-
-    function removeFormattingInFirstSelectedElement(selectedPartsInFirstP) {
-      let bigFirstContent = makeBigContent(selectedPartsInFirstP),
-        textNodeWithBigFirstContent = createTextNode(bigFirstContent);
-
-      //Append and prepend clear parts
-      //
-      let firstSelectedP = firstSelectedChild.nextElementSibling;
-      firstSelectedP.append(textNodeWithBigFirstContent);
-
-      return firstSelectedP;
-    }
-    let firstSelectedP = removeFormattingInFirstSelectedElement(
-      selectedPartsInFirstP
-    );
-
-    function removeFormattingInLastSelectedElement(selectedPartsInLastP) {
-      let bigLastContent = makeBigContent(selectedPartsInLastP),
-        textNodeWithBigLastContent = createTextNode(bigLastContent);
-
-      //Append and prepend clear parts
-      //
-      let lastSelectedP = lastSelectedChild.previousSibling;
-      lastSelectedP.prepend(textNodeWithBigLastContent);
-    }
-    removeFormattingInLastSelectedElement(selectedPartsInLastP);
-
-    let someAmount = indexOfLastSelectedPart - indexOfCurrentPartInLastP;
-
-    let indexOfCurrentPart = selectedPartsInFirstP.length,
-      amountOfSelectedPartsInFirstP = indexOfCurrentPart;
-
-    let summaOfFirstAndLastSelectedParts =
-        amountOfSelectedPartsInFirstP + someAmount,
-      isThereExtraParts =
-        amountOfSelectedParts != summaOfFirstAndLastSelectedParts;
-
-    // Clean format of remaining parts if there are such
-    if (isThereExtraParts) {
-      let arrayWithRemainingFragmentParts = [],
-        indexOfCurrentPart = selectedPartsInFirstP.length,
-        indexOfLastPartInSelectedPartsInFirstP = indexOfCurrentPart - 1;
-
-      for (
-        let i = indexOfLastPartInSelectedPartsInFirstP + 1;
-        i < indexOfFirstPartInSelectedPartsInLastP;
-        i++
-      ) {
-        arrayWithRemainingFragmentParts.push(selectedParts[i]);
-      }
-
-      let fragmentWithRemainingParts = document.createDocumentFragment();
-
-      while (arrayWithRemainingFragmentParts.length != 0) {
-        let commonParent = getChildOfMainContainer(
-            arrayWithRemainingFragmentParts[0]
-          ),
-          p = document.createElement("P");
+      function getSelectedPartsInFirstP() {
+        let querySelector = "[class*=selected]",
+          selectedParts = document.querySelectorAll(querySelector),
+          selectedPartsInFirstP = [],
+          indexOfCurrentPart = 0,
+          firstPart = selectedParts[0],
+          part = selectedParts[indexOfCurrentPart];
 
         while (
-          commonParent ==
-          getChildOfMainContainer(arrayWithRemainingFragmentParts[0])
+          getChildOfMainContainer(firstPart) == getChildOfMainContainer(part)
         ) {
-          let part = arrayWithRemainingFragmentParts[0],
-            strippedContent = part.textContent,
-            textNodeWithStrippedContent = createTextNode(strippedContent);
+          part = selectedParts[indexOfCurrentPart];
 
-          p.append(textNodeWithStrippedContent);
-          part.remove();
-          arrayWithRemainingFragmentParts.shift();
+          selectedPartsInFirstP.push(part);
+          indexOfCurrentPart++;
 
-          if (arrayWithRemainingFragmentParts[0] == undefined) {
-            break;
-          }
+          part = selectedParts[indexOfCurrentPart];
         }
 
-        commonParent.remove();
-        fragmentWithRemainingParts.append(p);
+        return selectedPartsInFirstP;
       }
 
-      firstSelectedP.after(fragmentWithRemainingParts);
+      let selectedPartsInFirstP = getSelectedPartsInFirstP();
+
+      function getSelectedPartsInLastP() {
+        let querySelector = "[class*=selected]",
+          selectedParts = document.querySelectorAll(querySelector),
+          selectedPartsInLastP = [],
+          amountOfSelectedParts = selectedParts.length,
+          indexOfLastSelectedPart = amountOfSelectedParts - 1,
+          lastPart = selectedParts[indexOfLastSelectedPart];
+
+        let indexOfCurrentPartInLastP = indexOfLastSelectedPart;
+
+        while (
+          getChild(lastPart, mainContainer) ==
+          getChild(selectedParts[indexOfCurrentPartInLastP], mainContainer)
+        ) {
+          selectedPartsInLastP.push(selectedParts[indexOfCurrentPartInLastP]);
+          indexOfCurrentPartInLastP--;
+        }
+
+        return selectedPartsInLastP;
+      }
+
+      let selectedPartsInLastP = getSelectedPartsInLastP(),
+        amountOfSelectedPartsInLastP = selectedPartsInLastP.length;
+      selectedPartsInLastP.reverse();
+
+      let querySelector = "[class*=selected]",
+        selectedParts = document.querySelectorAll(querySelector),
+        amountOfSelectedParts = selectedParts.length,
+        indexOfLastSelectedPart = amountOfSelectedParts - 1;
+
+      let indexOfCurrentPartInLastP =
+        amountOfSelectedParts - amountOfSelectedPartsInLastP - 1;
+
+      let indexOfFirstPartInSelectedPartsInLastP =
+        indexOfCurrentPartInLastP + 1;
+      amountOfSelectedParts = selectedParts.length;
+
+      function makeBigContent(someParts) {
+        let bigContent = "",
+          amountOfParts = someParts.length;
+
+        for (let i = 0; i < amountOfParts; i++) {
+          let part = someParts[i],
+            contentOfPart = part.textContent;
+
+          bigContent = bigContent.concat(contentOfPart);
+          part.remove();
+        }
+
+        return bigContent;
+      }
+
+      function removeFormattingInFirstSelectedElement(selectedPartsInFirstP) {
+        let bigFirstContent = makeBigContent(selectedPartsInFirstP),
+          textNodeWithBigFirstContent = createTextNode(bigFirstContent);
+
+        //Append and prepend clear parts
+        //
+        let firstSelectedP = firstSelectedChild.nextElementSibling;
+        firstSelectedP.append(textNodeWithBigFirstContent);
+
+        return firstSelectedP;
+      }
+      let firstSelectedP = removeFormattingInFirstSelectedElement(
+        selectedPartsInFirstP
+      );
+
+      function removeFormattingInLastSelectedElement(selectedPartsInLastP) {
+        let bigLastContent = makeBigContent(selectedPartsInLastP),
+          textNodeWithBigLastContent = createTextNode(bigLastContent);
+
+        //Append and prepend clear parts
+        //
+        let lastSelectedP = lastSelectedChild.previousSibling;
+        lastSelectedP.prepend(textNodeWithBigLastContent);
+      }
+      removeFormattingInLastSelectedElement(selectedPartsInLastP);
+
+      let someAmount = indexOfLastSelectedPart - indexOfCurrentPartInLastP;
+
+      let indexOfCurrentPart = selectedPartsInFirstP.length,
+        amountOfSelectedPartsInFirstP = indexOfCurrentPart;
+
+      let summaOfFirstAndLastSelectedParts =
+          amountOfSelectedPartsInFirstP + someAmount,
+        isThereExtraParts =
+          amountOfSelectedParts != summaOfFirstAndLastSelectedParts;
+
+      // Clean format of remaining parts if there are such
+      if (isThereExtraParts) {
+        function clearRemainingParts() {
+          let arrayWithRemainingFragmentParts = [],
+            indexOfCurrentPart = selectedPartsInFirstP.length,
+            indexOfLastPartInSelectedPartsInFirstP = indexOfCurrentPart - 1;
+
+          for (
+            let i = indexOfLastPartInSelectedPartsInFirstP + 1;
+            i < indexOfFirstPartInSelectedPartsInLastP;
+            i++
+          ) {
+            arrayWithRemainingFragmentParts.push(selectedParts[i]);
+          }
+
+          let fragmentWithRemainingParts = document.createDocumentFragment();
+
+          while (arrayWithRemainingFragmentParts.length != 0) {
+            let commonParent = getChildOfMainContainer(
+                arrayWithRemainingFragmentParts[0]
+              ),
+              p = document.createElement("P");
+
+            while (
+              commonParent ==
+              getChildOfMainContainer(arrayWithRemainingFragmentParts[0])
+            ) {
+              let part = arrayWithRemainingFragmentParts[0],
+                strippedContent = part.textContent,
+                textNodeWithStrippedContent = createTextNode(strippedContent);
+
+              p.append(textNodeWithStrippedContent);
+              part.remove();
+              arrayWithRemainingFragmentParts.shift();
+
+              if (arrayWithRemainingFragmentParts[0] == undefined) {
+                break;
+              }
+            }
+
+            commonParent.remove();
+            fragmentWithRemainingParts.append(p);
+          }
+
+          firstSelectedP.after(fragmentWithRemainingParts);
+        }
+
+        clearRemainingParts();
+      }
     }
+
+    clearSelectedTags();
   }
 
   if (distance > 2) {
