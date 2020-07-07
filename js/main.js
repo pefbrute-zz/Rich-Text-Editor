@@ -1617,6 +1617,9 @@ function removeFormatting() {
     return element;
   }
 
+
+  //
+  // Fix this one
   function clearElementsFromPToList() {
     addTag("selected");
     let lastLi = getSecondChildInMainContainer(focusNode),
@@ -1780,6 +1783,8 @@ function removeFormatting() {
       firstSelectedChild.after(fragmentWithRemainingParts);
     }
   }
+  //
+  //
 
   function clearElementsFromListToP() {
     addTag("selected");
@@ -2009,6 +2014,9 @@ function removeFormatting() {
 
     let selectedPartsInLastP = getSelectedPartsInLastP();
 
+    
+    selectedPartsInLastP.reverse();
+    
     let querySelector = "[class*=selected]",
       selectedParts = document.querySelectorAll(querySelector),
       amountOfSelectedParts = selectedParts.length;
@@ -2018,17 +2026,6 @@ function removeFormatting() {
         amountOfSelectedPartsInFirstP - 1;
 
     let insteadOfJ = selectedParts.length - selectedPartsInLastP.length - 1;
-
-    // console.log(j);
-    console.log(selectedPartsInFirstP);
-    console.log(selectedPartsInLastP);
-    console.log(selectedParts);
-    console.log(insteadOfJ);
-
-    selectedPartsInLastP.reverse();
-
-    //
-    //
     indexOfLastSelectedPart = amountOfSelectedParts - 1;
 
     let amountOfSelectedPartsInLastP = indexOfLastSelectedPart - insteadOfJ,
