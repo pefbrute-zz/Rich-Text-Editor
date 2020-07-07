@@ -1617,16 +1617,17 @@ function removeFormatting() {
     return element;
   }
 
-
   //
   // Fix this one
   function clearElementsFromPToList() {
     addTag("selected");
-    let lastLi = getSecondChildInMainContainer(focusNode),
-      ul = getChildOfMainContainer(focusNode),
-      ulChildren = ul.children;
+    let ul = getChildOfMainContainer(focusNode);
 
     function getFragmentOfSelectedLiElements() {
+      let lastLi = getSecondChildInMainContainer(focusNode),
+        ul = getChildOfMainContainer(focusNode),
+        ulChildren = ul.children;
+
       let fragmentWithLi = document.createDocumentFragment(),
         indexOfLastLi = getChildIndex(lastLi, ul),
         getFirstLi = () => ulChildren[0],
@@ -1677,10 +1678,10 @@ function removeFormatting() {
     while (
       getChildOfMainContainer(firstPart) == getChildOfMainContainer(part)
     ) {
-      part = selectedParts[i];
-
       selectedPartsInFirstP.push(part);
+
       i++;
+      part = selectedParts[i];
     }
 
     let amountOfSelectedPartsInFirstP = i,
@@ -2014,9 +2015,8 @@ function removeFormatting() {
 
     let selectedPartsInLastP = getSelectedPartsInLastP();
 
-    
     selectedPartsInLastP.reverse();
-    
+
     let querySelector = "[class*=selected]",
       selectedParts = document.querySelectorAll(querySelector),
       amountOfSelectedParts = selectedParts.length;
@@ -2032,9 +2032,6 @@ function removeFormatting() {
       indexOfFirstPartInSelectedPartsInLastP =
         selectedParts.length - selectedPartsInLastP.length;
     amountOfSelectedParts = selectedParts.length;
-
-    console.log(amountOfSelectedPartsInLastP);
-    console.log(indexOfFirstPartInSelectedPartsInLastP);
 
     let bigFirstContent = "",
       bigLastContent = "",
