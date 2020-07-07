@@ -2007,25 +2007,6 @@ function removeFormatting() {
       return selectedPartsInLastP;
     }
 
-    // let querySelector = "[class*=selected]",
-    //   selectedParts = document.querySelectorAll(querySelector),
-    //   selectedPartsInLastP = [],
-    //   amountOfSelectedParts = selectedParts.length,
-    //   indexOfLastSelectedPart = amountOfSelectedParts - 1,
-    //   lastPart = selectedParts[indexOfLastSelectedPart];
-
-    // let amountOfSelectedPartsInFirstP = selectedPartsInFirstP.length,
-    //   indexOfLastPartInSelectedPartsInFirstP =
-    //     amountOfSelectedPartsInFirstP - 1;
-
-    // while (
-    //   getChild(lastPart, mainContainer) ==
-    //   getChild(selectedParts[indexOfLastSelectedPart], mainContainer)
-    // ) {
-    //   selectedPartsInLastP.push(selectedParts[indexOfLastSelectedPart]);
-    //   indexOfLastSelectedPart--;
-    // }
-
     let selectedPartsInLastP = getSelectedPartsInLastP();
 
     let querySelector = "[class*=selected]",
