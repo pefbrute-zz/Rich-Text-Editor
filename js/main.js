@@ -1675,17 +1675,32 @@ function removeFormatting() {
       lastPart = selectedParts[indexOfLastSelectedPart],
       part = selectedParts[i];
 
-    while (
-      getChildOfMainContainer(firstPart) == getChildOfMainContainer(part)
-    ) {
-      selectedPartsInFirstP.push(part);
+    // while (
+    //   getChildOfMainContainer(firstPart) == getChildOfMainContainer(part)
+    // ) {
+    //   selectedPartsInFirstP.push(part);
 
-      i++;
+    //   i++;
+    //   part = selectedParts[i];
+    // }
+
+    for (
+      let i = 0;
+      getChildOfMainContainer(firstPart) == getChildOfMainContainer(part);
+      i++
+    ) {
       part = selectedParts[i];
+
+      if (getChildOfMainContainer(firstPart) != getChildOfMainContainer(part)) {
+        break;
+      }
+      
+      selectedPartsInFirstP.push(part);
     }
 
-    let amountOfSelectedPartsInFirstP = i,
-      indexOfLastPartInSelectedPartsInFirstP = i - 1,
+    let amountOfSelectedPartsInFirstP = selectedPartsInFirstP.length,
+      indexOfLastPartInSelectedPartsInFirstP =
+        amountOfSelectedPartsInFirstP - 1,
       j = indexOfLastSelectedPart;
 
     while (
@@ -1696,9 +1711,10 @@ function removeFormatting() {
       j--;
     }
 
-    let amountOfSelectedPartsInLastP = indexOfLastSelectedPart - j,
-      indexOfFirstPartInSelectedPartsInLastP = j + 1;
     amountOfSelectedParts = selectedParts.length;
+    let amountOfSelectedPartsInLastP = selectedPartsInLastP.length,
+      indexOfFirstPartInSelectedPartsInLastP =
+        amountOfSelectedParts - amountOfSelectedPartsInLastP;
 
     selectedPartsInLastP.reverse();
 
@@ -1736,6 +1752,8 @@ function removeFormatting() {
 
     firstSelectedChild.append(textNodeWithBigFirstContent);
     lastSelectedP.prepend(textNodeWithBigLastContent);
+
+    amountOfSelectedParts = selectedParts.length;
 
     // Clean format of remaining parts if there are such
     if (
@@ -1864,12 +1882,12 @@ function removeFormatting() {
       selectedPartsInFirstP[i].remove();
     }
 
-    for (let i = 0; i < selectedPartsInLastP.length; i++) {
-      bigLastContent = bigLastContent.concat(
-        selectedPartsInLastP[i].textContent
-      );
-
-      selectedPartsInLastP[i].remove();
+    for (
+      let i = 0;
+      i < selectedPartsInLastP.lengtselectedPartsInFirstP.length;
+      i++
+    ) {
+      amountOfSelectedPartsInFirstP;
     }
 
     let textNodeWithBigFirstContent = createTextNode(bigFirstContent),
