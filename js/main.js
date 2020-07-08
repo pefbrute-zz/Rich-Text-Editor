@@ -1675,15 +1675,6 @@ function removeFormatting() {
       lastPart = selectedParts[indexOfLastSelectedPart],
       part = selectedParts[i];
 
-    // while (
-    //   getChildOfMainContainer(firstPart) == getChildOfMainContainer(part)
-    // ) {
-    //   selectedPartsInFirstP.push(part);
-
-    //   i++;
-    //   part = selectedParts[i];
-    // }
-
     for (
       let i = 0;
       getChildOfMainContainer(firstPart) == getChildOfMainContainer(part);
@@ -1694,7 +1685,7 @@ function removeFormatting() {
       if (getChildOfMainContainer(firstPart) != getChildOfMainContainer(part)) {
         break;
       }
-      
+
       selectedPartsInFirstP.push(part);
     }
 
@@ -1703,12 +1694,16 @@ function removeFormatting() {
         amountOfSelectedPartsInFirstP - 1,
       j = indexOfLastSelectedPart;
 
-    while (
-      getChild(lastPart, mainContainer) ==
-      getChild(selectedParts[j], mainContainer)
-    ) {
+    let isInTheSameContainer = (index) => {
+      return (
+        getChildOfMainContainer(lastPart) ==
+        getChildOfMainContainer(selectedParts[index])
+      );
+    };
+
+    for (let j = indexOfLastSelectedPart; isInTheSameContainer(j); j--) {
       selectedPartsInLastP.push(selectedParts[j]);
-      j--;
+      console.log(isInTheSameContainer(j));
     }
 
     amountOfSelectedParts = selectedParts.length;
