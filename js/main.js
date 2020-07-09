@@ -1867,21 +1867,23 @@ function removeFormatting() {
       bigLastContent = "",
       lastSelectedP = lastSelectedChild;
 
-    for (let i = 0; i < selectedPartsInFirstP.length; i++) {
-      bigFirstContent = bigFirstContent.concat(
-        selectedPartsInFirstP[i].textContent
-      );
+    function makeBigContent(someParts) {
+      let bigContent = "",
+        amountOfParts = someParts.length;
 
-      selectedPartsInFirstP[i].remove();
+      for (let i = 0; i < amountOfParts; i++) {
+        let part = someParts[i],
+          contentOfPart = part.textContent;
+
+        bigContent = bigContent.concat(contentOfPart);
+        part.remove();
+      }
+
+      return bigContent;
     }
 
-    for (let i = 0; i < selectedPartsInLastP.length; i++) {
-      bigLastContent = bigLastContent.concat(
-        selectedPartsInLastP[i].textContent
-      );
-
-      selectedPartsInLastP[i].remove();
-    }
+    bigFirstContent = makeBigContent(selectedPartsInFirstP);
+    bigLastContent = makeBigContent(selectedPartsInLastP);
 
     let textNodeWithBigFirstContent = createTextNode(bigFirstContent),
       textNodeWithBigLastContent = createTextNode(bigLastContent);
