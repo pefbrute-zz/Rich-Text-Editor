@@ -2067,14 +2067,7 @@ function removeFormatting() {
     }
 
     bigFirstContent = makeBigContent(selectedPartsInFirstP);
-
-    for (let i = 0; i < selectedPartsInLastP.length; i++) {
-      bigLastContent = bigLastContent.concat(
-        selectedPartsInLastP[i].textContent
-      );
-
-      selectedPartsInLastP[i].remove();
-    }
+    bigLastContent = makeBigContent(selectedPartsInLastP);
 
     let textNodeWithBigFirstContent = createTextNode(bigFirstContent),
       textNodeWithBigLastContent = createTextNode(bigLastContent);
