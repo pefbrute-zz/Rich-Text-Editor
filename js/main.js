@@ -1691,8 +1691,7 @@ function removeFormatting() {
 
     let amountOfSelectedPartsInFirstP = selectedPartsInFirstP.length,
       indexOfLastPartInSelectedPartsInFirstP =
-        amountOfSelectedPartsInFirstP - 1,
-      j = indexOfLastSelectedPart;
+        amountOfSelectedPartsInFirstP - 1;
 
     let isInTheSameContainer = (index) => {
       return (
@@ -1703,7 +1702,6 @@ function removeFormatting() {
 
     for (let j = indexOfLastSelectedPart; isInTheSameContainer(j); j--) {
       selectedPartsInLastP.push(selectedParts[j]);
-      console.log(isInTheSameContainer(j));
     }
 
     amountOfSelectedParts = selectedParts.length;
@@ -1877,12 +1875,12 @@ function removeFormatting() {
       selectedPartsInFirstP[i].remove();
     }
 
-    for (
-      let i = 0;
-      i < selectedPartsInLastP.lengtselectedPartsInFirstP.length;
-      i++
-    ) {
-      amountOfSelectedPartsInFirstP;
+    for (let i = 0; i < selectedPartsInLastP.length; i++) {
+      bigLastContent = bigLastContent.concat(
+        selectedPartsInLastP[i].textContent
+      );
+
+      selectedPartsInLastP[i].remove();
     }
 
     let textNodeWithBigFirstContent = createTextNode(bigFirstContent),
