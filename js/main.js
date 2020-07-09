@@ -1801,29 +1801,43 @@ function removeFormatting() {
   function clearElementsFromListToP() {
     addTag("selected");
 
+    function getFragmentWithLi() {
+      let fragmentWithLi = document.createDocumentFragment(),
+        firstSelectedLi = getSecondChild(anchorNode, mainContainer),
+        ul = getChild(anchorNode, mainContainer),
+        ulChildren = ul.children,
+        indexOfFirstSelectedLi = getChildIndex(firstSelectedLi, ul),
+        getFirstSelectedLi = () => ulChildren[indexOfFirstSelectedLi];
+
+      while (getFirstSelectedLi()) {
+        fragmentWithLi.append(getFirstSelectedLi());
+      }
+
+      return fragmentWithLi;
+    }
+
     let fragmentWithLi = document.createDocumentFragment(),
-      firstSelectedLi = getSecondChild(anchorNode, mainContainer),
-      ul = getChild(anchorNode, mainContainer),
-      ulChildren = ul.children,
-      indexOfFirstSelectedLi = getChildIndex(firstSelectedLi, ul),
-      getFirstSelectedLi = () => ulChildren[indexOfFirstSelectedLi];
+    ul = getChild(anchorNode, mainContainer);
 
-    while (getFirstSelectedLi()) {
-      fragmentWithLi.append(getFirstSelectedLi());
+    fragmentWithLi = getFragmentWithLi();
+
+    function replaceLiToP(fragmentWithLi) {
+      let childrenOfFragmentWithLi = fragmentWithLi.children,
+        amountOfChildrenOfFragmentWithLi = childrenOfFragmentWithLi.length;
+
+      for (let i = 0; i < amountOfChildrenOfFragmentWithLi; i++) {
+        let child = childrenOfFragmentWithLi[i],
+          innerHTMLOfChild = child.innerHTML,
+          p = document.createElement("P");
+
+        p.innerHTML = innerHTMLOfChild;
+        fragmentWithLi.replaceChild(p, child);
+      }
+
+      return fragmentWithLi;
     }
 
-    let childrenOfFragmentWithLi = fragmentWithLi.children,
-      amountOfChildrenOfFragmentWithLi = childrenOfFragmentWithLi.length;
-
-    for (let i = 0; i < amountOfChildrenOfFragmentWithLi; i++) {
-      let child = childrenOfFragmentWithLi[i],
-        innerHTMLOfChild = child.innerHTML,
-        p = document.createElement("P");
-
-      p.innerHTML = innerHTMLOfChild;
-      fragmentWithLi.replaceChild(p, child);
-    }
-    let fragmentWithP = fragmentWithLi;
+    let fragmentWithP = replaceLiToP(fragmentWithLi);
 
     ul.after(fragmentWithP);
 
