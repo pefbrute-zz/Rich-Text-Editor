@@ -17,14 +17,14 @@ function addDropdown(dropdownId) {
     for (let i = 0; i <= dropdownsLastElementIndex; i++) {
       let dropdownElement = dropdowns[i];
 
-      if (dropdownElement != dropdown) {
+      if (dropdownElement !== dropdown) {
         dropdownElement.className = "hidden";
       }
     }
   }
   let classNameOfDropdown = dropdown.className;
 
-  if (classNameOfDropdown == dropdownId) {
+  if (classNameOfDropdown === dropdownId) {
     dropdown.className = "hidden";
   } else {
     dropdown.className = dropdownId;
@@ -133,14 +133,14 @@ function clearClasses(classNameBeginning) {
       let name = lastNamesInClass[j],
         partOfName = name.substring(0, length);
 
-      if (partOfName == classNameBeginning) {
+      if (partOfName === classNameBeginning) {
         classesIndexes[k] = j;
         classesAmount++;
         k++;
       }
     }
 
-    if (classesAmount != 1) {
+    if (classesAmount !== 1) {
       for (let j = 0; j < classesAmount; j++) {
         let index = classesIndexes[j];
 
@@ -272,7 +272,7 @@ function addFont(fontName) {
     elements = document.querySelectorAll(querySelector),
     amountOfElements = elements.length;
 
-  if (capitalizedFontName == "sofia") {
+  if (capitalizedFontName === "sofia") {
     var i = 2;
   } else {
     var i = 1;
@@ -303,8 +303,8 @@ function addFont(fontName) {
             let name = names[j];
 
             if (
-              classNamesList[k] == name &&
-              classNamesList[k] != capitalizedFontName
+              classNamesList[k] === name &&
+              classNamesList[k] !== capitalizedFontName
             ) {
               classNamesList.splice(k, 1);
               classNamesListAmount--;
@@ -334,7 +334,7 @@ function addSize(sizeName) {
     elements = document.querySelectorAll(querySelector),
     amountOfElements = elements.length;
 
-  if (sizeName == "normal") {
+  if (sizeName === "normal") {
     var i = 2;
   } else {
     var i = 1;
@@ -357,7 +357,7 @@ function addSize(sizeName) {
             let name = names[j],
               splittedClass = splittedClassName[k];
 
-            if (splittedClass == name && splittedClass != sizeName) {
+            if (splittedClass === name && splittedClass !== sizeName) {
               splittedClassName.splice(k, 1);
               amountOfClasses--;
             }
@@ -375,12 +375,12 @@ function addSize(sizeName) {
 //It finds child of (parent) element from some (element)
 //First Level Child
 function getChild(element, parent) {
-  if (element == undefined) {
+  if (element === undefined) {
     throw new Error("You didn't add child element");
-  } else if (parent == undefined) {
+  } else if (parent === undefined) {
     throw new Error("You didn't add parent element");
   } else {
-    while (element.parentElement != parent) {
+    while (element.parentElement !== parent) {
       element = element.parentElement;
     }
 
@@ -391,12 +391,12 @@ function getChild(element, parent) {
 }
 
 function getChildOfMainContainer(element) {
-  if (element == undefined) {
+  if (element === undefined) {
     throw new Error("You didn't add child element");
   } else {
     let parent = document.getElementById("work-area");
 
-    while (element.parentElement != parent) {
+    while (element.parentElement !== parent) {
       element = element.parentElement;
     }
 
@@ -408,12 +408,12 @@ function getChildOfMainContainer(element) {
 
 //Second Level Child
 function getSecondChild(element, parent) {
-  if (element == undefined) {
+  if (element === undefined) {
     throw new Error("You didn't add child element");
-  } else if (parent == undefined) {
+  } else if (parent === undefined) {
     throw new Error("You didn't add parent element");
   } else {
-    while (element.parentElement.parentElement != parent) {
+    while (element.parentElement.parentElement !== parent) {
       element = element.parentElement;
     }
 
@@ -424,12 +424,12 @@ function getSecondChild(element, parent) {
 }
 
 function getSecondChildInMainContainer(element) {
-  if (element == undefined) {
+  if (element === undefined) {
     throw new Error("You didn't add child element");
   } else {
     let parent = document.getElementById("work-area");
 
-    while (element.parentElement.parentElement != parent) {
+    while (element.parentElement.parentElement !== parent) {
       element = element.parentElement;
     }
 
@@ -495,7 +495,7 @@ function replaceContainerTag(tag) {
     firstSelectedElement = selectedElements[0],
     lastSelectedElement = selectedElements[1];
 
-  if (firstSelectedElement != undefined && lastSelectedElement != undefined) {
+  if (firstSelectedElement !== undefined && lastSelectedElement !== undefined) {
     let p = [],
       pCounter = 0,
       tagData = {
@@ -508,7 +508,7 @@ function replaceContainerTag(tag) {
       let nameOfFirstSelectedElement = firstSelectedElement.tagName,
         nameOfTag = tagData.tagName;
 
-      if (nameOfFirstSelectedElement == nameOfTag) {
+      if (nameOfFirstSelectedElement === nameOfTag) {
         p[pCounter] = firstSelectedElement;
         pCounter++;
       } else {
@@ -523,16 +523,18 @@ function replaceContainerTag(tag) {
         elementAfterLastSelectedElement =
           lastSelectedElement.nextElementSibling;
 
-      if (elementAfterFirstSelectedElement == elementAfterLastSelectedElement) {
+      if (
+        elementAfterFirstSelectedElement === elementAfterLastSelectedElement
+      ) {
         break;
       }
 
       firstSelectedElement = elementAfterFirstSelectedElement;
-    } while (firstSelectedElement != elementAfterLastSelectedElement);
+    } while (firstSelectedElement !== elementAfterLastSelectedElement);
 
     lastIndexOfElementInParagraph = pCounter - 1;
 
-    if (pCounter != 0) {
+    if (pCounter !== 0) {
       for (let i = 0; i <= lastIndexOfElementInParagraph; i++) {
         let someTag = p[i];
         replaceElement(someTag, "p");
@@ -542,7 +544,7 @@ function replaceContainerTag(tag) {
     let amountOfTags = tagData.tagCounter,
       indexOfLastTag = amountOfTags - 1;
 
-    if (amountOfTags != 0) {
+    if (amountOfTags !== 0) {
       for (let i = 0; i <= indexOfLastTag; i++) {
         let selectedTags = tagData.selectedTags,
           selectedTag = selectedTags[i],
@@ -552,7 +554,7 @@ function replaceContainerTag(tag) {
       }
     }
 
-    if (tagInUpperCase == "PRE") {
+    if (tagInUpperCase === "PRE") {
       clearTagsAtPreContainer();
       // init();
       removeSpellcheck();
@@ -581,10 +583,10 @@ function getFirstSelectedChilds(bigParent) {
     firstNode = selection.anchorNode,
     lastNode = selection.focusNode,
     verific =
-      firstNode.nodeName == "#text" &&
-      range.commonAncestorContainer != wrongContainer;
+      firstNode.nodeName === "#text" &&
+      range.commonAncestorContainer !== wrongContainer;
 
-  if (bigParent != undefined) {
+  if (bigParent !== undefined) {
     if (verific) {
       let firstSelectedElement = firstNode,
         lastSelectedElement = lastNode,
@@ -592,8 +594,8 @@ function getFirstSelectedChilds(bigParent) {
         endElement = range.endContainer;
 
       if (
-        firstSelectedElement != startElement &&
-        lastSelectedElement != endElement
+        firstSelectedElement !== startElement &&
+        lastSelectedElement !== endElement
       ) {
         // firstSelectedElement = lastNode;
         // lastSelectedElement = firstNode;
@@ -625,26 +627,26 @@ function addContainerClass(className) {
     firstSelectedElement = getFirstSelectedChilds(mainContainer)[0],
     lastSelectedElement = getFirstSelectedChilds(mainContainer)[1];
 
-  if (firstSelectedElement != undefined && lastSelectedElement != undefined) {
+  if (firstSelectedElement !== undefined && lastSelectedElement !== undefined) {
     let classNameBeginning = className.substring(0, 6);
 
-    if (classNameBeginning == "indent") {
+    if (classNameBeginning === "indent") {
       let sign = className.substring(6, 7),
         classBeginning = "indent";
 
       do {
         let nameOfFirstSelectedElement = firstSelectedElement.nodeName;
 
-        if (nameOfFirstSelectedElement != "#text") {
+        if (nameOfFirstSelectedElement !== "#text") {
           let firstSelectedElementClassName = firstSelectedElement.className,
             attributesOfFirstSelectedElement = firstSelectedElement.attributes,
             dataValue = attributesOfFirstSelectedElement["data-value"];
 
-          if (dataValue != undefined) {
+          if (dataValue !== undefined) {
             let valueOfDataValue = dataValue.nodeValue,
               parsedDataValue = parseInt(valueOfDataValue);
 
-            if (sign == "+") {
+            if (sign === "+") {
               if (parsedDataValue <= 7) {
                 let className = firstSelectedElement.className;
                 let cleanElement = clearExtraSpaces(className),
@@ -652,7 +654,7 @@ function addContainerClass(className) {
                   amountOfClasses = classes.length;
                 for (let j = 0; j < amountOfClasses; j++) {
                   let classBeginning = classes[j].substring(0, 6);
-                  if (classBeginning == "indent") {
+                  if (classBeginning === "indent") {
                     classes.splice(j, 1);
                     j--;
                     amountOfClasses--;
@@ -672,7 +674,7 @@ function addContainerClass(className) {
               }
             } else {
               if (parsedDataValue >= 1) {
-                if (parsedDataValue == 1) {
+                if (parsedDataValue === 1) {
                   let className = firstSelectedElement.className,
                     clearElement = clearExtraSpaces(className),
                     classes = clearElement.split(" "),
@@ -680,21 +682,21 @@ function addContainerClass(className) {
 
                   firstSelectedElement.removeAttribute("data-value");
 
-                  if (amountOfClasses == 1) {
+                  if (amountOfClasses === 1) {
                     firstSelectedElement.removeAttribute("class");
                   } else {
                     for (let j = 0; j < amountOfClasses; j++) {
                       let someClass = classes[j],
                         classBeginning = someClass.substring(0, 6);
 
-                      if (classBeginning == "indent") {
+                      if (classBeginning === "indent") {
                         classes.splice(j, 1);
 
                         j--;
                         amountOfClasses--;
                       }
                     }
-                    if (amountOfClasses == 0) {
+                    if (amountOfClasses === 0) {
                       firstSelectedElement.removeAttribute("class");
                     }
                     classes = classes.join(" ");
@@ -711,7 +713,7 @@ function addContainerClass(className) {
                     let someClass = classes[j],
                       classBeginning = someClass.substring(0, 6);
 
-                    if (classBeginning == "indent") {
+                    if (classBeginning === "indent") {
                       classes.splice(j, 1);
 
                       j--;
@@ -738,7 +740,7 @@ function addContainerClass(className) {
                 }
               }
             }
-          } else if (className == "indent+") {
+          } else if (className === "indent+") {
             firstSelectedElement.setAttribute("data-value", 1);
 
             let attributesOfFirstSelectedElement =
@@ -758,23 +760,23 @@ function addContainerClass(className) {
 
         firstSelectedElement = firstSelectedElement.nextSibling;
       } while (
-        firstSelectedElement.nextSibling !=
+        firstSelectedElement.nextSibling !==
         lastSelectedElement.nextElementSibling
       );
     } else {
       do {
         let classNameOfFirstSelectedElement = firstSelectedElement.className;
 
-        if (classNameOfFirstSelectedElement == className) {
+        if (classNameOfFirstSelectedElement === className) {
           firstSelectedElement.removeAttribute("class");
-        } else if (classNameOfFirstSelectedElement != undefined) {
-          if (classNameOfFirstSelectedElement == "") {
+        } else if (classNameOfFirstSelectedElement !== undefined) {
+          if (classNameOfFirstSelectedElement === "") {
             firstSelectedElement.className = className;
           } else {
             let classes = firstSelectedElement.className.split(" "),
               classesAmount = classes.length;
 
-            if (classesAmount == 1) {
+            if (classesAmount === 1) {
               let classNameIndex = className.indexOf("-"),
                 classNameBeginning = className.substring(0, classNameIndex),
                 classIndex = classNameOfFirstSelectedElement.indexOf("-"),
@@ -783,7 +785,7 @@ function addContainerClass(className) {
                   classIndex
                 );
 
-              if (classNameBeginning == classBeginning) {
+              if (classNameBeginning === classBeginning) {
                 firstSelectedElement.className = className;
               } else {
                 firstSelectedElement.className =
@@ -800,7 +802,7 @@ function addContainerClass(className) {
                   classIndex = someClass.indexOf("-"),
                   classBeginning = someClass.substring(0, classIndex);
 
-                if (classBeginning == classNameBeginning) {
+                if (classBeginning === classNameBeginning) {
                   classes.splice(j, 1);
                   j--;
                   classesAmount--;
@@ -819,7 +821,7 @@ function addContainerClass(className) {
         }
         firstSelectedElement = firstSelectedElement.nextSibling;
       } while (
-        firstSelectedElement.nextSibling !=
+        firstSelectedElement.nextSibling !==
         lastSelectedElement.nextElementSibling
       );
     }
@@ -856,8 +858,8 @@ function highlightNumbers() {
     selection = document.getSelection(),
     preElement = selection.anchorNode;
 
-  if (selection.type == "Caret") {
-    while (preElement.tagName != "PRE") {
+  if (selection.type === "Caret") {
+    while (preElement.tagName !== "PRE") {
       preElement = preElement.parentElement;
     }
 
@@ -865,7 +867,7 @@ function highlightNumbers() {
       matches = preElement.innerHTML.match(regExp),
       matchesLastElementIndex = matches.length - 1;
 
-    if (matches != null) {
+    if (matches !== null) {
       for (let j = 0; j <= matchesLastElementIndex; j++) {
         let match = matches[j],
           replacing = "<span class=pre-number>" + match + "</span>",
@@ -881,7 +883,7 @@ function highlightNumbers() {
         element = preList[i],
         matches = element.innerHTML.match(regExp);
 
-      if (matches != null) {
+      if (matches !== null) {
         for (let j = 0; j <= matches.length - 1; j++) {
           let match = matches[j],
             replacing = "<span class=pre-number>" + match + "</span>",
@@ -919,7 +921,10 @@ function replaceDivs() {
     childNodes = element.childNodes,
     childNodesLength = childNodes.length;
   for (let i = 0; i < childNodesLength; i++) {
-    if (childNodes[i].nodeName == "DIV" || childNodes[i].nodeName == "#text") {
+    if (
+      childNodes[i].nodeName === "DIV" ||
+      childNodes[i].nodeName === "#text"
+    ) {
       replaceElement(childNodes[i], "p");
     }
   }
@@ -929,7 +934,7 @@ function replaceDivs() {
 
 let element = document.getElementById("work-area");
 element.addEventListener("keypress", function (e) {
-  if (e.key == "Enter") {
+  if (e.key === "Enter") {
     let savedSelection = rangy.saveSelection();
 
     setTimeout(replaceDivs, 1);
@@ -947,7 +952,7 @@ function clearEmptyContainers() {
       textContent = child.textContent;
 
     textContent = clearExtraSpaces(textContent);
-    if (textContent == "") {
+    if (textContent === "") {
       mainContainer.removeChild(child);
       childrenAmount--;
     }
@@ -983,10 +988,10 @@ function makeList(type) {
 
     for (let i = 0; i < childrenAmount; i++) {
       let child = mainChildren[i];
-      if (child == parentOfFirstElement) {
+      if (child === parentOfFirstElement) {
         firstParentIndex = i;
       }
-      if (child == parentOfLastElement) {
+      if (child === parentOfLastElement) {
         lastParentIndex = i;
       }
     }
@@ -1023,7 +1028,7 @@ function makeList(type) {
       let mainChild = mainChildren[i],
         mainChildName = mainChild.nodeName;
 
-      if (mainChildName == type) {
+      if (mainChildName === type) {
         count++;
       }
     }
@@ -1036,7 +1041,7 @@ function makeList(type) {
   //
   //Think about condition!
   let index = lastParentIndex + 1;
-  if (amountOfLists == index - firstParentIndex) {
+  if (amountOfLists === index - firstParentIndex) {
     //
     //
     let selection = document.getSelection(),
@@ -1056,7 +1061,7 @@ function makeList(type) {
             let List = firstSelectedElement,
               getParent = (element) => element.parentElement;
 
-            while (getParent(List) != mainContainer) {
+            while (getParent(List) !== mainContainer) {
               List = getParent(List);
             }
             return List;
@@ -1069,11 +1074,11 @@ function makeList(type) {
               getParent = (element) => element.parentElement,
               getParentName = (element) => getParent(element).nodeName;
 
-            while (getParentName(firstLi) != type) {
+            while (getParentName(firstLi) !== type) {
               firstLi = getParent(firstLi);
             }
 
-            while (getParentName(lastLi) != type) {
+            while (getParentName(lastLi) !== type) {
               lastLi = getParent(lastLi);
             }
 
@@ -1091,9 +1096,9 @@ function makeList(type) {
           for (let i = 0; i < childrenAmount; i++) {
             let child = childs[i];
 
-            if (child == firstSelectedLi) {
+            if (child === firstSelectedLi) {
               indexOfFirstSelectedLi = i;
-            } else if (child == lastSelectedLi) {
+            } else if (child === lastSelectedLi) {
               indexOfLastSelectedLi = i;
             }
           }
@@ -1124,11 +1129,11 @@ function makeList(type) {
           getParent = (someElement) => someElement.parentElement,
           getParentName = (someElement) => getParent(someElement).nodeName;
 
-        while (getParentName(firstLi) != type) {
+        while (getParentName(firstLi) !== type) {
           firstLi = getParent(firstLi);
         }
 
-        while (getParentName(lastLi) != type) {
+        while (getParentName(lastLi) !== type) {
           lastLi = getParent(lastLi);
         }
 
@@ -1140,7 +1145,7 @@ function makeList(type) {
           workAreaContainer = document.getElementById("work-area"),
           getParent = (element) => element.parentElement;
 
-        while (getParent(List) != workAreaContainer) {
+        while (getParent(List) !== workAreaContainer) {
           List = getParent(List);
         }
 
@@ -1167,14 +1172,14 @@ function makeList(type) {
         for (let i = 0; i < listChildrenAmount; i++) {
           let child = listChildren[i];
 
-          if (child == firstLi) {
+          if (child === firstLi) {
             indexOfFirstSelectedLi = i;
-          } else if (child == lastLi) {
+          } else if (child === lastLi) {
             lastLiIndex = i;
           }
         }
 
-        if (lastLiIndex == -1) {
+        if (lastLiIndex === -1) {
           lastLiIndex = indexOfFirstSelectedLi;
         }
 
@@ -1194,7 +1199,7 @@ function makeList(type) {
 
       //If selected only one <li> then remove only the <li> element
       //and add <p> tag with content of the <li> after selected <list> tag
-      if (indexOfLastSelectedLi == indexOfFirstSelectedLi) {
+      if (indexOfLastSelectedLi === indexOfFirstSelectedLi) {
         let p = document.createElement("p"),
           firstSelectedLi = children[indexOfFirstSelectedLi],
           liContent = firstSelectedLi.innerHTML;
@@ -1207,7 +1212,7 @@ function makeList(type) {
         //Else remove all selected <li> elements and add <p> tags
         let index = indexOfLastSelectedLi + 1;
 
-        while (indexOfFirstSelectedLi != index) {
+        while (indexOfFirstSelectedLi !== index) {
           let p = document.createElement("p"),
             firstSelectedLi = children[indexOfFirstSelectedLi],
             liContent = firstSelectedLi.innerHTML;
@@ -1223,14 +1228,14 @@ function makeList(type) {
       let indexOfLastLi = childrenAmount - 1;
 
       //If selection started from the start of the list, then append <p> tags before the list
-      if (indexOfFirstSelectedLi == 0) {
+      if (indexOfFirstSelectedLi === 0) {
         let mainContainerChildren = mainContainer.children,
           list = mainContainerChildren[ListIndex];
 
         mainContainer.insertBefore(fragment, list);
       } else if (
-        indexOfLastSelectedLi == indexOfLastLi ||
-        indexOfFirstSelectedLi == indexOfLastLi
+        indexOfLastSelectedLi === indexOfLastLi ||
+        indexOfFirstSelectedLi === indexOfLastLi
       ) {
         //Else if selection ends in the end of list append after this list
         mainContainer.insertBefore(
@@ -1257,7 +1262,7 @@ function makeList(type) {
 
         let amountOfChildrenOfList = listChildren.length;
 
-        while (amountOfChildrenOfList != 0) {
+        while (amountOfChildrenOfList !== 0) {
           let listChildren = list.children,
             firstChildOfList = listChildren[0];
 
@@ -1282,7 +1287,7 @@ function makeList(type) {
       //If <list> is empty then delete it.
       let childrenOfList = List.children,
         amountOfChildren = childrenOfList.length;
-      if (amountOfChildren == 0) {
+      if (amountOfChildren === 0) {
         List.remove();
       }
     }
@@ -1300,7 +1305,7 @@ function makeList(type) {
         let child = mainChildren[i],
           nodeName = child.nodeName;
 
-        if (nodeName != type) {
+        if (nodeName !== type) {
           replaceElement(child, type);
         }
       }
@@ -1318,7 +1323,7 @@ function makeList(type) {
           textContent = child.textContent;
 
         textContent = clearExtraSpaces(textContent);
-        if (textContent == "") {
+        if (textContent === "") {
           mainContainer.removeChild(child);
           childrenAmount--;
         }
@@ -1353,19 +1358,19 @@ function makeList(type) {
             let child = children[i],
               childName = child.nodeName;
 
-            if (childName == "LI") {
+            if (childName === "LI") {
               return true;
             }
           }
           return false;
         }
 
-        while (length != 0) {
+        while (length !== 0) {
           let child = children[0],
             childName = child.nodeName,
             firstChild = children[0];
 
-          if (childName == "LI") {
+          if (childName === "LI") {
             isWithLI = true;
             break;
           }
@@ -1384,14 +1389,14 @@ function makeList(type) {
           //If the next element is already done (turned into <list> tag with <li> elements)
           //Then append the element to the previous element
           let nextElement = elementsToTurnIntoLi[i + 1];
-          if (nextElement != undefined) {
+          if (nextElement !== undefined) {
             if (hasLi(nextElement)) {
               let listForMerging = elementsToTurnIntoLi[index],
                 elementAfterNextElement = elementsToTurnIntoLi[i + 2];
 
               listForMerging.appendChild(fragment);
 
-              if (elementAfterNextElement != undefined) {
+              if (elementAfterNextElement !== undefined) {
                 index = i + 2;
               }
             }
@@ -1404,18 +1409,18 @@ function makeList(type) {
 
       //Merge separated <list> tags
       let secondList = elementsToTurnIntoLi[1];
-      while (secondList != undefined) {
+      while (secondList !== undefined) {
         let firstList = elementsToTurnIntoLi[0],
           secondList = elementsToTurnIntoLi[1];
 
-        if (secondList == undefined) {
+        if (secondList === undefined) {
           break;
         }
 
         let childrenOfSecondList = secondList.children,
           firstChildOfsecondList = () => childrenOfSecondList[0];
 
-        while (firstChildOfsecondList() != undefined)
+        while (firstChildOfsecondList() !== undefined)
           firstList.appendChild(firstChildOfsecondList());
 
         elementsToTurnIntoLi.splice(1, 1);
@@ -1427,14 +1432,14 @@ function makeList(type) {
       let child = editorChildren[i],
         childName = child.nodeName;
 
-      if (childName == type) {
+      if (childName === type) {
         elementsToTurnIntoLi[count] = child;
         count++;
       } else if (count > 0) {
         turnIntoLi(elementsToTurnIntoLi);
         elementsToTurnIntoLi = [];
 
-        if (count != 1) {
+        if (count !== 1) {
           childrenAmount -= count;
         }
         count = 0;
@@ -1535,7 +1540,7 @@ function getChildIndex(child, parent) {
   for (let i = 0; i < childrenAmount; i++) {
     let childOfParent = children[i];
 
-    if (child == childOfParent) {
+    if (child === childOfParent) {
       indexOfChild = i;
       break;
     }
@@ -1553,7 +1558,7 @@ function getChildIndexInMainContainer(child) {
   for (let i = 0; i < childrenAmount; i++) {
     let childOfParent = children[i];
 
-    if (child == childOfParent) {
+    if (child === childOfParent) {
       indexOfChild = i;
       break;
     }
@@ -1633,7 +1638,7 @@ function removeFormatting() {
         getFirstLi = () => ulChildren[0],
         getLiAfterLastLi = () => ulChildren[indexOfLastLi + 1];
 
-      while (getFirstLi() != getLiAfterLastLi()) {
+      while (getFirstLi() !== getLiAfterLastLi()) {
         fragmentWithLi.append(getFirstLi());
         indexOfLastLi--;
       }
@@ -1677,12 +1682,14 @@ function removeFormatting() {
 
     for (
       let i = 0;
-      getChildOfMainContainer(firstPart) == getChildOfMainContainer(part);
+      getChildOfMainContainer(firstPart) === getChildOfMainContainer(part);
       i++
     ) {
       part = selectedParts[i];
 
-      if (getChildOfMainContainer(firstPart) != getChildOfMainContainer(part)) {
+      if (
+        getChildOfMainContainer(firstPart) !== getChildOfMainContainer(part)
+      ) {
         break;
       }
 
@@ -1695,7 +1702,7 @@ function removeFormatting() {
 
     let isInTheSameContainer = (index) => {
       return (
-        getChildOfMainContainer(lastPart) ==
+        getChildOfMainContainer(lastPart) ===
         getChildOfMainContainer(selectedParts[index])
       );
     };
@@ -1750,7 +1757,7 @@ function removeFormatting() {
 
     // Clean format of remaining parts if there are such
     if (
-      amountOfSelectedParts !=
+      amountOfSelectedParts !==
       amountOfSelectedPartsInFirstP + amountOfSelectedPartsInLastP
     ) {
       let arrayWithRemainingFragmentParts = [];
@@ -1765,14 +1772,14 @@ function removeFormatting() {
 
       let fragmentWithRemainingParts = document.createDocumentFragment();
 
-      while (arrayWithRemainingFragmentParts.length != 0) {
+      while (arrayWithRemainingFragmentParts.length !== 0) {
         let commonParent = getChildOfMainContainer(
             arrayWithRemainingFragmentParts[0]
           ),
           p = document.createElement("P");
 
         while (
-          commonParent ==
+          commonParent ===
           getChildOfMainContainer(arrayWithRemainingFragmentParts[0])
         ) {
           let part = arrayWithRemainingFragmentParts[0],
@@ -1783,7 +1790,7 @@ function removeFormatting() {
           part.remove();
           arrayWithRemainingFragmentParts.shift();
 
-          if (arrayWithRemainingFragmentParts[0] == undefined) {
+          if (arrayWithRemainingFragmentParts[0] === undefined) {
             break;
           }
         }
@@ -1862,38 +1869,41 @@ function removeFormatting() {
       return selectedPartsInFirstP;
     }
 
-    let selectedPartsInFirstP = getSelectedPartsInFirstP();
+    function getSelectedPartsInLastP() {
+      let querySelector = "[class*=selected]",
+        selectedParts = document.querySelectorAll(querySelector);
+
+      let amountOfSelectedParts = selectedParts.length,
+        indexOfLastSelectedPart = amountOfSelectedParts - 1,
+        j = indexOfLastSelectedPart,
+        lastPart = selectedParts[indexOfLastSelectedPart],
+        selectedPartsInLastP = [],
+        isInTheSameContainer = () =>
+          getChildOfMainContainer(lastPart) ===
+          getChildOfMainContainer(selectedParts[j]),
+        getCurrentPart = () => selectedParts[j];
+
+      while (isInTheSameContainer()) {
+        selectedPartsInLastP.push(getCurrentPart());
+        j--;
+      }
+
+      return selectedPartsInLastP;
+    }
 
     let querySelector = "[class*=selected]",
-      selectedParts = document.querySelectorAll(querySelector);
+      selectedParts = document.querySelectorAll(querySelector),
+      amountOfSelectedParts = selectedParts.length;
 
-    let selectedPartsInLastP = [],
-      amountOfSelectedParts = selectedParts.length,
-      indexOfLastSelectedPart = amountOfSelectedParts - 1,
-      lastPart = selectedParts[indexOfLastSelectedPart];
-
-    let amountOfSelectedPartsInFirstP = selectedPartsInFirstP.length,
+    let selectedPartsInFirstP = getSelectedPartsInFirstP(),
+      amountOfSelectedPartsInFirstP = selectedPartsInFirstP.length,
       indexOfLastPartInSelectedPartsInFirstP =
         amountOfSelectedPartsInFirstP - 1;
 
-    //It needs refactoring
-    //
-    let j = indexOfLastSelectedPart;
-    while (
-      getChild(lastPart, mainContainer) ==
-      getChild(selectedParts[j], mainContainer)
-    ) {
-      selectedPartsInLastP.push(selectedParts[j]);
-      j--;
-    }
-    //
-    //
-
-    let amountOfSelectedPartsInLastPInSelectedParts =
-        selectedPartsInLastP.length,
+    let selectedPartsInLastP = getSelectedPartsInLastP(),
+      amountOfSelectedPartsInLastP = selectedPartsInLastP.length,
       indexOfFirstPartInSelectedPartsInLastP =
-        selectedParts.length - selectedPartsInLastP.length;
-    amountOfSelectedParts = selectedParts.length;
+        amountOfSelectedParts - amountOfSelectedPartsInLastP;
 
     selectedPartsInLastP.reverse();
 
@@ -1928,43 +1938,53 @@ function removeFormatting() {
     firstSelectedP.append(textNodeWithBigFirstContent);
     lastSelectedP.prepend(textNodeWithBigLastContent);
 
-    // Clean format of remaining parts if there are such
-    if (
-      amountOfSelectedParts !=
-      amountOfSelectedPartsInFirstP +
-        amountOfSelectedPartsInLastPInSelectedParts
-    ) {
-      let arrayWithRemainingFragmentParts = [];
+    let isSumOfTwoSelectedPartsEqualToAmountOfAllSelectedParts =
+      amountOfSelectedParts !==
+      amountOfSelectedPartsInFirstP + amountOfSelectedPartsInLastP;
 
-      for (
-        let i = indexOfLastPartInSelectedPartsInFirstP + 1;
-        i < indexOfFirstPartInSelectedPartsInLastP;
-        i++
-      ) {
-        arrayWithRemainingFragmentParts.push(selectedParts[i]);
+    // Clean format of remaining parts if there are such
+    if (isSumOfTwoSelectedPartsEqualToAmountOfAllSelectedParts) {
+      function getRemainingFragmentParts() {
+        let arrayWithRemainingFragmentParts = [];
+
+        for (
+          let i = indexOfLastPartInSelectedPartsInFirstP + 1;
+          i < indexOfFirstPartInSelectedPartsInLastP;
+          i++
+        ) {
+          let currentPart = selectedParts[i];
+
+          arrayWithRemainingFragmentParts.push(currentPart);
+        }
+        return arrayWithRemainingFragmentParts;
       }
+
+      let arrayWithRemainingFragmentParts = getRemainingFragmentParts(),
+        getAmountOfRemainingParts = () =>
+          arrayWithRemainingFragmentParts.length;
 
       let fragmentWithRemainingParts = document.createDocumentFragment();
 
-      while (arrayWithRemainingFragmentParts.length != 0) {
-        let commonParent = getChildOfMainContainer(
-            arrayWithRemainingFragmentParts[0]
-          ),
+      while (getAmountOfRemainingParts() !== 0) {
+        let firstPart = arrayWithRemainingFragmentParts[0],
+          commonParent = getChildOfMainContainer(firstPart),
           p = document.createElement("P");
 
         while (
-          commonParent ==
+          commonParent ===
           getChildOfMainContainer(arrayWithRemainingFragmentParts[0])
         ) {
-          let part = arrayWithRemainingFragmentParts[0],
-            strippedContent = part.textContent,
-            textNodeWithStrippedContent = createTextNode(strippedContent);
+          let firstPart = arrayWithRemainingFragmentParts[0],
+            textOfFirstPart = firstPart.textContent,
+            textNodeWithTextOfFirstPart = createTextNode(textOfFirstPart);
 
-          p.append(textNodeWithStrippedContent);
-          part.remove();
+          p.append(textNodeWithTextOfFirstPart);
+          firstPart.remove();
           arrayWithRemainingFragmentParts.shift();
 
-          if (arrayWithRemainingFragmentParts[0] == undefined) {
+          let newFirstPart = arrayWithRemainingFragmentParts[0];
+
+          if (newFirstPart === undefined) {
             break;
           }
         }
@@ -1977,12 +1997,12 @@ function removeFormatting() {
     }
   }
 
-  let isFirstChildUL = nameOfFirstSelectedChild == "UL",
-    isFirstChildOL = nameOfFirstSelectedChild == "OL",
-    isFirstChildParagraph = nameOfFirstSelectedChild == "P",
-    isLastChildUL = nameOfLastSelectedChild == "UL",
-    isLastChildOL = nameOfLastSelectedChild == "OL",
-    isLastChildParapgraph = nameOfLastSelectedChild == "P";
+  let isFirstChildUL = nameOfFirstSelectedChild === "UL",
+    isFirstChildOL = nameOfFirstSelectedChild === "OL",
+    isFirstChildParagraph = nameOfFirstSelectedChild === "P",
+    isLastChildUL = nameOfLastSelectedChild === "UL",
+    isLastChildOL = nameOfLastSelectedChild === "OL",
+    isLastChildParapgraph = nameOfLastSelectedChild === "P";
 
   let isFirstChildList = isFirstChildUL || isFirstChildOL,
     isLastChildList = isLastChildUL || isLastChildOL;
@@ -2007,7 +2027,7 @@ function removeFormatting() {
       let child = mainContainerChildren[i],
         childName = child.nodeName;
 
-      if (childName == "UL" || childName == "OL") {
+      if (childName === "UL" || childName === "OL") {
         return true;
       }
     }
@@ -2028,7 +2048,7 @@ function removeFormatting() {
         part = selectedParts[amountOfSelectedPartsInFirstP];
 
       while (
-        getChildOfMainContainer(firstPart) == getChildOfMainContainer(part)
+        getChildOfMainContainer(firstPart) === getChildOfMainContainer(part)
       ) {
         amountOfSelectedPartsInFirstP = selectedPartsInFirstP.length;
 
@@ -2051,7 +2071,7 @@ function removeFormatting() {
         lastPart = selectedParts[indexOfLastSelectedPart];
 
       while (
-        getChild(lastPart, mainContainer) ==
+        getChild(lastPart, mainContainer) ===
         getChild(selectedParts[indexOfLastSelectedPart], mainContainer)
       ) {
         selectedPartsInLastP.push(selectedParts[indexOfLastSelectedPart]);
@@ -2112,7 +2132,7 @@ function removeFormatting() {
 
     // Clean format of remaining parts if there are such
     if (
-      amountOfSelectedParts !=
+      amountOfSelectedParts !==
       amountOfSelectedPartsInFirstP + amountOfSelectedPartsInLastP
     ) {
       let arrayWithRemainingFragmentParts = [];
@@ -2127,14 +2147,14 @@ function removeFormatting() {
 
       let fragmentWithRemainingParts = document.createDocumentFragment();
 
-      while (arrayWithRemainingFragmentParts.length != 0) {
+      while (arrayWithRemainingFragmentParts.length !== 0) {
         let commonParent = getChildOfMainContainer(
             arrayWithRemainingFragmentParts[0]
           ),
           p = document.createElement("P");
 
         while (
-          commonParent ==
+          commonParent ===
           getChildOfMainContainer(arrayWithRemainingFragmentParts[0])
         ) {
           let part = arrayWithRemainingFragmentParts[0],
@@ -2145,7 +2165,7 @@ function removeFormatting() {
           part.remove();
           arrayWithRemainingFragmentParts.shift();
 
-          if (arrayWithRemainingFragmentParts[0] == undefined) {
+          if (arrayWithRemainingFragmentParts[0] === undefined) {
             break;
           }
         }
@@ -2183,7 +2203,7 @@ function removeFormatting() {
             getFirstLi = () => lastULChildren[0],
             getLiAfterLastSelectedLi = () => lastULChildren[indexOfLastLi + 1];
 
-          while (getFirstLi() != getLiAfterLastSelectedLi()) {
+          while (getFirstLi() !== getLiAfterLastSelectedLi()) {
             fragmentWithLastLi.append(getFirstLi());
             indexOfLastLi--;
           }
@@ -2244,7 +2264,7 @@ function removeFormatting() {
           part = selectedParts[indexOfCurrentPart];
 
         while (
-          getChildOfMainContainer(firstPart) == getChildOfMainContainer(part)
+          getChildOfMainContainer(firstPart) === getChildOfMainContainer(part)
         ) {
           part = selectedParts[indexOfCurrentPart];
 
@@ -2270,7 +2290,7 @@ function removeFormatting() {
         let indexOfCurrentPartInLastP = indexOfLastSelectedPart;
 
         while (
-          getChild(lastPart, mainContainer) ==
+          getChild(lastPart, mainContainer) ===
           getChild(selectedParts[indexOfCurrentPartInLastP], mainContainer)
         ) {
           selectedPartsInLastP.push(selectedParts[indexOfCurrentPartInLastP]);
@@ -2345,7 +2365,7 @@ function removeFormatting() {
       let summaOfFirstAndLastSelectedParts =
           amountOfSelectedPartsInFirstP + someAmount,
         isThereExtraParts =
-          amountOfSelectedParts != summaOfFirstAndLastSelectedParts;
+          amountOfSelectedParts !== summaOfFirstAndLastSelectedParts;
 
       // Clean format of remaining parts if there are such
       if (isThereExtraParts) {
@@ -2364,14 +2384,14 @@ function removeFormatting() {
 
           let fragmentWithRemainingParts = document.createDocumentFragment();
 
-          while (arrayWithRemainingFragmentParts.length != 0) {
+          while (arrayWithRemainingFragmentParts.length !== 0) {
             let commonParent = getChildOfMainContainer(
                 arrayWithRemainingFragmentParts[0]
               ),
               p = document.createElement("P");
 
             while (
-              commonParent ==
+              commonParent ===
               getChildOfMainContainer(arrayWithRemainingFragmentParts[0])
             ) {
               let part = arrayWithRemainingFragmentParts[0],
@@ -2382,7 +2402,7 @@ function removeFormatting() {
               part.remove();
               arrayWithRemainingFragmentParts.shift();
 
-              if (arrayWithRemainingFragmentParts[0] == undefined) {
+              if (arrayWithRemainingFragmentParts[0] === undefined) {
                 break;
               }
             }
@@ -2415,7 +2435,7 @@ function removeFormatting() {
           let child = mainContainerChildren[index],
             childName = child.nodeName;
 
-          if (childName == "UL" || childName == "OL") {
+          if (childName === "UL" || childName === "OL") {
             listsBetween[numberOfIndex] = child;
             numberOfIndex++;
           }
@@ -2450,7 +2470,7 @@ function removeFormatting() {
     } else if (isBothLists) {
       formatBothLists();
     }
-  } else if (distance == 2) {
+  } else if (distance === 2) {
     if (isBothParagraphs) {
       formatBothP();
     } else if (isFirstParagraphAndLastList) {
@@ -2458,7 +2478,7 @@ function removeFormatting() {
     } else if (isFirstListAndLastParagraph) {
       clearElementsFromListToP();
     }
-  } else if (distance == 1) {
+  } else if (distance === 1) {
     let parentOfFirstSelectedElement = anchorNode.parentElement,
       nameOfParentOfFirstSelectedElement =
         parentOfFirstSelectedElement.nodeName,
@@ -2466,14 +2486,14 @@ function removeFormatting() {
       nameOfFirstLevelChildOfMainContainer =
         firstLevelChildOfMainContainer.nodeName;
 
-    if (nameOfParentOfFirstSelectedElement == "P") {
+    if (nameOfParentOfFirstSelectedElement === "P") {
       let textNode = createTextNode(strippedContent);
 
       selection.deleteFromDocument();
       range.insertNode(textNode);
     } else if (
-      nameOfFirstLevelChildOfMainContainer == "UL" ||
-      nameOfFirstLevelChildOfMainContainer == "OL"
+      nameOfFirstLevelChildOfMainContainer === "UL" ||
+      nameOfFirstLevelChildOfMainContainer === "OL"
     ) {
       let firstSelectedLi = getSecondChild(anchorNode, mainContainer),
         lastSelectedLi = getSecondChild(focusNode, mainContainer),
@@ -2499,7 +2519,7 @@ function removeFormatting() {
           elementsBetweenFirstAndLastSelectedLiElements = [],
           i = 0;
 
-        while (ulChildren[indexOfFirstSelectedLi + 1] != lastSelectedLi) {
+        while (ulChildren[indexOfFirstSelectedLi + 1] !== lastSelectedLi) {
           let child = ulChildren[indexOfFirstSelectedLi + 1];
 
           elementsBetweenFirstAndLastSelectedLiElements[i] = child;
@@ -2515,7 +2535,7 @@ function removeFormatting() {
           textOfFirstSelectedLi = firstFragmentChild.textContent,
           textOfLastSelectedLi = lastFragmentChild.textContent;
 
-        if (indexOfFirstSelectedLi != indexOfLastSelectedLi) {
+        if (indexOfFirstSelectedLi !== indexOfLastSelectedLi) {
           firstSelectedLi.append(textOfFirstSelectedLi);
           lastSelectedLi.prepend(textOfLastSelectedLi);
           firstSelectedLi.after(someFragment);
@@ -2528,7 +2548,7 @@ function removeFormatting() {
           amountOfLi = indexEnd + 1;
         ulChildrenAmount = ulChildren.length;
 
-        while (indexBeginning != amountOfLi) {
+        while (indexBeginning !== amountOfLi) {
           let firstChild = ulChildren[indexBeginning];
 
           fragmentAfterUL.append(firstChild);
@@ -2551,9 +2571,9 @@ function removeFormatting() {
 
         let indexOfEnd = ulChildrenAmount - 1;
 
-        if (indexOfFirstSelectedLi == 0) {
+        if (indexOfFirstSelectedLi === 0) {
           ul.before(fragmentAfterUL);
-        } else if (indexOfLastSelectedLi == indexOfEnd) {
+        } else if (indexOfLastSelectedLi === indexOfEnd) {
           ul.after(fragmentAfterUL);
         } else {
           let indexOfLastLiInFirstPart = indexOfFirstSelectedLi - 1,
@@ -2574,7 +2594,7 @@ function removeFormatting() {
           }
 
           amountOfChildrenOfUl = ulChildren.length;
-          while (amountOfChildrenOfUl != 0) {
+          while (amountOfChildrenOfUl !== 0) {
             let firstChildOfUl = ulChildren[0];
 
             lastPart.appendChild(firstChildOfUl);
@@ -2594,7 +2614,7 @@ function removeFormatting() {
           mainContainer.insertBefore(fragmentAfterUL, childOfMainContainer);
           mainContainer.insertBefore(lastUl, childOfMainContainer);
         }
-      } else if (distanceBetweenSelectedLiElements == 1) {
+      } else if (distanceBetweenSelectedLiElements === 1) {
         let textNode = createTextNode(strippedContent),
           indexBeginning = indexOfFirstSelectedLi,
           indexEnd = indexOfLastSelectedLi,
@@ -2603,7 +2623,7 @@ function removeFormatting() {
         selection.deleteFromDocument();
         range.insertNode(textNode);
 
-        while (indexBeginning != amountOfLi) {
+        while (indexBeginning !== amountOfLi) {
           let firstChild = ulChildren[indexBeginning];
 
           fragmentAfterUL.append(firstChild);
@@ -2637,7 +2657,7 @@ function removeFormatting() {
         }
 
         amountOfChildrenOfUl = ulChildren.length;
-        while (amountOfChildrenOfUl != 0) {
+        while (amountOfChildrenOfUl !== 0) {
           let firstChildOfUl = ulChildren[0];
 
           lastPart.appendChild(firstChildOfUl);
@@ -2661,14 +2681,14 @@ function removeFormatting() {
       let secondFirstParent = getSecondChild(anchorNode, mainContainer),
         secondLastParent = getSecondChild(focusNode, mainContainer);
 
-      if (secondFirstParent == secondLastParent) {
+      if (secondFirstParent === secondLastParent) {
         let tags = [],
           tag = anchorNode,
           tagParent = tag.parentElement,
           i = 0;
         fragmentChildren;
 
-        while (tagParent != firstSelectedChild) {
+        while (tagParent !== firstSelectedChild) {
           tags[i] = tagParent;
           i++;
           tagParent = tagParent.parentElement;
