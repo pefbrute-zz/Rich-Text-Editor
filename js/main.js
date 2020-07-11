@@ -892,7 +892,11 @@ function highlightNumbers() {
         matches = element.innerHTML.match(regExp);
 
       if (matches !== null) {
-        for (let j = 0; j <= matches.length - 1; j++) {
+        for (
+          let j = 0, indexOfLastMatch = matches.length - 1;
+          j <= indexOfLastMatch;
+          j++
+        ) {
           let match = matches[j],
             replacing = "<span class=pre-number>" + match + "</span>",
             regExp = new RegExp("\\b" + match + "\\b", "gi");
@@ -1309,7 +1313,11 @@ function makeList(type) {
   } else {
     //If selected not just <list> tags then turn selected tags into <list> (if they're not already)
     function replaceNotList(firstParentIndex, lastParentIndex, mainChildren) {
-      for (let i = firstParentIndex; i < lastParentIndex + 1; i++) {
+      for (
+        let i = firstParentIndex, amountOfParents = lastParentIndex + 1;
+        i < amountOfParents;
+        i++
+      ) {
         let child = mainChildren[i],
           nodeName = child.nodeName;
 
