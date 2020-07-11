@@ -81,7 +81,7 @@ for (let i = 0; i <= colorsLastElementIndex; i++) {
 
 //Makes first letter upper case
 function capitalizeFirstLetter(string) {
-  var firstCharacter = string.charAt(0),
+  let firstCharacter = string.charAt(0),
     firstCharacterInUpperCase = firstCharacter.toUpperCase(),
     stringWithoutFirstCharacter = string.slice(1);
 
@@ -92,7 +92,7 @@ function capitalizeFirstLetter(string) {
 
 //Makes first letter lower case
 function lowerFirstLetter(string) {
-  var firstCharacter = string.charAt(0),
+  let firstCharacter = string.charAt(0),
     firstCharacterInLowerCase = firstCharacter.toLowerCase(),
     stringWithoutFirstCharacter = string.slice(1);
 
@@ -283,7 +283,7 @@ function addFont(fontName) {
   }
 
   if (amountOfElements > 1) {
-    var names = [
+    let names = [
         "sofia",
         "slabo-13px",
         "roboto-slab",
@@ -299,7 +299,7 @@ function addFont(fontName) {
         amountOfClassesInClassName = splittedClassName.length;
 
       if (amountOfClassesInClassName > 1) {
-        var classNamesList = splittedClassName,
+        let classNamesList = splittedClassName,
           classNamesListAmount = classNamesList.length;
 
         for (let k = 0; k < classNamesListAmount; k++) {
@@ -345,14 +345,14 @@ function addSize(sizeName) {
   }
 
   if (amountOfElements > 1) {
-    var names = ["small", "normal", "large", "huge"],
+    let names = ["small", "normal", "large", "huge"],
       namesLength = names.length;
 
     for (i; i < amountOfElements; i++) {
       let element = elements[i],
         classNameOfElement = element.className;
 
-      var splittedClassName = classNameOfElement.split(" "),
+      let splittedClassName = classNameOfElement.split(" "),
         amountOfClasses = splittedClassName.length;
 
       if (amountOfClasses > 1) {
@@ -417,7 +417,9 @@ function getSecondChild(element, parent) {
   } else if (parent === undefined) {
     throw new Error("You didn't add parent element");
   } else {
-    while (element.parentElement.parentElement !== parent) {
+    let parentOfParent = (element) => element.parentElement.parentElement;
+
+    while (parentOfParent(element) !== parent) {
       element = element.parentElement;
     }
 
@@ -432,8 +434,9 @@ function getSecondChildInMainContainer(element) {
     throw new Error("You didn't add child element");
   } else {
     let parent = document.getElementById("work-area");
+    let parentOfParent = (element) => element.parentElement.parentElement;
 
-    while (element.parentElement.parentElement !== parent) {
+    while (parentOfParent(element) !== parent) {
       element = element.parentElement;
     }
 
@@ -522,7 +525,7 @@ function replaceContainerTag(tag) {
         tagData.tagCounter++;
       }
 
-      var elementAfterFirstSelectedElement =
+      let elementAfterFirstSelectedElement =
           firstSelectedElement.nextElementSibling,
         elementAfterLastSelectedElement =
           lastSelectedElement.nextElementSibling;
@@ -869,7 +872,8 @@ function highlightNumbers() {
 
     let regExp = new RegExp("\\b" + "\\d+" + "\\b", "gi"),
       matches = preElement.innerHTML.match(regExp),
-      matchesLastElementIndex = matches.length - 1;
+      matchesAmount = matches.length,
+      matchesLastElementIndex = matchesAmount - 1;
 
     if (matches !== null) {
       for (let j = 0; j <= matchesLastElementIndex; j++) {
@@ -972,15 +976,14 @@ function clearEmptyContainers() {
 }
 
 function makeList(type) {
-  // console.time();
   type = type.toUpperCase();
 
   function getSelectedParents(mainContainer) {
     let selection = document.getSelection(),
       firstSelectedElement = selection.anchorNode,
       lastSelectedElement = selection.focusNode,
-      parentOfFirstElement = getChild(firstSelectedElement, mainContainer),
-      parentOfLastElement = getChild(lastSelectedElement, mainContainer);
+      parentOfFirstElement = getChildOfMainContainer(firstSelectedElement),
+      parentOfLastElement = getChildOfMainContainer(lastSelectedElement);
     return [parentOfFirstElement, parentOfLastElement];
   }
 
@@ -1483,7 +1486,7 @@ fileTag.addEventListener("change", function () {
 });
 
 function changeImage(input) {
-  var reader,
+  let reader,
     files = input.files,
     file = files[0],
     querySelector = "img[src='']";
@@ -1826,8 +1829,8 @@ function removeFormatting() {
 
     function getFragmentWithLiFromSelectedText() {
       let fragmentWithLi = document.createDocumentFragment(),
-        firstSelectedLi = getSecondChild(anchorNode, mainContainer),
-        ul = getChild(anchorNode, mainContainer),
+        firstSelectedLi = getSecondChildInMainContainer(anchorNode),
+        ul = getChildOfMainContainer(anchorNode),
         ulChildren = ul.children,
         indexOfFirstSelectedLi = getChildIndex(firstSelectedLi, ul),
         getFirstSelectedLi = () => ulChildren[indexOfFirstSelectedLi];
@@ -1839,7 +1842,7 @@ function removeFormatting() {
       return fragmentWithLi;
     }
 
-    let ul = getChild(anchorNode, mainContainer),
+    let ul = getChildOfMainContainer(anchorNode),
       fragmentWithLi = getFragmentWithLiFromSelectedText();
 
     function replaceLiToP(fragmentWithLi) {
@@ -2087,8 +2090,8 @@ function removeFormatting() {
         lastPart = selectedParts[indexOfLastSelectedPart];
 
       while (
-        getChild(lastPart, mainContainer) ===
-        getChild(selectedParts[indexOfLastSelectedPart], mainContainer)
+        getChildOfMainContainer(lastPart) ===
+        getChildOfMainContainer(selectedParts[indexOfLastSelectedPart])
       ) {
         selectedPartsInLastP.push(selectedParts[indexOfLastSelectedPart]);
         indexOfLastSelectedPart--;
@@ -2307,8 +2310,8 @@ function removeFormatting() {
         let indexOfCurrentPartInLastP = indexOfLastSelectedPart;
 
         while (
-          getChild(lastPart, mainContainer) ===
-          getChild(selectedParts[indexOfCurrentPartInLastP], mainContainer)
+          getChildOfMainContainer(lastPart) ===
+          getChildOfMainContainer(selectedParts[indexOfCurrentPartInLastP])
         ) {
           selectedPartsInLastP.push(selectedParts[indexOfCurrentPartInLastP]);
           indexOfCurrentPartInLastP--;
@@ -2501,7 +2504,7 @@ function removeFormatting() {
     let parentOfFirstSelectedElement = anchorNode.parentElement,
       nameOfParentOfFirstSelectedElement =
         parentOfFirstSelectedElement.nodeName,
-      firstLevelChildOfMainContainer = getChild(anchorNode, mainContainer),
+      firstLevelChildOfMainContainer = getChildOfMainContainer(anchorNode),
       nameOfFirstLevelChildOfMainContainer =
         firstLevelChildOfMainContainer.nodeName;
 
@@ -2514,9 +2517,9 @@ function removeFormatting() {
       nameOfFirstLevelChildOfMainContainer === "UL" ||
       nameOfFirstLevelChildOfMainContainer === "OL"
     ) {
-      let firstSelectedLi = getSecondChild(anchorNode, mainContainer),
-        lastSelectedLi = getSecondChild(focusNode, mainContainer),
-        ul = getChild(anchorNode, mainContainer),
+      let firstSelectedLi = getSecondChildInMainContainer(anchorNode),
+        lastSelectedLi = getSecondChildInMainContainer(focusNode),
+        ul = getChildOfMainContainer(anchorNode),
         ulChildren = ul.children,
         indexOfFirstSelectedLi = getChildIndex(firstSelectedLi, ul),
         indexOfLastSelectedLi = getChildIndex(lastSelectedLi, ul),
@@ -2600,7 +2603,7 @@ function removeFormatting() {
             lastPart = document.createDocumentFragment(),
             mainContainer = document.getElementById("work-area"),
             childrenOfMainContainer = mainContainer.children,
-            ulIndex = getChildIndex(ul, mainContainer),
+            ulIndex = getChildIndexInMainContainer(ul),
             ulName = ul.nodeName,
             ulChildren = ul.children,
             amountOfChildrenOfUl = ulChildren.length;
@@ -2663,7 +2666,7 @@ function removeFormatting() {
           lastPart = document.createDocumentFragment(),
           mainContainer = document.getElementById("work-area"),
           childrenOfMainContainer = mainContainer.children,
-          ulIndex = getChildIndex(ul, mainContainer),
+          ulIndex = getChildIndexInMainContainer(ul),
           ulName = ul.nodeName,
           ulChildren = ul.children,
           amountOfChildrenOfUl = ulChildren.length;
@@ -2697,8 +2700,8 @@ function removeFormatting() {
         mainContainer.insertBefore(lastUl, childOfMainContainer);
       }
     } else {
-      let secondFirstParent = getSecondChild(anchorNode, mainContainer),
-        secondLastParent = getSecondChild(focusNode, mainContainer);
+      let secondFirstParent = getSecondChildInMainContainer(anchorNode),
+        secondLastParent = getSecondChildInMainContainer(focusNode);
 
       if (secondFirstParent === secondLastParent) {
         let tags = [],
@@ -2729,7 +2732,7 @@ function removeFormatting() {
         selection.deleteFromDocument();
         range.insertNode(textNodeFromNewFragmentt);
       } else {
-        let p = getChild(anchorNode, mainContainer),
+        let p = getChildOfMainContainer(anchorNode),
           parentTag = getChild(anchorNode, p);
 
         selection.deleteFromDocument();
