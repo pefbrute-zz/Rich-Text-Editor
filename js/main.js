@@ -129,7 +129,11 @@ function clearClasses(classNameBeginning) {
       classesIndexes = [],
       k = 0;
 
-    for (let j = 0; j <= lastNamesInClass.length - 1; j++) {
+    for (
+      let j = 0, indexOfLastNameInClass = lastNamesInClass.length - 1;
+      j <= indexOfLastNameInClass;
+      j++
+    ) {
       let name = lastNamesInClass[j],
         partOfName = name.substring(0, length);
 
@@ -151,7 +155,7 @@ function clearClasses(classNameBeginning) {
 
     let allClasses = lastNamesInClass.join(" ");
 
-    classElement.className = allClasses;
+    classElement().className = allClasses;
   }
 }
 
@@ -878,7 +882,11 @@ function highlightNumbers() {
       }
     }
   } else {
-    for (let i = 0; i <= preList.length - 1; i++) {
+    for (
+      let i = 0, indexOfLastPreElement = preList.length - 1;
+      i <= indexOfLastPreElement;
+      i++
+    ) {
       let regExp = new RegExp("\\b" + "\\d+" + "\\b", "gi"),
         element = preList[i],
         matches = element.innerHTML.match(regExp);
@@ -2142,36 +2150,37 @@ function removeFormatting() {
         i < indexOfFirstPartInSelectedPartsInLastP;
         i++
       ) {
-        arrayWithRemainingFragmentParts.push(selectedParts[i]);
+        let currentPart = selectedParts[i];
+
+        arrayWithRemainingFragmentParts.push(currentPart);
       }
 
-      let fragmentWithRemainingParts = document.createDocumentFragment();
+      let fragmentWithRemainingParts = document.createDocumentFragment(),
+        amountOfRemainingParts = arrayWithRemainingFragmentParts.length;
 
-      while (arrayWithRemainingFragmentParts.length !== 0) {
-        let commonParent = getChildOfMainContainer(
-            arrayWithRemainingFragmentParts[0]
-          ),
+      while (amountOfRemainingParts !== 0) {
+        let firstRemainingPart = arrayWithRemainingFragmentParts[0],
+          commonParent = getChildOfMainContainer(firstRemainingPart),
           p = document.createElement("P");
 
-        while (
-          commonParent ===
-          getChildOfMainContainer(arrayWithRemainingFragmentParts[0])
-        ) {
-          let part = arrayWithRemainingFragmentParts[0],
-            strippedContent = part.textContent,
+        while (commonParent === getChildOfMainContainer(firstRemainingPart)) {
+          let strippedContent = firstRemainingPart.textContent,
             textNodeWithStrippedContent = createTextNode(strippedContent);
 
           p.append(textNodeWithStrippedContent);
-          part.remove();
+          firstRemainingPart.remove();
           arrayWithRemainingFragmentParts.shift();
 
-          if (arrayWithRemainingFragmentParts[0] === undefined) {
+          firstRemainingPart = arrayWithRemainingFragmentParts[0];
+
+          if (firstRemainingPart === undefined) {
             break;
           }
         }
 
         commonParent.remove();
         fragmentWithRemainingParts.append(p);
+        amountOfRemainingParts = arrayWithRemainingFragmentParts.length;
       }
 
       firstSelectedP.after(fragmentWithRemainingParts);
@@ -2428,14 +2437,16 @@ function removeFormatting() {
           numberOfIndex = 0;
 
         for (
-          let index = indexOfFirstSelectedChild + 1;
-          index <= indexOfLastSelectedChild - 1;
+          let index = indexOfFirstSelectedChild + 1,
+            someIndex = indexOfLastSelectedChild - 1;
+          index <= someIndex;
           index++
         ) {
           let child = mainContainerChildren[index],
-            childName = child.nodeName;
+            childName = child.nodeName,
+            isList = childName === "UL" || childName === "OL";
 
-          if (childName === "UL" || childName === "OL") {
+          if (isList) {
             listsBetween[numberOfIndex] = child;
             numberOfIndex++;
           }
