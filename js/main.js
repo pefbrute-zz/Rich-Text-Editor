@@ -2503,10 +2503,7 @@ function removeFormatting() {
       clearElementsFromListToP();
     }
   } else if (distance === 1) {
-    let parentOfFirstSelectedElement = anchorNode.parentElement,
-      nameOfParentOfFirstSelectedElement =
-        parentOfFirstSelectedElement.nodeName,
-      firstLevelChildOfMainContainer = getChildOfMainContainer(anchorNode),
+    let firstLevelChildOfMainContainer = getChildOfMainContainer(anchorNode),
       nameOfFirstLevelChildOfMainContainer =
         firstLevelChildOfMainContainer.nodeName;
     if (
