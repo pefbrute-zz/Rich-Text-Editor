@@ -2509,14 +2509,7 @@ function removeFormatting() {
       firstLevelChildOfMainContainer = getChildOfMainContainer(anchorNode),
       nameOfFirstLevelChildOfMainContainer =
         firstLevelChildOfMainContainer.nodeName;
-
-    // if (nameOfParentOfFirstSelectedElement === "P") {
-    //   let textNode = createTextNode(strippedContent);
-
-    //   selection.deleteFromDocument();
-    //   range.insertNode(textNode);
-    // } else
-     if (
+    if (
       nameOfFirstLevelChildOfMainContainer === "UL" ||
       nameOfFirstLevelChildOfMainContainer === "OL"
     ) {
@@ -2640,7 +2633,54 @@ function removeFormatting() {
           mainContainer.insertBefore(lastUl, childOfMainContainer);
         }
       } else if (distanceBetweenSelectedLiElements === 1) {
-        addTag("selected");
+        function clearTagsInParagraph() {
+          let secondFirstParent = getSecondChildInMainContainer(anchorNode)
+              .parentElement,
+            secondLastParent = getSecondChildInMainContainer(focusNode)
+              .parentElement;
+
+          if (secondFirstParent === secondLastParent) {
+            let tags = [],
+              tag = anchorNode,
+              tagParent = tag.parentElement,
+              i = 0,
+              ul = getChildOfMainContainer(anchorNode),
+              li = getChild(anchorNode, ul);
+
+            while (tagParent !== li) {
+              tags[i] = tagParent;
+              i++;
+              tagParent = tagParent.parentElement;
+            }
+
+            console.log(tags);
+
+            for (let g = 0; g < i; g++) {
+              let tag = tags[g],
+                nameOfTag = tag.nodeName,
+                nameOfTagInLowerCase = nameOfTag.toLowerCase();
+
+              addTag(nameOfTagInLowerCase);
+            }
+            range = selection.getRangeAt(0);
+
+            let newFragmentt = range.cloneContents(),
+              textOfNewFragmentt = newFragmentt.textContent,
+              textNodeFromNewFragmentt = createTextNode(textOfNewFragmentt);
+
+            selection.deleteFromDocument();
+            range.insertNode(textNodeFromNewFragmentt);
+          } else {
+            let ul = getChildOfMainContainer(anchorNode),
+              li = getChild(anchorNode, ul);
+            parentTag = getChild(anchorNode, li);
+
+            selection.deleteFromDocument();
+            parentTag.after(createTextNode(strippedContent));
+          }
+        }
+
+        clearTagsInParagraph();
 
         let textNode = createTextNode(strippedContent),
           indexBeginning = indexOfFirstSelectedLi,
@@ -2657,12 +2697,12 @@ function removeFormatting() {
           ulChildren = ul.children,
           amountOfChildrenOfUl = ulChildren.length;
 
-        debugger;
+        let li = getChild(anchorNode, ul),
+          parentTag = getChild(anchorNode, li);
 
-        selection.deleteFromDocument();
-        range.insertNode(textNode);
-
-        debugger;
+        // selection.deleteFromDocument();
+        // parentTag.after(textNode);
+        // range.insertNode(textNode);
 
         while (indexBeginning !== amountOfLi) {
           let firstChild = ulChildren[indexBeginning];
@@ -2670,7 +2710,6 @@ function removeFormatting() {
           fragmentAfterUL.append(firstChild);
           amountOfLi--;
         }
-        debugger;
 
         for (
           let i = 0,
@@ -2716,45 +2755,48 @@ function removeFormatting() {
         mainContainer.insertBefore(lastUl, childOfMainContainer);
       }
     } else {
-      console.log("here");
-      let secondFirstParent = getSecondChildInMainContainer(anchorNode),
-        secondLastParent = getSecondChildInMainContainer(focusNode);
+      function clearTagsInParagraph() {
+        let secondFirstParent = getSecondChildInMainContainer(anchorNode),
+          secondLastParent = getSecondChildInMainContainer(focusNode);
 
-      if (secondFirstParent === secondLastParent) {
-        let tags = [],
-          tag = anchorNode,
-          tagParent = tag.parentElement,
-          i = 0;
-        fragmentChildren;
+        if (secondFirstParent === secondLastParent) {
+          let tags = [],
+            tag = anchorNode,
+            tagParent = tag.parentElement,
+            i = 0;
+          fragmentChildren;
 
-        while (tagParent !== firstSelectedChild) {
-          tags[i] = tagParent;
-          i++;
-          tagParent = tagParent.parentElement;
+          while (tagParent !== firstSelectedChild) {
+            tags[i] = tagParent;
+            i++;
+            tagParent = tagParent.parentElement;
+          }
+
+          for (let g = 0; g < i; g++) {
+            let tag = tags[g],
+              nameOfTag = tag.nodeName,
+              nameOfTagInLowerCase = nameOfTag.toLowerCase();
+
+            addTag(nameOfTagInLowerCase);
+          }
+          range = selection.getRangeAt(0);
+
+          let newFragmentt = range.cloneContents(),
+            textOfNewFragmentt = newFragmentt.textContent,
+            textNodeFromNewFragmentt = createTextNode(textOfNewFragmentt);
+
+          selection.deleteFromDocument();
+          range.insertNode(textNodeFromNewFragmentt);
+        } else {
+          let p = getChildOfMainContainer(anchorNode),
+            parentTag = getChild(anchorNode, p);
+
+          selection.deleteFromDocument();
+          parentTag.after(createTextNode(strippedContent));
         }
-
-        for (let g = 0; g < i; g++) {
-          let tag = tags[g],
-            nameOfTag = tag.nodeName,
-            nameOfTagInLowerCase = nameOfTag.toLowerCase();
-
-          addTag(nameOfTagInLowerCase);
-        }
-        range = selection.getRangeAt(0);
-
-        let newFragmentt = range.cloneContents(),
-          textOfNewFragmentt = newFragmentt.textContent,
-          textNodeFromNewFragmentt = createTextNode(textOfNewFragmentt);
-
-        selection.deleteFromDocument();
-        range.insertNode(textNodeFromNewFragmentt);
-      } else {
-        let p = getChildOfMainContainer(anchorNode),
-          parentTag = getChild(anchorNode, p);
-
-        selection.deleteFromDocument();
-        parentTag.after(createTextNode(strippedContent));
       }
+
+      clearTagsInParagraph();
     }
   }
 
