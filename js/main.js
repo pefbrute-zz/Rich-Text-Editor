@@ -2112,12 +2112,12 @@ function removeFormatting() {
       indexOfLastPartInSelectedPartsInFirstP =
         amountOfSelectedPartsInFirstP - 1;
 
-    let insteadOfJ = selectedParts.length - selectedPartsInLastP.length - 1;
+    let insteadOfJ = amountOfSelectedParts - selectedPartsInLastP.length - 1;
     indexOfLastSelectedPart = amountOfSelectedParts - 1;
 
     let amountOfSelectedPartsInLastP = indexOfLastSelectedPart - insteadOfJ,
       indexOfFirstPartInSelectedPartsInLastP =
-        selectedParts.length - selectedPartsInLastP.length;
+        amountOfSelectedParts - selectedPartsInLastP.length;
     amountOfSelectedParts = selectedParts.length;
 
     let bigFirstContent = "",
@@ -2469,11 +2469,13 @@ function removeFormatting() {
           let list = listsBetween[index];
 
           while (list.firstChild) {
-            let p = document.createElement("P");
+            let p = document.createElement("P"),
+              firstChild = list.firstChild,
+              textOfFirstChild = firstChild.textContent;
 
-            p.textContent = list.firstChild.textContent;
+            p.textContent = textOfFirstChild;
             fragment.append(p);
-            list.firstChild.remove();
+            firstChild.remove();
           }
 
           list.before(fragment);
@@ -2508,16 +2510,17 @@ function removeFormatting() {
       nameOfFirstLevelChildOfMainContainer =
         firstLevelChildOfMainContainer.nodeName;
 
-    if (nameOfParentOfFirstSelectedElement === "P") {
-      let textNode = createTextNode(strippedContent);
+    // if (nameOfParentOfFirstSelectedElement === "P") {
+    //   let textNode = createTextNode(strippedContent);
 
-      selection.deleteFromDocument();
-      range.insertNode(textNode);
-    } else if (
+    //   selection.deleteFromDocument();
+    //   range.insertNode(textNode);
+    // } else
+     if (
       nameOfFirstLevelChildOfMainContainer === "UL" ||
       nameOfFirstLevelChildOfMainContainer === "OL"
     ) {
-      let firstSelectedLi = getSecondChildInMainContainer(anchorNode),
+      var firstSelectedLi = getSecondChildInMainContainer(anchorNode),
         lastSelectedLi = getSecondChildInMainContainer(focusNode),
         ul = getChildOfMainContainer(anchorNode),
         ulChildren = ul.children,
@@ -2637,13 +2640,29 @@ function removeFormatting() {
           mainContainer.insertBefore(lastUl, childOfMainContainer);
         }
       } else if (distanceBetweenSelectedLiElements === 1) {
+        addTag("selected");
+
         let textNode = createTextNode(strippedContent),
           indexBeginning = indexOfFirstSelectedLi,
           indexEnd = indexOfLastSelectedLi,
-          amountOfLi = indexEnd + 1;
+          amountOfLi = indexEnd + 1,
+          mainContainer = document.getElementById("work-area");
+
+        var indexOfLastLiInFirstPart = indexOfFirstSelectedLi - 1,
+          firstPart = document.createDocumentFragment(),
+          lastPart = document.createDocumentFragment(),
+          childrenOfMainContainer = mainContainer.children,
+          ulIndex = getChildIndexInMainContainer(ul),
+          ulName = ul.nodeName,
+          ulChildren = ul.children,
+          amountOfChildrenOfUl = ulChildren.length;
+
+        debugger;
 
         selection.deleteFromDocument();
         range.insertNode(textNode);
+
+        debugger;
 
         while (indexBeginning !== amountOfLi) {
           let firstChild = ulChildren[indexBeginning];
@@ -2651,8 +2670,15 @@ function removeFormatting() {
           fragmentAfterUL.append(firstChild);
           amountOfLi--;
         }
+        debugger;
 
-        for (let i = 0; i < fragmentAfterUL.children.length; i++) {
+        for (
+          let i = 0,
+            childrenOfFragmentAfterUL = fragmentAfterUL.children,
+            amountOfChildren = childrenOfFragmentAfterUL.length;
+          i < amountOfChildren;
+          i++
+        ) {
           let child = fragmentAfterUL.children[i],
             innerHTMLOfChild = child.innerHTML,
             p = document.createElement("P");
@@ -2660,16 +2686,6 @@ function removeFormatting() {
           p.innerHTML = innerHTMLOfChild;
           fragmentAfterUL.replaceChild(p, child);
         }
-
-        let indexOfLastLiInFirstPart = indexOfFirstSelectedLi - 1,
-          firstPart = document.createDocumentFragment(),
-          lastPart = document.createDocumentFragment(),
-          mainContainer = document.getElementById("work-area"),
-          childrenOfMainContainer = mainContainer.children,
-          ulIndex = getChildIndexInMainContainer(ul),
-          ulName = ul.nodeName,
-          ulChildren = ul.children,
-          amountOfChildrenOfUl = ulChildren.length;
 
         while (indexOfLastLiInFirstPart >= 0) {
           let firstChild = ulChildren[0];
@@ -2700,6 +2716,7 @@ function removeFormatting() {
         mainContainer.insertBefore(lastUl, childOfMainContainer);
       }
     } else {
+      console.log("here");
       let secondFirstParent = getSecondChildInMainContainer(anchorNode),
         secondLastParent = getSecondChildInMainContainer(focusNode);
 
