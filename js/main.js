@@ -2800,3 +2800,25 @@ function removeFormatting() {
   selection.empty();
   clearEmptyContainers();
 }
+
+// function makeCopyOfMainContainer() {
+//   let mainContainer = document.getElementById("work-area"),
+//     clonedMainContainer = mainContainer.cloneNode(true);
+
+//   return clonedMainContainer;
+// }
+
+// var copies = [];
+
+// function pasteCopyOfMainContainer() {
+//   let copyOfMainContainer = makeCopyOfMainContainer(),
+//     mainContainer = document.getElementById("work-area"),
+//     toolbar = document.getElementById("sample-toolbar");
+
+//   mainContainer.remove();
+//   toolbar.after(copyOfMainContainer);
+// }
+
+// pasteCopyOfMainContainer();
+
+// function undo() {}
