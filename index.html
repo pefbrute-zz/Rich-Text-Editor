@@ -656,12 +656,16 @@
           <a href="javascript:void(0)" onclick="addVideoByURL()">Save</a>
         </span>
 
-        <a class="icon" href="javascript:void(0)" onclick="makeCopyOfMainContainer(); removeFormatting()">
+        <a class="icon" href="javascript:void(0)" onclick="makeCopyOfMainContainer(); removeFormatting(); makeCopyOfMainContainer()">
           <i class="fas fa-remove-format"></i>
         </a>
 
         <a class="icon" href="javascript:void(0)" onclick="undo()">
           <i class="fas fa-undo-alt"></i>
+        </a>
+
+        <a class="icon" href="javascript:void(0)" onclick="redo()">
+          <i class="fas fa-redo-alt"></i>
         </a>
 
         <a class="icon" href="javascript:void(0)" onclick="tests()">

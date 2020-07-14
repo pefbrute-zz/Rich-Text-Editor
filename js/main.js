@@ -931,8 +931,6 @@ function removeSpellcheck() {
 }
 
 function replaceDivs() {
-  console.time();
-
   let element = document.getElementById("work-area"),
     childNodes = element.childNodes,
     childNodesLength = childNodes.length;
@@ -944,8 +942,6 @@ function replaceDivs() {
       replaceElement(childNodes[i], "p");
     }
   }
-
-  console.timeEnd();
 }
 
 let element = document.getElementById("work-area");
@@ -2630,7 +2626,7 @@ function removeFormatting() {
           mainContainer.insertBefore(lastUl, childOfMainContainer);
         }
       } else if (distanceBetweenSelectedLiElements === 1) {
-        function clearTagsInParagraph() {
+        function clearSelectedTags() {
           let secondFirstParent = getSecondChildInMainContainer(anchorNode)
               .parentElement,
             secondLastParent = getSecondChildInMainContainer(focusNode)
@@ -2649,8 +2645,6 @@ function removeFormatting() {
               i++;
               tagParent = tagParent.parentElement;
             }
-
-            console.log(tags);
 
             for (let g = 0; g < i; g++) {
               let tag = tags[g],
@@ -2676,8 +2670,75 @@ function removeFormatting() {
             parentTag.after(createTextNode(strippedContent));
           }
         }
+        clearSelectedTags();
 
-        clearTagsInParagraph();
+        function turnLiElementIntoParagraph() {
+          let indexBeginning = indexOfFirstSelectedLi,
+            indexEnd = indexOfLastSelectedLi,
+            amountOfLi = indexEnd + 1,
+            mainContainer = document.getElementById("work-area");
+
+          var indexOfLastLiInFirstPart = indexOfFirstSelectedLi - 1,
+            firstPart = document.createDocumentFragment(),
+            lastPart = document.createDocumentFragment(),
+            childrenOfMainContainer = mainContainer.children,
+            ulIndex = getChildIndexInMainContainer(ul),
+            ulName = ul.nodeName,
+            ulChildren = ul.children,
+            amountOfChildrenOfUl = ulChildren.length;
+
+          while (indexBeginning !== amountOfLi) {
+            let firstChild = ulChildren[indexBeginning];
+
+            fragmentAfterUL.append(firstChild);
+            amountOfLi--;
+          }
+
+          for (
+            let i = 0,
+              childrenOfFragmentAfterUL = fragmentAfterUL.children,
+              amountOfChildren = childrenOfFragmentAfterUL.length;
+            i < amountOfChildren;
+            i++
+          ) {
+            let child = fragmentAfterUL.children[i],
+              innerHTMLOfChild = child.innerHTML,
+              p = document.createElement("P");
+
+            p.innerHTML = innerHTMLOfChild;
+            fragmentAfterUL.replaceChild(p, child);
+          }
+
+          while (indexOfLastLiInFirstPart >= 0) {
+            let firstChild = ulChildren[0];
+
+            firstPart.appendChild(firstChild);
+            indexOfLastLiInFirstPart--;
+          }
+
+          amountOfChildrenOfUl = ulChildren.length;
+          while (amountOfChildrenOfUl !== 0) {
+            let firstChildOfUl = ulChildren[0];
+
+            lastPart.appendChild(firstChildOfUl);
+            amountOfChildrenOfUl--;
+          }
+
+          ul.remove();
+
+          let firstUl = document.createElement(ulName),
+            lastUl = document.createElement(ulName),
+            childOfMainContainer = childrenOfMainContainer[ulIndex];
+
+          firstUl.appendChild(firstPart);
+          lastUl.appendChild(lastPart);
+
+          mainContainer.insertBefore(firstUl, childOfMainContainer);
+          mainContainer.insertBefore(fragmentAfterUL, childOfMainContainer);
+          mainContainer.insertBefore(lastUl, childOfMainContainer);
+        }
+
+        turnLiElementIntoParagraph();
       }
     } else {
       function clearTagsInParagraph() {
@@ -2730,27 +2791,29 @@ function removeFormatting() {
 }
 
 var copies = [],
-  currentCopy = 0;
+  currentCopy = -1;
 
 function makeCopyOfMainContainer() {
   let mainContainer = document.getElementById("work-area"),
     clonedMainContainer = mainContainer.cloneNode(true);
 
   copies.push(clonedMainContainer);
+  console.log(copies);
+  currentCopy++;
 }
 
 function undo() {
   const t0 = performance.now();
 
-  if (currentCopy > -1) {
-    let copyOfMainContainer = copies[copies.length - 1],
+  if (currentCopy - 1 > -1) {
+    let copyOfMainContainer = copies[currentCopy - 1],
       mainContainer = document.getElementById("work-area"),
       toolbar = document.getElementById("sample-toolbar");
 
     mainContainer.remove();
     toolbar.after(copyOfMainContainer);
 
-    currentCopy--;
+    currentCopy -= 2;
   }
 
   const t1 = performance.now();
@@ -2759,4 +2822,30 @@ function undo() {
   );
 }
 
-function redo() {}
+function redo() {
+  const t0 = performance.now();
+
+  if (currentCopy !== copies.length - 1 && copies.length !== 0) {
+    if (currentCopy === -1) {
+      currentCopy += 2;
+    } else {
+      currentCopy++;
+    }
+
+    let copyOfMainContainer = copies[currentCopy],
+      mainContainer = document.getElementById("work-area"),
+      toolbar = document.getElementById("sample-toolbar");
+
+    mainContainer.remove();
+    toolbar.after(copyOfMainContainer);
+
+    if (currentCopy < copies.length - 1){
+      currentCopy++;
+    }
+  }
+
+  const t1 = performance.now();
+  console.log(
+    `Clear formatting function completed in: ${t1 - t0} milleseconds`
+  );
+}
