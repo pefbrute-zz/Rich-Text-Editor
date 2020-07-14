@@ -2626,6 +2626,8 @@ function removeFormatting() {
           mainContainer.insertBefore(lastUl, childOfMainContainer);
         }
       } else if (distanceBetweenSelectedLiElements === 1) {
+        //Fix this function
+        //
         function clearSelectedTags() {
           let secondFirstParent = getSecondChildInMainContainer(anchorNode)
               .parentElement,
@@ -2663,13 +2665,15 @@ function removeFormatting() {
             range.insertNode(textNodeFromNewFragmentt);
           } else {
             let ul = getChildOfMainContainer(anchorNode),
-              li = getChild(anchorNode, ul);
-            parentTag = getChild(anchorNode, li);
+              li = getChild(anchorNode, ul),
+              parentTag = getChild(anchorNode, li);
 
             selection.deleteFromDocument();
             parentTag.after(createTextNode(strippedContent));
           }
         }
+        //
+        //
         clearSelectedTags();
 
         function turnLiElementIntoParagraph() {
@@ -2839,7 +2843,7 @@ function redo() {
     mainContainer.remove();
     toolbar.after(copyOfMainContainer);
 
-    if (currentCopy < copies.length - 1){
+    if (currentCopy < copies.length - 1) {
       currentCopy++;
     }
   }
