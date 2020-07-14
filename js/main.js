@@ -1548,7 +1548,7 @@ tests = () => {
     );
   }
 
-  performanceTest(removeFormatting);
+  // performanceTest(undo);
 };
 
 function getChildIndex(child, parent) {
@@ -2678,78 +2678,6 @@ function removeFormatting() {
         }
 
         clearTagsInParagraph();
-
-        let textNode = createTextNode(strippedContent),
-          indexBeginning = indexOfFirstSelectedLi,
-          indexEnd = indexOfLastSelectedLi,
-          amountOfLi = indexEnd + 1,
-          mainContainer = document.getElementById("work-area");
-
-        var indexOfLastLiInFirstPart = indexOfFirstSelectedLi - 1,
-          firstPart = document.createDocumentFragment(),
-          lastPart = document.createDocumentFragment(),
-          childrenOfMainContainer = mainContainer.children,
-          ulIndex = getChildIndexInMainContainer(ul),
-          ulName = ul.nodeName,
-          ulChildren = ul.children,
-          amountOfChildrenOfUl = ulChildren.length;
-
-        let li = getChild(anchorNode, ul),
-          parentTag = getChild(anchorNode, li);
-
-        // selection.deleteFromDocument();
-        // parentTag.after(textNode);
-        // range.insertNode(textNode);
-
-        while (indexBeginning !== amountOfLi) {
-          let firstChild = ulChildren[indexBeginning];
-
-          fragmentAfterUL.append(firstChild);
-          amountOfLi--;
-        }
-
-        for (
-          let i = 0,
-            childrenOfFragmentAfterUL = fragmentAfterUL.children,
-            amountOfChildren = childrenOfFragmentAfterUL.length;
-          i < amountOfChildren;
-          i++
-        ) {
-          let child = fragmentAfterUL.children[i],
-            innerHTMLOfChild = child.innerHTML,
-            p = document.createElement("P");
-
-          p.innerHTML = innerHTMLOfChild;
-          fragmentAfterUL.replaceChild(p, child);
-        }
-
-        while (indexOfLastLiInFirstPart >= 0) {
-          let firstChild = ulChildren[0];
-
-          firstPart.appendChild(firstChild);
-          indexOfLastLiInFirstPart--;
-        }
-
-        amountOfChildrenOfUl = ulChildren.length;
-        while (amountOfChildrenOfUl !== 0) {
-          let firstChildOfUl = ulChildren[0];
-
-          lastPart.appendChild(firstChildOfUl);
-          amountOfChildrenOfUl--;
-        }
-
-        ul.remove();
-
-        let firstUl = document.createElement(ulName),
-          lastUl = document.createElement(ulName),
-          childOfMainContainer = childrenOfMainContainer[ulIndex];
-
-        firstUl.appendChild(firstPart);
-        lastUl.appendChild(lastPart);
-
-        mainContainer.insertBefore(firstUl, childOfMainContainer);
-        mainContainer.insertBefore(fragmentAfterUL, childOfMainContainer);
-        mainContainer.insertBefore(lastUl, childOfMainContainer);
       }
     } else {
       function clearTagsInParagraph() {
@@ -2801,24 +2729,34 @@ function removeFormatting() {
   clearEmptyContainers();
 }
 
-// function makeCopyOfMainContainer() {
-//   let mainContainer = document.getElementById("work-area"),
-//     clonedMainContainer = mainContainer.cloneNode(true);
+var copies = [],
+  currentCopy = 0;
 
-//   return clonedMainContainer;
-// }
+function makeCopyOfMainContainer() {
+  let mainContainer = document.getElementById("work-area"),
+    clonedMainContainer = mainContainer.cloneNode(true);
 
-// var copies = [];
+  copies.push(clonedMainContainer);
+}
 
-// function pasteCopyOfMainContainer() {
-//   let copyOfMainContainer = makeCopyOfMainContainer(),
-//     mainContainer = document.getElementById("work-area"),
-//     toolbar = document.getElementById("sample-toolbar");
+function undo() {
+  const t0 = performance.now();
 
-//   mainContainer.remove();
-//   toolbar.after(copyOfMainContainer);
-// }
+  if (currentCopy > -1) {
+    let copyOfMainContainer = copies[copies.length - 1],
+      mainContainer = document.getElementById("work-area"),
+      toolbar = document.getElementById("sample-toolbar");
 
-// pasteCopyOfMainContainer();
+    mainContainer.remove();
+    toolbar.after(copyOfMainContainer);
 
-// function undo() {}
+    currentCopy--;
+  }
+
+  const t1 = performance.now();
+  console.log(
+    `Clear formatting function completed in: ${t1 - t0} milleseconds`
+  );
+}
+
+function redo() {}
