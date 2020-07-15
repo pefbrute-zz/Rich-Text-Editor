@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="icon/icon.png" />
-    <link rel="stylesheet" href="fontawesome-free-5.13.0-web/css/all.css" />
+    <link rel="stylesheet" href="vendor/fontawesome-free-5.13.0-web/css/all.css" />
     <link rel="stylesheet" href="css/normalize.css" />
     <link rel="stylesheet" href="css/main.css" />
     <title>Text Editor</title>
@@ -656,7 +656,11 @@
           <a href="javascript:void(0)" onclick="addVideoByURL()">Save</a>
         </span>
 
-        <a class="icon" href="javascript:void(0)" onclick="makeCopyOfMainContainer(); removeFormatting(); makeCopyOfMainContainer()">
+        <a
+          class="icon"
+          href="javascript:void(0)"
+          onclick="makeCopyOfMainContainer(); removeFormatting(); makeCopyOfMainContainer()"
+        >
           <i class="fas fa-remove-format"></i>
         </a>
 
@@ -666,6 +670,10 @@
 
         <a class="icon" href="javascript:void(0)" onclick="redo()">
           <i class="fas fa-redo-alt"></i>
+        </a>
+
+        <a class="icon" href="javascript:void(0)" onclick="makeFunction()">
+          <i class="fas fa-calculator"></i>
         </a>
 
         <a class="icon" href="javascript:void(0)" onclick="tests()">
@@ -703,14 +711,14 @@
           The First
           <strong class="strong"
             >One
-            <em class="emphasized">and <u class="underlined">Some text</u> of</em>
+            <em class="emphasized"
+              >and <u class="underlined">Some text</u> of</em
+            >
             it.</strong
           >
         </p>
         <p>The Second One and <em>Some</em> text of it</p>
-        <p>
-          The Third <strong class="strong">One</strong> and Some text of it
-        </p>
+        <p>The Third <strong class="strong">One</strong> and Some text of it</p>
         <p>
           <strong class="strong">The Fourth One</strong> and
           <strong class="strong">Some text of it</strong>

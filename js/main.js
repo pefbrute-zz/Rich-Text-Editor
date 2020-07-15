@@ -2798,19 +2798,27 @@ var copies = [],
   currentCopy = -1;
 
 function makeCopyOfMainContainer() {
+  let amountOfCopies = () => copies.length,
+    indexOfLastCopy = () => amountOfCopies() - 1;
+
+  if (currentCopy < indexOfLastCopy() && amountOfCopies() >= 1) {
+    while (indexOfLastCopy() > currentCopy) {
+      copies.pop();
+    }
+  }
+
   let mainContainer = document.getElementById("work-area"),
     clonedMainContainer = mainContainer.cloneNode(true);
 
   copies.push(clonedMainContainer);
-  console.log(copies);
   currentCopy++;
 }
 
 function undo() {
-  const t0 = performance.now();
+  let previousCopy = currentCopy - 1;
 
-  if (currentCopy - 1 > -1) {
-    let copyOfMainContainer = copies[currentCopy - 1],
+  if (previousCopy > -1) {
+    let copyOfMainContainer = copies[previousCopy],
       mainContainer = document.getElementById("work-area"),
       toolbar = document.getElementById("sample-toolbar");
 
@@ -2819,17 +2827,13 @@ function undo() {
 
     currentCopy -= 2;
   }
-
-  const t1 = performance.now();
-  console.log(
-    `Clear formatting function completed in: ${t1 - t0} milleseconds`
-  );
 }
 
 function redo() {
-  const t0 = performance.now();
+  let amountOfCopies = copies.length,
+    indexOfLastCopy = amountOfCopies - 1;
 
-  if (currentCopy !== copies.length - 1 && copies.length !== 0) {
+  if (currentCopy !== indexOfLastCopy && amountOfCopies !== 0) {
     if (currentCopy === -1) {
       currentCopy += 2;
     } else {
@@ -2843,13 +2847,8 @@ function redo() {
     mainContainer.remove();
     toolbar.after(copyOfMainContainer);
 
-    if (currentCopy < copies.length - 1) {
+    if (currentCopy < indexOfLastCopy) {
       currentCopy++;
     }
   }
-
-  const t1 = performance.now();
-  console.log(
-    `Clear formatting function completed in: ${t1 - t0} milleseconds`
-  );
 }
