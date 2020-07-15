@@ -2852,3 +2852,23 @@ function redo() {
     }
   }
 }
+
+function makeFormula() {
+  let span = document.createElement("span");
+
+  let selection = document.getSelection();
+  selection.collapseToEnd();
+
+  let range = selection.getRangeAt(0);
+  range.insertNode(span);
+
+  let inputWithFormula = document.getElementById("formula"),
+    formula = inputWithFormula.value;
+
+  katex.renderToString(formula, span, {
+    throwOnError: false,
+  });
+
+  console.log(span);
+
+}
