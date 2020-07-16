@@ -2853,11 +2853,42 @@ function redo() {
   }
 }
 
-function makeFormula() {
-  let span = document.createElement("span");
+var spanWithFormula = document.getElementById("span-formula");
 
+function moveSpanUnderCaret() {
+  let selection = document.getSelection();
+
+  let range = selection.getRangeAt(0),
+    span = spanWithFormula.cloneNode(true);
+
+  span.setAttribute("id", "cloned-span-with-formula");
+
+  span.style.display = "block";
+
+  range.insertNode(span);
+
+  span.style.top = span.offsetTop + 5 + "px";
+  span.style.left = span.offsetLeft - 30 + "px";
+
+  let childrenOfSpan = span.children,
+    inputWithFormula = childrenOfSpan[1];
+
+  inputWithFormula.focus();
+
+  selection.empty();
+}
+
+//
+//add event listener with blur here to delete cloned span
+
+//
+//
+
+function makeFormula() {
   let selection = document.getSelection();
   selection.collapseToEnd();
+
+  let span = document.createElement("span");
 
   let range = selection.getRangeAt(0);
   range.insertNode(span);
@@ -2865,10 +2896,14 @@ function makeFormula() {
   let inputWithFormula = document.getElementById("formula"),
     formula = inputWithFormula.value;
 
-  katex.renderToString(formula, span, {
+  katex.render(formula, span, {
     throwOnError: false,
   });
 
-  console.log(span);
+  selection.empty();
+  inputWithFormula.value = "";
 
+  let someSpanWithFormula = document.getElementById("cloned-span-with-formula");
+
+  someSpanWithFormula.remove();
 }

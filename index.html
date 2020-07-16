@@ -673,24 +673,27 @@
           <i class="fas fa-redo-alt"></i>
         </a>
 
-        <a class="icon" href="javascript:void(0)" onclick="makeFormula()">
+        <a class="icon" href="javascript:void(0)" onclick="moveSpanUnderCaret();">
           <i class="fas fa-calculator"></i>
         </a>
 
-        <span class="formula">
-          <input id="formula" placeholder="Formula (*E = mc ^ 2)" class="form-control" />
-        </span>
-
+        
         <a class="icon" href="javascript:void(0)" onclick="tests()">
           <i class="fas fa-vial"></i>
         </a>
-
+        
         <a class="icon" href="js/main.js">
           Source Code Link
         </a>
       </div>
-
+      
       <div class="work-area" contenteditable="true" id="work-area">
+        <span id="span-formula">
+          <label for="formula">Enter formula: </label>
+          <input id="formula" placeholder="Formula (*E = mc ^ 2)" class="form-control" />
+          <button onclick="makeFormula()">Save</button>
+        </span>
+
         <ul>
           <li>
             The
