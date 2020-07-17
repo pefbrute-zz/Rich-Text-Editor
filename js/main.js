@@ -201,30 +201,88 @@ let time = 0;
 
 //It adds tag with (tagName) to selected text.
 //If it passes url then it makes anchor tag with (url)
-function addTag(tagName, url) {
+function addTag(tagName) {
   let capitalizedTagName = capitalizeFirstLetter(tagName);
   TagAppliers[capitalizedTagName].toggleSelection();
-
-  if (url) {
-    let query = "[class=anchor]",
-      anchors = document.querySelectorAll(query),
-      anchorsLength = anchors.length,
-      url = document.getElementById("url"),
-      urlValue = url.value;
-
-    for (let i = 0; i < anchorsLength; i++) {
-      let anchor = anchors[i],
-        anchorClassName = anchor.className,
-        anchorClassNameWithTime = anchorClassName + time;
-
-      anchor.href = urlValue;
-      anchor.className = anchorClassNameWithTime;
-    }
-
-    time++;
-    url.value = "";
-  }
 }
+
+let urlSpan = document.getElementById("url-span"),
+  urlSelection = rangy.saveSelection();
+
+function moveAnchorSpanUnderCaret() {
+  let selection = document.getSelection(),
+    range = selection.getRangeAt(0),
+    span = urlSpan.cloneNode(true);
+
+  urlSelection = rangy.saveSelection();
+
+  span.setAttribute("id", "cloned-url-span");
+
+  span.style.display = "block";
+
+  range.insertNode(span);
+
+  span.style.top = span.offsetTop + 5 + "px";
+  span.style.left = span.offsetLeft - 30 + "px";
+
+  let childrenOfSpan = span.children,
+    inputWithURL = childrenOfSpan[1];
+
+  inputWithURL.setAttribute("id", "cloned-url");
+
+  inputWithURL.focus();
+
+  inputWithURL.onblur = () => {
+    window.setTimeout(() => {
+      span.remove();
+      rangy.removeMarkers(urlSelection);
+    }, 300);
+  };
+
+  let saveButton = childrenOfSpan[2];
+  console.log(saveButton);
+
+  inputWithURL.onkeydown = (event) => {
+    if (event.keyCode === 13) {
+      saveButton.click();
+    }
+  };
+}
+
+//Fix function cos it doesn't add urls in href attribute
+//
+function makeAnchor() {
+  rangy.restoreSelection(urlSelection);
+
+  let capitalizedTagName = "A";
+  TagAppliers[capitalizedTagName].toggleSelection();
+
+  let selection = document.getSelection();
+  selection.empty();
+
+  let query = "[class=anchor]",
+    anchors = document.querySelectorAll(query),
+    anchorsLength = anchors.length,
+    url = document.getElementById("anchor-input"),
+    urlValue = url.value;
+
+  for (let i = 0; i < anchorsLength; i++) {
+    let anchor = anchors[i],
+      anchorClassName = anchor.className,
+      anchorClassNameWithTime = anchorClassName + time;
+
+    anchor.href = urlValue;
+    anchor.className = anchorClassNameWithTime;
+  }
+
+  time++;
+  url.value = "";
+
+  let someSpanWithURL = document.getElementById("cloned-url-span");
+  someSpanWithURL.remove();
+}
+//
+//
 
 let FontAppliers = {
   Sofia: rangy.createClassApplier("sofia"),
@@ -2853,13 +2911,15 @@ function redo() {
   }
 }
 
-var spanWithFormula = document.getElementById("span-formula");
+var spanWithFormula = document.getElementById("span-formula"),
+  savedSelection;
 
 function moveSpanUnderCaret() {
-  let selection = document.getSelection();
-
-  let range = selection.getRangeAt(0),
+  let selection = document.getSelection(),
+    range = selection.getRangeAt(0),
     span = spanWithFormula.cloneNode(true);
+
+  savedSelection = rangy.saveSelection();
 
   span.setAttribute("id", "cloned-span-with-formula");
 
@@ -2873,18 +2933,30 @@ function moveSpanUnderCaret() {
   let childrenOfSpan = span.children,
     inputWithFormula = childrenOfSpan[1];
 
+  inputWithFormula.setAttribute("id", "cloned-formula");
+
   inputWithFormula.focus();
 
-  selection.empty();
+  inputWithFormula.onblur = () => {
+    window.setTimeout(() => {
+      span.remove();
+      rangy.removeMarkers(savedSelection);
+    }, 300);
+  };
+
+  let saveButton = childrenOfSpan[2];
+  console.log(saveButton);
+
+  inputWithFormula.onkeydown = (event) => {
+    if (event.keyCode === 13) {
+      saveButton.click();
+    }
+  };
 }
 
-//
-//add event listener with blur here to delete cloned span
-
-//
-//
-
 function makeFormula() {
+  rangy.restoreSelection(savedSelection);
+
   let selection = document.getSelection();
   selection.collapseToEnd();
 
@@ -2893,7 +2965,7 @@ function makeFormula() {
   let range = selection.getRangeAt(0);
   range.insertNode(span);
 
-  let inputWithFormula = document.getElementById("formula"),
+  let inputWithFormula = document.getElementById("cloned-formula"),
     formula = inputWithFormula.value;
 
   katex.render(formula, span, {

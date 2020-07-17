@@ -632,12 +632,10 @@
           <i class="fas fa-paragraph"></i>
         </a>
 
-        <a class="icon" href="javascript:void(0)" onclick="addTag('a', 'true')">
+        <a class="icon" href="javascript:void(0)" onclick="moveAnchorSpanUnderCaret()">
           <i class="fa fa-link fa-fw"></i>
         </a>
-        <span class="url">
-          <input id="url" placeholder="link" class="form-control" />
-        </span>
+        
 
         <a class="icon" href="javascript:void(0)" onclick="addImage()">
           <i class="fas fa-image"></i>
@@ -688,10 +686,16 @@
       </div>
       
       <div class="work-area" contenteditable="true" id="work-area">
-        <span id="span-formula">
+        <span id="url-span" class="hidden">
+          <label for="url">Enter your url: </label>
+          <input id="anchor-input" placeholder="https://www.google.com/" class="form-control" />
+          <button id="url-save-button" onclick="makeAnchor()">Save</button>
+        </span>
+
+        <span id="span-formula" class="hidden">
           <label for="formula">Enter formula: </label>
           <input id="formula" placeholder="Formula (*E = mc ^ 2)" class="form-control" />
-          <button onclick="makeFormula()">Save</button>
+          <button id="formula-save-button" onclick="makeFormula()">Save</button>
         </span>
 
         <ul>

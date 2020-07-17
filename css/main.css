@@ -10,12 +10,15 @@ body {
 }
 
 #span-formula,
-#cloned-span-with-formula {
+#cloned-span-with-formula,
+#url-span,
+#cloned-url-span {
   position: absolute;
 }
 
 #span-formula,
-#cloned-span-with-formula {
+#cloned-span-with-formula,
+#cloned-url-span {
   background-color: white;
   height: 25px;
   width: 310px;
@@ -24,7 +27,7 @@ body {
 }
 
 .icon,
-.url {
+#url-span {
   margin-left: 0.5rem;
 }
 
