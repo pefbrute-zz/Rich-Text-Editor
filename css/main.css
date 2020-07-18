@@ -12,13 +12,16 @@ body {
 #span-formula,
 #cloned-span-with-formula,
 #url-span,
-#cloned-url-span {
+#cloned-url-span,
+#cloned-video-span {
   position: absolute;
 }
 
 #span-formula,
 #cloned-span-with-formula,
-#cloned-url-span {
+#cloned-url-span,
+.video-span,
+#cloned-video-span {
   background-color: white;
   height: 25px;
   width: 310px;

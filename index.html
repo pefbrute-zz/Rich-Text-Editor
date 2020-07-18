@@ -4,8 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="icon/icon.png" />
-    <link rel="stylesheet" href="vendor/katex/katex.min.css">
-    <link rel="stylesheet" href="vendor/fontawesome-free-5.13.0-web/css/all.css" />
+    <link rel="stylesheet" href="vendor/katex/katex.min.css" />
+    <link
+      rel="stylesheet"
+      href="vendor/fontawesome-free-5.13.0-web/css/all.css"
+    />
     <link rel="stylesheet" href="css/normalize.css" />
     <link rel="stylesheet" href="css/main.css" />
     <title>Text Editor</title>
@@ -632,10 +635,13 @@
           <i class="fas fa-paragraph"></i>
         </a>
 
-        <a class="icon" href="javascript:void(0)" onclick="moveAnchorSpanUnderCaret()">
+        <a
+          class="icon"
+          href="javascript:void(0)"
+          onclick="moveAnchorSpanUnderCaret()"
+        >
           <i class="fa fa-link fa-fw"></i>
         </a>
-        
 
         <a class="icon" href="javascript:void(0)" onclick="addImage()">
           <i class="fas fa-image"></i>
@@ -645,15 +651,10 @@
         <a
           class="icon"
           href="javascript:void(0)"
-          onclick="addDropdown('dropdown-video')"
+          onclick="moveVideoSpanUnderCaret()"
         >
           <i class="fas fa-film"></i>
         </a>
-        <span class="hidden" id="dropdown-video" tabindex="-1">
-          <label for="url-input">Enter video: </label>
-          <input id="url-input" type="text" placeholder="Embed URL" />
-          <a href="javascript:void(0)" onclick="addVideoByURL()">Save</a>
-        </span>
 
         <a
           class="icon"
@@ -671,30 +672,47 @@
           <i class="fas fa-redo-alt"></i>
         </a>
 
-        <a class="icon" href="javascript:void(0)" onclick="moveSpanUnderCaret();">
+        <a
+          class="icon"
+          href="javascript:void(0)"
+          onclick="moveSpanUnderCaret();"
+        >
           <i class="fas fa-calculator"></i>
         </a>
 
-        
         <a class="icon" href="javascript:void(0)" onclick="tests()">
           <i class="fas fa-vial"></i>
         </a>
-        
+
         <a class="icon" href="js/main.js">
           Source Code Link
         </a>
       </div>
-      
+
       <div class="work-area" contenteditable="true" id="work-area">
         <span id="url-span" class="hidden">
           <label for="url">Enter your url: </label>
-          <input id="anchor-input" placeholder="https://www.google.com/" class="form-control" />
+          <input
+            id="anchor-input"
+            placeholder="https://www.google.com/"
+            class="form-control"
+          />
           <button id="url-save-button" onclick="makeAnchor()">Save</button>
+        </span>
+
+        <span class="hidden" id="video-span" tabindex="-1">
+          <label for="url-input">Enter video: </label>
+          <input id="url-input" type="text" placeholder="Embed URL" />
+          <button id="video-save-button" onclick="addVideoByURL()">Save</button>
         </span>
 
         <span id="span-formula" class="hidden">
           <label for="formula">Enter formula: </label>
-          <input id="formula" placeholder="Formula (*E = mc ^ 2)" class="form-control" />
+          <input
+            id="formula"
+            placeholder="Formula (*E = mc ^ 2)"
+            class="form-control"
+          />
           <button id="formula-save-button" onclick="makeFormula()">Save</button>
         </span>
 

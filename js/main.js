@@ -235,7 +235,7 @@ function moveAnchorSpanUnderCaret() {
     window.setTimeout(() => {
       span.remove();
       rangy.removeMarkers(urlSelection);
-    }, 30000);
+    }, 300);
   };
 
   inputWithURL.onkeydown = (event) => {
@@ -1569,11 +1569,57 @@ function addImage() {
   fileTag.click();
 }
 
+let urlVideoSpan = document.getElementById("video-span"),
+  urlVideoSelection = rangy.saveSelection();
+
+function moveVideoSpanUnderCaret() {
+  urlVideoSelection = rangy.saveSelection();
+
+  let selection = document.getSelection();
+  selection.collapseToEnd();
+
+  let range = selection.getRangeAt(0),
+    span = urlVideoSpan.cloneNode(true);
+
+  span.setAttribute("id", "cloned-video-span");
+
+  span.style.display = "block";
+
+  range.insertNode(span);
+
+  span.style.top = span.offsetTop + 5 + "px";
+  span.style.left = span.offsetLeft - 30 + "px";
+
+  let childrenOfSpan = span.children,
+    inputWithURL = childrenOfSpan[1];
+
+  inputWithURL.setAttribute("id", "cloned-video-url");
+
+  inputWithURL.focus();
+
+  inputWithURL.onblur = () => {
+    window.setTimeout(() => {
+      span.remove();
+      rangy.removeMarkers(urlSelection);
+    }, 30000);
+  };
+
+  inputWithURL.onkeydown = (event) => {
+    if (event.keyCode === 13) {
+      let saveButton = childrenOfSpan[2];
+
+      saveButton.click();
+    }
+  };
+}
+
 function addVideoByURL() {
+  rangy.restoreSelection(urlVideoSelection);
+
   let selection = document.getSelection(),
     range = selection.getRangeAt(0),
     iframe = document.createElement("iframe"),
-    input = document.getElementById("url-input"),
+    input = document.getElementById("cloned-video-url"),
     URL = input.value;
 
   selection.deleteFromDocument();
