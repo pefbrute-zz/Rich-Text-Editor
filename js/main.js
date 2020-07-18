@@ -6,9 +6,9 @@ window.addEventListener("load", function () {
   mainContainer.setAttribute(nameOfAttribute, valueOfAttribute);
 });
 
-//Add dropdown class to element with dropdownId
-function addDropdown(dropdownId) {
-  let dropdown = document.getElementById(dropdownId),
+//Add dropdown class to element with dropdownID
+function addDropdown(dropdownID) {
+  let dropdown = document.getElementById(dropdownID),
     dropdowns = document.querySelectorAll("[class*=dropdown]"),
     amountOfDropdowns = dropdowns.length,
     dropdownsLastElementIndex = amountOfDropdowns - 1;
@@ -24,11 +24,19 @@ function addDropdown(dropdownId) {
   }
   let classNameOfDropdown = dropdown.className;
 
-  if (classNameOfDropdown === dropdownId) {
+  if (classNameOfDropdown === dropdownID) {
     dropdown.className = "hidden";
   } else {
-    dropdown.className = dropdownId;
+    dropdown.className = dropdownID;
   }
+
+  dropdown.focus();
+
+  dropdown.onblur = () => {
+    window.setTimeout(() => {
+      dropdown.className = "hidden";
+    }, 300);
+  };
 }
 
 rangy.init();
@@ -578,7 +586,7 @@ function replaceContainerTag(tag) {
         tagData.tagCounter++;
       }
 
-      let elementAfterFirstSelectedElement =
+      var elementAfterFirstSelectedElement =
           firstSelectedElement.nextElementSibling,
         elementAfterLastSelectedElement =
           lastSelectedElement.nextElementSibling;
@@ -1601,7 +1609,7 @@ function moveVideoSpanUnderCaret() {
     window.setTimeout(() => {
       span.remove();
       rangy.removeMarkers(urlSelection);
-    }, 30000);
+    }, 300);
   };
 
   inputWithURL.onkeydown = (event) => {

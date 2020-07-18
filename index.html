@@ -18,14 +18,13 @@
       <div class="sample-toolbar" id="sample-toolbar">
         <a
           class="font-picker icon"
-          role="button"
           href="javascript:void(0)"
           onclick="addDropdown('dropdown-fonts')"
         >
           <span class="sofia">Sofia <i class="fas fa-sort"></i></span>
         </a>
 
-        <span class="options hidden" id="dropdown-fonts">
+        <span class="options hidden" id="dropdown-fonts" tabindex="-1">
           <a
             class="picker-item icon sofia"
             href="javascript:void(0)"
@@ -65,14 +64,13 @@
 
         <a
           class="size-picker icon"
-          role="button"
           href="javascript:void(0)"
           onclick="addDropdown('dropdown-size')"
         >
           <span class="normal">Normal <i class="fas fa-sort"></i></span>
         </a>
 
-        <span class="options hidden" id="dropdown-size">
+        <span class="options hidden" id="dropdown-size" tabindex="-1">
           <a
             class="picker-item icon small"
             href="javascript:void(0)"
