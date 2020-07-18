@@ -196,9 +196,6 @@ let TagAppliers = {
   Selected: rangy.createClassApplier("selected", Options["Selected"]),
 };
 
-//Add tag to selected text
-let time = 0;
-
 //It adds tag with (tagName) to selected text.
 //If it passes url then it makes anchor tag with (url)
 function addTag(tagName) {
@@ -210,11 +207,13 @@ let urlSpan = document.getElementById("url-span"),
   urlSelection = rangy.saveSelection();
 
 function moveAnchorSpanUnderCaret() {
-  let selection = document.getSelection(),
-    range = selection.getRangeAt(0),
-    span = urlSpan.cloneNode(true);
-
   urlSelection = rangy.saveSelection();
+
+  let selection = document.getSelection();
+  selection.collapseToEnd();
+
+  let range = selection.getRangeAt(0),
+    span = urlSpan.cloneNode(true);
 
   span.setAttribute("id", "cloned-url-span");
 
@@ -236,21 +235,19 @@ function moveAnchorSpanUnderCaret() {
     window.setTimeout(() => {
       span.remove();
       rangy.removeMarkers(urlSelection);
-    }, 300);
+    }, 30000);
   };
-
-  let saveButton = childrenOfSpan[2];
-  console.log(saveButton);
 
   inputWithURL.onkeydown = (event) => {
     if (event.keyCode === 13) {
+      let saveButton = childrenOfSpan[2];
+
       saveButton.click();
     }
   };
 }
 
-//Fix function cos it doesn't add urls in href attribute
-//
+let time = 0;
 function makeAnchor() {
   rangy.restoreSelection(urlSelection);
 
@@ -263,7 +260,7 @@ function makeAnchor() {
   let query = "[class=anchor]",
     anchors = document.querySelectorAll(query),
     anchorsLength = anchors.length,
-    url = document.getElementById("anchor-input"),
+    url = document.getElementById("cloned-url"),
     urlValue = url.value;
 
   for (let i = 0; i < anchorsLength; i++) {
@@ -281,8 +278,6 @@ function makeAnchor() {
   let someSpanWithURL = document.getElementById("cloned-url-span");
   someSpanWithURL.remove();
 }
-//
-//
 
 let FontAppliers = {
   Sofia: rangy.createClassApplier("sofia"),
