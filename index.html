@@ -16,105 +16,591 @@
   <body>
     <div class="editor">
       <div class="sample-toolbar" id="sample-toolbar">
-        <a
-          class="font-picker icon"
-          href="javascript:void(0)"
-          onclick="addDropdown('dropdown-fonts')"
-        >
-          <span class="sofia">Sofia <i class="fas fa-sort"></i></span>
-        </a>
+        <span class="pf-formats">
+          <a
+            class="font-picker icon"
+            href="javascript:void(0)"
+            onclick="addDropdown('dropdown-fonts')"
+          >
+            <span class="sofia">Sofia <i class="fas fa-sort"></i></span>
+          </a>
 
-        <span class="options hidden" id="dropdown-fonts" tabindex="-1">
+          <span class="options hidden" id="dropdown-fonts" tabindex="-1">
+            <a
+              class="picker-item icon sofia"
+              href="javascript:void(0)"
+              role="button"
+              onclick="addFont('sofia')"
+              >Sofia</a
+            >
+            <a
+              class="picker-item icon slabo-13px"
+              href="javascript:void(0)"
+              role="button"
+              onclick="addFont('slabo-13px')"
+              >Slabo 13px</a
+            >
+            <a
+              class="picker-item icon roboto-slab"
+              href="javascript:void(0)"
+              role="button"
+              onclick="addFont('roboto-slab')"
+              >Roboto Slab</a
+            >
+            <a
+              class="picker-item icon inconsolata"
+              href="javascript:void(0)"
+              role="button"
+              onclick="addFont('inconsolata')"
+              >Inconsolata</a
+            >
+            <a
+              class="picker-item icon ubuntu-mono"
+              href="javascript:void(0)"
+              role="button"
+              onclick="addFont('ubuntu-mono')"
+              >Ubuntu Mono</a
+            >
+          </span>
+
           <a
-            class="picker-item icon sofia"
+            class="size-picker icon"
             href="javascript:void(0)"
-            role="button"
-            onclick="addFont('sofia')"
-            >Sofia</a
+            onclick="addDropdown('dropdown-size')"
           >
+            <span class="normal">Normal <i class="fas fa-sort"></i></span>
+          </a>
+
+          <span class="options hidden" id="dropdown-size" tabindex="-1">
+            <a
+              class="picker-item icon small"
+              href="javascript:void(0)"
+              role="button"
+              onclick="addSize('small')"
+              >Small</a
+            >
+            <a
+              class="picker-item icon normal"
+              href="javascript:void(0)"
+              role="button"
+              onclick="addSize('normal')"
+              >Normal</a
+            >
+            <a
+              class="picker-item icon large"
+              href="javascript:void(0)"
+              role="button"
+              onclick="addSize('large')"
+              >Large</a
+            >
+            <a
+              class="picker-item icon huge"
+              href="javascript:void(0)"
+              role="button"
+              onclick="addSize('huge')"
+              >Huge</a
+            >
+          </span>
+        </span>
+
+        <span class="pf-formats">
+          <a class="icon" href="javascript:void(0)" onclick="addTag('Strong')">
+            <i class="fas fa-bold"></i>
+          </a>
+
+          <a class="icon" href="javascript:void(0)" onclick="addTag('U')">
+            <i class="fas fa-underline"></i>
+          </a>
+
+          <a class="icon" href="javascript:void(0)" onclick="addTag('Em')">
+            <i class="fas fa-italic fa-fw"></i>
+          </a>
+
+          <a class="icon" href="javascript:void(0)" onclick="addTag('Strike')">
+            <i class="fas fa-strikethrough"></i>
+          </a>
+        </span>
+
+        <span class="pf-formats">
           <a
-            class="picker-item icon slabo-13px"
+            class="icon"
             href="javascript:void(0)"
-            role="button"
-            onclick="addFont('slabo-13px')"
-            >Slabo 13px</a
+            onclick="addDropdown('dropdown-text')"
           >
+            <i class="fas fa-highlighter"> </i>
+          </a>
+
+          <span class="hidden" id="dropdown-text" tabindex="-1">
+            <span>
+              <button
+                style="background-color: rgb(0, 0, 0);"
+                class="highlight-square"
+                onclick="addColor('black', 'Text', '0')"
+              ></button>
+              <button
+                style="background-color: rgb(230, 0, 0);"
+                class="highlight-square"
+                onclick="addColor('red','text','0',)"
+              ></button>
+              <button
+                style="background-color: rgb(255, 153, 0);"
+                class="highlight-square"
+                onclick="addColor('orange','text','0',)"
+              ></button>
+              <button
+                style="background-color: rgb(255, 255, 0);"
+                class="highlight-square"
+                onclick="addColor('yellow','text','0',)"
+              ></button>
+              <button
+                style="background-color: rgb(0, 138, 0);"
+                class="highlight-square"
+                onclick="addColor('green','text','0',)"
+              ></button>
+              <button
+                style="background-color: rgb(0, 102, 204);"
+                class="highlight-square"
+                onclick="addColor('blue','text','0',)"
+              ></button>
+              <button
+                style="background-color: rgb(153, 51, 255);"
+                class="highlight-square"
+                onclick="addColor('violet','text','0',)"
+              ></button>
+            </span>
+            <br />
+            <span>
+              <button
+                style="background-color: rgb(255, 255, 255);"
+                class="highlight-square"
+                onclick="addColor('black','text','1',)"
+              ></button>
+              <button
+                style="background-color: rgb(250, 204, 204);"
+                class="highlight-square"
+                onclick="addColor('red','text','1',)"
+              ></button>
+              <button
+                style="background-color: rgb(255, 235, 204);"
+                class="highlight-square"
+                onclick="addColor('orange','text','1',)"
+              ></button>
+              <button
+                style="background-color: rgb(255, 255, 204);"
+                class="highlight-square"
+                onclick="addColor('yellow','text','1',)"
+              ></button>
+              <button
+                style="background-color: rgb(204, 232, 204);"
+                class="highlight-square"
+                onclick="addColor('green','text','1',)"
+              ></button>
+              <button
+                style="background-color: rgb(204, 224, 245);"
+                class="highlight-square"
+                onclick="addColor('blue','text','1',)"
+              ></button>
+              <button
+                style="background-color: rgb(235, 214, 255);"
+                class="highlight-square"
+                onclick="addColor('blue','text','1',)"
+              ></button>
+            </span>
+            <br />
+            <span>
+              <button
+                style="background-color: rgb(187, 187, 187);"
+                class="highlight-square"
+                onclick="addColor('black','text','2',)"
+              ></button>
+              <button
+                style="background-color: rgb(240, 102, 102);"
+                class="highlight-square"
+                onclick="addColor('red','text','2',)"
+              ></button>
+              <button
+                style="background-color: rgb(255, 194, 102);"
+                class="highlight-square"
+                onclick="addColor('orange','text','2',)"
+              ></button>
+              <button
+                style="background-color: rgb(255, 255, 102);"
+                class="highlight-square"
+                onclick="addColor('yellow','text','2',)"
+              ></button>
+              <button
+                style="background-color: rgb(102, 185, 102);"
+                class="highlight-square"
+                onclick="addColor('green','text','2',)"
+              ></button>
+              <button
+                style="background-color: rgb(102, 163, 224);"
+                class="highlight-square"
+                onclick="addColor('blue','text','2',)"
+              ></button>
+              <button
+                style="background-color: rgb(194, 133, 255);"
+                class="highlight-square"
+                onclick="addColor('violet','text','2',)"
+              ></button>
+            </span>
+            <br />
+            <span>
+              <button
+                style="background-color: rgb(136, 136, 136);"
+                class="highlight-square"
+                onclick="addColor('black','text','3',)"
+              ></button>
+              <button
+                style="background-color: rgb(240, 102, 102);"
+                class="highlight-square"
+                onclick="addColor('red','text','3',)"
+              ></button>
+              <button
+                style="background-color: rgb(255, 194, 102);"
+                class="highlight-square"
+                onclick="addColor('orange','text','3',)"
+              ></button>
+              <button
+                style="background-color: rgb(255, 255, 102);"
+                class="highlight-square"
+                onclick="addColor('yellow','text','3',)"
+              ></button>
+              <button
+                style="background-color: rgb(102, 185, 102);"
+                class="highlight-square"
+                onclick="addColor('green','text','3',)"
+              ></button>
+              <button
+                style="background-color: rgb(0, 71, 178);"
+                class="highlight-square"
+                onclick="addColor('blue','text','3',)"
+              ></button>
+              <button
+                style="background-color: rgb(107, 36, 178);"
+                class="highlight-square"
+                onclick="addColor('violet','text','3',)"
+              ></button>
+            </span>
+            <br />
+            <span>
+              <button
+                style="background-color: rgb(68, 68, 68);"
+                class="highlight-square"
+                onclick="addColor('black','text','4',)"
+              ></button>
+              <button
+                style="background-color: rgb(92, 0, 0);"
+                class="highlight-square"
+                onclick="addColor('red','text','4',)"
+              ></button>
+              <button
+                style="background-color: rgb(102, 61, 0);"
+                class="highlight-square"
+                onclick="addColor('orange','text','4',)"
+              ></button>
+              <button
+                style="background-color: rgb(102, 102, 0);"
+                class="highlight-square"
+                onclick="addColor('yellow','text','4',)"
+              ></button>
+              <button
+                style="background-color: rgb(0, 55, 0);"
+                class="highlight-square"
+                onclick="addColor('green','text','4',)"
+              ></button>
+              <button
+                style="background-color: rgb(0, 41, 102);"
+                class="highlight-square"
+                onclick="addColor('blue','text','4',)"
+              ></button>
+              <button
+                style="background-color: rgb(61, 20, 102);"
+                class="highlight-square"
+                onclick="addColor('violet','text','4',)"
+              ></button>
+            </span>
+            <br />
+          </span>
+
           <a
-            class="picker-item icon roboto-slab"
+            class="icon"
             href="javascript:void(0)"
-            role="button"
-            onclick="addFont('roboto-slab')"
-            >Roboto Slab</a
+            onclick="addDropdown('dropdown-background')"
           >
+            <i class="fas fa-highlighter"> </i>
+          </a>
+
+          <span class="hidden" id="dropdown-background" tabindex="-1">
+            <span>
+              <button
+                style="background-color: rgb(0, 0, 0);"
+                class="highlight-square"
+                onclick="addColor('black', 'background', '0')"
+              ></button>
+              <button
+                style="background-color: rgb(230, 0, 0);"
+                class="highlight-square"
+                onclick="addColor('red','background','0',)"
+              ></button>
+              <button
+                style="background-color: rgb(255, 153, 0);"
+                class="highlight-square"
+                onclick="addColor('orange','background','0',)"
+              ></button>
+              <button
+                style="background-color: rgb(255, 255, 0);"
+                class="highlight-square"
+                onclick="addColor('yellow','background','0',)"
+              ></button>
+              <button
+                style="background-color: rgb(0, 138, 0);"
+                class="highlight-square"
+                onclick="addColor('green','background','0',)"
+              ></button>
+              <button
+                style="background-color: rgb(0, 102, 204);"
+                class="highlight-square"
+                onclick="addColor('blue','background','0',)"
+              ></button>
+              <button
+                style="background-color: rgb(153, 51, 255);"
+                class="highlight-square"
+                onclick="addColor('violet','background','0',)"
+              ></button>
+            </span>
+            <br />
+            <span>
+              <button
+                style="background-color: rgb(255, 255, 255);"
+                class="highlight-square"
+                onclick="addColor('black','background','1',)"
+              ></button>
+              <button
+                style="background-color: rgb(250, 204, 204);"
+                class="highlight-square"
+                onclick="addColor('red','background','1',)"
+              ></button>
+              <button
+                style="background-color: rgb(255, 235, 204);"
+                class="highlight-square"
+                onclick="addColor('orange','background','1',)"
+              ></button>
+              <button
+                style="background-color: rgb(255, 255, 204);"
+                class="highlight-square"
+                onclick="addColor('yellow','background','1',)"
+              ></button>
+              <button
+                style="background-color: rgb(204, 232, 204);"
+                class="highlight-square"
+                onclick="addColor('green','background','1',)"
+              ></button>
+              <button
+                style="background-color: rgb(204, 224, 245);"
+                class="highlight-square"
+                onclick="addColor('blue','background','1',)"
+              ></button>
+              <button
+                style="background-color: rgb(235, 214, 255);"
+                class="highlight-square"
+                onclick="addColor('blue','background','1',)"
+              ></button>
+            </span>
+            <br />
+            <span>
+              <button
+                style="background-color: rgb(187, 187, 187);"
+                class="highlight-square"
+                onclick="addColor('black','background','2',)"
+              ></button>
+              <button
+                style="background-color: rgb(240, 102, 102);"
+                class="highlight-square"
+                onclick="addColor('red','background','2',)"
+              ></button>
+              <button
+                style="background-color: rgb(255, 194, 102);"
+                class="highlight-square"
+                onclick="addColor('orange','background','2',)"
+              ></button>
+              <button
+                style="background-color: rgb(255, 255, 102);"
+                class="highlight-square"
+                onclick="addColor('yellow','background','2',)"
+              ></button>
+              <button
+                style="background-color: rgb(102, 185, 102);"
+                class="highlight-square"
+                onclick="addColor('green','background','2',)"
+              ></button>
+              <button
+                style="background-color: rgb(102, 163, 224);"
+                class="highlight-square"
+                onclick="addColor('blue','background','2',)"
+              ></button>
+              <button
+                style="background-color: rgb(194, 133, 255);"
+                class="highlight-square"
+                onclick="addColor('violet','background','2',)"
+              ></button>
+            </span>
+            <br />
+            <span>
+              <button
+                style="background-color: rgb(136, 136, 136);"
+                class="highlight-square"
+                onclick="addColor('black','background','3',)"
+              ></button>
+              <button
+                style="background-color: rgb(240, 102, 102);"
+                class="highlight-square"
+                onclick="addColor('red','background','3',)"
+              ></button>
+              <button
+                style="background-color: rgb(255, 194, 102);"
+                class="highlight-square"
+                onclick="addColor('orange','background','3',)"
+              ></button>
+              <button
+                style="background-color: rgb(255, 255, 102);"
+                class="highlight-square"
+                onclick="addColor('yellow','background','3',)"
+              ></button>
+              <button
+                style="background-color: rgb(102, 185, 102);"
+                class="highlight-square"
+                onclick="addColor('green','background','3',)"
+              ></button>
+              <button
+                style="background-color: rgb(0, 71, 178);"
+                class="highlight-square"
+                onclick="addColor('blue','background','3',)"
+              ></button>
+              <button
+                style="background-color: rgb(107, 36, 178);"
+                class="highlight-square"
+                onclick="addColor('violet','background','3',)"
+              ></button>
+            </span>
+            <br />
+            <span>
+              <button
+                style="background-color: rgb(68, 68, 68);"
+                class="highlight-square"
+                onclick="addColor('black','background','4',)"
+              ></button>
+              <button
+                style="background-color: rgb(92, 0, 0);"
+                class="highlight-square"
+                onclick="addColor('red','background','4',)"
+              ></button>
+              <button
+                style="background-color: rgb(102, 61, 0);"
+                class="highlight-square"
+                onclick="addColor('orange','background','4',)"
+              ></button>
+              <button
+                style="background-color: rgb(102, 102, 0);"
+                class="highlight-square"
+                onclick="addColor('yellow','background','4',)"
+              ></button>
+              <button
+                style="background-color: rgb(0, 55, 0);"
+                class="highlight-square"
+                onclick="addColor('green','background','4',)"
+              ></button>
+              <button
+                style="background-color: rgb(0, 41, 102);"
+                class="highlight-square"
+                onclick="addColor('blue','background','4',)"
+              ></button>
+              <button
+                style="background-color: rgb(61, 20, 102);"
+                class="highlight-square"
+                onclick="addColor('violet','background','4',)"
+              ></button>
+            </span>
+            <br />
+          </span>
+        </span>
+
+        <span class="pf-formats">
+          <a class="icon" href="javascript:void(0)" onclick="addTag('sub')">
+            <i class="fas fa-subscript"></i>
+          </a>
+
+          <a class="icon" href="javascript:void(0)" onclick="addTag('sup')">
+            <i class="fas fa-superscript"></i>
+          </a>
+        </span>
+
+        <span class="pf-formats">
           <a
-            class="picker-item icon inconsolata"
+            class="icon"
             href="javascript:void(0)"
-            role="button"
-            onclick="addFont('inconsolata')"
-            >Inconsolata</a
+            onclick="replaceContainerTag('h1')"
           >
+            <i class="fas fa-heading"></i>
+          </a>
+
           <a
-            class="picker-item icon ubuntu-mono"
+            class="icon"
             href="javascript:void(0)"
-            role="button"
-            onclick="addFont('ubuntu-mono')"
-            >Ubuntu Mono</a
+            onclick="replaceContainerTag('h2')"
           >
+            <i class="fas fa-heading"></i>
+          </a>
+
+          <a
+            class="icon"
+            href="javascript:void(0)"
+            onclick="replaceContainerTag('blockquote')"
+          >
+            <i class="fas fa-quote-right"></i>
+          </a>
+
+          <a
+            class="icon"
+            href="javascript:void(0)"
+            onclick="replaceContainerTag('pre')"
+          >
+            <i class="fas fa-code"></i>
+          </a>
+        </span>
+
+        <span class="pf-formats">
+          <a class="icon" href="javascript:void(0)" onclick="makeList('OL')">
+            <i class="fas fa-list-ol"></i>
+          </a>
+
+          <a class="icon" href="javascript:void(0)" onclick="makeList('UL')">
+            <i class="fa fa-list fa-fw"> </i>
+          </a>
+
+          <a
+            class="icon"
+            href="javascript:void(0)"
+            onclick="addContainerClass('indent-')"
+          >
+            <i class="fas fa-outdent"></i>
+          </a>
+
+          <a
+            class="icon"
+            href="javascript:void(0)"
+            onclick="addContainerClass('indent+')"
+          >
+            <i class="fas fa-indent"></i>
+          </a>
         </span>
 
         <a
-          class="size-picker icon"
+          class="icon"
           href="javascript:void(0)"
-          onclick="addDropdown('dropdown-size')"
+          onclick="addContainerClass('rtl')"
         >
-          <span class="normal">Normal <i class="fas fa-sort"></i></span>
-        </a>
-
-        <span class="options hidden" id="dropdown-size" tabindex="-1">
-          <a
-            class="picker-item icon small"
-            href="javascript:void(0)"
-            role="button"
-            onclick="addSize('small')"
-            >Small</a
-          >
-          <a
-            class="picker-item icon normal"
-            href="javascript:void(0)"
-            role="button"
-            onclick="addSize('normal')"
-            >Normal</a
-          >
-          <a
-            class="picker-item icon large"
-            href="javascript:void(0)"
-            role="button"
-            onclick="addSize('large')"
-            >Large</a
-          >
-          <a
-            class="picker-item icon huge"
-            href="javascript:void(0)"
-            role="button"
-            onclick="addSize('huge')"
-            >Huge</a
-          >
-        </span>
-
-        <a class="icon" href="javascript:void(0)" onclick="addTag('Strong')">
-          <i class="fas fa-bold"></i>
-        </a>
-
-        <a class="icon" href="javascript:void(0)" onclick="addTag('U')">
-          <i class="fas fa-underline"></i>
-        </a>
-
-        <a class="icon" href="javascript:void(0)" onclick="addTag('Em')">
-          <i class="fas fa-italic fa-fw"></i>
-        </a>
-
-        <a class="icon" href="javascript:void(0)" onclick="addTag('Strike')">
-          <i class="fas fa-strikethrough"></i>
+          <i class="fas fa-paragraph"></i>
         </a>
 
         <a
@@ -162,480 +648,6 @@
         <a
           class="icon"
           href="javascript:void(0)"
-          onclick="addDropdown('dropdown-text')"
-        >
-          <i class="fas fa-highlighter"> </i>
-        </a>
-
-        <span class="hidden" id="dropdown-text" tabindex="-1">
-          <span>
-            <button
-              style="background-color: rgb(0, 0, 0);"
-              class="highlight-square"
-              onclick="addColor('black', 'Text', '0')"
-            ></button>
-            <button
-              style="background-color: rgb(230, 0, 0);"
-              class="highlight-square"
-              onclick="addColor('red','text','0',)"
-            ></button>
-            <button
-              style="background-color: rgb(255, 153, 0);"
-              class="highlight-square"
-              onclick="addColor('orange','text','0',)"
-            ></button>
-            <button
-              style="background-color: rgb(255, 255, 0);"
-              class="highlight-square"
-              onclick="addColor('yellow','text','0',)"
-            ></button>
-            <button
-              style="background-color: rgb(0, 138, 0);"
-              class="highlight-square"
-              onclick="addColor('green','text','0',)"
-            ></button>
-            <button
-              style="background-color: rgb(0, 102, 204);"
-              class="highlight-square"
-              onclick="addColor('blue','text','0',)"
-            ></button>
-            <button
-              style="background-color: rgb(153, 51, 255);"
-              class="highlight-square"
-              onclick="addColor('violet','text','0',)"
-            ></button>
-          </span>
-          <br />
-          <span>
-            <button
-              style="background-color: rgb(255, 255, 255);"
-              class="highlight-square"
-              onclick="addColor('black','text','1',)"
-            ></button>
-            <button
-              style="background-color: rgb(250, 204, 204);"
-              class="highlight-square"
-              onclick="addColor('red','text','1',)"
-            ></button>
-            <button
-              style="background-color: rgb(255, 235, 204);"
-              class="highlight-square"
-              onclick="addColor('orange','text','1',)"
-            ></button>
-            <button
-              style="background-color: rgb(255, 255, 204);"
-              class="highlight-square"
-              onclick="addColor('yellow','text','1',)"
-            ></button>
-            <button
-              style="background-color: rgb(204, 232, 204);"
-              class="highlight-square"
-              onclick="addColor('green','text','1',)"
-            ></button>
-            <button
-              style="background-color: rgb(204, 224, 245);"
-              class="highlight-square"
-              onclick="addColor('blue','text','1',)"
-            ></button>
-            <button
-              style="background-color: rgb(235, 214, 255);"
-              class="highlight-square"
-              onclick="addColor('blue','text','1',)"
-            ></button>
-          </span>
-          <br />
-          <span>
-            <button
-              style="background-color: rgb(187, 187, 187);"
-              class="highlight-square"
-              onclick="addColor('black','text','2',)"
-            ></button>
-            <button
-              style="background-color: rgb(240, 102, 102);"
-              class="highlight-square"
-              onclick="addColor('red','text','2',)"
-            ></button>
-            <button
-              style="background-color: rgb(255, 194, 102);"
-              class="highlight-square"
-              onclick="addColor('orange','text','2',)"
-            ></button>
-            <button
-              style="background-color: rgb(255, 255, 102);"
-              class="highlight-square"
-              onclick="addColor('yellow','text','2',)"
-            ></button>
-            <button
-              style="background-color: rgb(102, 185, 102);"
-              class="highlight-square"
-              onclick="addColor('green','text','2',)"
-            ></button>
-            <button
-              style="background-color: rgb(102, 163, 224);"
-              class="highlight-square"
-              onclick="addColor('blue','text','2',)"
-            ></button>
-            <button
-              style="background-color: rgb(194, 133, 255);"
-              class="highlight-square"
-              onclick="addColor('violet','text','2',)"
-            ></button>
-          </span>
-          <br />
-          <span>
-            <button
-              style="background-color: rgb(136, 136, 136);"
-              class="highlight-square"
-              onclick="addColor('black','text','3',)"
-            ></button>
-            <button
-              style="background-color: rgb(240, 102, 102);"
-              class="highlight-square"
-              onclick="addColor('red','text','3',)"
-            ></button>
-            <button
-              style="background-color: rgb(255, 194, 102);"
-              class="highlight-square"
-              onclick="addColor('orange','text','3',)"
-            ></button>
-            <button
-              style="background-color: rgb(255, 255, 102);"
-              class="highlight-square"
-              onclick="addColor('yellow','text','3',)"
-            ></button>
-            <button
-              style="background-color: rgb(102, 185, 102);"
-              class="highlight-square"
-              onclick="addColor('green','text','3',)"
-            ></button>
-            <button
-              style="background-color: rgb(0, 71, 178);"
-              class="highlight-square"
-              onclick="addColor('blue','text','3',)"
-            ></button>
-            <button
-              style="background-color: rgb(107, 36, 178);"
-              class="highlight-square"
-              onclick="addColor('violet','text','3',)"
-            ></button>
-          </span>
-          <br />
-          <span>
-            <button
-              style="background-color: rgb(68, 68, 68);"
-              class="highlight-square"
-              onclick="addColor('black','text','4',)"
-            ></button>
-            <button
-              style="background-color: rgb(92, 0, 0);"
-              class="highlight-square"
-              onclick="addColor('red','text','4',)"
-            ></button>
-            <button
-              style="background-color: rgb(102, 61, 0);"
-              class="highlight-square"
-              onclick="addColor('orange','text','4',)"
-            ></button>
-            <button
-              style="background-color: rgb(102, 102, 0);"
-              class="highlight-square"
-              onclick="addColor('yellow','text','4',)"
-            ></button>
-            <button
-              style="background-color: rgb(0, 55, 0);"
-              class="highlight-square"
-              onclick="addColor('green','text','4',)"
-            ></button>
-            <button
-              style="background-color: rgb(0, 41, 102);"
-              class="highlight-square"
-              onclick="addColor('blue','text','4',)"
-            ></button>
-            <button
-              style="background-color: rgb(61, 20, 102);"
-              class="highlight-square"
-              onclick="addColor('violet','text','4',)"
-            ></button>
-          </span>
-          <br />
-        </span>
-
-        <a
-          class="icon"
-          href="javascript:void(0)"
-          onclick="addDropdown('dropdown-background')"
-        >
-          <i class="fas fa-highlighter"> </i>
-        </a>
-
-        <span class="hidden" id="dropdown-background" tabindex="-1">
-          <span>
-            <button
-              style="background-color: rgb(0, 0, 0);"
-              class="highlight-square"
-              onclick="addColor('black', 'background', '0')"
-            ></button>
-            <button
-              style="background-color: rgb(230, 0, 0);"
-              class="highlight-square"
-              onclick="addColor('red','background','0',)"
-            ></button>
-            <button
-              style="background-color: rgb(255, 153, 0);"
-              class="highlight-square"
-              onclick="addColor('orange','background','0',)"
-            ></button>
-            <button
-              style="background-color: rgb(255, 255, 0);"
-              class="highlight-square"
-              onclick="addColor('yellow','background','0',)"
-            ></button>
-            <button
-              style="background-color: rgb(0, 138, 0);"
-              class="highlight-square"
-              onclick="addColor('green','background','0',)"
-            ></button>
-            <button
-              style="background-color: rgb(0, 102, 204);"
-              class="highlight-square"
-              onclick="addColor('blue','background','0',)"
-            ></button>
-            <button
-              style="background-color: rgb(153, 51, 255);"
-              class="highlight-square"
-              onclick="addColor('violet','background','0',)"
-            ></button>
-          </span>
-          <br />
-          <span>
-            <button
-              style="background-color: rgb(255, 255, 255);"
-              class="highlight-square"
-              onclick="addColor('black','background','1',)"
-            ></button>
-            <button
-              style="background-color: rgb(250, 204, 204);"
-              class="highlight-square"
-              onclick="addColor('red','background','1',)"
-            ></button>
-            <button
-              style="background-color: rgb(255, 235, 204);"
-              class="highlight-square"
-              onclick="addColor('orange','background','1',)"
-            ></button>
-            <button
-              style="background-color: rgb(255, 255, 204);"
-              class="highlight-square"
-              onclick="addColor('yellow','background','1',)"
-            ></button>
-            <button
-              style="background-color: rgb(204, 232, 204);"
-              class="highlight-square"
-              onclick="addColor('green','background','1',)"
-            ></button>
-            <button
-              style="background-color: rgb(204, 224, 245);"
-              class="highlight-square"
-              onclick="addColor('blue','background','1',)"
-            ></button>
-            <button
-              style="background-color: rgb(235, 214, 255);"
-              class="highlight-square"
-              onclick="addColor('blue','background','1',)"
-            ></button>
-          </span>
-          <br />
-          <span>
-            <button
-              style="background-color: rgb(187, 187, 187);"
-              class="highlight-square"
-              onclick="addColor('black','background','2',)"
-            ></button>
-            <button
-              style="background-color: rgb(240, 102, 102);"
-              class="highlight-square"
-              onclick="addColor('red','background','2',)"
-            ></button>
-            <button
-              style="background-color: rgb(255, 194, 102);"
-              class="highlight-square"
-              onclick="addColor('orange','background','2',)"
-            ></button>
-            <button
-              style="background-color: rgb(255, 255, 102);"
-              class="highlight-square"
-              onclick="addColor('yellow','background','2',)"
-            ></button>
-            <button
-              style="background-color: rgb(102, 185, 102);"
-              class="highlight-square"
-              onclick="addColor('green','background','2',)"
-            ></button>
-            <button
-              style="background-color: rgb(102, 163, 224);"
-              class="highlight-square"
-              onclick="addColor('blue','background','2',)"
-            ></button>
-            <button
-              style="background-color: rgb(194, 133, 255);"
-              class="highlight-square"
-              onclick="addColor('violet','background','2',)"
-            ></button>
-          </span>
-          <br />
-          <span>
-            <button
-              style="background-color: rgb(136, 136, 136);"
-              class="highlight-square"
-              onclick="addColor('black','background','3',)"
-            ></button>
-            <button
-              style="background-color: rgb(240, 102, 102);"
-              class="highlight-square"
-              onclick="addColor('red','background','3',)"
-            ></button>
-            <button
-              style="background-color: rgb(255, 194, 102);"
-              class="highlight-square"
-              onclick="addColor('orange','background','3',)"
-            ></button>
-            <button
-              style="background-color: rgb(255, 255, 102);"
-              class="highlight-square"
-              onclick="addColor('yellow','background','3',)"
-            ></button>
-            <button
-              style="background-color: rgb(102, 185, 102);"
-              class="highlight-square"
-              onclick="addColor('green','background','3',)"
-            ></button>
-            <button
-              style="background-color: rgb(0, 71, 178);"
-              class="highlight-square"
-              onclick="addColor('blue','background','3',)"
-            ></button>
-            <button
-              style="background-color: rgb(107, 36, 178);"
-              class="highlight-square"
-              onclick="addColor('violet','background','3',)"
-            ></button>
-          </span>
-          <br />
-          <span>
-            <button
-              style="background-color: rgb(68, 68, 68);"
-              class="highlight-square"
-              onclick="addColor('black','background','4',)"
-            ></button>
-            <button
-              style="background-color: rgb(92, 0, 0);"
-              class="highlight-square"
-              onclick="addColor('red','background','4',)"
-            ></button>
-            <button
-              style="background-color: rgb(102, 61, 0);"
-              class="highlight-square"
-              onclick="addColor('orange','background','4',)"
-            ></button>
-            <button
-              style="background-color: rgb(102, 102, 0);"
-              class="highlight-square"
-              onclick="addColor('yellow','background','4',)"
-            ></button>
-            <button
-              style="background-color: rgb(0, 55, 0);"
-              class="highlight-square"
-              onclick="addColor('green','background','4',)"
-            ></button>
-            <button
-              style="background-color: rgb(0, 41, 102);"
-              class="highlight-square"
-              onclick="addColor('blue','background','4',)"
-            ></button>
-            <button
-              style="background-color: rgb(61, 20, 102);"
-              class="highlight-square"
-              onclick="addColor('violet','background','4',)"
-            ></button>
-          </span>
-          <br />
-        </span>
-
-        <a class="icon" href="javascript:void(0)" onclick="makeList('UL')">
-          <i class="fa fa-list fa-fw"> </i>
-        </a>
-
-        <a class="icon" href="javascript:void(0)" onclick="makeList('OL')">
-          <i class="fas fa-list-ol"></i>
-        </a>
-
-        <a class="icon" href="javascript:void(0)" onclick="addTag('sub')">
-          <i class="fas fa-subscript"></i>
-        </a>
-
-        <a class="icon" href="javascript:void(0)" onclick="addTag('sup')">
-          <i class="fas fa-superscript"></i>
-        </a>
-
-        <a
-          class="icon"
-          href="javascript:void(0)"
-          onclick="replaceContainerTag('h1')"
-        >
-          <i class="fas fa-heading"></i>
-        </a>
-
-        <a
-          class="icon"
-          href="javascript:void(0)"
-          onclick="replaceContainerTag('h2')"
-        >
-          <i class="fas fa-heading"></i>
-        </a>
-
-        <a
-          class="icon"
-          href="javascript:void(0)"
-          onclick="replaceContainerTag('blockquote')"
-        >
-          <i class="fas fa-quote-right"></i>
-        </a>
-
-        <a
-          class="icon"
-          href="javascript:void(0)"
-          onclick="replaceContainerTag('pre')"
-        >
-          <i class="fas fa-code"></i>
-        </a>
-
-        <a
-          class="icon"
-          href="javascript:void(0)"
-          onclick="addContainerClass('indent-')"
-        >
-          <i class="fas fa-outdent"></i>
-        </a>
-
-        <a
-          class="icon"
-          href="javascript:void(0)"
-          onclick="addContainerClass('indent+')"
-        >
-          <i class="fas fa-indent"></i>
-        </a>
-
-        <a
-          class="icon"
-          href="javascript:void(0)"
-          onclick="addContainerClass('rtl')"
-        >
-          <i class="fas fa-paragraph"></i>
-        </a>
-
-        <a
-          class="icon"
-          href="javascript:void(0)"
           onclick="moveAnchorSpanUnderCaret()"
         >
           <i class="fa fa-link fa-fw"></i>
@@ -678,9 +690,9 @@
           <i class="fas fa-calculator"></i>
         </a>
 
-        <a class="icon" href="javascript:void(0)" onclick="tests()">
+        <!-- <a class="icon" href="javascript:void(0)" onclick="tests()">
           <i class="fas fa-vial"></i>
-        </a>
+        </a> -->
 
         <a class="icon" href="js/main.js">
           Source Code Link
