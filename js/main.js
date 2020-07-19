@@ -2914,6 +2914,12 @@ function makeCopyOfMainContainer() {
     }
   }
 
+  if (currentCopy === -1 && amountOfCopies() >= 2){
+    while (indexOfLastCopy() !== currentCopy) {
+      copies.pop();
+    }
+  }
+
   let mainContainer = document.getElementById("work-area"),
     clonedMainContainer = mainContainer.cloneNode(true);
 
