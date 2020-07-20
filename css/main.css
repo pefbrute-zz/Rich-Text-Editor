@@ -6,7 +6,7 @@ body {
 }
 
 .editor {
-  margin-top: 1rem;
+  /* margin-top: 1rem; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,6 +20,9 @@ body {
 
 .sample-toolbar {
   background: rgba(255, 255, 255, 1);
+  border-bottom: 1px solid #ccc;
+  position: fixed;
+  box-shadow: 6px 4px 8px #ccc;
 }
 
 .sample-toolbar > span {
@@ -39,6 +42,7 @@ body {
   height: 100%;
   background-color: white;
   overflow-wrap: break-word;
+  margin-top: 4rem;
 }
 
 .pf-formats{

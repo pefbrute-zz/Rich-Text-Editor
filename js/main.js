@@ -209,6 +209,19 @@ let TagAppliers = {
 function addTag(tagName) {
   let capitalizedTagName = capitalizeFirstLetter(tagName);
   TagAppliers[capitalizedTagName].toggleSelection();
+
+
+  //Fix it!
+  //
+  let tagButton = document.getElementById(capitalizedTagName);
+  console.log(tagButton)
+  document.querySelectorAll(tagName).forEach(element => {
+    element.addEventListener("onclick", event => {
+      tagButton.classList.add("active");
+    })
+  });
+  //
+  //
 }
 
 let urlSpan = document.getElementById("url-span"),
