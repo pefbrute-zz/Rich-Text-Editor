@@ -1,10 +1,28 @@
-window.addEventListener("load", function () {
+window.addEventListener("load", () => {
   let mainContainer = document.getElementById("work-area"),
     nameOfAttribute = "contenteditable",
     valueOfAttribute = "true";
 
   mainContainer.setAttribute(nameOfAttribute, valueOfAttribute);
 });
+
+
+document.body.addEventListener("click", () => {
+  console.time();
+  
+  let selection = document.getSelection();
+
+  if (selection.type === "Caret"){
+    let anchorNode = selection.anchorNode;
+
+    if (getSecondChildInMainContainer(anchorNode).nodeName === "A"){
+      let anchor = document.getElementById("anchor");
+      anchor.classList.add("active");
+    }
+  }
+
+  console.timeEnd();
+})
 
 //Add dropdown class to element with dropdownID
 function addDropdown(dropdownID) {
@@ -204,24 +222,12 @@ let TagAppliers = {
   Selected: rangy.createClassApplier("selected", Options["Selected"]),
 };
 
+
 //It adds tag with (tagName) to selected text.
 //If it passes url then it makes anchor tag with (url)
 function addTag(tagName) {
   let capitalizedTagName = capitalizeFirstLetter(tagName);
   TagAppliers[capitalizedTagName].toggleSelection();
-
-
-  //Fix it!
-  //
-  let tagButton = document.getElementById(capitalizedTagName);
-  console.log(tagButton)
-  document.querySelectorAll(tagName).forEach(element => {
-    element.addEventListener("onclick", event => {
-      tagButton.classList.add("active");
-    })
-  });
-  //
-  //
 }
 
 let urlSpan = document.getElementById("url-span"),

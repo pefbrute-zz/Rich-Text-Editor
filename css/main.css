@@ -49,6 +49,10 @@ body {
   margin-right: 15px;
 }
 
+.active{
+  color: rgba(25, 150, 200, 1);
+}
+
 #span-formula {
   display: none;
 }
