@@ -50,7 +50,7 @@ body {
 }
 
 .active{
-  color: rgba(25, 150, 200, 1);
+  color: rgba(25, 150, 200, 1) !important;
 }
 
 #span-formula {
@@ -80,6 +80,11 @@ body {
 .icon,
 #url-span {
   margin-left: 0.5rem;
+}
+
+.icon{
+  border-style: none;
+  padding: 0;
 }
 
 .icon:hover,

@@ -6,23 +6,59 @@ window.addEventListener("load", () => {
   mainContainer.setAttribute(nameOfAttribute, valueOfAttribute);
 });
 
-
+//Finish this function!
+//
 document.body.addEventListener("click", () => {
   console.time();
-  
+
   let selection = document.getSelection();
 
-  if (selection.type === "Caret"){
+  if (selection.type === "Caret") {
     let anchorNode = selection.anchorNode;
+    console.log(getSecondChildInMainContainer(anchorNode).nodeName === "A");
 
-    if (getSecondChildInMainContainer(anchorNode).nodeName === "A"){
+    console.log(isThereNode(anchorNode, "A"));
+
+    if (getSecondChildInMainContainer(anchorNode).nodeName === "A") {
       let anchor = document.getElementById("anchor");
       anchor.classList.add("active");
+      anchor.focus();
+      anchor.addEventListener("blur", function leavesAnchor() {
+        anchor.classList.remove("active");
+        anchor.removeEventListener("blur", leavesAnchor);
+      });
     }
   }
 
   console.timeEnd();
-})
+});
+
+function isThereNode(startNode, nameOfTargetNode) {
+  nameOfTargetNode = capitalizeFirstLetter(nameOfTargetNode);
+
+  let mainContainer = document.getElementById("work-area");
+
+  while (startNode.parentElement.nodeName !== nameOfTargetNode) {
+    startNode = startNode.parentElement;
+
+    console.log(startNode);
+    if (startNode.nodeName === nameOfTargetNode) {
+      console.log("there is!");
+      return true;
+    } else if (startNode === mainContainer) {
+      return false;
+    }
+  }
+
+  console.log(startNode)
+  if (startNode.parentElement.nodeName === nameOfTargetNode) {
+    console.log("there is!");
+    return true;
+  }
+}
+
+//
+//
 
 //Add dropdown class to element with dropdownID
 function addDropdown(dropdownID) {
@@ -221,7 +257,6 @@ let TagAppliers = {
   Sub: rangy.createClassApplier("subscript", Options["Sub"]),
   Selected: rangy.createClassApplier("selected", Options["Selected"]),
 };
-
 
 //It adds tag with (tagName) to selected text.
 //If it passes url then it makes anchor tag with (url)
@@ -2933,7 +2968,7 @@ function makeCopyOfMainContainer() {
     }
   }
 
-  if (currentCopy === -1 && amountOfCopies() >= 2){
+  if (currentCopy === -1 && amountOfCopies() >= 2) {
     while (indexOfLastCopy() !== currentCopy) {
       copies.pop();
     }
