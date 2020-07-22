@@ -14,22 +14,94 @@ document.body.addEventListener("click", () => {
   let selection = document.getSelection();
 
   if (selection.type === "Caret") {
-    let anchorNode = selection.anchorNode;
-    console.log(isThereNode(anchorNode, "A"));
+    let anchorNode = selection.anchorNode,
+      namesOfTags = getNamesOfTagsInSelectedElement(anchorNode),
+      amountOfNames = namesOfTags.length,
+      indexOfLastName = amountOfNames - 1;
+    actives = document.querySelectorAll("[class*=active]");
 
-    if (isThereNode(anchorNode, "A")) {
-      let anchor = document.getElementById("anchor");
-      anchor.classList.add("active");
+    console.log(actives);
+    console.log(namesOfTags);
+
+    if (namesOfTags[indexOfLastName] === "P") {
+      namesOfTags.pop();
+      amountOfNames--;
+      indexOfLastName--;
     }
 
-    if (!isThereNode(anchorNode, "A")){
-      let anchor = document.getElementById("anchor");
-      anchor.classList.remove("active");
+    if (amountOfNames === 0) {
+      for (
+        let i = 0, indexOfLastActive = actives.length - 1;
+        i <= indexOfLastActive;
+        i++
+      ) {
+        actives[i].classList.remove("active");
+      }
+    } else if (amountOfNames !== 0) {
+
+      //Finish this thing what cleares class "active" from buttons
+      //
+      for (
+        let i = 0, indexOfLastActive = actives.length - 1;
+        i <= indexOfLastActive;
+        i++
+      ) {
+        actives[i].classList.remove("active");
+      }
+      //
+      //
+
+      for (let i = 0; i <= indexOfLastName; i++) {
+        let name = namesOfTags[i];
+
+        if (name === "P" || name === "LI") {
+          continue;
+        }
+
+        let tag = document.getElementById(name);
+
+        tag.classList.add("active");
+      }
     }
+
+    // if (isThereNode(anchorNode, "A")) {
+    //   let anchor = document.getElementById("anchor");
+    //   anchor.classList.add("active");
+    // }
+
+    // if (!isThereNode(anchorNode, "A")) {
+    //   let anchor = document.getElementById("anchor");
+    //   anchor.classList.remove("active");
+    // }
+
+    // if (isThereNode(anchorNode, "STRONG")) {
+    //   let strong = document.getElementById("Strong");
+    //   strong.classList.add("active");
+    // }
+
+    // if (!isThereNode(anchorNode, "STRONG")) {
+    //   let strong = document.getElementById("Strong");
+    //   strong.classList.remove("active");
+    // }
   }
 
   console.timeEnd();
 });
+
+function getNamesOfTagsInSelectedElement(element) {
+  let mainContainer = document.getElementById("work-area"),
+    namesOfTags = [];
+
+  while (element.parentElement !== mainContainer) {
+    let parentElement = element.parentElement;
+    element = parentElement;
+
+    let tagName = element.nodeName;
+    namesOfTags.push(tagName);
+  }
+
+  return namesOfTags;
+}
 
 function isThereNode(startNode, nameOfTargetNode) {
   nameOfTargetNode = capitalizeFirstLetter(nameOfTargetNode);
@@ -40,17 +112,15 @@ function isThereNode(startNode, nameOfTargetNode) {
     startNode = startNode.parentElement;
 
     console.log(startNode);
+
     if (startNode.nodeName === nameOfTargetNode) {
-      console.log("there is!");
       return true;
     } else if (startNode === mainContainer) {
       return false;
     }
   }
 
-  console.log(startNode);
   if (startNode.parentElement.nodeName === nameOfTargetNode) {
-    console.log("there is!");
     return true;
   }
 }
