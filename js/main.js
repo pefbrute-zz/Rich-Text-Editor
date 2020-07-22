@@ -15,18 +15,16 @@ document.body.addEventListener("click", () => {
 
   if (selection.type === "Caret") {
     let anchorNode = selection.anchorNode;
-    console.log(getSecondChildInMainContainer(anchorNode).nodeName === "A");
-
     console.log(isThereNode(anchorNode, "A"));
 
-    if (getSecondChildInMainContainer(anchorNode).nodeName === "A") {
+    if (isThereNode(anchorNode, "A")) {
       let anchor = document.getElementById("anchor");
       anchor.classList.add("active");
-      anchor.focus();
-      anchor.addEventListener("blur", function leavesAnchor() {
-        anchor.classList.remove("active");
-        anchor.removeEventListener("blur", leavesAnchor);
-      });
+    }
+
+    if (!isThereNode(anchorNode, "A")){
+      let anchor = document.getElementById("anchor");
+      anchor.classList.remove("active");
     }
   }
 
@@ -50,7 +48,7 @@ function isThereNode(startNode, nameOfTargetNode) {
     }
   }
 
-  console.log(startNode)
+  console.log(startNode);
   if (startNode.parentElement.nodeName === nameOfTargetNode) {
     console.log("there is!");
     return true;
