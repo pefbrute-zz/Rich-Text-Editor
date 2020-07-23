@@ -9,98 +9,103 @@ window.addEventListener("load", () => {
 //Finish this function!
 //
 document.body.addEventListener("click", () => {
-  console.time();
-
   let selection = document.getSelection();
 
   if (selection.type === "Caret") {
     let anchorNode = selection.anchorNode,
-      namesOfTags = getNamesOfTagsInSelectedElement(anchorNode),
-      amountOfNames = namesOfTags.length,
-      indexOfLastName = amountOfNames - 1;
-    actives = document.querySelectorAll("[class*=active]");
+      namesOfTags = getNamesOfTagsInSelectedElement(anchorNode);
 
-    console.log(actives);
-    console.log(namesOfTags);
+    if (namesOfTags !== undefined) {
+      let amountOfNames = namesOfTags.length,
+        indexOfLastName = amountOfNames - 1,
+        actives = document.querySelectorAll("[class*=active]");
 
-    if (namesOfTags[indexOfLastName] === "P") {
-      namesOfTags.pop();
-      amountOfNames--;
-      indexOfLastName--;
-    }
-
-    if (amountOfNames === 0) {
-      for (
-        let i = 0, indexOfLastActive = actives.length - 1;
-        i <= indexOfLastActive;
-        i++
-      ) {
-        actives[i].classList.remove("active");
+      if (namesOfTags[indexOfLastName] === "P") {
+        namesOfTags.pop();
+        amountOfNames--;
+        indexOfLastName--;
       }
-    } else if (amountOfNames !== 0) {
 
-      //Finish this thing what cleares class "active" from buttons
-      //
-      for (
-        let i = 0, indexOfLastActive = actives.length - 1;
-        i <= indexOfLastActive;
-        i++
-      ) {
-        actives[i].classList.remove("active");
-      }
-      //
-      //
-
-      for (let i = 0; i <= indexOfLastName; i++) {
+      for (let i = 0; i < amountOfNames; i++) {
         let name = namesOfTags[i];
 
-        if (name === "P" || name === "LI") {
-          continue;
+        if (name === "SPAN") {
+          namesOfTags.splice(i, 1);
+          amountOfNames--;
+          i--;
+        }
+      }
+
+      if (amountOfNames === 0) {
+        for (
+          let i = 0, indexOfLastActive = actives.length - 1;
+          i <= indexOfLastActive;
+          i++
+        ) {
+          actives[i].classList.remove("active");
+        }
+      } else if (amountOfNames !== 0) {
+        for (
+          let i = 0, indexOfLastActive = actives.length - 1;
+          i <= indexOfLastActive;
+          i++
+        ) {
+          let active = actives[i],
+            activeName = active.id;
+
+          for (
+            let j = 0, indexOfLastName = amountOfNames - 1;
+            j <= indexOfLastName;
+            j++
+          ) {
+            let name = namesOfTags[j];
+
+            if (activeName === name) {
+              break;
+            } else if (j === indexOfLastName) {
+              active.classList.remove("active");
+            }
+          }
         }
 
-        let tag = document.getElementById(name);
+        for (
+          let i = 0, indexOfLastName = amountOfNames - 1;
+          i <= indexOfLastName;
+          i++
+        ) {
+          let name = namesOfTags[i];
 
-        tag.classList.add("active");
+          if (name === "P" || name === "LI") {
+            continue;
+          }
+
+          let tag = document.getElementById(name);
+
+          tag.classList.add("active");
+        }
       }
     }
-
-    // if (isThereNode(anchorNode, "A")) {
-    //   let anchor = document.getElementById("anchor");
-    //   anchor.classList.add("active");
-    // }
-
-    // if (!isThereNode(anchorNode, "A")) {
-    //   let anchor = document.getElementById("anchor");
-    //   anchor.classList.remove("active");
-    // }
-
-    // if (isThereNode(anchorNode, "STRONG")) {
-    //   let strong = document.getElementById("Strong");
-    //   strong.classList.add("active");
-    // }
-
-    // if (!isThereNode(anchorNode, "STRONG")) {
-    //   let strong = document.getElementById("Strong");
-    //   strong.classList.remove("active");
-    // }
   }
-
-  console.timeEnd();
 });
 
 function getNamesOfTagsInSelectedElement(element) {
+  console.log(document.getSelection().anchorNode === null);
+
   let mainContainer = document.getElementById("work-area"),
     namesOfTags = [];
 
-  while (element.parentElement !== mainContainer) {
-    let parentElement = element.parentElement;
-    element = parentElement;
+  if (element !== mainContainer) {
+    while (element.parentElement !== mainContainer) {
+      let parentElement = element.parentElement;
+      element = parentElement;
 
-    let tagName = element.nodeName;
-    namesOfTags.push(tagName);
+      let tagName = element.nodeName;
+
+      namesOfTags.push(tagName);
+    }
+
+    return namesOfTags;
   }
-
-  return namesOfTags;
 }
 
 function isThereNode(startNode, nameOfTargetNode) {
@@ -676,6 +681,8 @@ function replaceElement(source, newType) {
   parentNode.replaceChild(newElement, source);
 }
 
+let savedSellection;
+
 //It replaces selected childs tag of <div class="work-area"> with (tag)
 function replaceContainerTag(tag) {
   var tagInUpperCase = tag.toUpperCase();
@@ -686,6 +693,8 @@ function replaceContainerTag(tag) {
     lastSelectedElement = selectedElements[1];
 
   if (firstSelectedElement !== undefined && lastSelectedElement !== undefined) {
+    // savedSellection = rangy.saveSelection();
+
     let p = [],
       pCounter = 0,
       tagData = {
@@ -753,8 +762,10 @@ function replaceContainerTag(tag) {
     }
   }
 
-  let selection = document.getSelection();
-  selection.empty();
+  // let selection = document.getSelection();
+  // selection.empty();
+
+  // rangy.restoreSelection(savedSellection);
 }
 
 //It highlights specific words + all numbers in <pre>
@@ -1048,59 +1059,70 @@ function highlightNumbers() {
     selection = document.getSelection(),
     preElement = selection.anchorNode;
 
-  if (selection.type === "Caret") {
-    while (preElement.tagName !== "PRE") {
-      preElement = preElement.parentElement;
-    }
+  console.log(selection);
 
+  // if (selection.type === "Caret") {
+  //   while (preElement.tagName !== "PRE") {
+  //     preElement = preElement.parentElement;
+
+  //     console.log(preElement);
+  //     console.log(preElement.tagName);
+  //   }
+
+  //   let regExp = new RegExp("\\b" + "\\d+" + "\\b", "gi"),
+  //     matches = preElement.innerHTML.match(regExp),
+  //     matchesAmount = matches.length,
+  //     matchesLastElementIndex = matchesAmount - 1;
+
+  //   if (matches !== null) {
+  //     for (let j = 0; j <= matchesLastElementIndex; j++) {
+  //       let match = matches[j],
+  //         replacing = "<span class=pre-number>" + match + "</span>",
+  //         regExp = new RegExp("\\b" + match + "\\b", "gi");
+
+  //       replacedInner = preElement.innerHTML.replace(regExp, replacing);
+  //       preElement.innerHTML = replacedInner;
+  //     }
+  //   }
+  // }
+  // if (2 + 2 === 4) {
+  for (
+    let i = 0, indexOfLastPreElement = preList.length - 1;
+    i <= indexOfLastPreElement;
+    i++
+  ) {
     let regExp = new RegExp("\\b" + "\\d+" + "\\b", "gi"),
-      matches = preElement.innerHTML.match(regExp),
-      matchesAmount = matches.length,
-      matchesLastElementIndex = matchesAmount - 1;
+      element = preList[i],
+      matches = element.innerHTML.match(regExp);
 
     if (matches !== null) {
-      for (let j = 0; j <= matchesLastElementIndex; j++) {
+      for (
+        let j = 0, indexOfLastMatch = matches.length - 1;
+        j <= indexOfLastMatch;
+        j++
+      ) {
         let match = matches[j],
           replacing = "<span class=pre-number>" + match + "</span>",
           regExp = new RegExp("\\b" + match + "\\b", "gi");
-
-        replacedInner = preElement.innerHTML.replace(regExp, replacing);
-        preElement.innerHTML = replacedInner;
-      }
-    }
-  } else {
-    for (
-      let i = 0, indexOfLastPreElement = preList.length - 1;
-      i <= indexOfLastPreElement;
-      i++
-    ) {
-      let regExp = new RegExp("\\b" + "\\d+" + "\\b", "gi"),
-        element = preList[i],
-        matches = element.innerHTML.match(regExp);
-
-      if (matches !== null) {
-        for (
-          let j = 0, indexOfLastMatch = matches.length - 1;
-          j <= indexOfLastMatch;
-          j++
-        ) {
-          let match = matches[j],
-            replacing = "<span class=pre-number>" + match + "</span>",
-            regExp = new RegExp("\\b" + match + "\\b", "gi");
-          replacedInner = element.innerHTML.replace(regExp, replacing);
-          element.innerHTML = replacedInner;
-        }
+        replacedInner = element.innerHTML.replace(regExp, replacing);
+        element.innerHTML = replacedInner;
       }
     }
   }
 }
+// }
 
 //It deletes all tags in <pre> tag
 function clearTagsAtPreContainer() {
-  let preList = document.getElementsByTagName("PRE");
-  for (let i = 0; i <= preList.length - 1; i++) {
-    let preListTextContent = preList[i].textContent;
-    preList[i].innerHTML = preListTextContent;
+  let preList = document.getElementsByTagName("PRE"),
+    amountOfPres = preList.length,
+    indexOfLastPre = amountOfPres - 1;
+
+  for (let i = 0; i <= indexOfLastPre; i++) {
+    let pre = preList[i],
+      textOfPre = pre.textContent;
+
+    preList[i].innerHTML = textOfPre;
   }
 }
 
@@ -3122,7 +3144,6 @@ function moveSpanUnderCaret() {
   };
 
   let saveButton = childrenOfSpan[2];
-  console.log(saveButton);
 
   inputWithFormula.onkeydown = (event) => {
     if (event.keyCode === 13) {
