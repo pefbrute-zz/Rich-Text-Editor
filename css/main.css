@@ -184,7 +184,7 @@ body {
 
 .dropdown-align {
   background-color: #f4f5f5;
-  left: 40.5vw;
+  left: 61.8vw;
 }
 
 .dropdown-video {
@@ -201,10 +201,14 @@ body {
   /* border: #ae81ff 1px solid; */
 }
 
+:root{
+  --font-left: 2.6vw;
+}
+
 .dropdown-fonts {
   width: 6.85rem;
   background-color: #ffffff;
-  left: 12.3vw;
+  left: var(--font-left);
   /* border: #ae81ff 1px solid; */
 }
 
@@ -220,7 +224,7 @@ body {
   width: 6.8rem;
   background-color: #ffffff;
   /* border: #ae81ff 1px solid; */
-  left: 22.55vw;
+  left: calc(var(--font-left) + 9.5vw);
 }
 
 .picker-item:hover {
@@ -261,7 +265,7 @@ body {
 }
 
 :root {
-  --some-left: 38.4vw;
+  --some-left: 27.4vw;
 }
 .dropdown-text {
   left: var(--some-left);
