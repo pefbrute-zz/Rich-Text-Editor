@@ -6,7 +6,7 @@ window.addEventListener("load", () => {
   mainContainer.setAttribute(nameOfAttribute, valueOfAttribute);
 });
 
-//Add also onkeydown event to do the same stuff
+//Add making active style by classes!
 //
 function addStyleActiveToButton() {
   let selection = document.getSelection();
@@ -15,6 +15,10 @@ function addStyleActiveToButton() {
     let selection = document.getSelection();
     let anchorNode = selection.anchorNode,
       namesOfTags = getNamesOfTagsInSelectedElement(anchorNode);
+
+    //Implement this one!
+    console.log(getClassesInSelectedElement(anchorNode));
+    //
 
     if (namesOfTags !== undefined) {
       let amountOfNames = namesOfTags.length,
@@ -89,20 +93,45 @@ function addStyleActiveToButton() {
   }
 }
 
-document.body.addEventListener("click", () => {
+let workAreaContainer = document.getElementById("work-area");
+
+workAreaContainer.addEventListener("click", () => {
   addStyleActiveToButton();
 });
 
-document.body.addEventListener("keydown", () => {
+workAreaContainer.addEventListener("keydown", () => {
   let keyCode = event.keyCode;
 
   if (keyCode >= 37 && keyCode <= 40) {
-    window.setTimeout(() => {
-      addStyleActiveToButton();
-      console.log("Hi!");
-    }, 10);
+    window.setTimeout(() => addStyleActiveToButton(), 5);
   }
 });
+
+function getClassesInSelectedElement(element) {
+  let mainContainer = document.getElementById("work-area"),
+    classes = [];
+
+  if (element !== mainContainer) {
+    while (element.parentElement !== mainContainer) {
+      let parentElement = element.parentElement;
+      element = parentElement;
+
+      let classList = element.classList;
+
+      for (
+        let i = 0, amountOfClasses = classList.length;
+        i < amountOfClasses;
+        i++
+      ) {
+        let nameOfClass = classList[i];
+
+        classes.push(nameOfClass);
+      }
+    }
+
+    return classes;
+  }
+}
 
 function getNamesOfTagsInSelectedElement(element) {
   let mainContainer = document.getElementById("work-area"),
