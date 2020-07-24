@@ -6,12 +6,13 @@ window.addEventListener("load", () => {
   mainContainer.setAttribute(nameOfAttribute, valueOfAttribute);
 });
 
-//Finish this function!
+//Add also onkeydown event to do the same stuff
 //
-document.body.addEventListener("click", () => {
+function addStyleActiveToButton() {
   let selection = document.getSelection();
 
   if (selection.type === "Caret") {
+    let selection = document.getSelection();
     let anchorNode = selection.anchorNode,
       namesOfTags = getNamesOfTagsInSelectedElement(anchorNode);
 
@@ -86,11 +87,24 @@ document.body.addEventListener("click", () => {
       }
     }
   }
+}
+
+document.body.addEventListener("click", () => {
+  addStyleActiveToButton();
+});
+
+document.body.addEventListener("keydown", () => {
+  let keyCode = event.keyCode;
+
+  if (keyCode >= 37 && keyCode <= 40) {
+    window.setTimeout(() => {
+      addStyleActiveToButton();
+      console.log("Hi!");
+    }, 10);
+  }
 });
 
 function getNamesOfTagsInSelectedElement(element) {
-  console.log(document.getSelection().anchorNode === null);
-
   let mainContainer = document.getElementById("work-area"),
     namesOfTags = [];
 
