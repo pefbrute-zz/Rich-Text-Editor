@@ -14,7 +14,8 @@ function addStyleActiveToButton() {
   if (selection.type === "Caret") {
     let selection = document.getSelection();
     let anchorNode = selection.anchorNode,
-      namesOfTags = getNamesOfTagsInSelectedElement(anchorNode);
+      namesOfTags = getNamesOfTagsInSelectedElement(anchorNode),
+      namesOfClasses = getClassesInSelectedElement(anchorNode);
 
     //Implement this one!
     console.log(getClassesInSelectedElement(anchorNode));
@@ -25,21 +26,27 @@ function addStyleActiveToButton() {
         indexOfLastName = amountOfNames - 1,
         actives = document.querySelectorAll("[class*=active]");
 
-      if (namesOfTags[indexOfLastName] === "P") {
-        namesOfTags.pop();
-        amountOfNames--;
-        indexOfLastName--;
-      }
-
-      for (let i = 0; i < amountOfNames; i++) {
-        let name = namesOfTags[i];
-
-        if (name === "SPAN") {
-          namesOfTags.splice(i, 1);
+      function cleaningExtraClasses(array) {
+        if (array[indexOfLastName] === "P") {
+          array.pop();
           amountOfNames--;
-          i--;
+          indexOfLastName--;
         }
+
+        for (let i = 0; i < amountOfNames; i++) {
+          let name = array[i];
+
+          if (name === "SPAN") {
+            array.splice(i, 1);
+            amountOfNames--;
+            i--;
+          }
+        }
+
+        return array;
       }
+
+      namesOfTags = cleaningExtraClasses(namesOfTags);
 
       if (amountOfNames === 0) {
         for (
@@ -89,6 +96,9 @@ function addStyleActiveToButton() {
           tag.classList.add("active");
         }
       }
+    }
+
+    if (namesOfClasses !== undefined) {
     }
   }
 }
@@ -364,13 +374,13 @@ let Options = {
 
 //Tags
 let TagAppliers = {
-  Strong: rangy.createClassApplier("strong", Options["Strong"]),
-  U: rangy.createClassApplier("underlined", Options["U"]),
-  Em: rangy.createClassApplier("emphasized", Options["Em"]),
-  Strike: rangy.createClassApplier("strike", Options["Strike"]),
-  A: rangy.createClassApplier("anchor", Options["A"]),
-  Sup: rangy.createClassApplier("superscript", Options["Sup"]),
-  Sub: rangy.createClassApplier("subscript", Options["Sub"]),
+  Strong: rangy.createClassApplier("STRONG", Options["Strong"]),
+  U: rangy.createClassApplier("U", Options["U"]),
+  Em: rangy.createClassApplier("EM", Options["Em"]),
+  Strike: rangy.createClassApplier("STRIKE", Options["Strike"]),
+  A: rangy.createClassApplier("A", Options["A"]),
+  Sup: rangy.createClassApplier("SUP", Options["Sup"]),
+  Sub: rangy.createClassApplier("SUB", Options["Sub"]),
   Selected: rangy.createClassApplier("selected", Options["Selected"]),
 };
 
