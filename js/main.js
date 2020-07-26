@@ -12,8 +12,8 @@ function addStyleActiveToButton() {
   let selection = document.getSelection();
 
   if (selection.type === "Caret") {
-    let selection = document.getSelection();
-    let anchorNode = selection.anchorNode,
+    let selection = document.getSelection(),
+      anchorNode = selection.anchorNode,
       namesOfTags = getNamesOfTagsInSelectedElement(anchorNode),
       namesOfClasses = getClassesInSelectedElement(anchorNode);
 
@@ -26,7 +26,7 @@ function addStyleActiveToButton() {
         indexOfLastName = amountOfNames - 1,
         actives = document.querySelectorAll("[class*=active]");
 
-      function cleaningExtraClasses(array) {
+      function cleaningExtraTags(array) {
         if (array[indexOfLastName] === "P") {
           array.pop();
           amountOfNames--;
@@ -46,7 +46,7 @@ function addStyleActiveToButton() {
         return array;
       }
 
-      namesOfTags = cleaningExtraClasses(namesOfTags);
+      namesOfTags = cleaningExtraTags(namesOfTags);
 
       if (amountOfNames === 0) {
         for (
@@ -54,7 +54,10 @@ function addStyleActiveToButton() {
           i <= indexOfLastActive;
           i++
         ) {
-          actives[i].classList.remove("active");
+          let active = actives[i],
+            classListOfActive = active.classList;
+
+          classListOfActive.remove("active");
         }
       } else if (amountOfNames !== 0) {
         for (
@@ -75,7 +78,9 @@ function addStyleActiveToButton() {
             if (activeName === name) {
               break;
             } else if (j === indexOfLastName) {
-              active.classList.remove("active");
+              let classListOfActive = active.classList;
+
+              classListOfActive.remove("active");
             }
           }
         }
@@ -99,6 +104,44 @@ function addStyleActiveToButton() {
     }
 
     if (namesOfClasses !== undefined) {
+      let amountOfClasses = namesOfClasses.length;
+
+      for (
+        let i = 0, indexOfLastClass = amountOfClasses - 1;
+        i <= indexOfLastClass;
+        i++
+      ) {
+        let name = namesOfClasses[i];
+
+        name = name.toUpperCase();
+
+        if (name.slice(0, 6) === "INDENT") {
+          continue;
+        }
+
+        if (name.slice(0, 5) === "ALIGN") {
+          let icon = document.getElementById(name.slice(0, 5)),
+            classListOfIcon = icon.classList;
+
+          classListOfIcon.add("active");
+
+          if (name === "ALIGN-RIGHT") {
+            let directionTag = document.getElementById("RTL"),
+              classListOfDirection = directionTag.classList;
+
+            classListOfDirection.add("active");
+          }
+        }
+
+        if (name === "RTL") {
+          let directionIcon = document.getElementById(name),
+            classListOfIcon = directionIcon.classList;
+
+          classListOfIcon.add("active");
+
+          continue;
+        }
+      }
     }
   }
 }
