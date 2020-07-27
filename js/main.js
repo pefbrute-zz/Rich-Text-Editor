@@ -121,78 +121,127 @@ function addStyleActiveToButton() {
 
         name = name.toUpperCase();
 
+        // switch (name) {
+        //   case "RTL":
+        //     let directionIcon = document.getElementById(name);
+
+        //     if (directionIcon !== null) {
+        //       let classListOfIcon = directionIcon.classList;
+
+        //       classListOfIcon.add("active");
+
+        //       continue;
+        //     }
+
+        //     break;
+        // }
+
         if (name === "RTL") {
-          let directionIcon = document.getElementById(name),
-            classListOfIcon = directionIcon.classList;
+          let directionIcon = document.getElementById(name);
 
-          classListOfIcon.add("active");
+          if (directionIcon !== null) {
+            let classListOfIcon = directionIcon.classList;
 
-          continue;
+            classListOfIcon.add("active");
+
+            continue;
+          }
         }
 
         if (name.slice(0, 4) === "TEXT") {
           let iconID = name.slice(0, 4),
-            textIcon = document.getElementById(iconID),
-            classListOfTextIcon = textIcon.classList;
+            textIcon = document.getElementById(iconID);
 
-          classListOfTextIcon.add("active");
+          if (textIcon !== null) {
+            let classListOfTextIcon = textIcon.classList;
+            classListOfTextIcon.add("active");
+
+            continue;
+          }
         }
 
         if (name.slice(0, 5) === "ALIGN") {
-          let icon = document.getElementById(name.slice(0, 5)),
-            classListOfIcon = icon.classList;
+          let iconID = "ALIGN",
+            icon = document.getElementById(iconID);
 
-          classListOfIcon.add("active");
+          if (icon !== null) {
+            let classListOfIcon = icon.classList;
 
-          if (name === "ALIGN-RIGHT") {
-            let directionTag = document.getElementById("RTL"),
-              classListOfDirection = directionTag.classList;
+            classListOfIcon.add("active");
 
-            classListOfDirection.add("active");
+            if (name === "ALIGN-RIGHT") {
+              let directionTag = document.getElementById("RTL");
+
+              if (directionTag !== null) {
+                let classListOfDirection = directionTag.classList;
+
+                classListOfDirection.add("active");
+                continue;
+              }
+            }
+            continue;
           }
         }
 
         if (name.slice(0, 6) === "INDENT") {
           let iconID = name.slice(0, 6),
-            indentIcon = document.getElementById(iconID),
-            classListOfIndentIcon = indentIcon.classList;
+            indentIcon = document.getElementById(iconID);
 
-          classListOfIndentIcon.add("active");
+          if (indentIcon !== null) {
+            let classListOfIndentIcon = indentIcon.classList;
+
+            classListOfIndentIcon.add("active");
+            continue;
+          }
         }
 
-        if (
+        let fontCondition =
           name === "SOFIA" ||
           name === "SLABO-13PX" ||
           name === "ROBOTO-SLAB" ||
           name === "INCONSOLATA" ||
-          name === "UBUNTU-MONO"
-        ) {
-          let iconID = "FONT",
-            fontIcon = document.getElementById(iconID),
-            classListOfFontIcon = fontIcon.classList;
+          name === "UBUNTU-MONO";
 
-          classListOfFontIcon.add("active");
+        if (fontCondition) {
+          let iconID = "FONT",
+            fontIcon = document.getElementById(iconID);
+
+          if (fontIcon !== null) {
+            let classListOfFontIcon = fontIcon.classList;
+
+            classListOfFontIcon.add("active");
+            continue;
+          }
         }
 
-        if (
+        let sizeCondition =
           name === "SMALL" ||
           name === "NORMAL" ||
           name === "LARGE" ||
-          name === "HUGE"
-        ) {
-          let iconID = "SIZE",
-            sizeIcon = document.getElementById(iconID),
-            classListOfSizeIcon = sizeIcon.classList;
+          name === "HUGE";
 
-          classListOfSizeIcon.add("active");
+        if (sizeCondition) {
+          let iconID = "SIZE",
+            sizeIcon = document.getElementById(iconID);
+
+          if (sizeIcon !== null) {
+            let classListOfSizeIcon = sizeIcon.classList;
+
+            classListOfSizeIcon.add("active");
+            continue;
+          }
         }
 
         if (name.slice(0, 10) === "BACKGROUND") {
-          let iconID = name.slice(0, 10),
-            backgroundIcon = document.getElementById(iconID),
-            classListOfBackgroundIcon = backgroundIcon.classList;
+          let iconID = "BACKGROUND",
+            backgroundIcon = document.getElementById(iconID);
 
-          classListOfBackgroundIcon.add("active");
+          if (backgroundIcon !== null) {
+            let classListOfBackgroundIcon = backgroundIcon.classList;
+
+            classListOfBackgroundIcon.add("active");
+            continue;
+          }
         }
       }
     }
