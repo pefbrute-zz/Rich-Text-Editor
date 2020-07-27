@@ -6,6 +6,16 @@ window.addEventListener("load", () => {
   mainContainer.setAttribute(nameOfAttribute, valueOfAttribute);
 });
 
+let fontNames = [
+  "sofia",
+  "slabo-13px",
+  "roboto-slab",
+  "inconsolata",
+  "ubuntu-mono",
+];
+
+let sizeNames = ["small", "normal", "large", "huge"];
+
 //Add making active style by classes!
 //
 function addStyleActiveToButton() {
@@ -16,10 +26,6 @@ function addStyleActiveToButton() {
       anchorNode = selection.anchorNode,
       namesOfTags = getNamesOfTagsInSelectedElement(anchorNode),
       namesOfClasses = getClassesInSelectedElement(anchorNode);
-
-    //Implement this one!
-    console.log(getClassesInSelectedElement(anchorNode));
-    //
 
     if (namesOfTags !== undefined) {
       let amountOfNames = namesOfTags.length,
@@ -115,8 +121,21 @@ function addStyleActiveToButton() {
 
         name = name.toUpperCase();
 
-        if (name.slice(0, 6) === "INDENT") {
+        if (name === "RTL") {
+          let directionIcon = document.getElementById(name),
+            classListOfIcon = directionIcon.classList;
+
+          classListOfIcon.add("active");
+
           continue;
+        }
+
+        if (name.slice(0, 4) === "TEXT") {
+          let iconID = name.slice(0, 4),
+            textIcon = document.getElementById(iconID),
+            classListOfTextIcon = textIcon.classList;
+
+          classListOfTextIcon.add("active");
         }
 
         if (name.slice(0, 5) === "ALIGN") {
@@ -133,13 +152,47 @@ function addStyleActiveToButton() {
           }
         }
 
-        if (name === "RTL") {
-          let directionIcon = document.getElementById(name),
-            classListOfIcon = directionIcon.classList;
+        if (name.slice(0, 6) === "INDENT") {
+          let iconID = name.slice(0, 6),
+            indentIcon = document.getElementById(iconID),
+            classListOfIndentIcon = indentIcon.classList;
 
-          classListOfIcon.add("active");
+          classListOfIndentIcon.add("active");
+        }
 
-          continue;
+        if (
+          name === "SOFIA" ||
+          name === "SLABO-13PX" ||
+          name === "ROBOTO-SLAB" ||
+          name === "INCONSOLATA" ||
+          name === "UBUNTU-MONO"
+        ) {
+          let iconID = "FONT",
+            fontIcon = document.getElementById(iconID),
+            classListOfFontIcon = fontIcon.classList;
+
+          classListOfFontIcon.add("active");
+        }
+
+        if (
+          name === "SMALL" ||
+          name === "NORMAL" ||
+          name === "LARGE" ||
+          name === "HUGE"
+        ) {
+          let iconID = "SIZE",
+            sizeIcon = document.getElementById(iconID),
+            classListOfSizeIcon = sizeIcon.classList;
+
+          classListOfSizeIcon.add("active");
+        }
+
+        if (name.slice(0, 10) === "BACKGROUND") {
+          let iconID = name.slice(0, 10),
+            backgroundIcon = document.getElementById(iconID),
+            classListOfBackgroundIcon = backgroundIcon.classList;
+
+          classListOfBackgroundIcon.add("active");
         }
       }
     }
