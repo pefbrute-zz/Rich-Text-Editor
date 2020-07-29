@@ -117,27 +117,11 @@ function addStyleActiveToButton() {
         i <= indexOfLastClass;
         i++
       ) {
-        let name = namesOfClasses[i];
+        let name = namesOfClasses[i],
+          bigName = name.toUpperCase();
 
-        name = name.toUpperCase();
-
-        // switch (name) {
-        //   case "RTL":
-        //     let directionIcon = document.getElementById(name);
-
-        //     if (directionIcon !== null) {
-        //       let classListOfIcon = directionIcon.classList;
-
-        //       classListOfIcon.add("active");
-
-        //       continue;
-        //     }
-
-        //     break;
-        // }
-
-        if (name === "RTL") {
-          let directionIcon = document.getElementById(name);
+        if (bigName === "RTL") {
+          let directionIcon = document.getElementById(bigName);
 
           if (directionIcon !== null) {
             let classListOfIcon = directionIcon.classList;
@@ -148,8 +132,8 @@ function addStyleActiveToButton() {
           }
         }
 
-        if (name.slice(0, 4) === "TEXT") {
-          let iconID = name.slice(0, 4),
+        if (bigName.slice(0, 4) === "TEXT") {
+          let iconID = bigName.slice(0, 4),
             textIcon = document.getElementById(iconID);
 
           if (textIcon !== null) {
@@ -160,7 +144,7 @@ function addStyleActiveToButton() {
           }
         }
 
-        if (name.slice(0, 5) === "ALIGN") {
+        if (bigName.slice(0, 5) === "ALIGN") {
           let iconID = "ALIGN",
             icon = document.getElementById(iconID);
 
@@ -169,7 +153,7 @@ function addStyleActiveToButton() {
 
             classListOfIcon.add("active");
 
-            if (name === "ALIGN-RIGHT") {
+            if (bigName === "ALIGN-RIGHT") {
               let directionTag = document.getElementById("RTL");
 
               if (directionTag !== null) {
@@ -183,8 +167,8 @@ function addStyleActiveToButton() {
           }
         }
 
-        if (name.slice(0, 6) === "INDENT") {
-          let iconID = name.slice(0, 6),
+        if (bigName.slice(0, 6) === "INDENT") {
+          let iconID = bigName.slice(0, 6),
             indentIcon = document.getElementById(iconID);
 
           if (indentIcon !== null) {
@@ -196,11 +180,11 @@ function addStyleActiveToButton() {
         }
 
         let fontCondition =
-          name === "SOFIA" ||
-          name === "SLABO-13PX" ||
-          name === "ROBOTO-SLAB" ||
-          name === "INCONSOLATA" ||
-          name === "UBUNTU-MONO";
+          bigName === "SOFIA" ||
+          bigName === "SLABO-13PX" ||
+          bigName === "ROBOTO-SLAB" ||
+          bigName === "INCONSOLATA" ||
+          bigName === "UBUNTU-MONO";
 
         if (fontCondition) {
           let iconID = "FONT",
@@ -215,10 +199,10 @@ function addStyleActiveToButton() {
         }
 
         let sizeCondition =
-          name === "SMALL" ||
-          name === "NORMAL" ||
-          name === "LARGE" ||
-          name === "HUGE";
+          bigName === "SMALL" ||
+          bigName === "NORMAL" ||
+          bigName === "LARGE" ||
+          bigName === "HUGE";
 
         if (sizeCondition) {
           let iconID = "SIZE",
@@ -232,7 +216,7 @@ function addStyleActiveToButton() {
           }
         }
 
-        if (name.slice(0, 10) === "BACKGROUND") {
+        if (bigName.slice(0, 10) === "BACKGROUND") {
           let iconID = "BACKGROUND",
             backgroundIcon = document.getElementById(iconID);
 
