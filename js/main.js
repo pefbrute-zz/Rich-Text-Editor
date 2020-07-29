@@ -181,9 +181,9 @@ function addStyleActiveToButton() {
 
         let fontCondition =
           bigName === "SOFIA" ||
+          bigName === "INCONSOLATA" ||
           bigName === "SLABO-13PX" ||
           bigName === "ROBOTO-SLAB" ||
-          bigName === "INCONSOLATA" ||
           bigName === "UBUNTU-MONO";
 
         if (fontCondition) {
@@ -194,6 +194,30 @@ function addStyleActiveToButton() {
             let classListOfFontIcon = fontIcon.classList;
 
             classListOfFontIcon.add("active");
+
+            let fontNameOfIcon = document.getElementById("font-name"),
+              classNameOfIcon = fontNameOfIcon.className;
+
+            console.log(fontNameOfIcon);
+            
+            //Finish this fragment, please
+            //
+            if (classNameOfIcon !== bigName.toLowerCase()) {
+              fontNameOfIcon.classList.remove(classNameOfIcon);
+              fontNameOfIcon.classList.add(bigName.toLowerCase());
+
+              let childNodesOfIcon = fontNameOfIcon.childNodes,
+                textOfIcon = childNodesOfIcon[0];
+
+              textOfIcon.data = capitalizeFirstLetter(bigName.toLowerCase());
+
+              console.log(textOfIcon);
+            } else {
+              console.log("nothing");
+            }
+            //
+            //
+
             continue;
           }
         }
