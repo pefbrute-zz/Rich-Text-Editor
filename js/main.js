@@ -198,10 +198,7 @@ function addStyleActiveToButton() {
             let fontNameOfIcon = document.getElementById("font-name"),
               classNameOfIcon = fontNameOfIcon.className;
 
-            console.log(fontNameOfIcon);
-            
-            //Finish this fragment, please
-            //
+
             if (classNameOfIcon !== bigName.toLowerCase()) {
               fontNameOfIcon.classList.remove(classNameOfIcon);
               fontNameOfIcon.classList.add(bigName.toLowerCase());
@@ -209,14 +206,24 @@ function addStyleActiveToButton() {
               let childNodesOfIcon = fontNameOfIcon.childNodes,
                 textOfIcon = childNodesOfIcon[0];
 
-              textOfIcon.data = capitalizeFirstLetter(bigName.toLowerCase());
+              if (bigName.indexOf("-") === -1) {
+                textOfIcon.data = capitalizeFirstLetter(bigName.toLowerCase());
+              } else {
+                let smallName = bigName.toLowerCase(),
+                  firstPart = smallName.slice(0, smallName.indexOf("-")),
+                  secondPart = smallName.slice(
+                    smallName.indexOf("-") + 1,
+                    smallName.length
+                  );
 
-              console.log(textOfIcon);
-            } else {
-              console.log("nothing");
+                firstPart = capitalizeFirstLetter(firstPart);
+                secondPart = capitalizeFirstLetter(secondPart);
+
+                let fullName = firstPart + " " + secondPart;
+
+                textOfIcon.data = fullName;
+              }
             }
-            //
-            //
 
             continue;
           }
@@ -236,6 +243,17 @@ function addStyleActiveToButton() {
             let classListOfSizeIcon = sizeIcon.classList;
 
             classListOfSizeIcon.add("active");
+
+            let sizeNameOfIcon = document.getElementById("size-name"),
+              classNameOfIcon = sizeNameOfIcon.className;
+
+            if (classNameOfIcon !== bigName.toLowerCase()) {
+              let childNodesOfIcon = sizeNameOfIcon.childNodes,
+                textOfIcon = childNodesOfIcon[0];
+
+              textOfIcon.data = capitalizeFirstLetter(bigName.toLowerCase());
+            }
+
             continue;
           }
         }
@@ -322,7 +340,6 @@ function isThereNode(startNode, nameOfTargetNode) {
   while (startNode.parentElement.nodeName !== nameOfTargetNode) {
     startNode = startNode.parentElement;
 
-    console.log(startNode);
 
     if (startNode.nodeName === nameOfTargetNode) {
       return true;
@@ -1265,14 +1282,11 @@ function highlightNumbers() {
     selection = document.getSelection(),
     preElement = selection.anchorNode;
 
-  console.log(selection);
 
   // if (selection.type === "Caret") {
   //   while (preElement.tagName !== "PRE") {
   //     preElement = preElement.parentElement;
 
-  //     console.log(preElement);
-  //     console.log(preElement.tagName);
   //   }
 
   //   let regExp = new RegExp("\\b" + "\\d+" + "\\b", "gi"),
@@ -1991,14 +2005,9 @@ function addVideoByURL() {
 
 tests = () => {
   function performanceTest(someFunction) {
-    const t0 = performance.now();
     console.time();
     someFunction();
-    const t1 = performance.now();
     console.timeEnd();
-    console.log(
-      `Clear formatting function completed in: ${t1 - t0} milleseconds`
-    );
   }
 
   // performanceTest(undo);
