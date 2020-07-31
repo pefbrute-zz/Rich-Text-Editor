@@ -1196,14 +1196,13 @@ function addContainerClass(className) {
         if (classListOfFirstSelectedElement.length === 0) {
           classListOfFirstSelectedElement.add(className);
         } else {
-          debugger
-          for (let i = 0; i < classListOfFirstSelectedElement.length; i++) {
+          for (let i = 0, amountOfClasses = classListOfFirstSelectedElement.length; i < amountOfClasses; i++) {
             let classNameOfFirstSelectedElement =
               classListOfFirstSelectedElement[i];
 
             if (classNameOfFirstSelectedElement === className) {
               classListOfFirstSelectedElement.remove(className);
-            } else if (i === classListOfFirstSelectedElement.length - 1) {
+            } else if (i === amountOfClasses - 1) {
               classListOfFirstSelectedElement.add(className);
               break;
             }
