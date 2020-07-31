@@ -16,8 +16,6 @@ let fontNames = [
 
 let sizeNames = ["small", "normal", "large", "huge"];
 
-//Add making active style by classes!
-//
 function addStyleActiveToButton() {
   let selection = document.getSelection();
 
@@ -198,7 +196,6 @@ function addStyleActiveToButton() {
             let fontNameOfIcon = document.getElementById("font-name"),
               classNameOfIcon = fontNameOfIcon.className;
 
-
             if (classNameOfIcon !== bigName.toLowerCase()) {
               fontNameOfIcon.classList.remove(classNameOfIcon);
               fontNameOfIcon.classList.add(bigName.toLowerCase());
@@ -339,7 +336,6 @@ function isThereNode(startNode, nameOfTargetNode) {
 
   while (startNode.parentElement.nodeName !== nameOfTargetNode) {
     startNode = startNode.parentElement;
-
 
     if (startNode.nodeName === nameOfTargetNode) {
       return true;
@@ -1189,60 +1185,31 @@ function addContainerClass(className) {
       );
     } else {
       do {
-        let classNameOfFirstSelectedElement = firstSelectedElement.className;
+        // let classNameOfFirstSelectedElement = firstSelectedElement.className;
+        let classListOfFirstSelectedElement = firstSelectedElement.classList;
 
-        if (classNameOfFirstSelectedElement === className) {
-          firstSelectedElement.removeAttribute("class");
-        } else if (classNameOfFirstSelectedElement !== undefined) {
-          if (classNameOfFirstSelectedElement === "") {
-            firstSelectedElement.className = className;
-          } else {
-            let classes = firstSelectedElement.className.split(" "),
-              classesAmount = classes.length;
+        if (classListOfFirstSelectedElement === undefined) {
+          firstSelectedElement = firstSelectedElement.nextSibling;
+          continue;
+        }
+        
+        if (classListOfFirstSelectedElement.length === 0) {
+          classListOfFirstSelectedElement.add(className);
+        } else {
+          debugger
+          for (let i = 0; i < classListOfFirstSelectedElement.length; i++) {
+            let classNameOfFirstSelectedElement =
+              classListOfFirstSelectedElement[i];
 
-            if (classesAmount === 1) {
-              let classNameIndex = className.indexOf("-"),
-                classNameBeginning = className.substring(0, classNameIndex),
-                classIndex = classNameOfFirstSelectedElement.indexOf("-"),
-                classBeginning = classNameOfFirstSelectedElement.substring(
-                  0,
-                  classIndex
-                );
-
-              if (classNameBeginning === classBeginning) {
-                firstSelectedElement.className = className;
-              } else {
-                firstSelectedElement.className =
-                  classNameOfFirstSelectedElement + " " + className;
-              }
-            } else {
-              // repeated code
-              //
-              let classNameIndex = className.indexOf("-"),
-                classNameBeginning = className.substring(0, classNameIndex);
-
-              for (let j = 0; j < classesAmount; j++) {
-                let someClass = classes[j],
-                  classIndex = someClass.indexOf("-"),
-                  classBeginning = someClass.substring(0, classIndex);
-
-                if (classBeginning === classNameBeginning) {
-                  classes.splice(j, 1);
-                  j--;
-                  classesAmount--;
-                }
-              }
-
-              classes = classes.join(" ");
-              let allClasses = classes;
-              firstSelectedElement.className = clearExtraSpaces(
-                allClasses + " " + className
-              );
-              //
-              //
+            if (classNameOfFirstSelectedElement === className) {
+              classListOfFirstSelectedElement.remove(className);
+            } else if (i === classListOfFirstSelectedElement.length - 1) {
+              classListOfFirstSelectedElement.add(className);
+              break;
             }
           }
         }
+
         firstSelectedElement = firstSelectedElement.nextSibling;
       } while (
         firstSelectedElement.nextSibling !==
@@ -1278,10 +1245,9 @@ function highlightKeywords() {
 
 //It highlights all numbers in <pre> tag
 function highlightNumbers() {
-  let preList = document.getElementsByTagName("PRE"),
-    selection = document.getSelection(),
-    preElement = selection.anchorNode;
-
+  let preList = document.getElementsByTagName("PRE");
+  // selection = document.getSelection();
+  // preElement = selection.anchorNode;
 
   // if (selection.type === "Caret") {
   //   while (preElement.tagName !== "PRE") {

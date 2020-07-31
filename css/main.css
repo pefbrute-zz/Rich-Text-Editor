@@ -14,7 +14,7 @@ body {
 
 .sample-toolbar,
 .work-area {
-  width: 70rem;
+  width: 70.5rem;
   padding: 1rem 2rem;
 }
 
@@ -22,7 +22,7 @@ body {
   background: rgba(255, 255, 255, 1);
   border-bottom: 1px solid #ccc;
   position: fixed;
-  box-shadow: 6px 4px 8px #ccc;
+  box-shadow: 0px 4px 8px #ccc;
 }
 
 .sample-toolbar > span {
