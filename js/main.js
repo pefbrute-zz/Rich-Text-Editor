@@ -108,7 +108,8 @@ function addStyleActiveToButton() {
     }
 
     if (namesOfClasses !== undefined) {
-      let amountOfClasses = namesOfClasses.length;
+      let amountOfClasses = namesOfClasses.length,
+      time = 0;
 
       for (
         let i = 0, indexOfLastClass = amountOfClasses - 1;
@@ -116,10 +117,10 @@ function addStyleActiveToButton() {
         i++
       ) {
         let name = namesOfClasses[i],
-          bigName = name.toUpperCase();
+          classNameInUpperCase = name.toUpperCase();
 
-        if (bigName === "RTL") {
-          let directionIcon = document.getElementById(bigName);
+        if (classNameInUpperCase === "RTL") {
+          let directionIcon = document.getElementById(classNameInUpperCase);
 
           if (directionIcon !== null) {
             let classListOfIcon = directionIcon.classList;
@@ -130,8 +131,8 @@ function addStyleActiveToButton() {
           }
         }
 
-        if (bigName.slice(0, 4) === "TEXT") {
-          let iconID = bigName.slice(0, 4),
+        if (classNameInUpperCase.slice(0, 4) === "TEXT") {
+          let iconID = classNameInUpperCase.slice(0, 4),
             textIcon = document.getElementById(iconID);
 
           if (textIcon !== null) {
@@ -142,7 +143,7 @@ function addStyleActiveToButton() {
           }
         }
 
-        if (bigName.slice(0, 5) === "ALIGN") {
+        if (classNameInUpperCase.slice(0, 5) === "ALIGN") {
           let iconID = "ALIGN",
             icon = document.getElementById(iconID);
 
@@ -151,7 +152,7 @@ function addStyleActiveToButton() {
 
             classListOfIcon.add("active");
 
-            if (bigName === "ALIGN-RIGHT") {
+            if (classNameInUpperCase === "ALIGN-RIGHT") {
               let directionTag = document.getElementById("RTL");
 
               if (directionTag !== null) {
@@ -165,8 +166,8 @@ function addStyleActiveToButton() {
           }
         }
 
-        if (bigName.slice(0, 6) === "INDENT") {
-          let iconID = bigName.slice(0, 6),
+        if (classNameInUpperCase.slice(0, 6) === "INDENT") {
+          let iconID = classNameInUpperCase.slice(0, 6),
             indentIcon = document.getElementById(iconID);
 
           if (indentIcon !== null) {
@@ -178,11 +179,11 @@ function addStyleActiveToButton() {
         }
 
         let fontCondition =
-          bigName === "SOFIA" ||
-          bigName === "INCONSOLATA" ||
-          bigName === "SLABO-13PX" ||
-          bigName === "ROBOTO-SLAB" ||
-          bigName === "UBUNTU-MONO";
+          classNameInUpperCase === "SOFIA" ||
+          classNameInUpperCase === "INCONSOLATA" ||
+          classNameInUpperCase === "SLABO-13PX" ||
+          classNameInUpperCase === "ROBOTO-SLAB" ||
+          classNameInUpperCase === "UBUNTU-MONO";
 
         if (fontCondition) {
           let iconID = "FONT",
@@ -196,17 +197,19 @@ function addStyleActiveToButton() {
             let fontNameOfIcon = document.getElementById("font-name"),
               classNameOfIcon = fontNameOfIcon.className;
 
-            if (classNameOfIcon !== bigName.toLowerCase()) {
+            if (classNameOfIcon !== classNameInUpperCase.toLowerCase()) {
               fontNameOfIcon.classList.remove(classNameOfIcon);
-              fontNameOfIcon.classList.add(bigName.toLowerCase());
+              fontNameOfIcon.classList.add(classNameInUpperCase.toLowerCase());
 
               let childNodesOfIcon = fontNameOfIcon.childNodes,
                 textOfIcon = childNodesOfIcon[0];
 
-              if (bigName.indexOf("-") === -1) {
-                textOfIcon.data = capitalizeFirstLetter(bigName.toLowerCase());
+              if (classNameInUpperCase.indexOf("-") === -1) {
+                textOfIcon.data = capitalizeFirstLetter(
+                  classNameInUpperCase.toLowerCase()
+                );
               } else {
-                let smallName = bigName.toLowerCase(),
+                let smallName = classNameInUpperCase.toLowerCase(),
                   firstPart = smallName.slice(0, smallName.indexOf("-")),
                   secondPart = smallName.slice(
                     smallName.indexOf("-") + 1,
@@ -227,35 +230,49 @@ function addStyleActiveToButton() {
         }
 
         let sizeCondition =
-          bigName === "SMALL" ||
-          bigName === "NORMAL" ||
-          bigName === "LARGE" ||
-          bigName === "HUGE";
+          classNameInUpperCase === "SMALL" ||
+          classNameInUpperCase === "NORMAL" ||
+          classNameInUpperCase === "LARGE" ||
+          classNameInUpperCase === "HUGE";
 
+        //Fix this one! (change name of main option by the first size)
+        //
         if (sizeCondition) {
-          let iconID = "SIZE",
-            sizeIcon = document.getElementById(iconID);
-
-          if (sizeIcon !== null) {
-            let classListOfSizeIcon = sizeIcon.classList;
-
-            classListOfSizeIcon.add("active");
-
-            let sizeNameOfIcon = document.getElementById("size-name"),
-              classNameOfIcon = sizeNameOfIcon.className;
-
-            if (classNameOfIcon !== bigName.toLowerCase()) {
-              let childNodesOfIcon = sizeNameOfIcon.childNodes,
-                textOfIcon = childNodesOfIcon[0];
-
-              textOfIcon.data = capitalizeFirstLetter(bigName.toLowerCase());
+          if (time === 0){
+            let iconID = "SIZE",
+              sizeIcon = document.getElementById(iconID);
+  
+            if (sizeIcon !== null) {
+              let classListOfSizeIcon = sizeIcon.classList;
+  
+              classListOfSizeIcon.add("active");
+  
+              let sizeElement = document.getElementById("size-name"),
+                sizeNameOfIcon = sizeElement.textContent.toUpperCase();
+  
+              classNameOfIcon = sizeElement.className;
+  
+              console.log(sizeElement.textContent.toUpperCase());
+  
+              if (classNameInUpperCase !== sizeNameOfIcon) {
+                debugger;
+  
+                let childNodesOfIcon = sizeElement.childNodes,
+                  textOfIcon = childNodesOfIcon[0];
+  
+                textOfIcon.data = capitalizeFirstLetter(
+                  classNameInUpperCase.toLowerCase()
+                );
+              }
+              time++;
+              continue;
             }
-
-            continue;
           }
         }
+        //
+        //
 
-        if (bigName.slice(0, 10) === "BACKGROUND") {
+        if (classNameInUpperCase.slice(0, 10) === "BACKGROUND") {
           let iconID = "BACKGROUND",
             backgroundIcon = document.getElementById(iconID);
 
@@ -352,7 +369,7 @@ function isThereNode(startNode, nameOfTargetNode) {
 //
 //
 
-//Add dropdown class to element with dropdownID
+//Adds dropdown class to element with dropdownID
 function addDropdown(dropdownID) {
   let dropdown = document.getElementById(dropdownID),
     dropdowns = document.querySelectorAll("[class*=dropdown]"),
@@ -1192,11 +1209,15 @@ function addContainerClass(className) {
           firstSelectedElement = firstSelectedElement.nextSibling;
           continue;
         }
-        
+
         if (classListOfFirstSelectedElement.length === 0) {
           classListOfFirstSelectedElement.add(className);
         } else {
-          for (let i = 0, amountOfClasses = classListOfFirstSelectedElement.length; i < amountOfClasses; i++) {
+          for (
+            let i = 0, amountOfClasses = classListOfFirstSelectedElement.length;
+            i < amountOfClasses;
+            i++
+          ) {
             let classNameOfFirstSelectedElement =
               classListOfFirstSelectedElement[i];
 
