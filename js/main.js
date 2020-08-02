@@ -109,7 +109,8 @@ function addStyleActiveToButton() {
 
     if (namesOfClasses !== undefined) {
       let amountOfClasses = namesOfClasses.length,
-      time = 0;
+        sizeTime = 0,
+        fontTime = 0;
 
       for (
         let i = 0, indexOfLastClass = amountOfClasses - 1;
@@ -185,7 +186,7 @@ function addStyleActiveToButton() {
           classNameInUpperCase === "ROBOTO-SLAB" ||
           classNameInUpperCase === "UBUNTU-MONO";
 
-        if (fontCondition) {
+        if (fontCondition && fontTime === 0) {
           let iconID = "FONT",
             fontIcon = document.getElementById(iconID);
 
@@ -224,7 +225,7 @@ function addStyleActiveToButton() {
                 textOfIcon.data = fullName;
               }
             }
-
+            fontTime = 1;
             continue;
           }
         }
@@ -235,42 +236,34 @@ function addStyleActiveToButton() {
           classNameInUpperCase === "LARGE" ||
           classNameInUpperCase === "HUGE";
 
-        //Fix this one! (change name of main option by the first size)
-        //
-        if (sizeCondition) {
-          if (time === 0){
-            let iconID = "SIZE",
-              sizeIcon = document.getElementById(iconID);
-  
-            if (sizeIcon !== null) {
-              let classListOfSizeIcon = sizeIcon.classList;
-  
-              classListOfSizeIcon.add("active");
-  
-              let sizeElement = document.getElementById("size-name"),
-                sizeNameOfIcon = sizeElement.textContent.toUpperCase();
-  
-              classNameOfIcon = sizeElement.className;
-  
-              console.log(sizeElement.textContent.toUpperCase());
-  
-              if (classNameInUpperCase !== sizeNameOfIcon) {
-                debugger;
-  
-                let childNodesOfIcon = sizeElement.childNodes,
-                  textOfIcon = childNodesOfIcon[0];
-  
-                textOfIcon.data = capitalizeFirstLetter(
-                  classNameInUpperCase.toLowerCase()
-                );
-              }
-              time++;
-              continue;
+        if (sizeCondition && sizeTime === 0) {
+          let iconID = "SIZE",
+            sizeIcon = document.getElementById(iconID);
+
+          if (sizeIcon !== null) {
+            let classListOfSizeIcon = sizeIcon.classList;
+
+            classListOfSizeIcon.add("active");
+
+            let sizeElement = document.getElementById("size-name"),
+              sizeNameOfIcon = sizeElement.textContent.toUpperCase();
+
+            classNameOfIcon = sizeElement.className;
+
+            if (classNameInUpperCase !== sizeNameOfIcon) {
+              let childNodesOfIcon = sizeElement.childNodes,
+                textOfIcon = childNodesOfIcon[0];
+
+              textOfIcon.data = capitalizeFirstLetter(
+                classNameInUpperCase.toLowerCase()
+              );
             }
+
+            sizeTime = 1;
+            continue;
           }
+          continue;
         }
-        //
-        //
 
         if (classNameInUpperCase.slice(0, 10) === "BACKGROUND") {
           let iconID = "BACKGROUND",
