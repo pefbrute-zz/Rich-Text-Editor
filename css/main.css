@@ -675,17 +675,26 @@ pre {
 /**/
 
 .small {
-  font-size: 0.75em;
+  font-size: 0.5rem;
 }
+
 /* normal{
 
 } */
+
 .large {
-  font-size: 24px;
+  font-size: 1.5rem;
 }
+
 .huge {
-  font-size: 2.5em;
+  font-size: 2rem;
 }
 
 /**/
 /**/
+
+/*
+@media{
+  
+}
+*/
