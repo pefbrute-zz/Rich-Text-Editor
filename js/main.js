@@ -805,7 +805,7 @@ function getChild(element, parent) {
       element = element.parentElement;
     }
 
-    child = element;
+    let child = element;
 
     return child;
   }
@@ -821,7 +821,7 @@ function getChildOfMainContainer(element) {
       element = element.parentElement;
     }
 
-    child = element;
+    let child = element;
 
     return child;
   }
@@ -834,13 +834,18 @@ function getSecondChild(element, parent) {
   } else if (parent === undefined) {
     throw new Error("You didn't add parent element");
   } else {
-    let parentOfParent = (element) => element.parentElement.parentElement;
+    let parentOfParent = (element) => {
+      let parentOfElement = element.parentElement,
+        parentElementOfParentElement = parentOfElement.parentElement;
+
+      return parentElementOfParentElement;
+    };
 
     while (parentOfParent(element) !== parent) {
       element = element.parentElement;
     }
 
-    child = element;
+    let child = element;
 
     return child;
   }
@@ -1135,8 +1140,8 @@ function addContainerClass(className) {
                 } else {
                   // repeated code too
                   //
-                  let className = firstSelectedElement.className;
-                  let classes = className.split(" "),
+                  let className = firstSelectedElement.className,
+                    classes = className.split(" "),
                     amountOfClasses = classes.length;
 
                   for (let j = 0; j < amountOfClasses; j++) {
@@ -1196,14 +1201,15 @@ function addContainerClass(className) {
     } else {
       do {
         // let classNameOfFirstSelectedElement = firstSelectedElement.className;
-        let classListOfFirstSelectedElement = firstSelectedElement.classList;
+        let classListOfFirstSelectedElement = firstSelectedElement.classList,
+          amountOfClasses = classListOfFirstSelectedElement.length;
 
         if (classListOfFirstSelectedElement === undefined) {
           firstSelectedElement = firstSelectedElement.nextSibling;
           continue;
         }
 
-        if (classListOfFirstSelectedElement.length === 0) {
+        if (amountOfClasses === 0) {
           classListOfFirstSelectedElement.add(className);
         } else {
           for (
@@ -1212,11 +1218,12 @@ function addContainerClass(className) {
             i++
           ) {
             let classNameOfFirstSelectedElement =
-              classListOfFirstSelectedElement[i];
+                classListOfFirstSelectedElement[i],
+              indexOfLastClassName = amountOfClasses - 1;
 
             if (classNameOfFirstSelectedElement === className) {
               classListOfFirstSelectedElement.remove(className);
-            } else if (i === amountOfClasses - 1) {
+            } else if (i === indexOfLastClassName) {
               classListOfFirstSelectedElement.add(className);
               break;
             }
@@ -1229,6 +1236,59 @@ function addContainerClass(className) {
         lastSelectedElement.nextElementSibling
       );
     }
+  } else {
+    throw new Error("You selected something wrong!");
+  }
+}
+
+function addAlignClass(alignName) {
+  let mainContainer = document.getElementById("work-area"),
+    firstSelectedElement = getFirstSelectedChilds(mainContainer)[0],
+    lastSelectedElement = getFirstSelectedChilds(mainContainer)[1];
+
+  if (firstSelectedElement !== undefined && lastSelectedElement !== undefined) {
+    do {
+      let classListOfFirstSelectedElement = firstSelectedElement.classList;
+
+      if (classListOfFirstSelectedElement === undefined) {
+        firstSelectedElement = firstSelectedElement.nextSibling;
+        continue;
+      }
+
+      let amountOfClasses = classListOfFirstSelectedElement.length;
+
+      if (amountOfClasses === 0) {
+        classListOfFirstSelectedElement.add(alignName);
+      } else {
+        for (
+          let i = 0, amountOfClasses = classListOfFirstSelectedElement.length;
+          i < amountOfClasses;
+          i++
+        ) {
+          let classNameOfFirstSelectedElement =
+              classListOfFirstSelectedElement[i],
+            indexOfLastClassName = amountOfClasses - 1;
+
+          if (classNameOfFirstSelectedElement === alignName) {
+            classListOfFirstSelectedElement.remove(alignName);
+          } else if (classNameOfFirstSelectedElement.slice(0, 5) === "align") {
+            classListOfFirstSelectedElement.remove(
+              classNameOfFirstSelectedElement
+            );
+            classListOfFirstSelectedElement.add(alignName);
+            break;
+          } else if (i === indexOfLastClassName) {
+            classListOfFirstSelectedElement.add(alignName);
+            break;
+          }
+        }
+      }
+
+      firstSelectedElement = firstSelectedElement.nextSibling;
+    } while (
+      firstSelectedElement.nextSibling !==
+      lastSelectedElement.nextElementSibling
+    );
   } else {
     throw new Error("You selected something wrong!");
   }
@@ -1328,7 +1388,7 @@ function clearTagsAtPreContainer() {
 //It sets spellcheck attribute to false (spellcheck=false) to selected <pre> tags
 function removeSpellcheck() {
   let pres = document.querySelectorAll("pre:not([spellcheck])");
-  for (let i = 0; i <= pres.length - 1; i++) {
+  for (let i = 0, amountOfPres = pres.length; i < amountOfPres; i++) {
     let pre = pres[i];
     pre.setAttribute("spellcheck", "false");
   }
