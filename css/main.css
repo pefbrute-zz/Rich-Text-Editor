@@ -6,7 +6,6 @@ body {
 }
 
 .editor {
-  /* margin-top: 1rem; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -23,15 +22,13 @@ body {
   border-bottom: 1px solid #ccc;
   position: fixed;
   box-shadow: 0px 4px 8px #ccc;
+  line-height: 30px;
+  align-content: center;
 }
 
 .sample-toolbar > span {
   cursor: pointer;
 }
-
-/* .sample-toolbar > span:hover {
-  text-decoration: underline;
-} */
 
 .sample-toolbar span:hover {
   text-decoration: none;
@@ -174,6 +171,11 @@ body {
   position: absolute;
   white-space: nowrap;
   padding: 4px;
+}
+
+.dropdown-fonts,
+.dropdown-size {
+  border: solid 2px #000000;
 }
 
 .dropdown-align a,
@@ -640,43 +642,47 @@ pre {
   color: #ae81ff;
 }
 
+:root {
+  --root-indent: 3em;
+}
+
 .indent-1 {
-  padding-left: 3em;
+  padding-left: var(--root-indent);
 }
 
 .indent-2 {
-  padding-left: 6em;
+  padding-left: calc(var(--root-indent) * 2);
 }
 
 .indent-3 {
-  padding-left: 9em;
+  padding-left: calc(var(--root-indent) * 3);
 }
 
 .indent-4 {
-  padding-left: 12em;
+  padding-left: calc(var(--root-indent) * 4);
 }
 
 .indent-5 {
-  padding-left: 15em;
+  padding-left: calc(var(--root-indent) * 5);
 }
 
 .indent-6 {
-  padding-left: 18em;
+  padding-left: calc(var(--root-indent) * 6);
 }
 
 .indent-7 {
-  padding-left: 21em;
+  padding-left: calc(var(--root-indent) * 7);
 }
 
 .indent-8 {
-  padding-left: 24em;
+  padding-left: calc(var(--root-indent) * 8);
 }
 
 /**/
 /**/
 
 .small {
-  font-size: 0.5rem;
+  font-size: 0.8rem;
 }
 
 /* normal{
@@ -697,26 +703,18 @@ pre {
 @media only screen and (max-width: 600px) {
   .sample-toolbar,
   .work-area {
-    width: 13em;
-  }
-
-  .sample-toolbar {
-    line-height: 30px;
+    width: 23em;
   }
 
   .work-area {
-    margin-top: 13rem;
+    margin-top: 9rem;
   }
 }
 
 @media only screen and (min-width: 600px) {
   .sample-toolbar,
   .work-area {
-    width: 33em;
-  }
-
-  .sample-toolbar {
-    line-height: 30px;
+    width: 33.5em;
   }
 
   .work-area {
@@ -727,11 +725,7 @@ pre {
 @media only screen and (min-width: 768px) {
   .sample-toolbar,
   .work-area {
-    width: 40em;
-  }
-
-  .sample-toolbar {
-    line-height: 30px;
+    width: 40.5em;
   }
 
   .work-area {
@@ -742,11 +736,7 @@ pre {
 @media only screen and (min-width: 992px) {
   .sample-toolbar,
   .work-area {
-    width: 55em;
-  }
-
-  .sample-toolbar {
-    line-height: 30px;
+    width: 56.5em;
   }
 
   .work-area {
@@ -757,14 +747,10 @@ pre {
 @media only screen and (min-width: 1200px) {
   .sample-toolbar,
   .work-area {
-    width: 72em;
-  }
-
-  .sample-toolbar {
-    line-height: 30px;
+    width: 72.5em;
   }
 
   .work-area {
-    margin-top: 3rem;
+    margin-top: 4rem;
   }
 }

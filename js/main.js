@@ -7,14 +7,13 @@ window.addEventListener("load", () => {
 });
 
 let fontNames = [
-  "sofia",
-  "slabo-13px",
-  "roboto-slab",
-  "inconsolata",
-  "ubuntu-mono",
-];
-
-let sizeNames = ["small", "normal", "large", "huge"];
+    "sofia",
+    "slabo-13px",
+    "roboto-slab",
+    "inconsolata",
+    "ubuntu-mono",
+  ],
+  sizeNames = ["small", "normal", "large", "huge"];
 
 function addStyleActiveToButton() {
   let selection = document.getSelection();
@@ -94,15 +93,16 @@ function addStyleActiveToButton() {
           i <= indexOfLastName;
           i++
         ) {
-          let name = namesOfTags[i];
+          let name = namesOfTags[i],
+            tag = document.getElementById(name);
 
-          if (name === "P" || name === "LI") {
+          if (name === "P" || name === "LI" || tag === null) {
             continue;
           }
 
-          let tag = document.getElementById(name);
+          let classListOfTag = tag.classList;
 
-          tag.classList.add("active");
+          classListOfTag.add("active");
         }
       }
     }
@@ -328,8 +328,8 @@ function getNamesOfTagsInSelectedElement(element) {
   if (element !== mainContainer) {
     while (element.parentElement !== mainContainer) {
       let parentElement = element.parentElement;
-      element = parentElement;
 
+      element = parentElement;
       let tagName = element.nodeName;
 
       namesOfTags.push(tagName);
@@ -996,8 +996,8 @@ function replaceContainerTag(tag) {
     }
   }
 
-  // let selection = document.getSelection();
-  // selection.empty();
+  let selection = document.getSelection();
+  selection.empty();
 
   // rangy.restoreSelection(savedSellection);
 }
@@ -1201,13 +1201,14 @@ function addContainerClass(className) {
     } else {
       do {
         // let classNameOfFirstSelectedElement = firstSelectedElement.className;
-        let classListOfFirstSelectedElement = firstSelectedElement.classList,
-          amountOfClasses = classListOfFirstSelectedElement.length;
+        let classListOfFirstSelectedElement = firstSelectedElement.classList;
 
         if (classListOfFirstSelectedElement === undefined) {
           firstSelectedElement = firstSelectedElement.nextSibling;
           continue;
         }
+
+        let amountOfClasses = classListOfFirstSelectedElement.length;
 
         if (amountOfClasses === 0) {
           classListOfFirstSelectedElement.add(className);
