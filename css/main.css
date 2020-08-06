@@ -225,8 +225,8 @@ body {
 .dropdown-size {
   width: 6.8rem;
   background-color: #ffffff;
-  /* border: #ae81ff 1px solid; */
-  left: calc(var(--font-left) + 9.5vw);
+  border: #ae81ff 1px solid;
+  left: calc(var(--font-left) + 13vw);
 }
 
 .picker-item:hover {

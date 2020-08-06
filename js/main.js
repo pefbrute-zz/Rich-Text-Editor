@@ -13,7 +13,8 @@ let fontNames = [
     "inconsolata",
     "ubuntu-mono",
   ],
-  sizeNames = ["small", "normal", "large", "huge"];
+  sizeNames = ["small", "normal", "large", "huge"],
+  classNamesOfAligns = [];
 
 function addStyleActiveToButton() {
   let selection = document.getSelection();
@@ -147,6 +148,13 @@ function addStyleActiveToButton() {
         if (classNameInUpperCase.slice(0, 5) === "ALIGN") {
           let iconID = "ALIGN",
             icon = document.getElementById(iconID);
+
+          console.log(icon);
+          console.log(icon.children[0].className);
+          console.log(classNameInUpperCase.toLowerCase());
+
+          icon.children[0].className =
+            "fas fa-" + classNameInUpperCase.toLowerCase();
 
           if (icon !== null) {
             let classListOfIcon = icon.classList;
@@ -621,11 +629,14 @@ function makeAnchor() {
   let selection = document.getSelection();
   selection.empty();
 
-  let query = "[class=anchor]",
+  let query = "[class=" + capitalizedTagName + "]",
     anchors = document.querySelectorAll(query),
     anchorsLength = anchors.length,
     url = document.getElementById("cloned-url"),
     urlValue = url.value;
+
+  console.log(urlValue);
+  console.log(anchorsLength);
 
   for (let i = 0; i < anchorsLength; i++) {
     let anchor = anchors[i],
