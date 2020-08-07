@@ -13,7 +13,7 @@ body {
 
 .sample-toolbar,
 .work-area {
-  width: 73.5rem;
+  width: 94%;
   padding: 1rem 2rem;
 }
 
@@ -55,17 +55,17 @@ body {
 }
 
 #span-formula,
-#cloned-span-with-formula,
 #url-span,
+#cloned-span-with-formula,
 #cloned-url-span,
 #cloned-video-span {
   position: absolute;
 }
 
+.video-span,
 #span-formula,
 #cloned-span-with-formula,
 #cloned-url-span,
-.video-span,
 #cloned-video-span {
   background-color: white;
   height: 25px;
@@ -229,6 +229,46 @@ body {
   left: calc(var(--font-left) + 13vw);
 }
 
+.dropdown-text,
+.dropdown-background {
+  height: 9.8rem;
+  background-color: #f4f5f5;
+  width: 8.5rem;
+  display: block;
+  margin-top: -1px;
+  z-index: 1;
+  position: absolute;
+  white-space: nowrap;
+  padding: 4px;
+}
+
+:root {
+  --some-left-text: 30.2vw;
+  --some-left-background: 2.3vw;
+}
+
+.dropdown-text {
+  left: var(--some-left-text);
+}
+.dropdown-background {
+  left: calc(var(--some-left-text) + var(--some-left-background));
+}
+
+.dropdown-text > span,
+.dropdown-background > span {
+  display: inline-block;
+}
+
+.dropdown-text button,
+.dropdown-background button {
+  display: inline-block;
+}
+
+.dropdown-text button:hover,
+.dropdown-background button:hover {
+  text-decoration: none;
+}
+
 .picker-item:hover {
   color: rgba(25, 150, 200, 1);
 }
@@ -252,44 +292,6 @@ body {
 }
 .ubuntu-mono {
   font-family: "Ubuntu Mono", monospace;
-}
-
-.dropdown-text,
-.dropdown-background {
-  height: 7.5rem;
-  background-color: #f4f5f5;
-  width: 8.6rem;
-  display: block;
-  margin-top: -1px;
-  z-index: 1;
-  position: absolute;
-  white-space: nowrap;
-  padding: 4px;
-}
-
-:root {
-  --some-left: 27.4vw;
-}
-.dropdown-text {
-  left: var(--some-left);
-}
-.dropdown-background {
-  left: calc(var(--some-left) + 2.3vw);
-}
-
-.dropdown-text > span,
-.dropdown-background > span {
-  display: inline-block;
-}
-
-.dropdown-text button,
-.dropdown-background button {
-  display: inline-block;
-}
-
-.dropdown-text button:hover,
-.dropdown-background button:hover {
-  text-decoration: none;
 }
 
 .highlight-square {
@@ -701,56 +703,81 @@ pre {
 /**/
 
 @media only screen and (max-width: 600px) {
-  .sample-toolbar,
+  /* .sample-toolbar,
   .work-area {
-    width: 23em;
-  }
+    width: 94%;
+  } */
 
   .work-area {
     margin-top: 9rem;
   }
+
+  :root {
+    --some-left-text: 3.2rem;
+    --some-left-background: 1.7rem;
+  }
 }
 
 @media only screen and (min-width: 600px) {
-  .sample-toolbar,
+  /* .sample-toolbar,
   .work-area {
-    width: 33.5em;
-  }
+    width: 94%;
+  } */
 
   .work-area {
-    margin-top: 7rem;
+    margin-top: 5rem;
+  }
+
+  :root {
+    --some-left-text: 40.2vw;
+    --some-left-background: 2.3vw;
   }
 }
 
 @media only screen and (min-width: 768px) {
-  .sample-toolbar,
+  /* .sample-toolbar,
   .work-area {
     width: 40.5em;
-  }
+  } */
 
   .work-area {
     margin-top: 5rem;
+  }
+
+  :root {
+    --some-left-text: 50.2vw;
+    --some-left-background: 2.3vw;
   }
 }
 
 @media only screen and (min-width: 992px) {
-  .sample-toolbar,
+  /* .sample-toolbar,
   .work-area {
     width: 56.5em;
-  }
+  } */
 
   .work-area {
     margin-top: 5rem;
   }
+
+  :root {
+    --some-left-text: 30.2vw;
+    --some-left-background: 2.3vw;
+  }
 }
 
 @media only screen and (min-width: 1200px) {
-  .sample-toolbar,
+  /* .sample-toolbar,
   .work-area {
-    width: 72.5em;
-  }
+    width: 95%;
+  } */
 
   .work-area {
     margin-top: 4rem;
+  }
+
+  :root {
+    --some-left-text: 30.2vw;
+    --some-left-background: 2.3vw;
   }
 }

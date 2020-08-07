@@ -1406,19 +1406,28 @@ function removeSpellcheck() {
   }
 }
 
+//Fix this one, because it makes extra paragraph if you start with a blank sheet
+//
 function replaceDivs() {
   let element = document.getElementById("work-area"),
-    childNodes = element.childNodes,
-    childNodesLength = childNodes.length;
-  for (let i = 0; i < childNodesLength; i++) {
+    childNodes = element.childNodes;
+
+  for (
+    let i = 0, childNodesLength = childNodes.length;
+    i < childNodesLength;
+    i++
+  ) {
     if (
       childNodes[i].nodeName === "DIV" ||
       childNodes[i].nodeName === "#text"
     ) {
       replaceElement(childNodes[i], "p");
+      console.log(childNodes);
     }
   }
 }
+//
+//
 
 let element = document.getElementById("work-area");
 element.addEventListener("keypress", function (e) {
