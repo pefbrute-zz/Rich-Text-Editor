@@ -204,14 +204,21 @@ body {
 }
 
 :root {
-  --font-left: 2.6vw;
+  --font-left: 3.5vw;
 }
 
 .dropdown-fonts {
-  width: 6.85rem;
+  width: 7.85rem;
   background-color: #ffffff;
   left: var(--font-left);
   /* border: #ae81ff 1px solid; */
+}
+
+.dropdown-size {
+  width: 6.8rem;
+  background-color: #ffffff;
+  border: #ae81ff 1px solid;
+  left: calc(var(--font-left) + 12vw);
 }
 
 .size-picker {
@@ -222,12 +229,6 @@ body {
   /* border: #ae81ff 1px solid; */
 }
 
-.dropdown-size {
-  width: 6.8rem;
-  background-color: #ffffff;
-  border: #ae81ff 1px solid;
-  left: calc(var(--font-left) + 13vw);
-}
 
 .dropdown-text,
 .dropdown-background {

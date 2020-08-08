@@ -149,10 +149,6 @@ function addStyleActiveToButton() {
           let iconID = "ALIGN",
             icon = document.getElementById(iconID);
 
-          console.log(icon);
-          console.log(icon.children[0].className);
-          console.log(classNameInUpperCase.toLowerCase());
-
           icon.children[0].className =
             "fas fa-" + classNameInUpperCase.toLowerCase();
 
@@ -634,9 +630,6 @@ function makeAnchor() {
     anchorsLength = anchors.length,
     url = document.getElementById("cloned-url"),
     urlValue = url.value;
-
-  console.log(urlValue);
-  console.log(anchorsLength);
 
   for (let i = 0; i < anchorsLength; i++) {
     let anchor = anchors[i],
@@ -1406,8 +1399,6 @@ function removeSpellcheck() {
   }
 }
 
-//Fix this one, because it makes extra paragraph if you start with a blank sheet
-//
 function replaceDivs() {
   let element = document.getElementById("work-area"),
     childNodes = element.childNodes;
@@ -1417,25 +1408,45 @@ function replaceDivs() {
     i < childNodesLength;
     i++
   ) {
-    if (
-      childNodes[i].nodeName === "DIV" ||
-      childNodes[i].nodeName === "#text"
-    ) {
-      replaceElement(childNodes[i], "p");
-      console.log(childNodes);
+    let childNode = childNodes[i],
+      nameOfChildNode = childNode.nodeName;
+
+    if (nameOfChildNode === "DIV" || nameOfChildNode === "#text") {
+      replaceElement(childNode, "p");
+  
     }
   }
+
+  function clearEmptyParagraphs() {
+    let element = document.getElementById("work-area"),
+      childNodes = element.childNodes;
+
+    for (
+      let i = 0, childNodesLength = childNodes.length;
+      i < childNodesLength;
+      i++
+    ) {
+      let childNode = childNodes[i],
+        nameOfChildNode = childNode.nodeName;
+
+      if (nameOfChildNode === "P") {
+        if (childNode.textContent.length === 0){
+          childNode.remove();
+        }
+      }
+    }
+  }
+
+  clearEmptyParagraphs();
 }
-//
-//
 
 let element = document.getElementById("work-area");
 element.addEventListener("keypress", function (e) {
   if (e.key === "Enter") {
-    let savedSelection = rangy.saveSelection();
+    // let savedSelection = rangy.saveSelection();
 
     setTimeout(replaceDivs, 1);
-    rangy.restoreSelection(savedSelection);
+    // rangy.restoreSelection(savedSelection);
   }
 });
 
