@@ -1,5 +1,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Flamenco&family=Inconsolata&family=Roboto+Slab&family=Slabo+13px&family=Sofia&family=Ubuntu+Mono&display=swap");
 
+:root {
+  --font-left: 3.5vw;
+  --size-left: calc(var(--font-left) + 12vw);
+
+  --left-text: 30.2vw;
+  --left-background: 2.3vw;
+
+  --left-align: 26.8rem;
+}
+
 body {
   background-color: #f4f5f5;
   font-family: "Flamenco", cursive;
@@ -186,7 +196,7 @@ body {
 
 .dropdown-align {
   background-color: #f4f5f5;
-  left: 61.8vw;
+  left: var(--left-align);
 }
 
 .dropdown-video {
@@ -201,11 +211,6 @@ body {
   width: 9em;
   display: inline-block;
   /* border: #ae81ff 1px solid; */
-}
-
-:root {
-  --font-left: 3.5vw;
-  --size-left: calc(var(--font-left) + 12vw);
 }
 
 .dropdown-fonts {
@@ -246,11 +251,6 @@ body {
   position: absolute;
   white-space: nowrap;
   padding: 4px;
-}
-
-:root {
-  --left-text: 30.2vw;
-  --left-background: 2.3vw;
 }
 
 .dropdown-text {
@@ -708,10 +708,13 @@ pre {
 /**/
 /**/
 
+/*Finish adaptive design of align dropdown!*/
+/*******************************************/
 @media only screen and (max-width: 533px) {
   .work-area {
     margin-top: 9rem;
   }
+
 
   :root {
     --font-left: 3.2rem;
@@ -719,6 +722,8 @@ pre {
 
     --left-text: 1rem;
     --left-background: 1.5rem;
+
+    --left-align: 25.4rem;
   }
 }
 
@@ -740,6 +745,8 @@ pre {
   :root {
     --left-text: 26.2rem;
     --left-background: 1.7rem;
+
+    --left-align: 20.8rem;
   }
 }
 
@@ -748,10 +755,9 @@ pre {
     margin-top: 5rem;
   }
 
-  /* :root {
-    --left-text: 26.2rem;
-    --left-background: 1.7rem;
-  } */
+  :root {
+    --left-align: 11.1rem;
+  }
 }
 
 @media only screen and (min-width: 992px) {
@@ -762,6 +768,8 @@ pre {
   :root {
     --left-text: 26.2rem;
     --left-background: 1.7rem;
+
+    --left-align: 57rem;
   }
 }
 
@@ -773,5 +781,7 @@ pre {
   :root {
     --left-text: 26.2rem;
     --left-background: 1.7rem;
+
+    --left-align: 57rem;
   }
 }
