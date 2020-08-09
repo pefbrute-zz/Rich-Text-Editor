@@ -209,16 +209,21 @@ body {
 
 .dropdown-fonts {
   width: 7.85rem;
-  background-color: #ffffff;
   left: var(--font-left);
+  /* background-color: #ffffff; */
   /* border: #ae81ff 1px solid; */
+}
+
+.dropdown-fonts, .dropdown-size{
+  background-color: #ffffff;
+  border: #ae81ff 1px solid;
 }
 
 .dropdown-size {
   width: 6.8rem;
-  background-color: #ffffff;
-  border: #ae81ff 1px solid;
   left: calc(var(--font-left) + 12vw);
+  /* background-color: #ffffff; */
+  /* border: #ae81ff 1px solid; */
 }
 
 .size-picker {
@@ -244,15 +249,15 @@ body {
 }
 
 :root {
-  --some-left-text: 30.2vw;
-  --some-left-background: 2.3vw;
+  --left-text: 30.2vw;
+  --left-background: 2.3vw;
 }
 
 .dropdown-text {
-  left: var(--some-left-text);
+  left: var(--left-text);
 }
 .dropdown-background {
-  left: calc(var(--some-left-text) + var(--some-left-background));
+  left: calc(var(--left-text) + var(--left-background));
 }
 
 .dropdown-text > span,
@@ -703,7 +708,7 @@ pre {
 /**/
 /**/
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 533px) {
   /* .sample-toolbar,
   .work-area {
     width: 94%;
@@ -714,12 +719,12 @@ pre {
   }
 
   :root {
-    --some-left-text: 3.2rem;
-    --some-left-background: 1.7rem;
+    --left-text: 1rem;
+    --left-background: 1.5rem;
   }
 }
 
-@media only screen and (min-width: 600px) {
+@media only screen and (min-width: 533px) {
   /* .sample-toolbar,
   .work-area {
     width: 94%;
@@ -730,8 +735,8 @@ pre {
   }
 
   :root {
-    --some-left-text: 40.2vw;
-    --some-left-background: 2.3vw;
+    --left-text: 26.2rem;
+    --left-background: 1.7rem;
   }
 }
 
@@ -746,8 +751,8 @@ pre {
   }
 
   :root {
-    --some-left-text: 50.2vw;
-    --some-left-background: 2.3vw;
+    --left-text: 26.2rem;
+    --left-background: 1.7rem;
   }
 }
 
@@ -762,8 +767,8 @@ pre {
   }
 
   :root {
-    --some-left-text: 30.2vw;
-    --some-left-background: 2.3vw;
+    --left-text: 26.2rem;
+    --left-background: 1.7rem;
   }
 }
 
@@ -778,7 +783,7 @@ pre {
   }
 
   :root {
-    --some-left-text: 30.2vw;
-    --some-left-background: 2.3vw;
+    --left-text: 26.2rem;
+    --left-background: 1.7rem;
   }
 }
