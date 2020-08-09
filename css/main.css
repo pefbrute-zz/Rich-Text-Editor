@@ -159,9 +159,9 @@ body {
   display: none;
 }
 
-.dropdown-align,
 .dropdown-fonts,
 .dropdown-size,
+.dropdown-align,
 .dropdown-video {
   min-width: 2rem;
   display: block;
@@ -205,6 +205,7 @@ body {
 
 :root {
   --font-left: 3.5vw;
+  --size-left: calc(var(--font-left) + 12vw);
 }
 
 .dropdown-fonts {
@@ -222,7 +223,7 @@ body {
 
 .dropdown-size {
   width: 6.8rem;
-  left: calc(var(--font-left) + 12vw);
+  left: var(--size-left);
   /* background-color: #ffffff; */
   /* border: #ae81ff 1px solid; */
 }
@@ -713,6 +714,9 @@ pre {
   }
 
   :root {
+    --font-left: 3.2rem;
+    --size-left: calc(var(--font-left) + 10.5rem);
+
     --left-text: 1rem;
     --left-background: 1.5rem;
   }
@@ -724,6 +728,9 @@ pre {
   }
 
   :root {
+    --font-left: 3.2rem;
+    --size-left: calc(var(--font-left) + 10.5rem);
+
     --left-text: 25rem;
     --left-background: 0.5rem;
   }
