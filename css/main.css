@@ -239,7 +239,7 @@ body {
 .dropdown-background {
   height: 9.8rem;
   background-color: #f4f5f5;
-  width: 8.5rem;
+  width: 8.9rem;
   display: block;
   margin-top: -1px;
   z-index: 1;
@@ -725,6 +725,13 @@ pre {
   }
 
   :root {
+    --left-text: 25rem;
+    --left-background: 0.5rem;
+  }
+}
+
+@media only screen and (min-width: 600px) {
+  :root {
     --left-text: 26.2rem;
     --left-background: 1.7rem;
   }
@@ -735,10 +742,10 @@ pre {
     margin-top: 5rem;
   }
 
-  :root {
+  /* :root {
     --left-text: 26.2rem;
     --left-background: 1.7rem;
-  }
+  } */
 }
 
 @media only screen and (min-width: 992px) {
