@@ -715,7 +715,6 @@ pre {
     margin-top: 9rem;
   }
 
-
   :root {
     --font-left: 3.2rem;
     --size-left: calc(var(--font-left) + 10.5rem);
@@ -746,7 +745,61 @@ pre {
     --left-text: 26.2rem;
     --left-background: 1.7rem;
 
-    --left-align: 20.8rem;
+    --left-align: 22.2em;
+  }
+}
+
+@media only screen and (min-width: 610px) {
+  :root {
+    --left-align: 20.9rem;
+  }
+}
+
+@media only screen and (min-width: 634px) {
+  :root {
+    --left-align: 19.5rem;
+  }
+}
+
+@media only screen and (min-width: 656px) {
+  :root {
+    --left-align: 18.1rem;
+  }
+}
+
+@media only screen and (min-width: 665px) {
+  :root {
+    --left-align: 17.7rem;
+  }
+}
+
+@media only screen and (min-width: 687px) {
+  :root {
+    --left-align: 16.3rem;
+  }
+}
+
+@media only screen and (min-width: 696px) {
+  :root {
+    --left-align: 15.9rem;
+  }
+}
+
+@media only screen and (min-width: 718px) {
+  :root {
+    --left-align: 14.5rem;
+  }
+}
+
+@media only screen and (min-width: 726px) {
+  :root {
+    --left-align: 14rem;
+  }
+}
+
+@media only screen and (min-width: 753px) {
+  :root {
+    --left-align: 12.5rem;
   }
 }
 
@@ -756,15 +809,83 @@ pre {
   }
 
   :root {
-    --left-align: 11.1rem;
+    --left-align: 12.5rem;
   }
 }
 
-@media only screen and (min-width: 992px) {
-  .work-area {
-    margin-top: 5rem;
+@media only screen and (min-width: 799px) {
+  :root {
+    --left-align: 9.8rem;
+  }
+}
+
+@media only screen and (min-width: 808px) {
+  :root {
+    --left-align: 9.3rem;
+  }
+}
+
+@media only screen and (min-width: 834px) {
+  :root {
+    --left-align: 7.7rem;
+  }
+}
+
+@media only screen and (min-width: 843px) {
+  :root {
+    --left-align: 7.2rem;
+  }
+}
+
+@media only screen and (min-width: 863px) {
+  :root {
+    --left-align: 6rem;
+  }
+}
+
+@media only screen and (min-width: 871px) {
+  :root {
+    --left-align: 5.5rem;
+  }
+}
+
+@media only screen and (min-width: 891px) {
+  :root {
+    --left-align: 4.3rem;
+  }
+}
+
+@media only screen and (min-width: 916px) {
+  :root {
+    --left-align: 2.9rem;
+  }
+}
+
+@media only screen and (min-width: 935px) {
+  :root {
+    --left-align: 1.8rem;
+  }
+}
+
+@media only screen and (min-width: 944px) {
+  :root {
+    --left-align: 1.2rem;
+  }
+}
+
+@media only screen and (min-width: 944px) {
+  :root {
+    --left-align: 57rem;
   }
 
+  .dropdown-align{
+    margin-top: -30px;
+  }
+}
+
+/* Finish adaptive design of align dropdown */
+
+@media only screen and (min-width: 992px) {
   :root {
     --left-text: 26.2rem;
     --left-background: 1.7rem;
