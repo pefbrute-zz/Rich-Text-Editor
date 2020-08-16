@@ -1324,32 +1324,6 @@ function highlightKeywords() {
 //It highlights all numbers in <pre> tag
 function highlightNumbers() {
   let preList = document.getElementsByTagName("PRE");
-  // selection = document.getSelection();
-  // preElement = selection.anchorNode;
-
-  // if (selection.type === "Caret") {
-  //   while (preElement.tagName !== "PRE") {
-  //     preElement = preElement.parentElement;
-
-  //   }
-
-  //   let regExp = new RegExp("\\b" + "\\d+" + "\\b", "gi"),
-  //     matches = preElement.innerHTML.match(regExp),
-  //     matchesAmount = matches.length,
-  //     matchesLastElementIndex = matchesAmount - 1;
-
-  //   if (matches !== null) {
-  //     for (let j = 0; j <= matchesLastElementIndex; j++) {
-  //       let match = matches[j],
-  //         replacing = "<span class=pre-number>" + match + "</span>",
-  //         regExp = new RegExp("\\b" + match + "\\b", "gi");
-
-  //       replacedInner = preElement.innerHTML.replace(regExp, replacing);
-  //       preElement.innerHTML = replacedInner;
-  //     }
-  //   }
-  // }
-  // if (2 + 2 === 4) {
   for (
     let i = 0, indexOfLastPreElement = preList.length - 1;
     i <= indexOfLastPreElement;

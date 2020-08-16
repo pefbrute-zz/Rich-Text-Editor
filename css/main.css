@@ -873,7 +873,7 @@ pre {
   }
 }
 
-@media only screen and (min-width: 944px) {
+@media only screen and (min-width: 964px) {
   :root {
     --left-align: 57rem;
   }
@@ -891,6 +891,10 @@ pre {
     --left-background: 1.7rem;
 
     --left-align: 57rem;
+  }
+
+  .dropdown-align{
+    margin-top: -0px;
   }
 }
 
