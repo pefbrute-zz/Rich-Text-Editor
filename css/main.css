@@ -75,13 +75,25 @@ body {
 .video-span,
 #span-formula,
 #cloned-span-with-formula,
-#cloned-url-span,
-#cloned-video-span {
+#cloned-video-span,
+#cloned-url-span {
   background-color: white;
   height: 25px;
-  width: 310px;
+  width: 370px;
   padding: 10px 10px 10px 10px;
   border: solid 2px #23241f;
+}
+
+#cloned-video-span{
+  width: 360px;
+}
+
+#cloned-span-with-formula{
+  width: 375px;
+}
+
+#cloned-url-span {
+  width: 380px;
 }
 
 .icon,
@@ -878,7 +890,7 @@ pre {
     --left-align: 57rem;
   }
 
-  .dropdown-align{
+  .dropdown-align {
     margin-top: -30px;
   }
 }
@@ -893,7 +905,7 @@ pre {
     --left-align: 57rem;
   }
 
-  .dropdown-align{
+  .dropdown-align {
     margin-top: -0px;
   }
 }

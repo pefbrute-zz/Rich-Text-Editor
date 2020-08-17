@@ -949,9 +949,10 @@ function replaceContainerTag(tag) {
         p[pCounter] = firstSelectedElement;
         pCounter++;
       } else {
-        let amountOfTags = tagData.tagCounter;
+        let amountOfTags = tagData.tagCounter,
+          selectedTags = tagData.selectedTags;
 
-        tagData.selectedTags[amountOfTags] = firstSelectedElement;
+        selectedTags[amountOfTags] = firstSelectedElement;
         tagData.tagCounter++;
       }
 
@@ -1348,7 +1349,6 @@ function highlightNumbers() {
     }
   }
 }
-// }
 
 //It deletes all tags in <pre> tag
 function clearTagsAtPreContainer() {
@@ -1360,7 +1360,7 @@ function clearTagsAtPreContainer() {
     let pre = preList[i],
       textOfPre = pre.textContent;
 
-    preList[i].innerHTML = textOfPre;
+    pre.innerHTML = textOfPre;
   }
 }
 
@@ -1387,7 +1387,6 @@ function replaceDivs() {
 
     if (nameOfChildNode === "DIV" || nameOfChildNode === "#text") {
       replaceElement(childNode, "p");
-  
     }
   }
 
@@ -1404,7 +1403,10 @@ function replaceDivs() {
         nameOfChildNode = childNode.nodeName;
 
       if (nameOfChildNode === "P") {
-        if (childNode.textContent.length === 0){
+        let textContentOfChild = childNode.textContent,
+          lengthOfTextContent = textContentOfChild.length;
+
+        if (lengthOfTextContent === 0) {
           childNode.remove();
         }
       }
@@ -2000,7 +2002,9 @@ function moveVideoSpanUnderCaret() {
 
   span.setAttribute("id", "cloned-video-span");
 
-  span.style.display = "block";
+
+  let styleOfSpan = span.style;
+  styleOfSpan.display = "block";
 
   range.insertNode(span);
 
@@ -2047,16 +2051,6 @@ function addVideoByURL() {
 
   input.value = "";
 }
-
-tests = () => {
-  function performanceTest(someFunction) {
-    console.time();
-    someFunction();
-    console.timeEnd();
-  }
-
-  // performanceTest(undo);
-};
 
 function getChildIndex(child, parent) {
   let children = parent.children,
