@@ -289,6 +289,13 @@ let workAreaContainer = document.getElementById("work-area");
 
 workAreaContainer.addEventListener("click", () => {
   addStyleActiveToButton();
+  // moveAnchorSpanUnderCaret();
+  let selection = document.getSelection();
+  console.log(selection);
+
+  if (selection.type === "Caret" && isThereNode(selection.anchorNode, "A")){
+    moveAnchorSpanUnderCaret();
+  }
 });
 
 workAreaContainer.addEventListener("keydown", () => {
