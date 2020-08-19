@@ -757,61 +757,109 @@ pre {
     --left-text: 26.2rem;
     --left-background: 1.7rem;
 
-    --left-align: 22.2em;
+    --left-align: 20.2em;
   }
 }
 
-@media only screen and (min-width: 610px) {
+/* @media only screen and (min-width: 610px) {
   :root {
     --left-align: 20.2rem;
   }
-}
+} */
 
-@media only screen and (min-width: 634px) {
+@media only screen and (min-width: 622px) {
   :root {
     --left-align: 18.7rem;
   }
 }
 
-@media only screen and (min-width: 656px) {
+@media only screen and (min-width: 643px) {
+  :root {
+    --left-align: 17.5rem;
+  }
+}
+
+/* @media only screen and (min-width: 656px) {
+  :root {
+    --left-align: 17rem;
+  }
+} */
+
+@media only screen and (min-width: 652px) {
   :root {
     --left-align: 17rem;
   }
 }
 
-@media only screen and (min-width: 665px) {
+/* @media only screen and (min-width: 665px) {
   :root {
     --left-align: 17rem;
   }
+} */
+
+@media only screen and (min-width: 672px) {
+  :root {
+    --left-align: 15.8rem;
+  }
 }
 
-@media only screen and (min-width: 687px) {
+/* @media only screen and (min-width: 687px) {
+  :root {
+    --left-align: 15.3rem;
+  }
+} */
+
+@media only screen and (min-width: 681px) {
   :root {
     --left-align: 15.3rem;
   }
 }
 
-@media only screen and (min-width: 696px) {
+/* @media only screen and (min-width: 696px) {
   :root {
     --left-align: 15.3rem;
   }
+} */
+
+@media only screen and (min-width: 702px) {
+  :root {
+    --left-align: 14rem;
+  }
 }
 
-@media only screen and (min-width: 718px) {
+/* @media only screen and (min-width: 718px) {
   :root {
     --left-align: 13.6rem;
   }
-}
+} */
 
-@media only screen and (min-width: 726px) {
+@media only screen and (min-width: 710px) {
   :root {
     --left-align: 13.5rem;
   }
 }
 
-@media only screen and (min-width: 753px) {
+/* @media only screen and (min-width: 726px) {
+  :root {
+    --left-align: 13.5rem;
+  }
+} */
+
+@media only screen and (min-width: 735px) {
   :root {
     --left-align: 12.1rem;
+  }
+}
+
+/* @media only screen and (min-width: 753px) {
+  :root {
+    --left-align: 12.1rem;
+  }
+} */
+
+@media only screen and (min-width: 760px) {
+  :root {
+    --left-align: 10.7rem;
   }
 }
 
@@ -820,38 +868,80 @@ pre {
     margin-top: 5rem;
   }
 
-  :root {
+  /* :root {
     --left-align: 10.7rem;
+  } */
+}
+
+@media only screen and (min-width: 780px) {
+  :root {
+    --left-align: 9.4rem;
   }
 }
 
-@media only screen and (min-width: 799px) {
+@media only screen and (min-width: 789px) {
   :root {
     --left-align: 8.9rem;
   }
 }
 
-@media only screen and (min-width: 808px) {
+/* @media only screen and (min-width: 799px) {
   :root {
     --left-align: 8.9rem;
   }
+} */
+
+/* @media only screen and (min-width: 808px) {
+  :root {
+    --left-align: 8.9rem;
+  }
+} */
+
+@media only screen and (min-width: 814px) {
+  :root {
+    --left-align: 7.5rem;
+  }
 }
 
-@media only screen and (min-width: 834px) {
+@media only screen and (min-width: 822px) {
   :root {
     --left-align: 7rem;
   }
 }
 
-@media only screen and (min-width: 843px) {
+/* @media only screen and (min-width: 834px) {
+  :root {
+    --left-align: 7rem;
+  }
+} */
+
+@media only screen and (min-width: 841px) {
   :root {
     --left-align: 5.9rem;
   }
 }
 
-@media only screen and (min-width: 863px) {
+/* @media only screen and (min-width: 843px) {
+  :root {
+    --left-align: 5.9rem;
+  }
+} */
+
+@media only screen and (min-width: 850px) {
   :root {
     --left-align: 5.4rem;
+  }
+}
+
+/* @media only screen and (min-width: 863px) {
+  :root {
+    --left-align: 5.4rem;
+  }
+} */
+
+@media only screen and (min-width: 868px) {
+  :root {
+    --left-align: 4.3rem;
   }
 }
 
@@ -861,25 +951,31 @@ pre {
   }
 }
 
-@media only screen and (min-width: 891px) {
+@media only screen and (min-width: 893px) {
   :root {
-    --left-align: 4.3rem;
+    --left-align: 2.9rem;
   }
 }
 
-@media only screen and (min-width: 916px) {
+/* @media only screen and (min-width: 916px) {
   :root {
     --left-align: 1.8rem;
   }
-}
+} */
 
-@media only screen and (min-width: 935px) {
+@media only screen and (min-width: 920px) {
   :root {
-    --left-align: 1.3rem;
+    --left-align: 1.2rem;
   }
 }
 
-@media only screen and (min-width: 944px) {
+/* @media only screen and (min-width: 935px) {
+  :root {
+    --left-align: 1.3rem;
+  }
+} */
+
+@media only screen and (min-width: 938px) {
   :root {
     --left-align: 55.5rem;
   }
@@ -888,6 +984,16 @@ pre {
     margin-top: -30px;
   }
 }
+
+/* @media only screen and (min-width: 944px) {
+  :root {
+    --left-align: 55.5rem;
+  }
+
+  .dropdown-align {
+    margin-top: -30px;
+  }
+} */
 
 @media only screen and (min-width: 964px) {
   :root {
