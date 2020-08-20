@@ -67,14 +67,15 @@
           </span>
 
           <a
-          id="SIZE"
+            id="SIZE"
             class="size-picker icon"
             href="javascript:void(0)"
             onclick="addDropdown('dropdown-size')"
           >
             <span id="size-name" class="normal">
               Normal
-               <i class="fas fa-sort"></i></span>
+              <i class="fas fa-sort"></i
+            ></span>
           </a>
 
           <span class="options hidden" id="dropdown-size" tabindex="-1">
@@ -593,7 +594,7 @@
           </a>
 
           <a
-          id="BLOCKQUOTE"
+            id="BLOCKQUOTE"
             class="icon"
             href="javascript:void(0)"
             onclick="makeCopyOfMainContainer(); replaceContainerTag('blockquote'); makeCopyOfMainContainer();"
@@ -753,6 +754,17 @@
               </button>
             </span>
 
+            <span id="url-edit-span" class="hidden">
+              <label for="url">Visit URL: </label>
+              <span id="edit-paragraph">Nothing</span>
+              <button id="url-save-button" onclick="makeCopyOfMainContainer();">
+                Edit
+              </button>
+              <button id="url-save-button" onclick="makeCopyOfMainContainer();">
+                Remove
+              </button>
+            </span>
+
             <span class="hidden" id="video-span" tabindex="-1">
               <label for="url-input">Enter video: </label>
               <input id="url-input" type="text" placeholder="Embed URL" />
@@ -851,7 +863,8 @@
           <li>
             The
             <strong class="STRONG"
-              >Eleve<em class="EM">nth <u class="U">One</u> and </em> Some text of it</strong
+              >Eleve<em class="EM">nth <u class="U">One</u> and </em> Some text
+              of it</strong
             >
           </li>
           <li>The Twelnth One and <em class="EM">Some</em> text of it</li>
@@ -870,7 +883,9 @@
         </ul>
         <p><strong class="STRONG">Hai!</strong></p>
         <p><strong class="STRONG">Aai!</strong></p>
-        <p><strong class="STRONG">B<em class="EM">ai</em>!</strong></p>
+        <p>
+          <strong class="STRONG">B<em class="EM">ai</em>!</strong>
+        </p>
         <ul>
           <li>
             Lorem

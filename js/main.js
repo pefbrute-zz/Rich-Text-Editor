@@ -289,11 +289,58 @@ let workAreaContainer = document.getElementById("work-area");
 
 workAreaContainer.addEventListener("click", () => {
   addStyleActiveToButton();
-  
-  // let selection = document.getSelection();
-  // if (selection.type === "Caret" && isThereNode(selection.anchorNode, "A")){
-  //   moveAnchorSpanUnderCaret();
-  // }
+
+  let selection = document.getSelection();
+  if (selection.type === "Caret" && isThereNode(selection.anchorNode, "A")) {
+    function moveEditAnchorSpanUnderCaret() {
+      let selection = document.getSelection(),
+        range = selection.getRangeAt(0),
+        urlSpan = document.getElementById("url-edit-span"),
+        span = urlSpan.cloneNode(true),
+        anchor = getSecondChildInMainContainer(selection.anchorNode);
+
+      console.log(anchor);
+      let href = anchor.attributes["href"].value,
+      editParagraph = span.children[1];
+
+      editParagraph.textContent = href;
+      console.log(span);
+      console.log(editParagraph);
+      console.log(href);
+
+      span.setAttribute("id", "cloned-url-edit-span");
+      span.style.display = "block";
+
+      range.insertNode(span);
+
+      span.style.top = span.offsetTop + 5 + "px";
+      span.style.left = span.offsetLeft - 30 + "px";
+
+      let childrenOfSpan = span.children,
+        inputWithURL = childrenOfSpan[1];
+
+
+      // inputWithURL.setAttribute("id", "cloned-url");
+
+      // inputWithURL.focus();
+
+      // inputWithURL.onblur = () => {
+      //   window.setTimeout(() => {
+      //     span.remove();
+      //     rangy.removeMarkers(urlSelection);
+      //   }, 300);
+      // };
+
+      // inputWithURL.onkeydown = (event) => {
+      //   if (event.keyCode === 13) {
+      //     let saveButton = childrenOfSpan[2];
+
+      //     saveButton.click();
+      //   }
+      // };
+    }
+    // moveEditAnchorSpanUnderCaret();
+  }
 });
 
 workAreaContainer.addEventListener("keydown", () => {
@@ -1404,8 +1451,13 @@ function replaceDivs() {
       i < childNodesLength;
       i++
     ) {
-      let childNode = childNodes[i],
-        nameOfChildNode = childNode.nodeName;
+      let childNode = childNodes[i];
+
+      if (childNode === undefined) {
+        continue;
+      }
+
+      let nameOfChildNode = childNode.nodeName;
 
       if (nameOfChildNode === "P") {
         let textContentOfChild = childNode.textContent,
@@ -2006,7 +2058,6 @@ function moveVideoSpanUnderCaret() {
     span = urlVideoSpan.cloneNode(true);
 
   span.setAttribute("id", "cloned-video-span");
-
 
   let styleOfSpan = span.style;
   styleOfSpan.display = "block";

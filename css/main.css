@@ -64,11 +64,16 @@ body {
   display: none;
 }
 
+#cloned-url-edit-span #edit-paragraph {
+  width: 10px;
+}
+
 #span-formula,
 #url-span,
 #cloned-span-with-formula,
+#cloned-video-span,
 #cloned-url-span,
-#cloned-video-span {
+#cloned-url-edit-span {
   position: absolute;
 }
 
@@ -76,7 +81,8 @@ body {
 #span-formula,
 #cloned-span-with-formula,
 #cloned-video-span,
-#cloned-url-span {
+#cloned-url-span,
+#cloned-url-edit-span {
   background-color: white;
   height: 25px;
   width: 370px;
@@ -84,11 +90,11 @@ body {
   border: solid 2px #23241f;
 }
 
-#cloned-video-span{
+#cloned-video-span {
   width: 285px;
 }
 
-#cloned-span-with-formula{
+#cloned-span-with-formula {
   width: 375px;
 }
 
