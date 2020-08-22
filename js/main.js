@@ -289,58 +289,6 @@ let workAreaContainer = document.getElementById("work-area");
 
 workAreaContainer.addEventListener("click", () => {
   addStyleActiveToButton();
-
-  let selection = document.getSelection();
-  if (selection.type === "Caret" && isThereNode(selection.anchorNode, "A")) {
-    function moveEditAnchorSpanUnderCaret() {
-      let selection = document.getSelection(),
-        range = selection.getRangeAt(0),
-        urlSpan = document.getElementById("url-edit-span"),
-        span = urlSpan.cloneNode(true),
-        anchor = getSecondChildInMainContainer(selection.anchorNode);
-
-      console.log(anchor);
-      let href = anchor.attributes["href"].value,
-      editParagraph = span.children[1];
-
-      editParagraph.textContent = href;
-      console.log(span);
-      console.log(editParagraph);
-      console.log(href);
-
-      span.setAttribute("id", "cloned-url-edit-span");
-      span.style.display = "block";
-
-      range.insertNode(span);
-
-      span.style.top = span.offsetTop + 5 + "px";
-      span.style.left = span.offsetLeft - 30 + "px";
-
-      let childrenOfSpan = span.children,
-        inputWithURL = childrenOfSpan[1];
-
-
-      // inputWithURL.setAttribute("id", "cloned-url");
-
-      // inputWithURL.focus();
-
-      // inputWithURL.onblur = () => {
-      //   window.setTimeout(() => {
-      //     span.remove();
-      //     rangy.removeMarkers(urlSelection);
-      //   }, 300);
-      // };
-
-      // inputWithURL.onkeydown = (event) => {
-      //   if (event.keyCode === 13) {
-      //     let saveButton = childrenOfSpan[2];
-
-      //     saveButton.click();
-      //   }
-      // };
-    }
-    // moveEditAnchorSpanUnderCaret();
-  }
 });
 
 workAreaContainer.addEventListener("keydown", () => {
@@ -414,9 +362,6 @@ function isThereNode(startNode, nameOfTargetNode) {
     return true;
   }
 }
-
-//
-//
 
 //Adds dropdown class to element with dropdownID
 function addDropdown(dropdownID) {
@@ -659,7 +604,9 @@ function moveAnchorSpanUnderCaret() {
   };
 
   inputWithURL.onkeydown = (event) => {
-    if (event.keyCode === 13) {
+    let keyCode = event.keyCode;
+
+    if (keyCode === 13) {
       let saveButton = childrenOfSpan[2];
 
       saveButton.click();
@@ -776,13 +723,14 @@ function addFont(fontName) {
           classNamesListAmount = classNamesList.length;
 
         for (let k = 0; k < classNamesListAmount; k++) {
-          for (let j = 0; j < amountOfNames; j++) {
-            let name = names[j];
+          let className = classNamesList[k];
 
-            if (
-              classNamesList[k] === name &&
-              classNamesList[k] !== capitalizedFontName
-            ) {
+          for (let j = 0; j < amountOfNames; j++) {
+            let name = names[j],
+              condition =
+                classNames === name && classNames !== capitalizedFontName;
+
+            if (condition) {
               classNamesList.splice(k, 1);
               classNamesListAmount--;
             }
@@ -832,9 +780,10 @@ function addSize(sizeName) {
         for (let k = 0; k < amountOfClasses; k++) {
           for (let j = 0; j < namesLength; j++) {
             let name = names[j],
-              splittedClass = splittedClassName[k];
+              splittedClass = splittedClassName[k],
+              condition = splittedClass === name && splittedClass !== sizeName;
 
-            if (splittedClass === name && splittedClass !== sizeName) {
+            if (condition) {
               splittedClassName.splice(k, 1);
               amountOfClasses--;
             }
@@ -980,11 +929,11 @@ function replaceContainerTag(tag) {
   let mainContainer = document.getElementById("work-area"),
     selectedElements = getFirstSelectedChilds(mainContainer),
     firstSelectedElement = selectedElements[0],
-    lastSelectedElement = selectedElements[1];
+    lastSelectedElement = selectedElements[1],
+    isFirstAndLastSelectedElementUndefined =
+      firstSelectedElement === undefined && lastSelectedElement === undefined;
 
-  if (firstSelectedElement !== undefined && lastSelectedElement !== undefined) {
-    // savedSellection = rangy.saveSelection();
-
+  if (!isFirstAndLastSelectedElementUndefined) {
     let p = [],
       pCounter = 0,
       tagData = {
@@ -1013,9 +962,10 @@ function replaceContainerTag(tag) {
         elementAfterLastSelectedElement =
           lastSelectedElement.nextElementSibling;
 
-      if (
-        elementAfterFirstSelectedElement === elementAfterLastSelectedElement
-      ) {
+      let isAfterFirstAndLastElementsEqual =
+        elementAfterFirstSelectedElement === elementAfterLastSelectedElement;
+
+      if (isAfterFirstAndLastElementsEqual) {
         break;
       }
 
@@ -1046,7 +996,6 @@ function replaceContainerTag(tag) {
 
     if (tagInUpperCase === "PRE") {
       clearTagsAtPreContainer();
-      // init();
       removeSpellcheck();
       highlightNumbers();
       highlightKeywords();
@@ -1055,8 +1004,6 @@ function replaceContainerTag(tag) {
 
   let selection = document.getSelection();
   selection.empty();
-
-  // rangy.restoreSelection(savedSellection);
 }
 
 //It highlights specific words + all numbers in <pre>
@@ -1083,15 +1030,12 @@ function getFirstSelectedChilds(bigParent) {
       let firstSelectedElement = firstNode,
         lastSelectedElement = lastNode,
         startElement = range.startContainer,
-        endElement = range.endContainer;
+        endElement = range.endContainer,
+        condition =
+          firstSelectedElement !== startElement &&
+          lastSelectedElement !== endElement;
 
-      if (
-        firstSelectedElement !== startElement &&
-        lastSelectedElement !== endElement
-      ) {
-        // firstSelectedElement = lastNode;
-        // lastSelectedElement = firstNode;
-
+      if (condition) {
         firstAndLastSelectedElements = swap(
           firstSelectedElement,
           lastSelectedElement
@@ -1118,8 +1062,10 @@ function addContainerClass(className) {
   let mainContainer = document.getElementById("work-area"),
     firstSelectedElement = getFirstSelectedChilds(mainContainer)[0],
     lastSelectedElement = getFirstSelectedChilds(mainContainer)[1];
+  isFirstAndLastSelectedElementUndefined =
+    firstSelectedElement === undefined && lastSelectedElement === undefined;
 
-  if (firstSelectedElement !== undefined && lastSelectedElement !== undefined) {
+  if (!isFirstAndLastSelectedElementUndefined) {
     let classNameBeginning = className.substring(0, 6);
 
     if (classNameBeginning === "indent") {
@@ -1127,14 +1073,17 @@ function addContainerClass(className) {
         classBeginning = "indent";
 
       do {
-        let nameOfFirstSelectedElement = firstSelectedElement.nodeName;
+        let nameOfFirstSelectedElement = firstSelectedElement.nodeName,
+          isNameOfFirstSelectedElementTextNode =
+            nameOfFirstSelectedElement === "#text";
 
-        if (nameOfFirstSelectedElement !== "#text") {
+        if (!isNameOfFirstSelectedElementTextNode) {
           let firstSelectedElementClassName = firstSelectedElement.className,
             attributesOfFirstSelectedElement = firstSelectedElement.attributes,
-            dataValue = attributesOfFirstSelectedElement["data-value"];
+            dataValue = attributesOfFirstSelectedElement["data-value"],
+            isDataValueUndefined = dataValue === undefined;
 
-          if (dataValue !== undefined) {
+          if (!isDataValueUndefined) {
             let valueOfDataValue = dataValue.nodeValue,
               parsedDataValue = parseInt(valueOfDataValue);
 
@@ -1195,8 +1144,6 @@ function addContainerClass(className) {
                     firstSelectedElement.className = clearExtraSpaces(classes);
                   }
                 } else {
-                  // repeated code too
-                  //
                   let className = firstSelectedElement.className,
                     classes = className.split(" "),
                     amountOfClasses = classes.length;
@@ -1227,8 +1174,6 @@ function addContainerClass(className) {
                     );
 
                   firstSelectedElement.className = classesWithoutExtraSpaces;
-                  //
-                  //
                 }
               }
             }
@@ -1257,7 +1202,6 @@ function addContainerClass(className) {
       );
     } else {
       do {
-        // let classNameOfFirstSelectedElement = firstSelectedElement.className;
         let classListOfFirstSelectedElement = firstSelectedElement.classList;
 
         if (classListOfFirstSelectedElement === undefined) {
@@ -1361,7 +1305,6 @@ function highlightKeywords() {
 
   for (let i = 0; i <= preListLastIndexElement; i++) {
     let pre = preList[i];
-    // preInner = pre.innerHTML;
 
     for (let j = 0; j <= wordsLastElementIndex; j++) {
       let word = words[j],
@@ -1371,7 +1314,6 @@ function highlightKeywords() {
       pre.innerHTML = replacedInner;
     }
   }
-  // }
 }
 
 //It highlights all numbers in <pre> tag
@@ -1476,10 +1418,7 @@ function replaceDivs() {
 let element = document.getElementById("work-area");
 element.addEventListener("keypress", function (e) {
   if (e.key === "Enter") {
-    // let savedSelection = rangy.saveSelection();
-
     setTimeout(replaceDivs, 1);
-    // rangy.restoreSelection(savedSelection);
   }
 });
 
@@ -1578,12 +1517,8 @@ function makeList(type) {
   let amountOfLists = getAmountOfLists(firstParentIndex, lastParentIndex);
 
   // If we selected only list tags then turn them into <p> tags
-  //
-  //Think about condition!
   let index = lastParentIndex + 1;
   if (amountOfLists === index - firstParentIndex) {
-    //
-    //
     let selection = document.getSelection(),
       firstSelectedElement = selection.anchorNode,
       lastSelectedElement = selection.focusNode;
@@ -1875,7 +1810,6 @@ function makeList(type) {
     }
     clearEmptyContainers();
 
-    // let fragment = document.createDocumentFragment(),
     let editor = document.getElementById("work-area"),
       editorChildren = editor.children,
       childrenAmount = editorChildren.length,
@@ -2184,7 +2118,6 @@ function removeFormatting() {
 
     anchorNode = anchorAndFocusNode[0];
     focusNode = anchorAndFocusNode[1];
-    // fragmentChildren.reverse();
   }
 
   let nameOfFirstSelectedChild = firstSelectedChild.nodeName,
@@ -2198,8 +2131,6 @@ function removeFormatting() {
     return element;
   }
 
-  //
-  // Fix this one
   function clearElementsFromPToList() {
     addTag("selected");
     let ul = getChildOfMainContainer(focusNode);
@@ -2378,8 +2309,6 @@ function removeFormatting() {
       firstSelectedChild.after(fragmentWithRemainingParts);
     }
   }
-  //
-  //
 
   function clearElementsFromListToP() {
     addTag("selected");
@@ -3187,8 +3116,6 @@ function removeFormatting() {
           mainContainer.insertBefore(lastUl, childOfMainContainer);
         }
       } else if (distanceBetweenSelectedLiElements === 1) {
-        //Fix this function
-        //
         function clearSelectedTags() {
           let secondFirstParent = getSecondChildInMainContainer(anchorNode)
               .parentElement,
@@ -3233,8 +3160,6 @@ function removeFormatting() {
             parentTag.after(createTextNode(strippedContent));
           }
         }
-        //
-        //
         clearSelectedTags();
 
         function turnLiElementIntoParagraph() {
