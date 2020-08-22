@@ -1468,7 +1468,10 @@ function clearEmptyContainers() {
       textContent = child.textContent;
 
     textContent = clearExtraSpaces(textContent);
-    if (textContent === "") {
+
+    let isEmptyNode = textContent === "";
+
+    if (isEmptyNode) {
       mainContainer.removeChild(child);
       childrenAmount--;
     }
@@ -1498,19 +1501,24 @@ function makeList(type) {
     parentOfLastElement
   ) {
     let childrenAmount = mainChildren.length,
-      firstParentIndex = -1,
-      lastParentIndex = -1;
+      indexOfFirstSelectedParent = -1,
+      indexOfLastParent = -1;
 
     for (let i = 0; i < childrenAmount; i++) {
-      let child = mainChildren[i];
-      if (child === parentOfFirstElement) {
-        firstParentIndex = i;
+      let child = mainChildren[i],
+        isChildParentOfFirstElement = child === parentOfFirstElement;
+
+      if (isChildParentOfFirstElement) {
+        indexOfFirstSelectedParent = i;
       }
-      if (child === parentOfLastElement) {
-        lastParentIndex = i;
+
+      let isChildParentOfLastElement = child === parentOfLastElement;
+
+      if (isChildParentOfLastElement) {
+        indexOfLastParent = i;
       }
     }
-    return [firstParentIndex, lastParentIndex];
+    return [indexOfFirstSelectedParent, indexOfLastParent];
   }
 
   let mainChildren = mainContainer.children,
@@ -1519,42 +1527,46 @@ function makeList(type) {
       parentOfFirstElement,
       parentOfLastElement
     ),
-    firstParentIndex = firstAndLastParentIndexes[0],
-    lastParentIndex = firstAndLastParentIndexes[1];
+    indexOfFirstSelectedParent = firstAndLastParentIndexes[0],
+    indexOfLastParent = firstAndLastParentIndexes[1];
 
   //Change indexes if selection was from the end
-  function swapIndexes(firstParentIndex, lastParentIndex) {
-    if (firstParentIndex > lastParentIndex) {
-      [firstParentIndex, lastParentIndex] = [lastParentIndex, firstParentIndex];
+  function swapIndexes(indexOfFirstSelectedParent, indexOfLastParent) {
+    let isFirstIndexMoreThanLast = indexOfFirstSelectedParent > indexOfLastParent;
+
+    if (isFirstIndexMoreThanLast) {
+      [indexOfFirstSelectedParent, indexOfLastParent] = [indexOfLastParent, indexOfFirstSelectedParent];
     }
-    return [firstParentIndex, lastParentIndex];
+    return [indexOfFirstSelectedParent, indexOfLastParent];
   }
 
-  let parentsIndexes = swapIndexes(firstParentIndex, lastParentIndex);
-  firstParentIndex = parentsIndexes[0];
-  lastParentIndex = parentsIndexes[1];
+  let parentsIndexes = swapIndexes(indexOfFirstSelectedParent, indexOfLastParent);
+  indexOfFirstSelectedParent = parentsIndexes[0];
+  indexOfLastParent = parentsIndexes[1];
 
   //Count how much list tags was selected
-  function getAmountOfLists(firstParentIndex, lastParentIndex) {
+  function getAmountOfLists(indexOfFirstSelectedParent, indexOfLastParent) {
     let count = 0,
-      index = lastParentIndex + 1;
+      index = indexOfLastParent + 1;
 
-    for (let i = firstParentIndex; i < index; i++) {
+    for (let i = indexOfFirstSelectedParent; i < index; i++) {
       let mainChild = mainChildren[i],
-        mainChildName = mainChild.nodeName;
+        mainChildName = mainChild.nodeName,
+        isChildList = mainChildName === type;
 
-      if (mainChildName === type) {
+      if (isChildList) {
         count++;
       }
     }
     return count;
   }
 
-  let amountOfLists = getAmountOfLists(firstParentIndex, lastParentIndex);
+  let amountOfLists = getAmountOfLists(indexOfFirstSelectedParent, indexOfLastParent);
 
   // If we selected only list tags then turn them into <p> tags
-  let index = lastParentIndex + 1;
-  if (amountOfLists === index - firstParentIndex) {
+  let indexOfParentAfterLastSelectedParetn = indexOfLastParent + 1,
+
+  if (amountOfLists === indexOfParentAfterLastSelectedParetn - indexOfFirstSelectedParent) {
     let selection = document.getSelection(),
       firstSelectedElement = selection.anchorNode,
       lastSelectedElement = selection.focusNode;
@@ -1562,7 +1574,7 @@ function makeList(type) {
     function makeOnlyLists(
       firstSelectedElement,
       lastSelectedElement,
-      firstParentIndex,
+      indexOfFirstSelectedParent,
       mainContainer
     ) {
       function swapSelectionNodes() {
@@ -1666,7 +1678,7 @@ function makeList(type) {
       let firstLi = getFirstLiAndLastLi()[0],
         lastLi = getFirstLiAndLastLi()[1],
         List = getList(),
-        ListIndex = firstParentIndex,
+        ListIndex = indexOfFirstSelectedParent,
         children = List.children,
         childrenAmount = children.length;
 
@@ -1806,14 +1818,14 @@ function makeList(type) {
     makeOnlyLists(
       firstSelectedElement,
       lastSelectedElement,
-      firstParentIndex,
+      indexOfFirstSelectedParent,
       mainContainer
     );
   } else {
     //If selected not just <list> tags then turn selected tags into <list> (if they're not already)
-    function replaceNotList(firstParentIndex, lastParentIndex, mainChildren) {
+    function replaceNotList(indexOfFirstSelectedParent, indexOfLastParent, mainChildren) {
       for (
-        let i = firstParentIndex, amountOfParents = lastParentIndex + 1;
+        let i = indexOfFirstSelectedParent, amountOfParents = indexOfLastParent + 1;
         i < amountOfParents;
         i++
       ) {
@@ -1825,7 +1837,7 @@ function makeList(type) {
         }
       }
     }
-    replaceNotList(firstParentIndex, lastParentIndex, mainChildren);
+    replaceNotList(indexOfFirstSelectedParent, indexOfLastParent, mainChildren);
 
     //Remove all tags what don't have any content
     function clearEmptyContainers() {
