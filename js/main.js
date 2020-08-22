@@ -1532,15 +1532,22 @@ function makeList(type) {
 
   //Change indexes if selection was from the end
   function swapIndexes(indexOfFirstSelectedParent, indexOfLastParent) {
-    let isFirstIndexMoreThanLast = indexOfFirstSelectedParent > indexOfLastParent;
+    let isFirstIndexMoreThanLast =
+      indexOfFirstSelectedParent > indexOfLastParent;
 
     if (isFirstIndexMoreThanLast) {
-      [indexOfFirstSelectedParent, indexOfLastParent] = [indexOfLastParent, indexOfFirstSelectedParent];
+      [indexOfFirstSelectedParent, indexOfLastParent] = [
+        indexOfLastParent,
+        indexOfFirstSelectedParent,
+      ];
     }
     return [indexOfFirstSelectedParent, indexOfLastParent];
   }
 
-  let parentsIndexes = swapIndexes(indexOfFirstSelectedParent, indexOfLastParent);
+  let parentsIndexes = swapIndexes(
+    indexOfFirstSelectedParent,
+    indexOfLastParent
+  );
   indexOfFirstSelectedParent = parentsIndexes[0];
   indexOfLastParent = parentsIndexes[1];
 
@@ -1561,12 +1568,18 @@ function makeList(type) {
     return count;
   }
 
-  let amountOfLists = getAmountOfLists(indexOfFirstSelectedParent, indexOfLastParent);
+  let amountOfLists = getAmountOfLists(
+    indexOfFirstSelectedParent,
+    indexOfLastParent
+  );
 
   // If we selected only list tags then turn them into <p> tags
-  let indexOfParentAfterLastSelectedParetn = indexOfLastParent + 1,
+  let indexOfParentAfterLastSelectedParent = indexOfLastParent + 1,
+    condition =
+      amountOfLists ===
+      indexOfParentAfterLastSelectedParent - indexOfFirstSelectedParent;
 
-  if (amountOfLists === indexOfParentAfterLastSelectedParetn - indexOfFirstSelectedParent) {
+  if (condition) {
     let selection = document.getSelection(),
       firstSelectedElement = selection.anchorNode,
       lastSelectedElement = selection.focusNode;
@@ -1617,11 +1630,16 @@ function makeList(type) {
             indexOfLastSelectedLi = -1;
 
           for (let i = 0; i < childrenAmount; i++) {
-            let child = childs[i];
+            let child = childs[i],
+              isChildFirstSelectedLi = child === firstSelectedLi;
 
-            if (child === firstSelectedLi) {
+            if (isChildFirstSelectedLi) {
               indexOfFirstSelectedLi = i;
-            } else if (child === lastSelectedLi) {
+            }
+
+            let isChildLastSelectedLi = child === lastSelectedLi;
+
+            if (isChildLastSelectedLi) {
               indexOfLastSelectedLi = i;
             }
           }
@@ -1630,9 +1648,10 @@ function makeList(type) {
         }
 
         let firstIndex = getSelectionIndexes()[0],
-          lastIndex = getSelectionIndexes()[1];
+          lastIndex = getSelectionIndexes()[1],
+          isFirstIndexMoreThanLast = firstIndex > lastIndex;
 
-        if (firstIndex > lastIndex) {
+        if (isFirstIndexMoreThanLast) {
           [firstSelectedElement, lastSelectedElement] = [
             lastSelectedElement,
             firstSelectedElement,
@@ -1690,23 +1709,30 @@ function makeList(type) {
         lastLi
       ) {
         let indexOfFirstSelectedLi = -1,
-          lastLiIndex = -1;
+          indexOfLastSelectedLi = -1;
 
         for (let i = 0; i < listChildrenAmount; i++) {
-          let child = listChildren[i];
+          let child = listChildren[i],
+            isChildFirstSelectedLi = child === firstLi;
 
-          if (child === firstLi) {
+          if (isChildFirstSelectedLi) {
             indexOfFirstSelectedLi = i;
-          } else if (child === lastLi) {
-            lastLiIndex = i;
+          }
+
+          let isChildLastSelectedLi = child === lastLi;
+
+          if (isChildLastSelectedLi) {
+            indexOfLastSelectedLi = i;
           }
         }
 
-        if (lastLiIndex === -1) {
-          lastLiIndex = indexOfFirstSelectedLi;
+        let isNotChanged = indexOfLastSelectedLi === -1;
+
+        if (isNotChanged) {
+          indexOfLastSelectedLi = indexOfFirstSelectedLi;
         }
 
-        return [indexOfFirstSelectedLi, lastLiIndex];
+        return [indexOfFirstSelectedLi, indexOfLastSelectedLi];
       }
 
       let firstAndLastLiIndexes = getFirstLiAndLastLiIndexes(
@@ -1751,15 +1777,20 @@ function makeList(type) {
       let indexOfLastLi = childrenAmount - 1;
 
       //If selection started from the start of the list, then append <p> tags before the list
-      if (indexOfFirstSelectedLi === 0) {
+      let isStartedFromStart = indexOfFirstSelectedLi === 0;
+
+      if (isStartedFromStart) {
         let mainContainerChildren = mainContainer.children,
           list = mainContainerChildren[ListIndex];
 
         mainContainer.insertBefore(fragment, list);
-      } else if (
+      }
+
+      let endsAfterList =
         indexOfLastSelectedLi === indexOfLastLi ||
-        indexOfFirstSelectedLi === indexOfLastLi
-      ) {
+        indexOfFirstSelectedLi === indexOfLastLi;
+
+      if (endsAfterList) {
         //Else if selection ends in the end of list append after this list
         mainContainer.insertBefore(
           fragment,
@@ -1809,8 +1840,10 @@ function makeList(type) {
 
       //If <list> is empty then delete it.
       let childrenOfList = List.children,
-        amountOfChildren = childrenOfList.length;
-      if (amountOfChildren === 0) {
+        amountOfChildren = childrenOfList.length,
+        isWithoutChildren = amountOfChildren === 0;
+
+      if (isWithoutChildren) {
         List.remove();
       }
     }
@@ -1823,16 +1856,22 @@ function makeList(type) {
     );
   } else {
     //If selected not just <list> tags then turn selected tags into <list> (if they're not already)
-    function replaceNotList(indexOfFirstSelectedParent, indexOfLastParent, mainChildren) {
+    function replaceNotList(
+      indexOfFirstSelectedParent,
+      indexOfLastParent,
+      mainChildren
+    ) {
       for (
-        let i = indexOfFirstSelectedParent, amountOfParents = indexOfLastParent + 1;
+        let i = indexOfFirstSelectedParent,
+          amountOfParents = indexOfLastParent + 1;
         i < amountOfParents;
         i++
       ) {
         let child = mainChildren[i],
-          nodeName = child.nodeName;
+          nodeName = child.nodeName,
+          isList = nodeName !== type;
 
-        if (nodeName !== type) {
+        if (!isList) {
           replaceElement(child, type);
         }
       }
@@ -1850,7 +1889,9 @@ function makeList(type) {
           textContent = child.textContent;
 
         textContent = clearExtraSpaces(textContent);
-        if (textContent === "") {
+        let isEmptyNode = textContent === "";
+
+        if (isEmptyNode) {
           mainContainer.removeChild(child);
           childrenAmount--;
         }
@@ -1882,9 +1923,10 @@ function makeList(type) {
 
           for (let i = 0; i < childAmount; i++) {
             let child = children[i],
-              childName = child.nodeName;
+              childName = child.nodeName,
+              isLi = childName === "LI";
 
-            if (childName === "LI") {
+            if (isLi) {
               return true;
             }
           }
@@ -1894,9 +1936,10 @@ function makeList(type) {
         while (length !== 0) {
           let child = children[0],
             childName = child.nodeName,
-            firstChild = children[0];
+            firstChild = children[0],
+            isLi = childName === "LI";
 
-          if (childName === "LI") {
+          if (isLi) {
             isWithLI = true;
             break;
           }
@@ -1914,15 +1957,22 @@ function makeList(type) {
 
           //If the next element is already done (turned into <list> tag with <li> elements)
           //Then append the element to the previous element
-          let nextElement = elementsToTurnIntoLi[i + 1];
-          if (nextElement !== undefined) {
-            if (hasLi(nextElement)) {
+          let nextElement = elementsToTurnIntoLi[i + 1],
+            isNextElementEmpty = nextElement !== undefined;
+
+          if (isNextElementEmpty) {
+            let isThereLi = hasLi(nextElement);
+
+            if (isThereLi) {
               let listForMerging = elementsToTurnIntoLi[index],
                 elementAfterNextElement = elementsToTurnIntoLi[i + 2];
 
               listForMerging.appendChild(fragment);
 
-              if (elementAfterNextElement !== undefined) {
+              let isElementAfterNextElementEmpty =
+                elementAfterNextElement !== undefined;
+
+              if (!isElementAfterNextElementEmpty) {
                 index = i + 2;
               }
             }
@@ -1937,9 +1987,10 @@ function makeList(type) {
       let secondList = elementsToTurnIntoLi[1];
       while (secondList !== undefined) {
         let firstList = elementsToTurnIntoLi[0],
-          secondList = elementsToTurnIntoLi[1];
+          secondList = elementsToTurnIntoLi[1],
+          isSecondListEmpty = secondList === undefined;
 
-        if (secondList === undefined) {
+        if (isSecondListEmpty) {
           break;
         }
 
@@ -1956,12 +2007,15 @@ function makeList(type) {
 
     for (let i = 0; i < childrenAmount; i++) {
       let child = editorChildren[i],
-        childName = child.nodeName;
+        childName = child.nodeName,
+        isList = childName === type;
 
-      if (childName === type) {
+      if (isList) {
         elementsToTurnIntoLi[count] = child;
         count++;
-      } else if (count > 0) {
+      }
+
+      if (count > 0) {
         turnIntoLi(elementsToTurnIntoLi);
         elementsToTurnIntoLi = [];
 
