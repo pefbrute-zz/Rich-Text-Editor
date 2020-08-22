@@ -1478,6 +1478,10 @@ function clearEmptyContainers() {
   }
 }
 
+
+//Make fix of this function
+//
+
 function makeList(type) {
   type = type.toUpperCase();
 
@@ -2053,8 +2057,9 @@ function makeList(type) {
   selection.empty();
 }
 
-// Make function of it smhw
 //
+//
+
 let fileTag = document.getElementById("filetag");
 fileTag.addEventListener("change", function () {
   changeImage(this);
