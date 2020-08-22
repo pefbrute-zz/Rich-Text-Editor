@@ -1114,8 +1114,11 @@ function addContainerClass(className) {
                 );
               }
             } else {
-              if (parsedDataValue >= 1) {
-                if (parsedDataValue === 1) {
+              let isParsedDataValueMoreOrEqualOne = parsedDataValue >= 1;
+              if (isParsedDataValueMoreOrEqualOne) {
+                let isParsedDataValueEqualOne = parsedDataValue === 1;
+
+                if (isParsedDataValueEqualOne) {
                   let className = firstSelectedElement.className,
                     clearElement = clearExtraSpaces(className),
                     classes = clearElement.split(" "),
@@ -1123,21 +1126,27 @@ function addContainerClass(className) {
 
                   firstSelectedElement.removeAttribute("data-value");
 
-                  if (amountOfClasses === 1) {
+                  let isThereOneClass = amountOfClasses === 1;
+
+                  if (isThereOneClass) {
                     firstSelectedElement.removeAttribute("class");
                   } else {
                     for (let j = 0; j < amountOfClasses; j++) {
                       let someClass = classes[j],
-                        classBeginning = someClass.substring(0, 6);
+                        classBeginning = someClass.substring(0, 6),
+                        isStartingWithIndent = classBeginning === "indent";
 
-                      if (classBeginning === "indent") {
+                      if (isStartingWithIndent) {
                         classes.splice(j, 1);
 
                         j--;
                         amountOfClasses--;
                       }
                     }
-                    if (amountOfClasses === 0) {
+                    
+                    let isThereNoClasses = amountOfClasses === 0;
+
+                    if (isThereNoClasses) {
                       firstSelectedElement.removeAttribute("class");
                     }
                     classes = classes.join(" ");
