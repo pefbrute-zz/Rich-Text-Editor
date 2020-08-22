@@ -1081,7 +1081,8 @@ function addContainerClass(className) {
           let firstSelectedElementClassName = firstSelectedElement.className,
             attributesOfFirstSelectedElement = firstSelectedElement.attributes,
             dataValue = attributesOfFirstSelectedElement["data-value"],
-            isDataValueUndefined = dataValue === undefined;
+            isDataValueUndefined = dataValue === undefined,
+            isIndentPlus = className === "indent+";
 
           if (!isDataValueUndefined) {
             let valueOfDataValue = dataValue.nodeValue,
@@ -1143,12 +1144,13 @@ function addContainerClass(className) {
                         amountOfClasses--;
                       }
                     }
-                    
+
                     let isThereNoClasses = amountOfClasses === 0;
 
                     if (isThereNoClasses) {
                       firstSelectedElement.removeAttribute("class");
                     }
+
                     classes = classes.join(" ");
                     firstSelectedElement.className = clearExtraSpaces(classes);
                   }
@@ -1159,9 +1161,10 @@ function addContainerClass(className) {
 
                   for (let j = 0; j < amountOfClasses; j++) {
                     let someClass = classes[j],
-                      classBeginning = someClass.substring(0, 6);
+                      classBeginning = someClass.substring(0, 6),
+                      isStartingWithIndent = classBeginning === "indent";
 
-                    if (classBeginning === "indent") {
+                    if (isStartingWithIndent) {
                       classes.splice(j, 1);
 
                       j--;
@@ -1186,7 +1189,7 @@ function addContainerClass(className) {
                 }
               }
             }
-          } else if (className === "indent+") {
+          } else if (isIndentPlus) {
             firstSelectedElement.setAttribute("data-value", 1);
 
             let attributesOfFirstSelectedElement =
@@ -1211,16 +1214,18 @@ function addContainerClass(className) {
       );
     } else {
       do {
-        let classListOfFirstSelectedElement = firstSelectedElement.classList;
+        let classListOfFirstSelectedElement = firstSelectedElement.classList,
+          isClassListUndefined = classListOfFirstSelectedElement === undefined;
 
-        if (classListOfFirstSelectedElement === undefined) {
+        if (isClassListUndefined) {
           firstSelectedElement = firstSelectedElement.nextSibling;
           continue;
         }
 
-        let amountOfClasses = classListOfFirstSelectedElement.length;
+        let amountOfClasses = classListOfFirstSelectedElement.length,
+          isThereNoClasses = amountOfClasses === 0;
 
-        if (amountOfClasses === 0) {
+        if (isThereNoClasses) {
           classListOfFirstSelectedElement.add(className);
         } else {
           for (
@@ -1230,11 +1235,14 @@ function addContainerClass(className) {
           ) {
             let classNameOfFirstSelectedElement =
                 classListOfFirstSelectedElement[i],
-              indexOfLastClassName = amountOfClasses - 1;
+              indexOfLastClassName = amountOfClasses - 1,
+              isClassNameOfFirstSelectedElementEqualParsedClassName =
+                classNameOfFirstSelectedElement === className,
+              isLastName = i === indexOfLastClassName;
 
-            if (classNameOfFirstSelectedElement === className) {
+            if (isClassNameOfFirstSelectedElementEqualParsedClassName) {
               classListOfFirstSelectedElement.remove(className);
-            } else if (i === indexOfLastClassName) {
+            } else if (isLastName) {
               classListOfFirstSelectedElement.add(className);
               break;
             }
@@ -1255,20 +1263,25 @@ function addContainerClass(className) {
 function addAlignClass(alignName) {
   let mainContainer = document.getElementById("work-area"),
     firstSelectedElement = getFirstSelectedChilds(mainContainer)[0],
-    lastSelectedElement = getFirstSelectedChilds(mainContainer)[1];
+    lastSelectedElement = getFirstSelectedChilds(mainContainer)[1],
+    isNothingSelected =
+      firstSelectedElement !== undefined && lastSelectedElement !== undefined;
 
-  if (firstSelectedElement !== undefined && lastSelectedElement !== undefined) {
+  if (isNothingSelected) {
     do {
-      let classListOfFirstSelectedElement = firstSelectedElement.classList;
+      let classListOfFirstSelectedElement = firstSelectedElement.classList,
+        isFirstSelectedElementWithoutClasses =
+          classListOfFirstSelectedElement === undefined;
 
-      if (classListOfFirstSelectedElement === undefined) {
+      if (isFirstSelectedElementWithoutClasses) {
         firstSelectedElement = firstSelectedElement.nextSibling;
         continue;
       }
 
-      let amountOfClasses = classListOfFirstSelectedElement.length;
+      let amountOfClasses = classListOfFirstSelectedElement.length,
+        isThereNoClasses = amountOfClasses === 0;
 
-      if (amountOfClasses === 0) {
+      if (isThereNoClasses) {
         classListOfFirstSelectedElement.add(alignName);
       } else {
         for (
@@ -1278,17 +1291,22 @@ function addAlignClass(alignName) {
         ) {
           let classNameOfFirstSelectedElement =
               classListOfFirstSelectedElement[i],
-            indexOfLastClassName = amountOfClasses - 1;
+            indexOfLastClassName = amountOfClasses - 1,
+            isClassNameAlignName =
+              classNameOfFirstSelectedElement === alignName,
+            startsWithAlign =
+              classNameOfFirstSelectedElement.slice(0, 5) === "align",
+            isLastClassName = i === indexOfLastClassName;
 
-          if (classNameOfFirstSelectedElement === alignName) {
+          if (isClassNameAlignName) {
             classListOfFirstSelectedElement.remove(alignName);
-          } else if (classNameOfFirstSelectedElement.slice(0, 5) === "align") {
+          } else if (startsWithAlign) {
             classListOfFirstSelectedElement.remove(
               classNameOfFirstSelectedElement
             );
             classListOfFirstSelectedElement.add(alignName);
             break;
-          } else if (i === indexOfLastClassName) {
+          } else if (isLastClassName) {
             classListOfFirstSelectedElement.add(alignName);
             break;
           }
@@ -1335,9 +1353,10 @@ function highlightNumbers() {
   ) {
     let regExp = new RegExp("\\b" + "\\d+" + "\\b", "gi"),
       element = preList[i],
-      matches = element.innerHTML.match(regExp);
+      matches = element.innerHTML.match(regExp),
+      isThereMatches = matches === null;
 
-    if (matches !== null) {
+    if (isThereMatches) {
       for (
         let j = 0, indexOfLastMatch = matches.length - 1;
         j <= indexOfLastMatch;
@@ -1386,9 +1405,11 @@ function replaceDivs() {
     i++
   ) {
     let childNode = childNodes[i],
-      nameOfChildNode = childNode.nodeName;
+      nameOfChildNode = childNode.nodeName,
+      isNameOfChildNodeDIV = nameOfChildNode === "DIV",
+      isChildNodeTextNode = nameOfChildNode === "#text";
 
-    if (nameOfChildNode === "DIV" || nameOfChildNode === "#text") {
+    if (isNameOfChildNodeDIV || isChildNodeTextNode) {
       replaceElement(childNode, "p");
     }
   }
@@ -1402,19 +1423,22 @@ function replaceDivs() {
       i < childNodesLength;
       i++
     ) {
-      let childNode = childNodes[i];
+      let childNode = childNodes[i],
+        isChildNodeEmpty = childNode === undefined;
 
-      if (childNode === undefined) {
+      if (isChildNodeEmpty) {
         continue;
       }
 
-      let nameOfChildNode = childNode.nodeName;
+      let nameOfChildNode = childNode.nodeName,
+        isParagraph = nameOfChildNode === "P";
 
-      if (nameOfChildNode === "P") {
+      if (isParagraph) {
         let textContentOfChild = childNode.textContent,
-          lengthOfTextContent = textContentOfChild.length;
+          lengthOfTextContent = textContentOfChild.length,
+          isEmptyNode = lengthOfTextContent === 0;
 
-        if (lengthOfTextContent === 0) {
+        if (isEmptyNode) {
           childNode.remove();
         }
       }
@@ -1426,7 +1450,10 @@ function replaceDivs() {
 
 let element = document.getElementById("work-area");
 element.addEventListener("keypress", function (e) {
-  if (e.key === "Enter") {
+  let key = e.key,
+    isPressedEnter = key === "Enter";
+
+  if (isPressedEnter) {
     setTimeout(replaceDivs, 1);
   }
 });
