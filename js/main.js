@@ -17,18 +17,64 @@ let fontNames = [
   classNamesOfAligns = [];
 
 function addStyleActiveToButton() {
-  let selection = document.getSelection();
+  let sizeNameOfIcon = "",
+    sizeIcon = {},
+    fullName = "",
+    smallName = "",
+    iconID = "",
+    classListOfSizeIcon = {},
+    classListOfFontIcon = {},
+    classNameOfIcon = [],
+    sizeCondition = false,
+    fontCondition = false,
+    firstPart = "",
+    secondPart = "",
+    fontIcon = {},
+    fontNameOfIcon = {},
+    indentIcon = {},
+    classListOfIndentIcon = [],
+    classListOfTextIcon = [],
+    directionTag,
+    classListOfDirection,
+    textIcon,
+    icon,
+    classListOfIcon,
+    amountOfClasses,
+    sizeTime,
+    fontTime,
+    classNameInUpperCase,
+    tag,
+    directionIcon,
+    classListOfBackgroundIcon,
+    sizeElement,
+    selection,
+    anchorNode,
+    namesOfTags,
+    namesOfClasses,
+    amountOfNames,
+    indexOfLastName,
+    actives,
+    i,
+    name,
+    j,
+    active,
+    activeName,
+    classListOfActive,
+    childNodesOfIcon,
+    textOfIcon,
+    backgroundIcon,
+    classListOfTag;
 
   if (selection.type === "Caret") {
-    let selection = document.getSelection(),
-      anchorNode = selection.anchorNode,
-      namesOfTags = getNamesOfTagsInSelectedElement(anchorNode),
-      namesOfClasses = getClassesInSelectedElement(anchorNode);
+    selection = document.getSelection();
+    anchorNode = selection.anchorNode;
+    namesOfTags = getNamesOfTagsInSelectedElement(anchorNode);
+    namesOfClasses = getClassesInSelectedElement(anchorNode);
 
     if (namesOfTags !== undefined) {
-      let amountOfNames = namesOfTags.length,
-        indexOfLastName = amountOfNames - 1,
-        actives = document.querySelectorAll("[class*=active]");
+      amountOfNames = namesOfTags.length;
+      indexOfLastName = amountOfNames - 1;
+      actives = document.querySelectorAll("[class*=active]");
 
       function cleaningExtraTags(array) {
         if (array[indexOfLastName] === "P") {
@@ -37,8 +83,8 @@ function addStyleActiveToButton() {
           indexOfLastName--;
         }
 
-        for (let i = 0; i < amountOfNames; i++) {
-          let name = array[i];
+        for (i = 0; i < amountOfNames; i++) {
+          name = array[i];
 
           if (name === "SPAN") {
             array.splice(i, 1);
@@ -54,35 +100,35 @@ function addStyleActiveToButton() {
 
       if (amountOfNames === 0) {
         for (
-          let i = 0, indexOfLastActive = actives.length - 1;
+          i = 0, indexOfLastActive = actives.length - 1;
           i <= indexOfLastActive;
           i++
         ) {
-          let active = actives[i],
-            classListOfActive = active.classList;
+          active = actives[i];
+          classListOfActive = active.classList;
 
           classListOfActive.remove("active");
         }
       } else if (amountOfNames !== 0) {
         for (
-          let i = 0, indexOfLastActive = actives.length - 1;
+          i = 0, indexOfLastActive = actives.length - 1;
           i <= indexOfLastActive;
           i++
         ) {
-          let active = actives[i],
-            activeName = active.id;
+          active = actives[i];
+          activeName = active.id;
 
           for (
-            let j = 0, indexOfLastName = amountOfNames - 1;
+            j = 0, indexOfLastName = amountOfNames - 1;
             j <= indexOfLastName;
             j++
           ) {
-            let name = namesOfTags[j];
+            name = namesOfTags[j];
 
             if (activeName === name) {
               break;
             } else if (j === indexOfLastName) {
-              let classListOfActive = active.classList;
+              classListOfActive = active.classList;
 
               classListOfActive.remove("active");
             }
@@ -90,18 +136,17 @@ function addStyleActiveToButton() {
         }
 
         for (
-          let i = 0, indexOfLastName = amountOfNames - 1;
+          i = 0, indexOfLastName = amountOfNames - 1;
           i <= indexOfLastName;
           i++
         ) {
-          let name = namesOfTags[i],
-            tag = document.getElementById(name);
+          (name = namesOfTags[i]), (tag = document.getElementById(name));
 
           if (name === "P" || name === "LI" || tag === null) {
             continue;
           }
 
-          let classListOfTag = tag.classList;
+          classListOfTag = tag.classList;
 
           classListOfTag.add("active");
         }
@@ -109,23 +154,23 @@ function addStyleActiveToButton() {
     }
 
     if (namesOfClasses !== undefined) {
-      let amountOfClasses = namesOfClasses.length,
-        sizeTime = 0,
-        fontTime = 0;
+      amountOfClasses = namesOfClasses.length;
+      sizeTime = 0;
+      fontTime = 0;
 
       for (
-        let i = 0, indexOfLastClass = amountOfClasses - 1;
+        i = 0, indexOfLastClass = amountOfClasses - 1;
         i <= indexOfLastClass;
         i++
       ) {
-        let name = namesOfClasses[i],
-          classNameInUpperCase = name.toUpperCase();
+        name = namesOfClasses[i];
+        classNameInUpperCase = name.toUpperCase();
 
         if (classNameInUpperCase === "RTL") {
-          let directionIcon = document.getElementById(classNameInUpperCase);
+          directionIcon = document.getElementById(classNameInUpperCase);
 
           if (directionIcon !== null) {
-            let classListOfIcon = directionIcon.classList;
+            classListOfIcon = directionIcon.classList;
 
             classListOfIcon.add("active");
 
@@ -134,11 +179,11 @@ function addStyleActiveToButton() {
         }
 
         if (classNameInUpperCase.slice(0, 4) === "TEXT") {
-          let iconID = classNameInUpperCase.slice(0, 4),
-            textIcon = document.getElementById(iconID);
+          (iconID = classNameInUpperCase.slice(0, 4)),
+            (textIcon = document.getElementById(iconID));
 
           if (textIcon !== null) {
-            let classListOfTextIcon = textIcon.classList;
+            classListOfTextIcon = textIcon.classList;
             classListOfTextIcon.add("active");
 
             continue;
@@ -146,22 +191,22 @@ function addStyleActiveToButton() {
         }
 
         if (classNameInUpperCase.slice(0, 5) === "ALIGN") {
-          let iconID = "ALIGN",
-            icon = document.getElementById(iconID);
+          iconID = "ALIGN";
+          icon = document.getElementById(iconID);
 
           icon.children[0].className =
             "fas fa-" + classNameInUpperCase.toLowerCase();
 
           if (icon !== null) {
-            let classListOfIcon = icon.classList;
+            classListOfIcon = icon.classList;
 
             classListOfIcon.add("active");
 
             if (classNameInUpperCase === "ALIGN-RIGHT") {
-              let directionTag = document.getElementById("RTL");
+              directionTag = document.getElementById("RTL");
 
               if (directionTag !== null) {
-                let classListOfDirection = directionTag.classList;
+                classListOfDirection = directionTag.classList;
 
                 classListOfDirection.add("active");
                 continue;
@@ -172,18 +217,18 @@ function addStyleActiveToButton() {
         }
 
         if (classNameInUpperCase.slice(0, 6) === "INDENT") {
-          let iconID = classNameInUpperCase.slice(0, 6),
-            indentIcon = document.getElementById(iconID);
+          iconID = classNameInUpperCase.slice(0, 6);
+          indentIcon = document.getElementById(iconID);
 
           if (indentIcon !== null) {
-            let classListOfIndentIcon = indentIcon.classList;
+            classListOfIndentIcon = indentIcon.classList;
 
             classListOfIndentIcon.add("active");
             continue;
           }
         }
 
-        let fontCondition =
+        fontCondition =
           classNameInUpperCase === "SOFIA" ||
           classNameInUpperCase === "INCONSOLATA" ||
           classNameInUpperCase === "SLABO-13PX" ||
@@ -191,40 +236,40 @@ function addStyleActiveToButton() {
           classNameInUpperCase === "UBUNTU-MONO";
 
         if (fontCondition && fontTime === 0) {
-          let iconID = "FONT",
-            fontIcon = document.getElementById(iconID);
+          iconID = "FONT";
+          fontIcon = document.getElementById(iconID);
 
           if (fontIcon !== null) {
-            let classListOfFontIcon = fontIcon.classList;
+            classListOfFontIcon = fontIcon.classList;
 
             classListOfFontIcon.add("active");
 
-            let fontNameOfIcon = document.getElementById("font-name"),
-              classNameOfIcon = fontNameOfIcon.className;
+            fontNameOfIcon = document.getElementById("font-name");
+            classNameOfIcon = fontNameOfIcon.className;
 
             if (classNameOfIcon !== classNameInUpperCase.toLowerCase()) {
               fontNameOfIcon.classList.remove(classNameOfIcon);
               fontNameOfIcon.classList.add(classNameInUpperCase.toLowerCase());
 
-              let childNodesOfIcon = fontNameOfIcon.childNodes,
-                textOfIcon = childNodesOfIcon[0];
+              childNodesOfIcon = fontNameOfIcon.childNodes;
+              textOfIcon = childNodesOfIcon[0];
 
               if (classNameInUpperCase.indexOf("-") === -1) {
                 textOfIcon.data = capitalizeFirstLetter(
                   classNameInUpperCase.toLowerCase()
                 );
               } else {
-                let smallName = classNameInUpperCase.toLowerCase(),
-                  firstPart = smallName.slice(0, smallName.indexOf("-")),
-                  secondPart = smallName.slice(
-                    smallName.indexOf("-") + 1,
-                    smallName.length
-                  );
+                smallName = classNameInUpperCase.toLowerCase();
+                firstPart = smallName.slice(0, smallName.indexOf("-"));
+                secondPart = smallName.slice(
+                  smallName.indexOf("-") + 1,
+                  smallName.length
+                );
 
                 firstPart = capitalizeFirstLetter(firstPart);
                 secondPart = capitalizeFirstLetter(secondPart);
 
-                let fullName = firstPart + " " + secondPart;
+                fullName = firstPart + " " + secondPart;
 
                 textOfIcon.data = fullName;
               }
@@ -234,29 +279,29 @@ function addStyleActiveToButton() {
           }
         }
 
-        let sizeCondition =
+        sizeCondition =
           classNameInUpperCase === "SMALL" ||
           classNameInUpperCase === "NORMAL" ||
           classNameInUpperCase === "LARGE" ||
           classNameInUpperCase === "HUGE";
 
         if (sizeCondition && sizeTime === 0) {
-          let iconID = "SIZE",
-            sizeIcon = document.getElementById(iconID);
+          iconID = "SIZE";
+          sizeIcon = document.getElementById(iconID);
 
           if (sizeIcon !== null) {
-            let classListOfSizeIcon = sizeIcon.classList;
+            classListOfSizeIcon = sizeIcon.classList;
 
             classListOfSizeIcon.add("active");
 
-            let sizeElement = document.getElementById("size-name"),
-              sizeNameOfIcon = sizeElement.textContent.toUpperCase();
+            sizeElement = document.getElementById("size-name");
+            sizeNameOfIcon = sizeElement.textContent.toUpperCase();
 
             classNameOfIcon = sizeElement.className;
 
             if (classNameInUpperCase !== sizeNameOfIcon) {
-              let childNodesOfIcon = sizeElement.childNodes,
-                textOfIcon = childNodesOfIcon[0];
+              childNodesOfIcon = sizeElement.childNodes;
+              textOfIcon = childNodesOfIcon[0];
 
               textOfIcon.data = capitalizeFirstLetter(
                 classNameInUpperCase.toLowerCase()
@@ -270,11 +315,11 @@ function addStyleActiveToButton() {
         }
 
         if (classNameInUpperCase.slice(0, 10) === "BACKGROUND") {
-          let iconID = "BACKGROUND",
-            backgroundIcon = document.getElementById(iconID);
+          iconID = "BACKGROUND";
+          backgroundIcon = document.getElementById(iconID);
 
           if (backgroundIcon !== null) {
-            let classListOfBackgroundIcon = backgroundIcon.classList;
+            classListOfBackgroundIcon = backgroundIcon.classList;
 
             classListOfBackgroundIcon.add("active");
             continue;
@@ -723,8 +768,6 @@ function addFont(fontName) {
           classNamesListAmount = classNamesList.length;
 
         for (let k = 0; k < classNamesListAmount; k++) {
-          let className = classNamesList[k];
-
           for (let j = 0; j < amountOfNames; j++) {
             let name = names[j],
               condition =
@@ -1477,7 +1520,6 @@ function clearEmptyContainers() {
     }
   }
 }
-
 
 //Make fix of this function
 //
