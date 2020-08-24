@@ -1525,6 +1525,7 @@ function clearEmptyContainers() {
 //
 
 function makeList(type) {
+  debugger;
   type = type.toUpperCase();
 
   function getSelectedParents() {
@@ -1965,6 +1966,10 @@ function makeList(type) {
       elementsToTurnIntoLi = [],
       count = 0;
 
+    debugger;
+
+    //Fix smth here for all stuff to work
+    //
     function turnIntoLi(elementsToTurnIntoLi) {
       let fragment = document.createDocumentFragment(),
         elementsAmount = elementsToTurnIntoLi.length,
@@ -2000,6 +2005,7 @@ function makeList(type) {
             isLi = childName === "LI";
 
           if (isLi) {
+            debugger;
             isWithLI = true;
             break;
           }
@@ -2007,6 +2013,8 @@ function makeList(type) {
           innerFragment.appendChild(firstChild);
           length--;
         }
+
+        debugger;
 
         if (isWithLI) {
         } else {
@@ -2040,6 +2048,8 @@ function makeList(type) {
         }
       }
 
+      debugger;
+
       let listForMerging = elementsToTurnIntoLi[index];
       listForMerging.appendChild(fragment);
 
@@ -2064,7 +2074,10 @@ function makeList(type) {
         clearEmptyContainers();
       }
     }
+    //
+    //
 
+    debugger;
     for (let i = 0; i < childrenAmount; i++) {
       let child = editorChildren[i],
         childName = child.nodeName,
@@ -2073,6 +2086,8 @@ function makeList(type) {
       if (isList) {
         elementsToTurnIntoLi[count] = child;
         count++;
+
+        continue;
       }
 
       if (count > 0) {
